@@ -5,6 +5,6 @@ app.get('/', (req, res) => {
     res.send("Here it is, the aid app!");
 });
 
-app.listen(80, () => {
-    console.log("Listening on port 80!");
+app.listen(3000, () => {
+    console.log("Ready: http://localhost:3000/");
 });
