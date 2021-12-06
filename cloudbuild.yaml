@@ -2,7 +2,13 @@ steps:
   - name: 'gcr.io/cloud-builders/npm'
     args: ['install']
   - name: 'gcr.io/cloud-builders/npm'
-    args: ['build']
+    args: ['run', 'build']
   - name: 'gcr.io/cloud-builders/gcloud'
     args: ['app', 'deploy']
+    # args: ['run', 'deploy', '--allow-unauthenticated', '--platform', 'managed']
+    # gcloud run deploy helloworld \
+    # --image gcr.io/$GOOGLE_CLOUD_PROJECT/helloworld \
+    # --platform managed \
+    # --region us-central1 \
+    # --allow-unauthenticated
 timeout: '1600s'
