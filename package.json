@@ -7,8 +7,7 @@
     "start": "npm run dev",
     "dev": "ts-node-dev src/app.ts",
     "prod": "npm run build && node lib/app.js",
-    "build": "rm -rf lib; npm run build:types && npm run build:js",
-    "build:types": "tsc --emitDeclarationOnly",
+    "build": "rm -rf lib; npm run build:js",
     "build:js": "babel src --out-dir lib --extensions \".ts,.tsx\" --source-maps inline"
   },
   "author": "",
