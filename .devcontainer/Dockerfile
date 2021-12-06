@@ -14,3 +14,11 @@ FROM mcr.microsoft.com/vscode/devcontainers/typescript-node:0-${VARIANT}
 
 # [Optional] Uncomment if you want to install more global node packages
 # RUN su node -c "npm install -g <your-package-list -here>"
+
+# RUN su node -c "npm install"
+# RUN su node -c "npm install -g pm2"
+# RUN npm build
+
+# EXPOSE 3000
+
+# CMD [ "pm2-runtime", "start", "lib/app.js", "-i", "max" ]
