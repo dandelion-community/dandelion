@@ -16,9 +16,25 @@ FROM mcr.microsoft.com/vscode/devcontainers/typescript-node:0-${VARIANT}
 # RUN su node -c "npm install -g <your-package-list -here>"
 
 # RUN su node -c "npm install"
-# RUN su node -c "npm install -g pm2"
+# RUN su node -c "npm install -g express-generator"
 # RUN npm build
 
 # EXPOSE 3000
 
 # CMD [ "pm2-runtime", "start", "lib/app.js", "-i", "max" ]
+
+
+# FROM python:3.5-alpine
+
+# # which version of the AWS EB CLI to install.
+# # https://pypi.python.org/pypi/awsebcli/
+# ARG AWS_EB_CLI_VERSION="3.10.1"
+
+# ENV PIP_DISABLE_PIP_VERSION_CHECK=true
+
+# RUN \
+#   pip install awsebcli==${AWS_EB_CLI_VERSION} && \
+#   mkdir -p "${HOME}/.aws"
+
+# ARG VARIANT_PYTHON="3-bullseye"
+# FROM mcr.microsoft.com/vscode/devcontainers/python:${VARIANT_PYTHON}

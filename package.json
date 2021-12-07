@@ -4,7 +4,7 @@
   "description": "",
   "main": "src/app.ts",
   "scripts": {
-    "start": "npm run dev",
+    "start": "node ./bin/www",
     "dev": "ts-node-dev src/app.ts",
     "prod": "npm run build && node lib/app.js",
     "build": "rm -rf lib; npm run build:js",
@@ -13,19 +13,21 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.17.1",
-    "typescript": "^4.5.2"
+    "aws-sdk": "^2.1044.0",
+    "cookie-parser": "~1.4.4",
+    "debug": "~2.6.9",
+    "express": "~4.16.1",
+    "http-errors": "~1.6.3",
+    "jade": "~1.11.0",
+    "morgan": "~1.9.1"
   },
-  "type": "module",
   "devDependencies": {
     "@babel/cli": "^7.16.0",
     "@babel/core": "^7.16.0",
     "@babel/plugin-proposal-class-properties": "^7.16.0",
     "@babel/preset-env": "^7.16.4",
     "@babel/preset-typescript": "^7.16.0",
-    "@types/express": "^4.17.13",
     "nodemon": "^2.0.15",
-    "ts-node": "^10.4.0",
-    "ts-node-dev": "^1.1.8"
+    "typescript": "^4.5.2"
   }
 }

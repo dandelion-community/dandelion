@@ -9,7 +9,8 @@
     // Append -bullseye or -buster to pin to an OS version.
     // Use -bullseye variants on local on arm64/Apple Silicon.
     "args": {
-      "VARIANT": "16-bullseye"
+      "VARIANT": "16-bullseye",
+      "VARIANT_PYTHON": "3-bullseye"
     }
   },
 
@@ -27,7 +28,7 @@
   // "postCreateCommand": "npm install",
 
   // Comment out to connect as root instead. More info: https://aka.ms/vscode-remote/containers/non-root.
-  "remoteUser": "node",
+  // "remoteUser": "node",
 
   // Set *default* container specific settings.json values on container create.
   "settings": {
