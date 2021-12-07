@@ -20,8 +20,8 @@ jobs:
         with:
           aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          application_name: Tutorialnodejs
-          environment_name: Tutorialnodejs-env
-          version_label: 12345
+          application_name: ${{ secrets.AWS_APPLICATION_NAME }}
+          environment_name: ${{ secrets.AWS_ENVIRONMENT_NAME }}
+          version_label: $(git rev-parse --short "$GITHUB_SHA")
           region: us-west-2
           deployment_package: deploy.zip
