@@ -5,7 +5,7 @@ on:
       - main
 
 jobs:
-  Deploy to AWS:
+  Deploy-to-EB:
     runs-on: ubuntu-latest
     environment: AWS Deploy
     steps:
