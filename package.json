@@ -4,11 +4,7 @@
   "description": "",
   "main": "src/app.ts",
   "scripts": {
-    "start": "node ./bin/www",
-    "dev": "ts-node-dev src/app.ts",
-    "prod": "npm run build && node lib/app.js",
-    "build": "rm -rf lib; npm run build:js",
-    "build:js": "babel src --out-dir lib --extensions \".ts,.tsx\" --source-maps inline"
+    "start": "node ./bin/www"
   },
   "author": "",
   "license": "ISC",
@@ -22,12 +18,5 @@
     "morgan": "~1.9.1"
   },
   "devDependencies": {
-    "@babel/cli": "^7.16.0",
-    "@babel/core": "^7.16.0",
-    "@babel/plugin-proposal-class-properties": "^7.16.0",
-    "@babel/preset-env": "^7.16.4",
-    "@babel/preset-typescript": "^7.16.0",
-    "nodemon": "^2.0.15",
-    "typescript": "^4.5.2"
   }
 }
