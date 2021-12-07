@@ -1,8 +1,11 @@
-name: Deploy main
+name: Deploy to Elastic Beanstalk
 on:
   push:
     branches:
-      - main
+      - latest
+      - stable
+      - chris
+      - lowell
 
 jobs:
   Deploy-to-EB:
@@ -20,8 +23,10 @@ jobs:
         with:
           aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          application_name: aid-app
-          environment_name: Aidapp-env
+          application_name:
+            ${{ github.event.repository.name }}-${{ github.ref_name }}
+          environment_name:
+            ${{ github.event.repository.name }}-${{ github.ref_name }}-env
           version_label: ${{ github.ref_name }}.${{ github.sha }}
           region: us-east-2
           deployment_package: deploy.zip
