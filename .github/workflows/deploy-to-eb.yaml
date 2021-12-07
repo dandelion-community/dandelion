@@ -5,7 +5,7 @@ on:
       - main
 
 jobs:
-  build:
+  Deploy to AWS:
     runs-on: ubuntu-latest
     environment: AWS Deploy
     steps:
