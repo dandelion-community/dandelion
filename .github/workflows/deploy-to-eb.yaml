@@ -22,6 +22,6 @@ jobs:
           aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           application_name: aid-app
           environment_name: Aidapp-env
-          version_label: ${{ github.GITHUB_REF_NAME }}.${{ github.GITHUB_SHA }}
+          version_label: ${{ github.ref_name }}.${{ github.sha }}
           region: us-east-2
           deployment_package: deploy.zip
