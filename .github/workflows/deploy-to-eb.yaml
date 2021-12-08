@@ -27,6 +27,9 @@ jobs:
       - name: Add build artifacts
         run: zip -r deploy.zip web-build
 
+      - name: Add build artifacts
+        run: zip -r deploy.zip web-build
+
       - name: Deploy to EB
         uses: einaregilsson/beanstalk-deploy@v19
         with:
