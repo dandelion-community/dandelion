@@ -15,8 +15,17 @@ app.use(express.json());
 app.use(express.urlencoded({extended: false}));
 app.use(cookieParser());
 
+const testFolder = '.';
+const fs = require('fs');
+
+const filenames = [];
+
+fs.readdirSync(testFolder).forEach((file) => {
+  filenames.push(file);
+});
+
 app.get('/mongo-dev', (req, res) => {
-  res.send('this is where we will show mongo results');
+  res.send(filenames.join('\n'));
 });
 
 app.use(express.static(path.join(__dirname, 'web-build')));
