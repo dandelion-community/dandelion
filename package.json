@@ -4,7 +4,8 @@
   "description": "",
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {
-    "start": "npm run build && node ./bin/www",
+    "start": "node ./bin/www",
+    "prestart": "npm run build",
     "build": "npm run expo:build:web",
     "expo:start": "expo start",
     "expo:android": "expo start --android",
