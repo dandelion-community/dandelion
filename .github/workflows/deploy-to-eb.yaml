@@ -18,8 +18,8 @@ jobs:
       - name: npm install
         run: npm install
 
-      - name: npm build
-        run: npm build
+      - name: npm run build
+        run: npm run build
 
       - name: Generate deployment package
         run: git archive --format=zip HEAD --output=deploy.zip
