@@ -15,8 +15,17 @@ jobs:
       - name: Checkout source code
         uses: actions/checkout@v2
 
+      - name: npm install
+        run: npm install
+
+      - name: npm run build
+        run: npm run build
+
       - name: Generate deployment package
         run: git archive --format=zip HEAD --output=deploy.zip
+      
+      - name: Add build artifacts
+        run: zip -r deploy.zip web-build
 
       - name: Deploy to EB
         uses: einaregilsson/beanstalk-deploy@v19
