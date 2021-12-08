@@ -1,3 +1,5 @@
 node_modules/
 *.realm
 *.realm.lock
+web-build/
+.expo
