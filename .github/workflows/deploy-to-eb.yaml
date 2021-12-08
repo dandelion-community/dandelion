@@ -23,7 +23,7 @@ jobs:
 
       - name: Generate deployment package
         run: git archive --format=zip HEAD --output=deploy.zip
-      
+
       - name: Add build artifacts
         run: zip -r deploy.zip web-build
 
