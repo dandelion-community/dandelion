@@ -1,5 +1,13 @@
-node_modules/
+.expo/
+*.jks
+*.key
+*.mobileprovision
+*.orig.*
+*.p12
+*.p8
 *.realm
 *.realm.lock
+dist/
+node_modules/
+npm-debug.*
 web-build/
-.expo
