@@ -1,4 +1,4 @@
-name: Check ESLint
+name: ESLint
 
 on:
   push:
@@ -9,7 +9,7 @@ on:
       - lowell
 
 jobs:
-  check-eslint:
+  Validate:
     name: Check Eslint
     runs-on: ubuntu-latest
     permissions:

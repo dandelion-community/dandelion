@@ -1,4 +1,4 @@
-name: iOS
+name: Android
 on: [pull_request]
 jobs:
   publish:
@@ -28,9 +28,9 @@ jobs:
       - name: Install EAS CLI
         run: npm install -g eas-cli
 
-      - name: Build iOS App
+      - name: Build Android App
         run:
-          eas build --platform ios --profile preview --non-interactive 2>&1 |
+          eas build --platform android --profile preview --non-interactive 2>&1 |
           tee build_output.txt
 
       - name: Get build link
@@ -42,4 +42,4 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           msg:
-            [iOS Build]](${{ steps.buildlink.outputs.BUILD_LINK }}).
+            [Android build](${{ steps.buildlink.outputs.BUILD_LINK }}).
