@@ -42,4 +42,4 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           msg:
-            [iOS Build]](${{ steps.buildlink.outputs.BUILD_LINK }}).
+            Here's the [iOS Build](${{ steps.buildlink.outputs.BUILD_LINK }}).

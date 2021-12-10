@@ -30,8 +30,8 @@ jobs:
 
       - name: Build Android App
         run:
-          eas build --platform android --profile preview --non-interactive 2>&1 |
-          tee build_output.txt
+          eas build --platform android --profile preview --non-interactive 2>&1
+          | tee build_output.txt
 
       - name: Get build link
         run: echo "::set-output name=BUILD_LINK::$(tail -n 1 build_output.txt)"
@@ -42,4 +42,5 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           msg:
-            [Android build](${{ steps.buildlink.outputs.BUILD_LINK }}).
+            Here's the [Android build](${{ steps.buildlink.outputs.BUILD_LINK
+            }}).
