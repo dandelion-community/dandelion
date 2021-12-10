@@ -1,0 +1,2 @@
+#!/bin/bash
+npm install @typescript-eslint/eslint-plugin@latest --save-dev
