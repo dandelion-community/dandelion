@@ -1,0 +1,33 @@
+name: ESLint
+
+on:
+  push:
+    branches:
+      - latest
+      - stable
+      - chris
+      - lowell
+
+jobs:
+  Validate:
+    name: Check Eslint
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+
+    strategy:
+      fail-fast: true
+      matrix:
+        language: ['javascript']
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Install dependencies
+        run: source ./.github/install_eslint_dependencies
+
+      - name: ESlint
+        run: npx eslint .
