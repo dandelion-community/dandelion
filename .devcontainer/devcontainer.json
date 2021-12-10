@@ -10,7 +10,6 @@
     // Use -bullseye variants on local on arm64/Apple Silicon.
     "args": {
       "VARIANT": "16-bullseye",
-      "VARIANT_PYTHON": "3-bullseye"
     }
   },
 

@@ -15,15 +15,18 @@ jobs:
       - name: Checkout source code
         uses: actions/checkout@v2
 
-      - name: npm install
-        run: npm install
+      - name: yarn install
+        run: yarn install
 
-      - name: npm run build
-        run: npm run build
+      - name: Install global CLIs
+        run: yarn global add sharp-cli expo-cli
+
+      - name: Build JavaScript
+        run: npm run expo:build:web
 
       - name: Generate deployment package
         run: git archive --format=zip HEAD --output=deploy.zip
-      
+
       - name: Add build artifacts
         run: zip -r deploy.zip web-build
 
