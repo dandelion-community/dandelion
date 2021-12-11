@@ -1,18 +1,29 @@
 name: Android
 on: [pull_request]
 jobs:
-  publish:
-    name: Deploy Preview
+  Android:
+    name: Android
     runs-on: ubuntu-latest
     environment: EAS
     steps:
       - name: Checkout source code
         uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Exit early if client was not modified
+        run:
+          if git diff --name-only ${{ github.event.before }} ${{ github.sha }} |
+          grep -q "src\/client\|assets" ; then :; else exit 0; fi;
 
       - name: Setup Node
         uses: actions/setup-node@v2
         with:
           node-version: 14.x
+          cache: yarn
+
+      - name: yarn install
+        run: yarn install
 
       - name: Setup Expo
         uses: expo/expo-github-action@v6
@@ -22,16 +33,10 @@ jobs:
           eas-cache: true
           token: ${{ secrets.EXPO_TOKEN }}
 
-      - name: yarn install
-        run: yarn install
-
-      - name: Install EAS CLI
-        run: npm install -g eas-cli
-
       - name: Build Android App
         run:
-          eas build --platform android --profile preview --non-interactive 2>&1
-          | tee build_output.txt
+          set -o pipefail && npx eas build --platform android --profile preview
+          --non-interactive 2>&1 | tee build_output.txt
 
       - name: Get build link
         run: echo "::set-output name=BUILD_LINK::$(tail -n 1 build_output.txt)"
