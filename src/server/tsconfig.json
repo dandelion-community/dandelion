@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "noEmitOnError": true,
+    "sourceMap": true,
+    "target": "es5",
+    "outDir": "../../server-build",
+    "esModuleInterop": true,
+    "strict": true,
+    "moduleResolution": "node",
+    "skipLibCheck": true
+  }
+}

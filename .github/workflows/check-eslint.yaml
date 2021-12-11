@@ -9,8 +9,8 @@ on:
       - lowell
 
 jobs:
-  Validate:
-    name: Check Eslint
+  ESLint:
+    name: ESLint
     runs-on: ubuntu-latest
     permissions:
       actions: read
@@ -26,8 +26,14 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Install dependencies
-        run: source ./.github/install_eslint_dependencies
+      - name: Setup Node
+        uses: actions/setup-node@v2
+        with:
+          node-version: 14.x
+          cache: 'npm'
+
+      - name: yarn install
+        run: yarn install
 
       - name: ESlint
         run: npx eslint .
