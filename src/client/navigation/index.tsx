@@ -51,17 +51,17 @@ function RootNavigator() {
   return (
     <Stack.Navigator>
       <Stack.Screen
-        name="Root"
         component={BottomTabNavigator}
+        name="Root"
         options={{ headerShown: false }}
       />
       <Stack.Screen
-        name="NotFound"
         component={NotFoundScreen}
+        name="NotFound"
         options={{ title: 'Oops!' }}
       />
       <Stack.Group screenOptions={{ presentation: 'modal' }}>
-        <Stack.Screen name="Modal" component={ModalScreen} />
+        <Stack.Screen component={ModalScreen} name="Modal" />
       </Stack.Group>
     </Stack.Navigator>
   );
@@ -84,11 +84,9 @@ function BottomTabNavigator() {
       }}
     >
       <BottomTab.Screen
-        name="TabOne"
         component={TabOneScreen}
+        name="TabOne"
         options={({ navigation }: RootTabScreenProps<'TabOne'>) => ({
-          title: 'Tab One',
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
           headerRight: () => (
             <Pressable
               onPress={() => navigation.navigate('Modal')}
@@ -97,21 +95,23 @@ function BottomTabNavigator() {
               })}
             >
               <FontAwesome
+                color={Colors[colorScheme].text}
                 name="info-circle"
                 size={25}
-                color={Colors[colorScheme].text}
                 style={{ marginRight: 15 }}
               />
             </Pressable>
           ),
+          tabBarIcon: ({ color }) => <TabBarIcon color={color} name="code" />,
+          title: 'Tab One',
         })}
       />
       <BottomTab.Screen
-        name="TabTwo"
         component={TabTwoScreen}
+        name="TabTwo"
         options={{
+          tabBarIcon: ({ color }) => <TabBarIcon color={color} name="code" />,
           title: 'Tab Two',
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
         }}
       />
     </BottomTab.Navigator>

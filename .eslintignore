@@ -1,6 +1,4 @@
 node_modules
 .expo
-types.tsx
 web-build
 server-build
-express_router.js
