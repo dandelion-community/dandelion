@@ -4,6 +4,8 @@ import debugModule from 'debug';
 import http from 'http';
 import express_app from './express_app';
 
+// test for commit A
+
 const debug = debugModule('node-express:server');
 
 const port = normalizePort(process.env.PORT || '3000');
