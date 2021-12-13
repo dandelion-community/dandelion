@@ -4,7 +4,7 @@ import debugModule from 'debug';
 import http from 'http';
 import express_app from './express_app';
 
-const debug = debugModule('node-express:server');
+const debug = debugModule('server');
 
 const port = normalizePort(process.env.PORT || '3000');
 express_app.set('port', port);
