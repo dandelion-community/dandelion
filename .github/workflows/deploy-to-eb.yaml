@@ -41,7 +41,7 @@ jobs:
       - name: Create deployment package
         run:
           zip -r deploy.zip server-build web-build node_modules package.json
-          .env assets
+          .env assets html css
 
       - name: Deploy to EB
         uses: einaregilsson/beanstalk-deploy@v19
