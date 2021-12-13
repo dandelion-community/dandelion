@@ -33,10 +33,15 @@ jobs:
       - name: Remove dev dependencies
         run: npm prune --production
 
+      - name: Create secret environment variables
+        run:
+          echo "MONGODB_USER_0_PASSWORD=\"${{ secrets.MONGODB_USER_0_PASSWORD
+          }}\"" > .env
+
       - name: Create deployment package
         run:
           zip -r deploy.zip server-build web-build node_modules package.json
-          assets
+          .env assets html css
 
       - name: Deploy to EB
         uses: einaregilsson/beanstalk-deploy@v19

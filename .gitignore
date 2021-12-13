@@ -1,3 +1,4 @@
+.env
 .expo/
 *.jks
 *.key
@@ -10,5 +11,5 @@
 dist/
 node_modules/
 npm-debug.*
-web-build/
 server-build/
+web-build/
