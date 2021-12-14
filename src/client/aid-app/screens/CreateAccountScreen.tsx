@@ -1,0 +1,91 @@
+import { gql, useMutation } from '@apollo/client';
+import * as WebBrowser from 'expo-web-browser';
+import * as React from 'react';
+import { StyleSheet } from 'react-native';
+import { ActivityIndicator, Button } from 'react-native-paper';
+import TextInput from '../../general-purpose//components/TextInput';
+import Text from '../../general-purpose/components/light-or-dark-themed/Text';
+import View from '../../general-purpose/components/light-or-dark-themed/View';
+import reloadViewer from '../../general-purpose/viewer/reloadViewer';
+import useHandleViewer from '../../general-purpose/viewer/useHandleViewer';
+import { RootStackScreenProps } from '../navigation/types';
+import type { Register } from './__generated__/Register';
+
+WebBrowser.maybeCompleteAuthSession();
+
+export default function CreateAccountScreen({
+  navigation,
+}: RootStackScreenProps<'Create Account'>) {
+  const [username, setUsername] = React.useState('');
+  const [password, setPassword] = React.useState('');
+  const [runRegisterMutation, registerMutationState] =
+    useMutation<Register>(REGISTER_MUTATION);
+  const { loading, error } = registerMutationState;
+  useHandleViewer(navigation, 'Create Account', {
+    loggedIn: async (_, goToMain) => {
+      goToMain();
+    },
+  });
+
+  const isUsernameValid = username.length > 0;
+
+  // Idk what the requirements from django are yet. Let's be permissive,
+  // and render any errors we receive from the server.
+  const isPasswordValid = password.length >= 8;
+  const areInputsValid = isUsernameValid && isPasswordValid;
+
+  return (
+    <View style={styles.container}>
+      <TextInput
+        autoComplete="username"
+        label="Username"
+        setValue={(value: string) => !loading && setUsername(value)}
+        value={username}
+      />
+      <TextInput
+        autoComplete="password"
+        label="Password"
+        secureTextEntry={true}
+        setValue={(value: string) => !loading && setPassword(value)}
+        value={password}
+      />
+      <Button
+        disabled={!areInputsValid}
+        mode="contained"
+        onPress={createAccount}
+      >
+        Create Account
+      </Button>
+      {loading ? <ActivityIndicator /> : null}
+      {error != null ? <Text>{error.message}</Text> : null}
+    </View>
+  );
+
+  function createAccount(): void {
+    runRegisterMutation({ variables: { password, username } }).then(
+      reloadViewer,
+    );
+  }
+}
+
+const REGISTER_MUTATION = gql`
+  mutation Register($username: String!, $password: String!) {
+    register(username: $username, password: $password) {
+      user {
+        username
+      }
+    }
+  }
+`;
+
+const styles = StyleSheet.create({
+  container: {
+    alignItems: 'center',
+    flex: 1,
+    justifyContent: 'center',
+  },
+  title: {
+    fontSize: 20,
+    fontWeight: 'bold',
+  },
+});

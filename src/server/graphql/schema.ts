@@ -2,12 +2,12 @@ import type { Express } from 'express';
 import { graphqlHTTP } from 'express-graphql';
 import { buildSchema } from 'graphql';
 import {
+  CURRENT_USER_PAYLOAD_GQL,
   login,
   logout,
   me,
   register,
   USER_GQL,
-  CURRENT_USER_PAYLOAD_GQL,
 } from '../authentication/graphql';
 
 const schema = buildSchema(`

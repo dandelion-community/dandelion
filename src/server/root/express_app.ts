@@ -1,5 +1,6 @@
 import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
+import cors from 'cors';
 import express from 'express';
 import logger from 'morgan';
 import path from 'path';
@@ -11,6 +12,7 @@ const rootDirectory = path.normalize(path.join(__dirname, '../..'));
 
 const app = express();
 
+app.use(cors());
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
