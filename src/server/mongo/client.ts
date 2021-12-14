@@ -1,4 +1,5 @@
 import dotenv from 'dotenv';
+import mongoose from 'mongoose';
 
 dotenv.config();
 
@@ -17,3 +18,10 @@ export const MONGO_DB_URI =
   '.iquft.mongodb.net/' +
   DEFAULT_DB_NAME +
   '?retryWrites=true&w=majority';
+
+export function initMongoClient(): void {
+  mongoose.connect(MONGO_DB_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  });
+}
