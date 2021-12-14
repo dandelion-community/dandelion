@@ -4,9 +4,9 @@
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {
     "start": "node server-build/root/runserver.js",
-    "dev:both": "yarn install && npm run build:server && npm run build:client && DEBUG=server npm start",
-    "dev:client": "yarn install && npm run build:client && npm start",
-    "dev:server": "yarn install && npm run build:server && DEBUG=server npm start",
+    "dev:both": "DEBUG=server npm start",
+    "dev:client": "npm start",
+    "dev:server": "DEBUG=server npm start",
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
