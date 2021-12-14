@@ -12,8 +12,7 @@
 name: "CodeQL"
 
 on:
-  push:
-    branches: [ latest, [ls][at][ta][eb][sl][te] ]
+  push
   pull_request:
     # The branches below must be a subset of the branches above
     branches: [ latest ]
