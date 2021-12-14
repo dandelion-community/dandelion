@@ -15,6 +15,7 @@ FROM mcr.microsoft.com/vscode/devcontainers/typescript-node:0-${VARIANT}
 # [Optional] Uncomment if you want to install more global node packages
 RUN su node -c "npm install -g expo-cli eas-cli"
 
+RUN yarn install
 # RUN su node -c "npm install"
 # RUN su node -c "npm install -g express-generator"
 # RUN npm build
