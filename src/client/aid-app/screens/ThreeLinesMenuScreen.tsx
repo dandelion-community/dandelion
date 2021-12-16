@@ -1,14 +1,14 @@
 import * as React from 'react';
 import { ScrollView, StyleSheet } from 'react-native';
-import Text from '../../general-purpose/components/light-or-dark-themed/Text';
 import View from '../../general-purpose/components/light-or-dark-themed/View';
+import YourAccountMenuCard from '../../general-purpose/viewer/YourAccountMenuCard';
 
-export default function ProfileScreen(): JSX.Element {
+export default function ThreeLinesMenuScreen(): JSX.Element {
   return (
     <View style={styles.container}>
       <ScrollView>
         <View style={styles.scrollView}>
-          <Text>Here it is, the profile screen</Text>
+          <YourAccountMenuCard />
         </View>
       </ScrollView>
     </View>

@@ -25,6 +25,9 @@ jobs:
       - name: yarn install
         run: yarn install
 
+      - name: Install commandline tools
+        run: npm install -g eas-cli expo-cli
+
       - name: Setup Expo
         uses: expo/expo-github-action@v6
         with:

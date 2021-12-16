@@ -4,14 +4,20 @@ import { Button as PaperButton } from 'react-native-paper';
 import View from './light-or-dark-themed/View';
 
 type Props = {
+  loading?: boolean;
   text: string;
   onPress: () => void;
 };
 
-export default function AidButton({ text, onPress }: Props) {
+export default function AidButton({ loading, text, onPress }: Props) {
   return (
     <View style={styles.container}>
-      <PaperButton mode="contained" onPress={onPress}>
+      <PaperButton
+        compact={true}
+        loading={loading ?? false}
+        mode="contained"
+        onPress={onPress}
+      >
         {text}
       </PaperButton>
     </View>

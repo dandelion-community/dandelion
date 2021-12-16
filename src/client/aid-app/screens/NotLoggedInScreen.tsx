@@ -4,11 +4,13 @@ import Button from '../../general-purpose/components/Button';
 import Text from '../../general-purpose/components/light-or-dark-themed/Text';
 import View from '../../general-purpose/components/light-or-dark-themed/View';
 import useHandleViewer from '../../general-purpose/viewer/useHandleViewer';
-import { RootStackScreenProps } from '../navigation/types';
+import { useSetRootNavigation } from '../navigation/Navigation';
+import { RootStackScreenProps } from '../navigation/NavigationTypes';
 
 export default function NotLoggedInScreen({
   navigation,
 }: RootStackScreenProps<'NotLoggedIn'>): JSX.Element {
+  useSetRootNavigation(navigation);
   useHandleViewer(navigation, 'NotLoggedIn', {
     loggedIn: async (_, goToMain) => goToMain(),
   });

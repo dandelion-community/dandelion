@@ -17,8 +17,8 @@ export type RootStackParamList = {
   ['Unverified Account']: NavigatorScreenParams<RootTabParamList> | undefined;
   ['Setting Up Account']: NavigatorScreenParams<RootTabParamList> | undefined;
   Login: NavigatorScreenParams<RootTabParamList> | undefined;
-  Modal: undefined;
-  NotFound: undefined;
+  Modal: NavigatorScreenParams<RootTabParamList> | undefined;
+  NotFound: NavigatorScreenParams<RootTabParamList> | undefined;
 };
 
 export type RootStackScreenProps<Screen extends keyof RootStackParamList> =
@@ -27,18 +27,19 @@ export type RootStackScreenProps<Screen extends keyof RootStackParamList> =
 export type WhoIsThisFor = 'me' | 'someone_else' | undefined;
 export type CreateRequestArgs = Partial<{ for_: WhoIsThisFor }>;
 
-export type HomeStackParamList = {
-  HomeRoot: NavigatorScreenParams<RootTabParamList> | undefined;
+export type RequestExplorerStackParamList = {
+  RequestExplorerRoot: NavigatorScreenParams<RootTabParamList> | undefined;
   CreateRequest: CreateRequestArgs;
   PersonDetails: { personNumber: string };
 };
 
-export type HomeStackScreenProps<Screen extends keyof HomeStackParamList> =
-  NativeStackScreenProps<HomeStackParamList, Screen>;
+export type HomeStackScreenProps<
+  Screen extends keyof RequestExplorerStackParamList,
+> = NativeStackScreenProps<RequestExplorerStackParamList, Screen>;
 
 export type RootTabParamList = {
-  Home: undefined;
-  Profile: undefined;
+  RequestExplorer: undefined;
+  ThreeLinesMenu: undefined;
 };
 
 export type RootTabScreenProps<Screen extends keyof RootTabParamList> =
