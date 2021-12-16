@@ -26,13 +26,10 @@ export function me(
   req: Express.Request,
 ): User | undefined {
   const user = req.user;
-  console.log('user is null or undefined');
-  console.log(JSON.stringify(user));
+  console.log('Loaded myself: ' + JSON.stringify(user));
   if (user == null) {
     return undefined;
   }
-  console.log('user');
-  console.log(user);
   return {
     username: (user as any).username,
   };
@@ -47,19 +44,22 @@ export async function login(
   return new Promise((resolve, reject) => {
     passport.authenticate('local', (err, user, _info) => {
       if (err) {
-        reject(err);
+        console.log('case 1');
+        return reject(err);
       }
 
       if (!user) {
-        console.log('No user found');
+        console.log('No user found (case 2)');
         resolve({ user: undefined });
       }
 
       req.logIn(user, function (err) {
+        console.log('case 3');
         if (err) {
+          console.log('case 4');
           reject(err);
         }
-
+        console.log('case 5');
         resolve({ user: { username: user.username } });
       });
     })(req, (req as any).response, (req as any).next);
@@ -73,22 +73,31 @@ export async function register(
   (req as any).body.username = username;
   (req as any).body.password = password;
   return new Promise((resolve, reject) => {
-    passport.authenticate('local', (err, user, _info) => {
+    passport.authenticate('local', async (err, user, _info) => {
+      console.log('case 6');
       if (err) {
-        reject(err);
+        console.log('case 7');
+        return reject(err);
       }
 
+      console.log('case 8');
       if (user) {
+        console.log('case 9');
         throw new Error('User already exists');
       }
-
-      UserModel.register({ username } as any, password).then((newUser) => {
-        req.logIn(newUser, function (err) {
-          if (err) {
-            reject(err);
-          }
-          resolve({ user: { username: newUser.username } });
-        });
+      console.log('case 10');
+      const newUser = await UserModel.register({ username } as any, password);
+      console.log('case 11', newUser);
+      req.logIn(newUser, function (err) {
+        console.log('case 12');
+        if (err) {
+          console.log('case 13');
+          return reject(err);
+          console.log('case 14');
+        }
+        console.log('case 15');
+        return resolve({ user: { username: newUser.username } });
+        console.log('case 16');
       });
     })(req, (req as any).response, (req as any).next);
   });

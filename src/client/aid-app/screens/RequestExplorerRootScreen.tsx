@@ -3,7 +3,7 @@ import { StyleSheet } from 'react-native';
 import View from '../../general-purpose/components/light-or-dark-themed/View';
 import ListOfRequests from '../components/ListOfRequests';
 
-export default function HomeRootScreen(): JSX.Element {
+export default function RequestExplorerRootScreen(): JSX.Element {
   return (
     <View style={styles.container}>
       <ListOfRequests />

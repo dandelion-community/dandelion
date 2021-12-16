@@ -2,11 +2,13 @@ import * as React from 'react';
 import { StyleSheet, TouchableOpacity } from 'react-native';
 import Text from '../../general-purpose/components/light-or-dark-themed/Text';
 import View from '../../general-purpose/components/light-or-dark-themed/View';
-import { RootStackScreenProps } from '../navigation/types';
+import { useSetRootNavigation } from '../navigation/Navigation';
+import { RootStackScreenProps } from '../navigation/NavigationTypes';
 
 export default function NotFoundScreen({
   navigation,
 }: RootStackScreenProps<'NotFound'>) {
+  useSetRootNavigation(navigation);
   React.useEffect(() => {
     navigation.replace('Main');
   }, []);

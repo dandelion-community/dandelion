@@ -6,7 +6,7 @@
 
 import { LinkingOptions } from '@react-navigation/native';
 import * as Linking from 'expo-linking';
-import { RootStackParamList } from './types';
+import { RootStackParamList } from './NavigationTypes';
 
 const linking: LinkingOptions<RootStackParamList> = {
   config: {
@@ -15,14 +15,14 @@ const linking: LinkingOptions<RootStackParamList> = {
       Login: 'login',
       Main: {
         screens: {
-          Home: {
+          RequestExplorer: {
             screens: {
               CreateRequest: 'create',
-              HomeRoot: '',
               PersonDetails: 'person',
+              RequestExplorerRoot: '',
             },
           },
-          Profile: 'profile',
+          ThreeLinesMenu: 'profile',
         },
       },
       NotFound: '*',

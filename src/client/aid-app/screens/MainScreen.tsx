@@ -3,9 +3,14 @@ import { createMaterialBottomTabNavigator } from '@react-navigation/material-bot
 import * as React from 'react';
 import Colors from '../../general-purpose/components/light-or-dark-themed/Colors';
 import useColorScheme from '../../general-purpose/components/light-or-dark-themed/useColorScheme';
-import { RootTabParamList, RootTabScreenProps } from '../navigation/types';
-import HomeScreen from './HomeScreen';
-import ProfileScreen from './ProfileScreen';
+import { useSetRootNavigation } from '../navigation/Navigation';
+import {
+  RootStackScreenProps,
+  RootTabParamList,
+  RootTabScreenProps,
+} from '../navigation/NavigationTypes';
+import RequestExplorerScreen from './RequestExplorerScreen';
+import ThreeLinesMenuScreen from './ThreeLinesMenuScreen';
 
 /**
  * A bottom tab navigator displays tab buttons on the bottom of the display to switch screens.
@@ -13,36 +18,48 @@ import ProfileScreen from './ProfileScreen';
  */
 const BottomTab = createMaterialBottomTabNavigator<RootTabParamList>();
 
-export default function MainScreen(): React.ReactElement {
-  const colorScheme = useColorScheme();
+export let setInitialTab: undefined | ((tab: keyof RootTabParamList) => void) =
+  undefined;
 
+export default function MainScreen({
+  navigation,
+}: RootStackScreenProps<'Main'>): React.ReactElement {
+  const colorScheme = useColorScheme();
+  useSetRootNavigation(navigation);
+  const [initialTab, setInitialTab_] =
+    React.useState<keyof RootTabParamList>('RequestExplorer');
+  React.useEffect(() => {
+    setInitialTab = setInitialTab_;
+  }, [setInitialTab_]);
   return (
     <BottomTab.Navigator
       activeColor={Colors[colorScheme].tabIconSelected}
       barStyle={{ backgroundColor: Colors[colorScheme].tabBarBackground }}
       inactiveColor={Colors[colorScheme].tabIconDefault}
-      initialRouteName="Home"
+      initialRouteName={initialTab}
       shifting={true}
     >
       <BottomTab.Screen
-        component={HomeScreen}
-        name="Home"
-        options={({ navigation: _navigation }: RootTabScreenProps<'Home'>) => ({
+        component={RequestExplorerScreen}
+        name="RequestExplorer"
+        options={({
+          navigation: _navigation,
+        }: RootTabScreenProps<'RequestExplorer'>) => ({
           headerShown: false,
           tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon color={color} focused={focused} name="home" />
+            <TabBarIcon color={color} focused={focused} name="handshake-o" />
           ),
-          title: 'Home',
+          title: 'All Requests',
         })}
       />
       <BottomTab.Screen
-        component={ProfileScreen}
-        name="Profile"
+        component={ThreeLinesMenuScreen}
+        name="ThreeLinesMenu"
         options={{
           tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon color={color} focused={focused} name="user" />
+            <TabBarIcon color={color} focused={focused} name="bars" />
           ),
-          title: 'Profile',
+          title: 'Menu',
         }}
       />
     </BottomTab.Navigator>

@@ -4,24 +4,19 @@
 // This file was automatically generated and should not be edited.
 
 // ====================================================
-// GraphQL mutation operation: Login
+// GraphQL mutation operation: LogoutActionMutation
 // ====================================================
 
-export interface Login_login_user {
+export interface LogoutActionMutation_logout_user {
   __typename: "User";
   username: string | null;
 }
 
-export interface Login_login {
+export interface LogoutActionMutation_logout {
   __typename: "CurrentUserPayload";
-  user: Login_login_user | null;
+  user: LogoutActionMutation_logout_user | null;
 }
 
-export interface Login {
-  login: Login_login | null;
-}
-
-export interface LoginVariables {
-  username: string;
-  password: string;
+export interface LogoutActionMutation {
+  logout: LogoutActionMutation_logout | null;
 }
