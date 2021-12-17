@@ -33,6 +33,6 @@ export default function TextInput({
 
 const styles = StyleSheet.create({
   container: {
-    marginVertical: 10,
+    marginTop: 10,
   },
 });

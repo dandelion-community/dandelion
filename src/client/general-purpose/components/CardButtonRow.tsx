@@ -10,8 +10,8 @@ export default function CardButtonRow({ buttons }: Props): JSX.Element {
   return (
     <View style={styles.row}>
       {buttons.map(({ text, ...props }) => (
-        <View style={styles.button}>
-          <Button key={text} text={text} {...props} />
+        <View key={text} style={styles.button}>
+          <Button text={text} {...props} />
         </View>
       ))}
     </View>
@@ -21,10 +21,10 @@ export default function CardButtonRow({ buttons }: Props): JSX.Element {
 const styles = StyleSheet.create({
   button: {
     flexGrow: 1,
+    marginHorizontal: 8,
   },
   row: {
     alignItems: 'center',
-    columnGap: 16,
     flexDirection: 'row',
     justifyContent: 'space-between',
     padding: 8,
