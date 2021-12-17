@@ -1,14 +1,13 @@
 {
   "name": "community-aid-app",
   "version": "0.0.0",
-  "main": "node_modules/expo/AppEntry.js",
   "scripts": {
     "start": "node server-build/root/runserver.js",
     "dev:both": "yarn install && npm run build:server && npm run build:client && DEBUG=server npm start",
     "dev:client": "yarn install && npm run build:client && npm start",
     "dev:server": "yarn install && npm run build:server && DEBUG=server npm start",
-    "android": "expo start --android",
-    "ios": "expo start --ios",
+    "android": "expo run:android",
+    "ios": "expo run:ios",
     "web": "expo start --web",
     "eject": "expo eject",
     "test": "jest --watchAll",
@@ -61,7 +60,10 @@
     "react-native-paper": "^4.11.1",
     "react-native-safe-area-context": "3.3.2",
     "react-native-screens": "~3.8.0",
-    "react-native-web": "0.17.1"
+    "react-native-web": "0.17.1",
+    "expo-updates": "~0.10.13",
+    "react-native-gesture-handler": "~1.10.2",
+    "react-native-reanimated": "~2.2.0"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",

@@ -54,14 +54,16 @@ export default function CreateAccountScreen(
         setValue={(value: string) => !loading && setPassword(value)}
         value={password}
       />
-      <Button
-        disabled={!areInputsValid}
-        loading={loading}
-        mode="contained"
-        onPress={createAccount}
-      >
-        Create Account
-      </Button>
+      <View style={styles.button}>
+        <Button
+          disabled={!areInputsValid}
+          loading={loading}
+          mode="contained"
+          onPress={createAccount}
+        >
+          Create Account
+        </Button>
+      </View>
       {error != null ? <Text>{error.message}</Text> : null}
     </View>
   );
@@ -84,13 +86,10 @@ const REGISTER_MUTATION = gql`
 `;
 
 const styles = StyleSheet.create({
-  container: {
-    alignItems: 'center',
-    flex: 1,
-    justifyContent: 'center',
+  button: {
+    marginTop: 15,
   },
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold',
+  container: {
+    marginHorizontal: 20,
   },
 });

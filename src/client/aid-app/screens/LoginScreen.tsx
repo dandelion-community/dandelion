@@ -46,9 +46,11 @@ export default function LoginScreen(props: RootStackScreenProps<'Login'>) {
         setValue={(value: string) => !loading && setPassword(value)}
         value={password}
       />
-      <Button loading={loading} mode="contained" onPress={login}>
-        Login
-      </Button>
+      <View style={styles.button}>
+        <Button loading={loading} mode="contained" onPress={login}>
+          Login
+        </Button>
+      </View>
       {error != null ? <Text>{error.message}</Text> : null}
     </View>
   );
@@ -69,13 +71,10 @@ export const LOGIN_MUTATION = gql`
 `;
 
 const styles = StyleSheet.create({
-  container: {
-    alignItems: 'center',
-    flex: 1,
-    justifyContent: 'center',
+  button: {
+    marginTop: 15,
   },
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold',
+  container: {
+    marginHorizontal: 20,
   },
 });

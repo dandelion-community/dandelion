@@ -11,13 +11,13 @@ export default function LoginOrRegisterActionsRow(): JSX.Element {
           onPress: () => {
             rootNavigation.push('Login');
           },
-          text: 'Sign In',
+          text: 'Log In',
         },
         {
           onPress: () => {
             rootNavigation.push('Create Account');
           },
-          text: 'New Account',
+          text: 'Sign Up',
         },
       ]}
     />

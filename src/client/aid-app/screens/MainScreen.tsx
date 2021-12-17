@@ -55,12 +55,15 @@ export default function MainScreen({
       <BottomTab.Screen
         component={ThreeLinesMenuScreen}
         name="ThreeLinesMenu"
-        options={{
+        options={({
+          navigation: _navigation,
+        }: RootTabScreenProps<'ThreeLinesMenu'>) => ({
+          headerShown: true,
           tabBarIcon: ({ color, focused }) => (
             <TabBarIcon color={color} focused={focused} name="bars" />
           ),
           title: 'Menu',
-        }}
+        })}
       />
     </BottomTab.Navigator>
   );
