@@ -18,6 +18,7 @@ export default function useCreateCrumbtrailsToLandingScreenIfNeeded<
       // current screen so we can get a "back" button to it.
       setInitialTab?.(landing);
       navigation.replace('Main');
+      // Type parameters are not working properly here, idk why
       navigation.push(route.name as any);
     }
     console.log('state', JSON.stringify(state));

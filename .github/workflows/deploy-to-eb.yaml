@@ -35,13 +35,13 @@ jobs:
 
       - name: Create secret environment variables
         run:
-          echo "MONGODB_USER_0_PASSWORD=\"${{ secrets.MONGODB_USER_0_PASSWORD
-          }}\"" > .env
+          echo "MONGODB_USER_0_PASSWORD=\"${{ secrets.MONGODB_USER_0_PASSWORD }}\"" > .env
+          echo "SEGMENT_ANALYTICS_WRITE_KEY=\"${{ secrets.SEGMENT_ANALYTICS_WRITE_KEY }}\"" >> .env
 
       - name: Create deployment package
         run:
           zip -r deploy.zip server-build web-build node_modules package.json
-          .env assets html css
+          .env assets
 
       - name: Deploy to EB
         uses: einaregilsson/beanstalk-deploy@v19
