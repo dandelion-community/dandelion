@@ -12,7 +12,12 @@
 name: "CodeQL"
 
 on:
-  push
+  push:
+    branches:
+      - stable
+      - latest
+      - lowell
+      - chris
   schedule:
     - cron: '25 11 * * 4'
 
