@@ -2,6 +2,11 @@ import type { Express } from 'express';
 import { graphqlHTTP } from 'express-graphql';
 import { buildSchema } from 'graphql';
 import {
+  createAidRequest,
+  GQL_AID_REQUEST_TYPES,
+  GQL_CREATE_AID_REQUEST_MUTATION,
+} from '../aid_requests';
+import {
   CURRENT_USER_PAYLOAD_GQL,
   login,
   logout,
@@ -27,13 +32,17 @@ const schema = buildSchema(`
       username: String!
       password: String!
     ): CurrentUserPayload
+
+    ${GQL_CREATE_AID_REQUEST_MUTATION}
   }
 
   ${USER_GQL}
   ${CURRENT_USER_PAYLOAD_GQL}
+  ${GQL_AID_REQUEST_TYPES}
 `);
 
 const rootValue = {
+  createAidRequest,
   login,
   logout,
   me,
