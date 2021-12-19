@@ -21,6 +21,5 @@ export default function useCreateCrumbtrailsToLandingScreenIfNeeded<
       // Type parameters are not working properly here, idk why
       navigation.push(route.name as any);
     }
-    console.log('state', JSON.stringify(state));
   }, []);
 }

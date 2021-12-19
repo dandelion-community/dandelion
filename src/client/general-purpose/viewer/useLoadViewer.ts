@@ -14,7 +14,6 @@ const VIEWER_QUERY = gql`
 
 export default function useLoadViewer(): Viewer {
   const { data, loading } = useQuery<ViewerQuery>(VIEWER_QUERY);
-  console.log('data', data, 'loading', loading);
   const username = data?.me?.username;
   return React.useMemo((): Viewer => {
     return { username: loading ? Loading : username ?? undefined };

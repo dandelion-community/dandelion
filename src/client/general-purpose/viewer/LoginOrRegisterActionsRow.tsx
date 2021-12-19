@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useRootNavigation } from '../../aid-app/navigation/Navigation';
+import useRootNavigation from '../../aid-app/navigation/useRootNavigation';
 import CardButtonRow from '../components/CardButtonRow';
 
 export default function LoginOrRegisterActionsRow(): JSX.Element {

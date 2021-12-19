@@ -13,7 +13,7 @@ export interface Register_register_user {
 }
 
 export interface Register_register {
-  __typename: "CurrentUserPayload";
+  __typename: "CurrentUser";
   user: Register_register_user | null;
 }
 

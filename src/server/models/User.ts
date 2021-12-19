@@ -1,32 +1,37 @@
+import { schemaComposer } from 'graphql-compose';
 import passport from 'passport';
 import analytics from '../analytics';
-import { UserModel } from '../authentication/user_model';
+import { UserModel } from './user_model';
 
-export type User = {
+const UserTC = schemaComposer.createObjectTC({
+  fields: {
+    username: 'String',
+  },
+  name: 'User',
+});
+
+const CurrentUserTC = schemaComposer.createObjectTC({
+  fields: {
+    user: 'User',
+  },
+  name: 'CurrentUser',
+});
+
+type User = {
   username: string;
 };
 
-export const USER_GQL = `
-  type User {
-    username: String
-  }
-`;
-
-export type CurrentUserPayload = {
+type CurrentUserPayload = {
   user: User | undefined;
 };
 
-export const CURRENT_USER_PAYLOAD_GQL = `
-  type CurrentUserPayload {
-    user: User
-  }
-`;
-
-export function me(
+function meResolver(
+  _: unknown,
   _args: Record<string, never>,
   req: Express.Request,
 ): User | undefined {
   const user = req.user;
+  console.log('user', user);
   if (user == null) {
     return undefined;
   }
@@ -36,7 +41,13 @@ export function me(
   };
 }
 
-export async function login(
+const me = {
+  resolve: meResolver,
+  type: UserTC,
+};
+
+async function loginResolver(
+  _: unknown,
   { username, password }: { username: string; password: string },
   req: Express.Request,
 ): Promise<CurrentUserPayload> {
@@ -65,7 +76,17 @@ export async function login(
   });
 }
 
-export async function register(
+const login = {
+  args: {
+    password: 'String!',
+    username: 'String!',
+  },
+  resolve: loginResolver,
+  type: CurrentUserTC,
+};
+
+async function registerResolver(
+  _: unknown,
   { username, password }: { username: string; password: string },
   req: Express.Request,
 ): Promise<CurrentUserPayload> {
@@ -86,7 +107,6 @@ export async function register(
       const newUser = await UserModel.register({ username } as any, password);
       analytics.identify({ traits: { username }, userId: newUser.id });
       analytics.track({ event: 'Create Account', userId: newUser.id });
-      console.log('Tracking!');
       req.logIn(newUser, function (err) {
         if (err) {
           return reject(err);
@@ -98,10 +118,38 @@ export async function register(
   });
 }
 
-export function logout(
+const register = {
+  args: {
+    password: 'String!',
+    username: 'String!',
+  },
+  resolve: registerResolver,
+  type: CurrentUserTC,
+};
+
+function logoutResolver(
+  _: unknown,
   _args: Record<string, never>,
   req: Express.Request,
 ): CurrentUserPayload {
   req.logout();
   return { user: undefined };
 }
+
+const logout = {
+  resolve: logoutResolver,
+  type: CurrentUserTC,
+};
+
+const User = {
+  MutationFields: {
+    login,
+    logout,
+    register,
+  },
+  QueryFields: {
+    me,
+  },
+};
+
+export default User;

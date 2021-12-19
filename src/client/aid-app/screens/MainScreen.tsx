@@ -3,12 +3,12 @@ import { createMaterialBottomTabNavigator } from '@react-navigation/material-bot
 import * as React from 'react';
 import Colors from '../../general-purpose/components/light-or-dark-themed/Colors';
 import useColorScheme from '../../general-purpose/components/light-or-dark-themed/useColorScheme';
-import { useSetRootNavigation } from '../navigation/Navigation';
 import {
   RootStackScreenProps,
   RootTabParamList,
   RootTabScreenProps,
 } from '../navigation/NavigationTypes';
+import useSetRootNavigation from '../navigation/useSetRootNavigation';
 import RequestExplorerScreen from './RequestExplorerScreen';
 import ThreeLinesMenuScreen from './ThreeLinesMenuScreen';
 
