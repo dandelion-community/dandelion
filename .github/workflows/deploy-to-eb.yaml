@@ -35,8 +35,9 @@ jobs:
 
       - name: Create secret environment variables
         run:
-          echo "MONGODB_USER_0_PASSWORD=\"${{ secrets.MONGODB_USER_0_PASSWORD }}\"" > .env
-          echo "SEGMENT_ANALYTICS_WRITE_KEY=\"${{ secrets.SEGMENT_ANALYTICS_WRITE_KEY }}\"" >> .env
+          echo "MONGODB_USER_0_PASSWORD=\"${{ secrets.MONGODB_USER_0_PASSWORD }}\"" > .env && \
+          echo "SEGMENT_ANALYTICS_WRITE_KEY=\"${{ secrets.SEGMENT_ANALYTICS_WRITE_KEY }}\"" >> .env && \
+          echo "GRAPHQL_URI=\"\/graphql\""
 
       - name: Create deployment package
         run:
