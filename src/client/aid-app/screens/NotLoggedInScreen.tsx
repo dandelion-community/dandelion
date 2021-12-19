@@ -4,8 +4,8 @@ import Button from '../../general-purpose/components/Button';
 import Text from '../../general-purpose/components/light-or-dark-themed/Text';
 import View from '../../general-purpose/components/light-or-dark-themed/View';
 import useHandleViewer from '../../general-purpose/viewer/useHandleViewer';
-import { useSetRootNavigation } from '../navigation/Navigation';
 import { RootStackScreenProps } from '../navigation/NavigationTypes';
+import useSetRootNavigation from '../navigation/useSetRootNavigation';
 
 export default function NotLoggedInScreen({
   navigation,

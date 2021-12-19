@@ -22,9 +22,10 @@ import NotFoundScreen from '../screens/NotFoundScreen';
 import NotLoggedInScreen from '../screens/NotLoggedInScreen';
 import LinkingConfiguration from './LinkingConfiguration';
 import type {
+  RootNavigationAllTypes,
   RootStackParamList,
-  RootStackScreenProps,
 } from './NavigationTypes';
+import RootNavigationContext from './RootNavigationContext';
 
 export default function Navigation({
   colorScheme,
@@ -72,50 +73,4 @@ function RootNavigator() {
       </RootNavigationContext.Provider>
     </ViewerContext.Provider>
   );
-}
-
-type RootNavigationTypeParameterized<T extends keyof RootStackParamList> =
-  RootStackScreenProps<T>['navigation'];
-
-// Idk how else to do this
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-type RootNavigationAllTypes = null | RootNavigationTypeParameterized<any>;
-
-type RootNavigationContextType = {
-  rootNavigation: RootNavigationAllTypes;
-  setRootNavigation: <T extends keyof RootStackParamList>(
-    navigation: RootNavigationTypeParameterized<T>,
-  ) => void;
-};
-
-export const RootNavigationContext =
-  React.createContext<RootNavigationContextType | null>(null);
-
-export function useRootNavigatorContext(): RootNavigationContextType {
-  const value = React.useContext(RootNavigationContext);
-  if (value == null) {
-    throw new Error(
-      'useRootNavigatorContext can only be used in descendants of Navigation.tsx',
-    );
-  }
-  return value;
-}
-
-export function useRootNavigation(): NonNullable<RootNavigationAllTypes> {
-  const { rootNavigation } = useRootNavigatorContext();
-  if (rootNavigation == null) {
-    throw new Error(
-      'Each direct child screen of Navigation.tsx must call useSetRootNavigation(navigation);',
-    );
-  }
-  return rootNavigation;
-}
-
-export function useSetRootNavigation(
-  navigation: NonNullable<RootNavigationAllTypes>,
-): void {
-  const { setRootNavigation } = useRootNavigatorContext();
-  React.useEffect(() => {
-    setRootNavigation(navigation);
-  }, [setRootNavigation, navigation]);
 }

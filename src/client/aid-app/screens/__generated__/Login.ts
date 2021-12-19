@@ -13,7 +13,7 @@ export interface Login_login_user {
 }
 
 export interface Login_login {
-  __typename: "CurrentUserPayload";
+  __typename: "CurrentUser";
   user: Login_login_user | null;
 }
 

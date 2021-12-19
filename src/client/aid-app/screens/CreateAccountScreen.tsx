@@ -8,9 +8,9 @@ import Text from '../../general-purpose/components/light-or-dark-themed/Text';
 import View from '../../general-purpose/components/light-or-dark-themed/View';
 import reloadViewer from '../../general-purpose/viewer/reloadViewer';
 import useHandleViewer from '../../general-purpose/viewer/useHandleViewer';
-import { useSetRootNavigation } from '../navigation/Navigation';
 import { RootStackScreenProps } from '../navigation/NavigationTypes';
 import useCreateCrumbtrailsToLandingScreenIfNeeded from '../navigation/useCreateCrumbtrailsToLandingScreenIfNeeded';
+import useSetRootNavigation from '../navigation/useSetRootNavigation';
 import type { Register } from './__generated__/Register';
 
 WebBrowser.maybeCompleteAuthSession();

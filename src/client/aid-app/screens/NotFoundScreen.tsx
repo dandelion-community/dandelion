@@ -2,8 +2,8 @@ import * as React from 'react';
 import { StyleSheet, TouchableOpacity } from 'react-native';
 import Text from '../../general-purpose/components/light-or-dark-themed/Text';
 import View from '../../general-purpose/components/light-or-dark-themed/View';
-import { useSetRootNavigation } from '../navigation/Navigation';
 import { RootStackScreenProps } from '../navigation/NavigationTypes';
+import useSetRootNavigation from '../navigation/useSetRootNavigation';
 
 export default function NotFoundScreen({
   navigation,

@@ -13,7 +13,7 @@ export interface LogoutActionMutation_logout_user {
 }
 
 export interface LogoutActionMutation_logout {
-  __typename: "CurrentUserPayload";
+  __typename: "CurrentUser";
   user: LogoutActionMutation_logout_user | null;
 }
 
