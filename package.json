@@ -1,6 +1,6 @@
 {
   "name": "community-aid-app",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "scripts": {
     "start": "node server-build/root/runserver.js",
     "dev:both": "yarn install && npm run build:server && npm run build:client && DEBUG=server npm start",
@@ -14,6 +14,7 @@
     "prettier": "prettier",
     "eslint": "eslint",
     "build:client": "expo build:web",
+    "build:graphql": "apollo client:codegen --endpoint=http://localhost:3000/graphql --target=typescript",
     "build:server": "tsc --project src/server",
     "deploy:local:ios:preview": "eas build --platform ios --profile preview",
     "deploy:local:ios:development": "eas build --platform ios --profile development"

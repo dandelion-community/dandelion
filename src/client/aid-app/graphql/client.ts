@@ -2,7 +2,7 @@ import { ApolloClient, createHttpLink, InMemoryCache } from '@apollo/client';
 import type { ListOfAidRequestsQuery_allAidRequests } from '../aid_requests/__generated__/ListOfAidRequestsQuery';
 
 const link = createHttpLink({
-  uri: '/graphql',
+  uri: process.env.GRAPHQL_URI,
 });
 
 const cache = new InMemoryCache({

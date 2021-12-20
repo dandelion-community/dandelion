@@ -1,28 +1,33 @@
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import * as React from 'react';
-import { ScrollView, StyleSheet } from 'react-native';
-import Text from '../../general-purpose/components/light-or-dark-themed/Text';
-import View from '../../general-purpose/components/light-or-dark-themed/View';
+import { Appbar } from 'react-native-paper';
+import Colors from '../../general-purpose/components/light-or-dark-themed/Colors';
+import useColorScheme from '../../general-purpose/components/light-or-dark-themed/useColorScheme';
+import type { RootTabScreenProps } from '../navigation/NavigationTypes';
+import { CreateRequestStackParamList } from '../navigation/NavigationTypes';
+import CreateRequestRootScreen from './CreateRequestRootScreen';
 
-export default function CreateRequestScreen(): JSX.Element {
+const Stack = createNativeStackNavigator<CreateRequestStackParamList>();
+
+export default function CreateRequestScreen({
+  navigation: _parentNavigation,
+}: RootTabScreenProps<'CreateRequest'>): JSX.Element {
+  const colorScheme = useColorScheme();
+  const headerBackgroundColor = Colors[colorScheme].tabBarBackground;
   return (
-    <View style={styles.container}>
-      <ScrollView>
-        <View style={styles.scrollView}>
-          <Text>Here it is, the create request screen</Text>
-        </View>
-      </ScrollView>
-    </View>
+    <Stack.Navigator>
+      <Stack.Screen
+        component={CreateRequestRootScreen}
+        name="CreateRequestRoot"
+        options={() => ({
+          header: ({ options }) => (
+            <Appbar.Header style={{ backgroundColor: headerBackgroundColor }}>
+              <Appbar.Content title={options.title} />
+            </Appbar.Header>
+          ),
+          title: 'Create Request',
+        })}
+      />
+    </Stack.Navigator>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'flex-start',
-    margin: 10,
-  },
-  scrollView: {
-    alignItems: 'stretch',
-    flex: 1,
-  },
-});

@@ -69,7 +69,7 @@ export default function ListOfRequests(): JSX.Element {
       if (edges == null) {
         return null;
       }
-      return filterNulls(edges.map((edge: any) => edge?.node));
+      return filterNulls(edges.map((edge) => edge?.node));
     }, [edges]);
 
   return (

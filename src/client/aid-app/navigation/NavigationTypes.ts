@@ -37,12 +37,17 @@ export type ThreeLinesMenuStackParamList = {
   ThreeLinesMenuRoot: NavigatorScreenParams<RootTabParamList> | undefined;
 };
 
+export type CreateRequestStackParamList = {
+  CreateRequestRoot: NavigatorScreenParams<RootTabParamList> | undefined;
+};
+
 export type HomeStackScreenProps<
   Screen extends keyof RequestExplorerStackParamList,
 > = NativeStackScreenProps<RequestExplorerStackParamList, Screen>;
 
 export type RootTabParamList = {
   RequestExplorer: undefined;
+  CreateRequest: undefined;
   ThreeLinesMenu: undefined;
 };
 

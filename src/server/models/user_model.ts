@@ -35,11 +35,15 @@ passport.deserializeUser(UserModel.deserializeUser() as any);
 
 export function initUserModels(app: Express): void {
   const sessionConfig = expressSession({
+    cookie: {
+      maxAge: 1000 * 3600 * 24 * 365 * 1000,
+    },
+
     // forces the session to be saved back to the session store
     resave: false,
     // forces a session that is “uninitialized” to be saved to the store
     saveUninitialized: false,
-    secret: 'secret',
+    secret: process.env.SESSION_SECRET || 'secret',
   });
   app.use(sessionConfig);
   app.use(passport.initialize());
