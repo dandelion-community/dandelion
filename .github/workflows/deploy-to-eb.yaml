@@ -34,10 +34,12 @@ jobs:
         run: npm prune --production
 
       - name: Create secret environment variables
-        run:
-          echo "MONGODB_USER_0_PASSWORD=\"${{ secrets.MONGODB_USER_0_PASSWORD }}\"" > .env && \
-          echo "SEGMENT_ANALYTICS_WRITE_KEY=\"${{ secrets.SEGMENT_ANALYTICS_WRITE_KEY }}\"" >> .env && \
-          echo "GRAPHQL_URI=\"\/graphql\""
+        uses: SpicyPizza/create-envfile@v1
+        with:
+          SEGMENT_ANALYTICS_WRITE_KEY: ${{ secrets.SEGMENT_ANALYTICS_WRITE_KEY }}
+          MONGODB_USER_0_PASSWORD: ${{ secrets.MONGODB_USER_0_PASSWORD }}
+          GRAPHQL_URI: "/graphql"
+          SESSION_SECRET: ${{ secrets.SESSION_SECRET }}
 
       - name: Create deployment package
         run:

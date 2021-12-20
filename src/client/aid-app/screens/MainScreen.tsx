@@ -9,6 +9,7 @@ import {
   RootTabScreenProps,
 } from '../navigation/NavigationTypes';
 import useSetRootNavigation from '../navigation/useSetRootNavigation';
+import CreateRequestScreen from './CreateRequestScreen';
 import RequestExplorerScreen from './RequestExplorerScreen';
 import ThreeLinesMenuScreen from './ThreeLinesMenuScreen';
 
@@ -53,6 +54,19 @@ export default function MainScreen({
         })}
       />
       <BottomTab.Screen
+        component={CreateRequestScreen}
+        name="CreateRequest"
+        options={({
+          navigation: _navigation,
+        }: RootTabScreenProps<'CreateRequest'>) => ({
+          headerShown: false,
+          tabBarIcon: ({ color, focused }) => (
+            <TabBarIcon color={color} focused={focused} name="plus-circle" />
+          ),
+          title: 'Create Request',
+        })}
+      />
+      <BottomTab.Screen
         component={ThreeLinesMenuScreen}
         name="ThreeLinesMenu"
         options={({
@@ -79,7 +93,7 @@ function TabBarIcon(props: {
 }) {
   return (
     <FontAwesome
-      size={props.focused ? 27 : 23}
+      size={props.focused ? 23 : 19}
       style={{ marginBottom: -3 }}
       {...props}
     />
