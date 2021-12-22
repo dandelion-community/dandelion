@@ -11,14 +11,12 @@ import mongoose, { Schema } from 'mongoose';
 import passport from 'passport';
 import passportLocalMongoose from 'passport-local-mongoose';
 
-type UserDocType = {
+interface UserDocType {
   password: string;
   username: string;
-};
+}
 
-const UserSchema: PassportLocalSchema = new Schema<
-  HydratedDocument<UserDocType>
->({
+const UserSchema: PassportLocalSchema = new Schema<UserDocType>({
   password: String,
   username: String,
 });
@@ -30,8 +28,9 @@ export const UserModel: PassportLocalModel<HydratedDocument<UserDocType>> =
 passport.use(UserModel.createStrategy());
 
 // TODO #25: Remove `any` cast. These methods have the wrong type.
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 passport.serializeUser(UserModel.serializeUser() as any);
-passport.deserializeUser(UserModel.deserializeUser() as any);
+passport.deserializeUser(UserModel.deserializeUser());
 
 export function initUserModels(app: Express): void {
   const sessionConfig = expressSession({

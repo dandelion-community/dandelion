@@ -3,6 +3,14 @@ import passport from 'passport';
 import analytics from '../analytics';
 import { UserModel } from './user_model';
 
+declare global {
+  namespace Express {
+    interface User {
+      username: string;
+    }
+  }
+}
+
 const UserTC = schemaComposer.createObjectTC({
   fields: {
     username: 'String',
@@ -17,27 +25,25 @@ const CurrentUserTC = schemaComposer.createObjectTC({
   name: 'CurrentUser',
 });
 
-type User = {
+interface UserDocument {
   username: string;
-};
+}
 
 type CurrentUserPayload = {
-  user: User | undefined;
+  user: UserDocument | undefined;
 };
 
 function meResolver(
   _: unknown,
   _args: Record<string, never>,
   req: Express.Request,
-): User | undefined {
+): UserDocument | undefined {
   const user = req.user;
-  console.log('user', user);
   if (user == null) {
     return undefined;
   }
   return {
-    // dunno how to tell Express that we have a username field here
-    username: (user as any).username,
+    username: user.username,
   };
 }
 
@@ -51,9 +57,9 @@ async function loginResolver(
   { username, password }: { username: string; password: string },
   req: Express.Request,
 ): Promise<CurrentUserPayload> {
-  // Passport expects these to be in the request body, not in
-  // the GraphQL argument payload.
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   (req as any).body.username = username;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   (req as any).body.password = password;
   return new Promise((resolve, reject) => {
     passport.authenticate('local', (err, user, _info) => {
@@ -71,7 +77,7 @@ async function loginResolver(
         }
         resolve({ user: { username: user.username } });
       });
-      // Todo, fix any casts
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     })(req, (req as any).response, (req as any).next);
   });
 }
@@ -92,7 +98,9 @@ async function registerResolver(
 ): Promise<CurrentUserPayload> {
   // Passport expects these to be in the request body, not in
   // the GraphQL argument payload.
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   (req as any).body.username = username;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   (req as any).body.password = password;
   return new Promise((resolve, reject) => {
     passport.authenticate('local', async (err, user, _info) => {
@@ -103,7 +111,7 @@ async function registerResolver(
       if (user) {
         throw new Error('User already exists');
       }
-      // Todo, fix any casts
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const newUser = await UserModel.register({ username } as any, password);
       analytics.identify({ traits: { username }, userId: newUser.id });
       analytics.track({ event: 'Create Account', userId: newUser.id });
@@ -113,7 +121,7 @@ async function registerResolver(
         }
         return resolve({ user: { username: newUser.username } });
       });
-      // Todo, fix any casts
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     })(req, (req as any).response, (req as any).next);
   });
 }

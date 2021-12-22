@@ -12,6 +12,7 @@ module.exports = {
   plugins: ['@typescript-eslint', 'prettier', 'sort-keys-fix', 'react'],
   root: true,
   rules: {
+    '@typescript-eslint/no-namespace': ['off'],
     '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
     'prettier/prettier': ['error'],
     'react/jsx-no-duplicate-props': ['error'],

@@ -37,7 +37,7 @@ async function createAidRequestResolver(
   if (user == null) {
     throw new Error('You must be logged in to create a request');
   }
-  const whoRecordedItUsername = (user as any).username;
+  const whoRecordedItUsername = user.username;
   const aidRequest = new AidRequestModel({
     completed: false,
     createdAt: Date.now(),

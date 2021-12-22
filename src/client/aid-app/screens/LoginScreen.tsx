@@ -18,7 +18,11 @@ WebBrowser.maybeCompleteAuthSession();
 export default function LoginScreen(props: RootStackScreenProps<'Login'>) {
   const { navigation } = props;
   useSetRootNavigation(navigation);
-  useCreateCrumbtrailsToLandingScreenIfNeeded(props, 'ThreeLinesMenu');
+  useCreateCrumbtrailsToLandingScreenIfNeeded(
+    props,
+    'ThreeLinesMenu',
+    undefined,
+  );
 
   const [username, setUsername] = React.useState('');
   const [password, setPassword] = React.useState('');
