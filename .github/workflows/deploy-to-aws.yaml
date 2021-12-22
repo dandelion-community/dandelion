@@ -24,6 +24,9 @@ jobs:
       - name: yarn install
         run: yarn install
 
+      - name: Install commandline tools
+        run: npm install -g expo-cli sharp-cli
+
       - name: Build Client JavaScript
         run: npm run build:client
 
@@ -36,23 +39,23 @@ jobs:
       - name: Create secret environment variables
         uses: SpicyPizza/create-envfile@v1
         with:
-          SEGMENT_ANALYTICS_WRITE_KEY: ${{ secrets.SEGMENT_ANALYTICS_WRITE_KEY }}
-          MONGODB_USER_0_PASSWORD: ${{ secrets.MONGODB_USER_0_PASSWORD }}
-          GRAPHQL_URI: "/graphql"
-          SESSION_SECRET: ${{ secrets.SESSION_SECRET }}
+          envkey_GRAPHQL_URI: "/graphql"
+          envkey_MONGODB_USER_0_PASSWORD: ${{ secrets.MONGODB_USER_0_PASSWORD }}
+          envkey_SEGMENT_ANALYTICS_WRITE_KEY: ${{ secrets.SEGMENT_ANALYTICS_WRITE_KEY }}
+          envkey_SESSION_SECRET: ${{ secrets.SESSION_SECRET }}
 
       - name: Create deployment package
         run:
           zip -r deploy.zip server-build web-build node_modules package.json
-          .env assets
+          .env yarn.lock assets
 
       - name: Deploy to EB
         uses: einaregilsson/beanstalk-deploy@v19
         with:
           aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          application_name: aid-app-${{ github.ref_name }}-2
-          environment_name: aid-app-${{ github.ref_name }}-2-env
+          application_name: aid-app-monorepo-${{ github.ref_name }}
+          environment_name: aid-app-monorepo-${{ github.ref_name }}-env
           version_label: ${{ github.ref_name }}.${{ github.sha }}
           region: us-east-2
           deployment_package: deploy.zip
