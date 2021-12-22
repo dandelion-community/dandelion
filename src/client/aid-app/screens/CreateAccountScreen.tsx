@@ -20,7 +20,11 @@ export default function CreateAccountScreen(
 ) {
   const { navigation } = props;
   useSetRootNavigation(navigation);
-  useCreateCrumbtrailsToLandingScreenIfNeeded(props, 'ThreeLinesMenu');
+  useCreateCrumbtrailsToLandingScreenIfNeeded(
+    props,
+    'ThreeLinesMenu',
+    undefined,
+  );
   const [username, setUsername] = React.useState('');
   const [password, setPassword] = React.useState('');
   const [runRegisterMutation, registerMutationState] =

@@ -51,10 +51,8 @@ jobs:
         with:
           aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          application_name:
-            ${{ github.event.repository.name }}-${{ github.ref_name }}
-          environment_name:
-            ${{ github.event.repository.name }}-${{ github.ref_name }}-env
+          application_name: aid-app-${{ github.ref_name }}-2
+          environment_name: aid-app-${{ github.ref_name }}-2-env
           version_label: ${{ github.ref_name }}.${{ github.sha }}
           region: us-east-2
           deployment_package: deploy.zip
