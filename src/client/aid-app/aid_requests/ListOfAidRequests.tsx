@@ -16,8 +16,12 @@ import type {
 const PAGE_SIZE = 5;
 
 const LIST_OF_AID_REQUESTS_QUERY = gql`
-  query ListOfAidRequestsQuery($pageSize: Int!, $after: String) {
-    allAidRequests(first: $pageSize, after: $after) {
+  query ListOfAidRequestsQuery(
+    $pageSize: Int!
+    $after: String
+    $filter: FilterFindManyAidRequestInput
+  ) {
+    allAidRequests(first: $pageSize, after: $after, filter: $filter) {
       pageInfo {
         endCursor
         hasNextPage
@@ -42,7 +46,11 @@ export default function ListOfRequests(): JSX.Element {
     LIST_OF_AID_REQUESTS_QUERY,
     {
       notifyOnNetworkStatusChange: true,
-      variables: { after: null, pageSize: PAGE_SIZE },
+      variables: {
+        after: null,
+        pageSize: PAGE_SIZE,
+        filter: { completed: false },
+      },
     },
   );
 
