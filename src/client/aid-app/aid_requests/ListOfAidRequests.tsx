@@ -2,7 +2,8 @@ import { gql, useQuery } from '@apollo/client';
 import * as React from 'react';
 import type { ListRenderItemInfo } from 'react-native';
 import { FlatList, StyleSheet } from 'react-native';
-import { ActivityIndicator } from 'react-native-paper';
+import { ActivityIndicator, Switch } from 'react-native-paper';
+import Text from '../../general-purpose/components/light-or-dark-themed/Text';
 import View from '../../general-purpose/components/light-or-dark-themed/View';
 import filterNulls from '../../general-purpose/utils/filterNulls';
 import AidRequestCard from './AidRequestCard';
@@ -37,6 +38,13 @@ const LIST_OF_AID_REQUESTS_QUERY = gql`
 `;
 
 export default function ListOfRequests(): JSX.Element {
+  const [isHidingCompletedRequests, setIsHidingCompletedRequests] =
+    React.useState(true);
+
+  const filter = {
+    ...(isHidingCompletedRequests ? { completed: false } : {}),
+  };
+
   const {
     data,
     loading: isLoadingEitherIncrementallyOrEntireScreen,
@@ -49,7 +57,7 @@ export default function ListOfRequests(): JSX.Element {
       variables: {
         after: null,
         pageSize: PAGE_SIZE,
-        filter: { completed: false },
+        filter,
       },
     },
   );
@@ -82,6 +90,14 @@ export default function ListOfRequests(): JSX.Element {
 
   return (
     <View style={styles.container}>
+      <Text>Hide Completed Requests?</Text>
+      <Switch
+        onValueChange={() => {
+          setIsHidingCompletedRequests(!isHidingCompletedRequests);
+          refetch();
+        }}
+        value={isHidingCompletedRequests}
+      />
       <FlatList
         ListFooterComponent={isLoadingIncremental ? footer : null}
         data={nodes}
