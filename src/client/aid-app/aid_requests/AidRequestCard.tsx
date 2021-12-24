@@ -19,7 +19,9 @@ export default function AidRequestCard({ aidRequest }: Props): JSX.Element {
       <Card.Title title={whatIsNeeded} />
       <Card.Content>
         <Paragraph>
-          <Text>For {whoIsItFor}</Text>
+          <Text>
+            For <Text style={{ fontWeight: 'bold' }}>{whoIsItFor}</Text>
+          </Text>
         </Paragraph>
         <Paragraph>
           <Text>Recorded by {whoRecordedItUsername}</Text>
