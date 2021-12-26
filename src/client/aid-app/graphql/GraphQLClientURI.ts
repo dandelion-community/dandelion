@@ -1,4 +1,4 @@
-const uri = /*process.env.GRAPHQL_URI*/ 'http://localhost:3000/graphql';
+const uri = process.env.GRAPHQL_URI;
 
 if (!uri) {
   throw new Error('GRAPHQL_URI is not set in process.env');
