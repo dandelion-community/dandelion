@@ -4,8 +4,8 @@ import cors from 'cors';
 import express from 'express';
 import logger from 'morgan';
 import path from 'path';
-import { initUserModels } from '../models/user_model';
 import { initGraphQL } from '../graphql/GraphQLSchema';
+import { initUserModels } from '../models/user_model';
 import { initMongoClient } from '../mongo/client';
 
 const rootDirectory = path.normalize(path.join(__dirname, '../..'));

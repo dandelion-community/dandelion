@@ -15,7 +15,7 @@ export default function YourAccountMenuCard(): JSX.Element {
       <Card.Title title="Your Account" />
       {username === Loading ? (
         <Card.Content>
-          <View style={{ minHeight: 71 }}>
+          <View style={{ minHeight: 95 }}>
             <DebouncedLoadingIndicator />
           </View>
         </Card.Content>
