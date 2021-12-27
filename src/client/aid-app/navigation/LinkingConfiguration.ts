@@ -22,7 +22,11 @@ const linking: LinkingOptions<RootStackParamList> = {
               RequestExplorerRoot: '',
             },
           },
-          ThreeLinesMenu: 'profile',
+          ThreeLinesMenu: {
+            screens: {
+              ThreeLinesMenuRoot: 'menu',
+            },
+          },
         },
       },
       NotFound: '*',

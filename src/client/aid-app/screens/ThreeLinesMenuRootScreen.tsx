@@ -2,6 +2,7 @@ import * as React from 'react';
 import { ScrollView, StyleSheet } from 'react-native';
 import View from '../../general-purpose/components/light-or-dark-themed/View';
 import YourAccountMenuCard from '../../general-purpose/viewer/YourAccountMenuCard';
+import DebugInfoCard from '../menu/debug/DebugInfoCard';
 
 export default function ThreeLinesMenuRootScreen(): JSX.Element {
   return (
@@ -9,6 +10,7 @@ export default function ThreeLinesMenuRootScreen(): JSX.Element {
       <ScrollView>
         <View style={styles.scrollView}>
           <YourAccountMenuCard />
+          <DebugInfoCard />
         </View>
       </ScrollView>
     </View>
