@@ -16,8 +16,15 @@
     "build:client": "expo build:web",
     "build:graphql": "apollo client:codegen --endpoint=http://localhost:3000/graphql --target=typescript",
     "build:server": "tsc --project src/server",
+    "deploy:local:all": "npm run deploy:local:ios:all; npm run deploy:local:android:all",
+    "deploy:local:ios:all": "npm run deploy:local:ios:preview; npm run deploy:local:ios:development; npm run deploy:local:ios:production",
     "deploy:local:ios:preview": "eas build --platform ios --profile preview",
-    "deploy:local:ios:development": "eas build --platform ios --profile development"
+    "deploy:local:ios:development": "eas build --platform ios --profile development",
+    "deploy:local:ios:production": "eas build --platform ios --profile production",
+    "deploy:local:android:all": "npm run deploy:local:android:preview; npm run deploy:local:android:development; npm run deploy:local:android:production",
+    "deploy:local:android:preview": "eas build --platform android --profile preview",
+    "deploy:local:android:development": "eas build --platform android --profile development",
+    "deploy:local:android:production": "eas build --platform android --profile production"
   },
   "jest": {
     "preset": "jest-expo"
