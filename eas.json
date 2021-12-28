@@ -11,5 +11,13 @@
   },
   "cli": {
     "version": ">= 0.40.0"
+  },
+  "submit": {
+    "production": {
+      "ios": {
+        "appleId": "bluquar@gmail.com",
+        "ascAppId": "1602392151"
+      }
+    }
   }
 }

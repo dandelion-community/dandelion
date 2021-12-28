@@ -27,6 +27,14 @@ jobs:
       - name: Install commandline tools
         run: npm install -g expo-cli sharp-cli
 
+      - name: Create secret environment variables
+        uses: SpicyPizza/create-envfile@v1
+        with:
+          envkey_GRAPHQL_URI: "/graphql"
+          envkey_MONGODB_USER_0_PASSWORD: ${{ secrets.MONGODB_USER_0_PASSWORD }}
+          envkey_SEGMENT_ANALYTICS_WRITE_KEY: ${{ secrets.SEGMENT_ANALYTICS_WRITE_KEY }}
+          envkey_SESSION_SECRET: ${{ secrets.SESSION_SECRET }}
+
       - name: Build Client JavaScript
         run: npm run build:client
 
@@ -35,14 +43,6 @@ jobs:
 
       - name: Remove dev dependencies
         run: npm prune --production
-
-      - name: Create secret environment variables
-        uses: SpicyPizza/create-envfile@v1
-        with:
-          envkey_GRAPHQL_URI: "/graphql"
-          envkey_MONGODB_USER_0_PASSWORD: ${{ secrets.MONGODB_USER_0_PASSWORD }}
-          envkey_SEGMENT_ANALYTICS_WRITE_KEY: ${{ secrets.SEGMENT_ANALYTICS_WRITE_KEY }}
-          envkey_SESSION_SECRET: ${{ secrets.SESSION_SECRET }}
 
       - name: Create deployment package
         run:

@@ -1,8 +1,8 @@
 {
   "expo": {
-    "name": "boilerplate-expo-project",
-    "slug": "boilerplate-expo-project",
-    "version": "1.0.0",
+    "name": "Dandelion Community Aid",
+    "slug": "dandelion-community-aid",
+    "version": "0.1.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "myapp",
@@ -31,6 +31,8 @@
     },
     "web": {
       "favicon": "./assets/images/favicon.png"
-    }
+    },
+    "description": "",
+    "githubUrl": "https://github.com/dandelion-community/aid-app-monorepo"
   }
 }
