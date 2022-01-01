@@ -3,14 +3,14 @@ import * as WebBrowser from 'expo-web-browser';
 import * as React from 'react';
 import { StyleSheet } from 'react-native';
 import { Button } from 'react-native-paper';
-import TextInput from '../../general-purpose//components/TextInput';
-import Text from '../../general-purpose/components/light-or-dark-themed/Text';
-import View from '../../general-purpose/components/light-or-dark-themed/View';
-import reloadViewer from '../../general-purpose/viewer/reloadViewer';
-import useHandleViewer from '../../general-purpose/viewer/useHandleViewer';
-import { RootStackScreenProps } from '../navigation/NavigationTypes';
-import useCreateCrumbtrailsToLandingScreenIfNeeded from '../navigation/useCreateCrumbtrailsToLandingScreenIfNeeded';
-import useSetRootNavigation from '../navigation/useSetRootNavigation';
+import Text from '../../../../general-purpose/components/light-or-dark-themed/Text';
+import View from '../../../../general-purpose/components/light-or-dark-themed/View';
+import TextInput from '../../../../general-purpose/components/TextInput';
+import reloadViewer from '../../../../general-purpose/viewer/reloadViewer';
+import useHandleViewer from '../../../../general-purpose/viewer/useHandleViewer';
+import { RootStackScreenProps } from '../../NavigationTypes';
+import useCreateCrumbtrailsToLandingScreenIfNeeded from '../../useCreateCrumbtrailsToLandingScreenIfNeeded';
+import useSetRootNavigation from '../../useSetRootNavigation';
 import type { Register } from './__generated__/Register';
 
 WebBrowser.maybeCompleteAuthSession();
@@ -22,10 +22,10 @@ export default function CreateAccountScreen(
   useSetRootNavigation(navigation);
   useCreateCrumbtrailsToLandingScreenIfNeeded(
     props,
-    'ThreeLinesMenu',
+    'ThreeLinesMenuTabStackContainer',
     undefined,
   );
-  const [username, setUsername] = React.useState('');
+  const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
   const [runRegisterMutation, registerMutationState] =
     useMutation<Register>(REGISTER_MUTATION);
@@ -36,20 +36,20 @@ export default function CreateAccountScreen(
     },
   });
 
-  const isUsernameValid = username.length > 0;
+  const isEmailValid = /.+@.+\..+/.test(email);
 
   // Idk what the requirements from django are yet. Let's be permissive,
   // and render any errors we receive from the server.
   const isPasswordValid = password.length >= 8;
-  const areInputsValid = isUsernameValid && isPasswordValid;
+  const areInputsValid = isEmailValid && isPasswordValid;
 
   return (
     <View style={styles.container}>
       <TextInput
-        autoComplete="username"
-        label="Username"
-        setValue={(value: string) => !loading && setUsername(value)}
-        value={username}
+        autoComplete="email"
+        label="Email"
+        setValue={(value: string) => !loading && setEmail(value)}
+        value={email}
       />
       <TextInput
         autoComplete="password"
@@ -73,7 +73,7 @@ export default function CreateAccountScreen(
   );
 
   function createAccount(): void {
-    runRegisterMutation({ variables: { password, username } }).then(
+    runRegisterMutation({ variables: { password, username: email } }).then(
       reloadViewer,
     );
   }

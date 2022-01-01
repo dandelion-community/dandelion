@@ -1,7 +1,8 @@
-const uri = process.env.GRAPHQL_URI;
+import { Platform } from 'react-native';
 
-if (!uri) {
-  throw new Error('GRAPHQL_URI is not set in process.env');
-}
+const URI =
+  Platform.OS === 'web'
+    ? '/graphql'
+    : 'http://graphql.dandelion.supplies/graphql';
 
-export default uri as string;
+export default URI;

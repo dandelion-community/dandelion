@@ -27,7 +27,8 @@
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.dandelion_aid_app.dandelion"
+      "package": "com.dandelion_aid_app.dandelion",
+      "versionCode": 4
     },
     "web": {
       "favicon": "./assets/images/favicon.png"

@@ -1,17 +1,17 @@
 import { FontAwesome } from '@expo/vector-icons';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import * as React from 'react';
-import Colors from '../../general-purpose/components/light-or-dark-themed/Colors';
-import useColorScheme from '../../general-purpose/components/light-or-dark-themed/useColorScheme';
+import Colors from '../../../../general-purpose/components/light-or-dark-themed/Colors';
+import useColorScheme from '../../../../general-purpose/components/light-or-dark-themed/useColorScheme';
 import {
   RootStackScreenProps,
   RootTabParamList,
   RootTabScreenProps,
-} from '../navigation/NavigationTypes';
-import useSetRootNavigation from '../navigation/useSetRootNavigation';
-import CreateRequestScreen from './CreateRequestScreen';
-import RequestExplorerScreen from './RequestExplorerScreen';
-import ThreeLinesMenuScreen from './ThreeLinesMenuScreen';
+} from '../../NavigationTypes';
+import useSetRootNavigation from '../../useSetRootNavigation';
+import CreateRequestTabStackContainer from './create_request/CreateRequestTabStackContainer';
+import RequestExplorerTabStackContainer from './request_explorer/RequestExplorerTabStackContainer';
+import ThreeLinesMenuTabStackContainer from './three_lines_menu/ThreeLinesMenuTabStackContainer';
 
 /**
  * A bottom tab navigator displays tab buttons on the bottom of the display to switch screens.
@@ -19,46 +19,39 @@ import ThreeLinesMenuScreen from './ThreeLinesMenuScreen';
  */
 const BottomTab = createMaterialBottomTabNavigator<RootTabParamList>();
 
-export let setInitialTab: undefined | ((tab: keyof RootTabParamList) => void) =
-  undefined;
-
 export default function MainScreen({
   navigation,
 }: RootStackScreenProps<'Main'>): React.ReactElement {
   const colorScheme = useColorScheme();
   useSetRootNavigation(navigation);
-  const [initialTab, setInitialTab_] =
-    React.useState<keyof RootTabParamList>('RequestExplorer');
-  React.useEffect(() => {
-    setInitialTab = setInitialTab_;
-  }, [setInitialTab_]);
   return (
     <BottomTab.Navigator
       activeColor={Colors[colorScheme].tabIconSelected}
       barStyle={{ backgroundColor: Colors[colorScheme].tabBarBackground }}
       inactiveColor={Colors[colorScheme].tabIconDefault}
-      initialRouteName={initialTab}
+      initialRouteName="RequestExplorerTabStackContainer"
       shifting={true}
     >
       <BottomTab.Screen
-        component={RequestExplorerScreen}
-        name="RequestExplorer"
+        component={RequestExplorerTabStackContainer}
+        name="RequestExplorerTabStackContainer"
         options={({
           navigation: _navigation,
-        }: RootTabScreenProps<'RequestExplorer'>) => ({
-          headerShown: false,
-          tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon color={color} focused={focused} name="handshake-o" />
-          ),
-          title: 'All Requests',
-        })}
+        }: RootTabScreenProps<'RequestExplorerTabStackContainer'>) => {
+          return {
+            tabBarIcon: ({ color, focused }) => (
+              <TabBarIcon color={color} focused={focused} name="handshake-o" />
+            ),
+            title: 'All Requests',
+          };
+        }}
       />
       <BottomTab.Screen
-        component={CreateRequestScreen}
-        name="CreateRequest"
+        component={CreateRequestTabStackContainer}
+        name="CreateRequestTabStackContainer"
         options={({
           navigation: _navigation,
-        }: RootTabScreenProps<'CreateRequest'>) => ({
+        }: RootTabScreenProps<'CreateRequestTabStackContainer'>) => ({
           headerShown: false,
           tabBarIcon: ({ color, focused }) => (
             <TabBarIcon color={color} focused={focused} name="plus-circle" />
@@ -67,11 +60,11 @@ export default function MainScreen({
         })}
       />
       <BottomTab.Screen
-        component={ThreeLinesMenuScreen}
-        name="ThreeLinesMenu"
+        component={ThreeLinesMenuTabStackContainer}
+        name="ThreeLinesMenuTabStackContainer"
         options={({
           navigation: _navigation,
-        }: RootTabScreenProps<'ThreeLinesMenu'>) => ({
+        }: RootTabScreenProps<'ThreeLinesMenuTabStackContainer'>) => ({
           headerShown: true,
           tabBarIcon: ({ color, focused }) => (
             <TabBarIcon color={color} focused={focused} name="bars" />
