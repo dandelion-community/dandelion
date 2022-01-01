@@ -28,17 +28,15 @@ export type WhoIsThisFor = 'me' | 'someone_else' | undefined;
 export type CreateRequestArgs = Partial<{ for_: WhoIsThisFor }>;
 
 export type RequestExplorerStackParamList = {
-  RequestExplorerRoot: NavigatorScreenParams<RootTabParamList> | undefined;
-  CreateRequest: CreateRequestArgs;
-  PersonDetails: { personNumber: string };
+  RequestExplorer: NavigatorScreenParams<RootTabParamList> | undefined;
 };
 
 export type ThreeLinesMenuStackParamList = {
-  ThreeLinesMenuRoot: NavigatorScreenParams<RootTabParamList> | undefined;
+  ThreeLinesMenu: NavigatorScreenParams<RootTabParamList> | undefined;
 };
 
 export type CreateRequestStackParamList = {
-  CreateRequestRoot: NavigatorScreenParams<RootTabParamList> | undefined;
+  CreateRequest: NavigatorScreenParams<RootTabParamList> | undefined;
 };
 
 export type HomeStackScreenProps<
@@ -46,9 +44,9 @@ export type HomeStackScreenProps<
 > = NativeStackScreenProps<RequestExplorerStackParamList, Screen>;
 
 export type RootTabParamList = {
-  RequestExplorer: undefined;
-  CreateRequest: undefined;
-  ThreeLinesMenu: undefined;
+  RequestExplorerTabStackContainer: undefined;
+  CreateRequestTabStackContainer: undefined;
+  ThreeLinesMenuTabStackContainer: undefined;
 };
 
 export type RootTabScreenProps<Screen extends keyof RootTabParamList> =

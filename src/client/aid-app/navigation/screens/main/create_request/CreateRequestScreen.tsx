@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { Dimensions, ScrollView, StyleSheet } from 'react-native';
 import { Snackbar } from 'react-native-paper';
-import View from '../../general-purpose/components/light-or-dark-themed/View';
-import CreateRequestForm from '../aid_requests/CreateRequestForm';
+import View from '../../../../../general-purpose/components/light-or-dark-themed/View';
+import CreateRequestForm from '../../../../aid_requests/CreateRequestForm';
 
-export default function CreateRequestRootScreen(): JSX.Element {
+export default function CreateRequestScreen(): JSX.Element {
   const windowWidth = Dimensions.get('window').width;
   const [showCreationToast, setShowCreationToast] =
     React.useState<boolean>(false);

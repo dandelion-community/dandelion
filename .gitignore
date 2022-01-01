@@ -10,12 +10,12 @@
 *.realm.lock
 dist/
 node_modules/
+keys/
 npm-debug.*
 server-build/
 web-build/
 
 ios
-ios_backup
 android
 index.js
 react-native.config.js

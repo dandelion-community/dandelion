@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { setInitialTab } from '../screens/MainScreen';
 import type {
   RootStackParamList,
   RootStackScreenProps,
@@ -19,7 +18,6 @@ export default function useCreateCrumbtrailsToLandingScreenIfNeeded<
     if (!navigation.canGoBack()) {
       // Landed here on a deep link. Let's put a top-level screen behind our
       // current screen so we can get a "back" button to it.
-      setInitialTab?.(landing);
       navigation.replace('Main');
       navigation.push(route.name, rePushParams);
     }

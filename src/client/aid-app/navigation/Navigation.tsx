@@ -15,11 +15,11 @@ import * as React from 'react';
 import { ColorSchemeName } from 'react-native';
 import useLoadViewer from '../../general-purpose/viewer/useLoadViewer';
 import ViewerContext from '../../general-purpose/viewer/ViewerContext';
-import CreateAccountScreen from '../screens/CreateAccountScreen';
-import LoginScreen from '../screens/LoginScreen';
-import MainScreen from '../screens/MainScreen';
-import NotFoundScreen from '../screens/NotFoundScreen';
-import NotLoggedInScreen from '../screens/NotLoggedInScreen';
+import CreateAccountScreen from './screens/create_account/CreateAccountScreen';
+import LoginScreen from './screens/login/LoginScreen';
+import MainScreen from './screens/main/MainScreen';
+import NotFoundScreen from './screens/not_found/NotFoundScreen';
+import NotLoggedInScreen from './screens/not_logged_in/NotLoggedInScreen';
 import LinkingConfiguration from './LinkingConfiguration';
 import type {
   RootNavigationAllTypes,

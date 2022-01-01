@@ -15,16 +15,19 @@ const linking: LinkingOptions<RootStackParamList> = {
       Login: 'login',
       Main: {
         screens: {
-          RequestExplorer: {
+          CreateRequestTabStackContainer: {
             screens: {
               CreateRequest: 'create',
-              PersonDetails: 'person',
-              RequestExplorerRoot: '',
             },
           },
-          ThreeLinesMenu: {
+          RequestExplorerTabStackContainer: {
             screens: {
-              ThreeLinesMenuRoot: 'menu',
+              RequestExplorer: '',
+            },
+          },
+          ThreeLinesMenuTabStackContainer: {
+            screens: {
+              ThreeLinesMenu: 'menu',
             },
           },
         },
