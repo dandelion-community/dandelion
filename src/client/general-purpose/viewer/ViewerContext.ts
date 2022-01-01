@@ -25,3 +25,13 @@ export default ViewerContext;
 export function useViewerContext(): Viewer {
   return React.useContext(ViewerContext);
 }
+
+export function useIsLoadingLoggedInStatus(): boolean {
+  const viewer = useViewerContext();
+  return viewer.username === Loading;
+}
+
+export function useIsLoggedOut(): boolean {
+  const viewer = useViewerContext();
+  return viewer.username == null;
+}

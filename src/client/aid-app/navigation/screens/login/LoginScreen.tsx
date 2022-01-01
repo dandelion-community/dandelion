@@ -24,7 +24,7 @@ export default function LoginScreen(props: RootStackScreenProps<'Login'>) {
     undefined,
   );
 
-  const [username, setUsername] = React.useState('');
+  const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
   const [runLoginMutation, loginMutationState] =
     useMutation<Login>(LOGIN_MUTATION);
@@ -38,10 +38,10 @@ export default function LoginScreen(props: RootStackScreenProps<'Login'>) {
   return (
     <View style={styles.container}>
       <TextInput
-        autoComplete="username"
-        label="Username"
-        setValue={(value: string) => !loading && setUsername(value)}
-        value={username}
+        autoComplete="email"
+        label="Email"
+        setValue={(value: string) => !loading && setEmail(value)}
+        value={email}
       />
       <TextInput
         autoComplete="password"
@@ -60,7 +60,9 @@ export default function LoginScreen(props: RootStackScreenProps<'Login'>) {
   );
 
   function login(): void {
-    runLoginMutation({ variables: { password, username } }).then(reloadViewer);
+    runLoginMutation({ variables: { password, username: email } }).then(
+      reloadViewer,
+    );
   }
 }
 

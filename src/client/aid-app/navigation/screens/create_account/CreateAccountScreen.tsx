@@ -25,7 +25,7 @@ export default function CreateAccountScreen(
     'ThreeLinesMenuTabStackContainer',
     undefined,
   );
-  const [username, setUsername] = React.useState('');
+  const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
   const [runRegisterMutation, registerMutationState] =
     useMutation<Register>(REGISTER_MUTATION);
@@ -36,20 +36,20 @@ export default function CreateAccountScreen(
     },
   });
 
-  const isUsernameValid = username.length > 0;
+  const isEmailValid = /.+@.+\..+/.test(email);
 
   // Idk what the requirements from django are yet. Let's be permissive,
   // and render any errors we receive from the server.
   const isPasswordValid = password.length >= 8;
-  const areInputsValid = isUsernameValid && isPasswordValid;
+  const areInputsValid = isEmailValid && isPasswordValid;
 
   return (
     <View style={styles.container}>
       <TextInput
-        autoComplete="username"
-        label="Username"
-        setValue={(value: string) => !loading && setUsername(value)}
-        value={username}
+        autoComplete="email"
+        label="Email"
+        setValue={(value: string) => !loading && setEmail(value)}
+        value={email}
       />
       <TextInput
         autoComplete="password"
@@ -73,7 +73,7 @@ export default function CreateAccountScreen(
   );
 
   function createAccount(): void {
-    runRegisterMutation({ variables: { password, username } }).then(
+    runRegisterMutation({ variables: { password, username: email } }).then(
       reloadViewer,
     );
   }

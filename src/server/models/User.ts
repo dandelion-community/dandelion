@@ -1,4 +1,5 @@
 import { schemaComposer } from 'graphql-compose';
+import mongoose from 'mongoose';
 import passport from 'passport';
 import analytics from '../analytics';
 import { UserModel } from './user_model';
@@ -96,6 +97,15 @@ async function registerResolver(
   { username, password }: { username: string; password: string },
   req: Express.Request,
 ): Promise<CurrentUserPayload> {
+  const allowlistEntry = await mongoose.connection.db
+    .collection('email-allowlist')
+    .findOne({ email: username });
+  if (allowlistEntry == null) {
+    throw new Error(
+      'Sorry, your email address is not on our testers list. Please email lowell.organizing@gmail.com',
+    );
+  }
+
   // Passport expects these to be in the request body, not in
   // the GraphQL argument payload.
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

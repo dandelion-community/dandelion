@@ -4,7 +4,7 @@ import { TextInput as PaperTextInput } from 'react-native-paper';
 import View from './light-or-dark-themed/View';
 
 type Props = {
-  autoComplete: 'username' | 'password' | 'off';
+  autoComplete: 'email' | 'password' | 'off';
   label: string;
   secureTextEntry?: boolean;
   setValue: (value: string) => void;

@@ -28,7 +28,7 @@
         "backgroundColor": "#ffffff"
       },
       "package": "com.dandelion_aid_app.dandelion",
-      "versionCode": 3
+      "versionCode": 4
     },
     "web": {
       "favicon": "./assets/images/favicon.png"

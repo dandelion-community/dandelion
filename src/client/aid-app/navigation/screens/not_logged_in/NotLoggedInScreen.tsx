@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { StyleSheet } from 'react-native';
-import Button from '../../../../general-purpose/components/Button';
+import CardButtonRow from '../../../../general-purpose/components/CardButtonRow';
 import Text from '../../../../general-purpose/components/light-or-dark-themed/Text';
 import View from '../../../../general-purpose/components/light-or-dark-themed/View';
 import useHandleViewer from '../../../../general-purpose/viewer/useHandleViewer';
@@ -16,18 +16,28 @@ export default function NotLoggedInScreen({
   });
   return (
     <View style={styles.container}>
-      <Text>Welcome to Community Aid App</Text>
-      <Button
-        onPress={() => {
-          navigation.push('Create Account');
-        }}
-        text="Create Account"
+      <Text style={{ textAlign: 'center' }}>
+        Welcome to Dandelion Community Aid
+      </Text>
+      <CardButtonRow
+        buttons={[
+          {
+            onPress: () => {
+              navigation.push('Create Account');
+            },
+            text: 'Create new account',
+          },
+        ]}
       />
-      <Button
-        onPress={() => {
-          navigation.push('Login');
-        }}
-        text="Login"
+      <CardButtonRow
+        buttons={[
+          {
+            onPress: () => {
+              navigation.push('Login');
+            },
+            text: 'Login to existing account',
+          },
+        ]}
       />
     </View>
   );
@@ -35,8 +45,12 @@ export default function NotLoggedInScreen({
 
 const styles = StyleSheet.create({
   container: {
-    alignItems: 'center',
     flex: 1,
-    justifyContent: 'center',
+    margin: 20,
+  },
+  text: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    width: '100%',
   },
 });

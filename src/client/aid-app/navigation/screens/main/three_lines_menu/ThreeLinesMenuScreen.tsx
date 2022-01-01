@@ -1,19 +1,22 @@
 import * as React from 'react';
 import { ScrollView, StyleSheet } from 'react-native';
 import View from '../../../../../general-purpose/components/light-or-dark-themed/View';
+import RequireLoggedInScreen from '../../../../../general-purpose/components/RequireLoggedInScreen';
 import YourAccountMenuCard from '../../../../../general-purpose/viewer/YourAccountMenuCard';
 import DebugInfoCard from '../../../../menu/debug/DebugInfoCard';
 
 export default function ThreeLinesMenuScreen(): JSX.Element {
   return (
-    <View style={styles.container}>
-      <ScrollView>
-        <View style={styles.scrollView}>
-          <YourAccountMenuCard />
-          <DebugInfoCard />
-        </View>
-      </ScrollView>
-    </View>
+    <RequireLoggedInScreen>
+      <View style={styles.container}>
+        <ScrollView>
+          <View style={styles.scrollView}>
+            <YourAccountMenuCard />
+            <DebugInfoCard />
+          </View>
+        </ScrollView>
+      </View>
+    </RequireLoggedInScreen>
   );
 }
 
