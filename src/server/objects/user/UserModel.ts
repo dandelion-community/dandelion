@@ -10,13 +10,10 @@ import type {
 import mongoose, { Schema } from 'mongoose';
 import passport from 'passport';
 import passportLocalMongoose from 'passport-local-mongoose';
-
-interface UserDocType {
-  password: string;
-  username: string;
-}
+import type { UserDocType } from './UserModelTypes';
 
 const UserSchema: PassportLocalSchema = new Schema<UserDocType>({
+  aidRequestsIAmWorkingOn: [String],
   password: String,
   username: String,
 });
@@ -32,6 +29,13 @@ passport.use(UserModel.createStrategy());
 passport.serializeUser(UserModel.serializeUser() as any);
 passport.deserializeUser(UserModel.deserializeUser());
 
+const SESSION_SECRET = process.env.SESSION_SECRET;
+if (SESSION_SECRET == null) {
+  throw new Error(
+    'The SESSION_SECRET environment variable must be set to support authentication',
+  );
+}
+
 export function initUserModels(app: Express): void {
   const sessionConfig = expressSession({
     cookie: {
@@ -42,7 +46,7 @@ export function initUserModels(app: Express): void {
     resave: false,
     // forces a session that is “uninitialized” to be saved to the store
     saveUninitialized: false,
-    secret: process.env.SESSION_SECRET || 'secret',
+    secret: SESSION_SECRET as string,
   });
   app.use(sessionConfig);
   app.use(passport.initialize());

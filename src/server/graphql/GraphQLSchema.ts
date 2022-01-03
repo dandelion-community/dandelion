@@ -3,8 +3,8 @@ import { graphqlHTTP } from 'express-graphql';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import { SchemaComposer } from 'graphql-compose';
-import AidRequest from '../models/AidRequest';
-import User from '../models/User';
+import AidRequest from '../objects/aid_request/AidRequestGraphQLImpl';
+import User from '../objects/user/UserGraphQLImpl';
 
 const composer = new SchemaComposer();
 

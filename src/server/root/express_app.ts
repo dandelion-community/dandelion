@@ -5,8 +5,8 @@ import express from 'express';
 import logger from 'morgan';
 import path from 'path';
 import { initGraphQL } from '../graphql/GraphQLSchema';
-import { initUserModels } from '../models/user_model';
 import { initMongoClient } from '../mongo/client';
+import { initUserModels } from '../objects/user/UserModel';
 
 const rootDirectory = path.normalize(path.join(__dirname, '../..'));
 
