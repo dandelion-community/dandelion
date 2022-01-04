@@ -8,7 +8,7 @@ import { initGraphQL } from '../graphql/GraphQLSchema';
 import { initMongoClient } from '../mongo/client';
 import { initUserModels } from '../objects/user/UserModel';
 
-const rootDirectory = path.normalize(path.join(__dirname, '../..'));
+const rootDirectory = path.normalize(path.join(__dirname, '../../..'));
 
 const app = express();
 
