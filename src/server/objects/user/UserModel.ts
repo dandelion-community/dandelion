@@ -1,3 +1,4 @@
+import dotenv from 'dotenv';
 import type { Express } from 'express';
 import expressSession from 'express-session';
 import type {
@@ -11,6 +12,8 @@ import mongoose, { Schema } from 'mongoose';
 import passport from 'passport';
 import passportLocalMongoose from 'passport-local-mongoose';
 import type { UserDocType } from './UserModelTypes';
+
+dotenv.config();
 
 const UserSchema: PassportLocalSchema = new Schema<UserDocType>({
   aidRequestsIAmWorkingOn: [String],
