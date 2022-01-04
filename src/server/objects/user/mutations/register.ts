@@ -15,7 +15,7 @@ async function registerResolver(
     .findOne({ email: username });
   if (allowlistEntry == null) {
     throw new Error(
-      'Sorry, your email address is not on our testers list. Please email lowell.organizing@gmail.com',
+      "To protect the privacy of our users' data, you cannot create an account without first being added to the allowlist. Please email lowell.organizing@gmail.com if you'd like to be added!",
     );
   }
 
