@@ -7,6 +7,11 @@
 // GraphQL fragment: AidRequestCardFragment
 // ====================================================
 
+export interface AidRequestCardFragment_whoIsWorkingOnItUsers {
+  __typename: "User";
+  username: string | null;
+}
+
 export interface AidRequestCardFragment {
   __typename: "AidRequest";
   _id: any;
@@ -14,4 +19,5 @@ export interface AidRequestCardFragment {
   whoIsItFor: string | null;
   whoRecordedItUsername: string | null;
   completed: boolean | null;
+  whoIsWorkingOnItUsers: (AidRequestCardFragment_whoIsWorkingOnItUsers | null)[] | null;
 }

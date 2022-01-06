@@ -1,10 +1,7 @@
 import { AidRequestGraphQLType } from './AidRequestGraphQLTypes';
 import createAidRequest from './mutations/createAidRequest';
 import updateIsAidRequestComplete from './mutations/updateIsAidRequestComplete';
-import {
-  addUserWhoIsWorkingOnAnAidRequest,
-  removeUserWhoIsWorkingOnAnAidRequest,
-} from './mutations/updateUsersWhoAreWorkingOnAnAidRequest';
+import updateWhetherIAmWorkingOnThisAidRequest from './mutations/updateWhetherIAmWorkingOnThisAidRequest';
 import whoIsWorkingOnItUsers from './object_fields/whoIsWorkingOnItUsers';
 
 AidRequestGraphQLType.addFields({
@@ -13,10 +10,9 @@ AidRequestGraphQLType.addFields({
 
 const AidRequest = {
   MutationFields: {
-    addUserWhoIsWorkingOnAnAidRequest,
     createAidRequest,
-    removeUserWhoIsWorkingOnAnAidRequest,
     updateIsAidRequestComplete,
+    updateWhetherIAmWorkingOnThisAidRequest,
   },
   QueryFields: {
     allAidRequests: AidRequestGraphQLType.getResolver('connection'),

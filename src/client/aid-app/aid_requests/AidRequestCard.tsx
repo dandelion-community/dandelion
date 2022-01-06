@@ -2,7 +2,9 @@ import * as React from 'react';
 import { StyleSheet } from 'react-native';
 import { Card, Paragraph } from 'react-native-paper';
 import Text from '../../general-purpose/components/light-or-dark-themed/Text';
+import { useThemeColor } from '../../general-purpose/components/light-or-dark-themed/useThemeColor';
 import AidRequestCompleteToggle from './AidRequestCompleteToggle';
+import AidRequestWorkingOnItSummary from './AidRequestWorkingOnItSummary';
 import type { AidRequestCardFragment } from './__generated__/AidRequestCardFragment';
 
 type Props = {
@@ -11,11 +13,9 @@ type Props = {
 
 export default function AidRequestCard({ aidRequest }: Props): JSX.Element {
   const { whatIsNeeded, whoIsItFor, whoRecordedItUsername } = aidRequest;
+  const backgroundColor = useThemeColor({}, 'cardBackground');
   return (
-    <Card elevation={4} style={styles.card}>
-      <Card.Content>
-        <Paragraph style={styles.objectType}>Request</Paragraph>
-      </Card.Content>
+    <Card elevation={4} style={[styles.card, { backgroundColor }]}>
       <Card.Title title={whatIsNeeded} />
       <Card.Content>
         <Paragraph>
@@ -26,10 +26,9 @@ export default function AidRequestCard({ aidRequest }: Props): JSX.Element {
         <Paragraph>
           <Text>Recorded by {whoRecordedItUsername}</Text>
         </Paragraph>
-      </Card.Content>
-      <Card.Actions>
         <AidRequestCompleteToggle aidRequest={aidRequest} />
-      </Card.Actions>
+        <AidRequestWorkingOnItSummary aidRequest={aidRequest} />
+      </Card.Content>
     </Card>
   );
 }
@@ -38,8 +37,5 @@ const styles = StyleSheet.create({
   card: {
     alignSelf: 'stretch',
     margin: 10,
-  },
-  objectType: {
-    color: '#8d1616',
   },
 });

@@ -1,8 +1,8 @@
 import { gql, useMutation } from '@apollo/client';
 import * as React from 'react';
-import { StyleSheet, View } from 'react-native';
 import { Paragraph, Switch } from 'react-native-paper';
 import { AidRequestCardFragments } from './AidRequestCardFragments';
+import AidRequestCardSection from './AidRequestCardSection';
 import type { AidRequestIsCompleteToggleFragment } from './__generated__/AidRequestIsCompleteToggleFragment';
 import type {
   updateIsAidRequestCompleteMutation,
@@ -41,11 +41,13 @@ export default function AidRequestIsCompleteToggle({
     }
   }, [loading, error]);
   return (
-    <View style={styles.isCompletedRow}>
-      <Paragraph style={styles.label}>Completed</Paragraph>
-      <Switch onValueChange={onToggleSwitch} value={displayValue ?? false} />
+    <AidRequestCardSection>
+      <AidRequestCardSection.Row justifyContent="space-between">
+        <Paragraph>Completed</Paragraph>
+        <Switch onValueChange={onToggleSwitch} value={displayValue ?? false} />
+      </AidRequestCardSection.Row>
       {displayError == null ? null : <Paragraph>{displayError}</Paragraph>}
-    </View>
+    </AidRequestCardSection>
   );
 
   function onToggleSwitch(): void {
@@ -71,17 +73,3 @@ const UPDATE_IS_AID_REQUEST_COMPLETE_MUTATION = gql`
   }
   ${AidRequestCardFragments.aidRequest}
 `;
-
-const styles = StyleSheet.create({
-  isCompletedRow: {
-    alignItems: 'center',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    padding: 8,
-  },
-  label: {
-    flexGrow: 1,
-    flexShrink: 1,
-    marginRight: 16,
-  },
-});

@@ -26,6 +26,14 @@ export function useViewerContext(): Viewer {
   return React.useContext(ViewerContext);
 }
 
+export function useViewerUsername(): string {
+  const { username } = useViewerContext();
+  if (username == null || username === Loading) {
+    throw new Error('Only call useViewerUsername when the viewer is logged in');
+  }
+  return username;
+}
+
 export function useIsLoadingLoggedInStatus(): boolean {
   const viewer = useViewerContext();
   return viewer.username === Loading;
