@@ -1,19 +1,22 @@
 import type { ObjectTypeComposerFieldConfigAsObjectDefinition } from 'graphql-compose';
 import { Document } from 'mongoose';
 import filterNulls from '../../../../shared/utils/filterNulls';
+import assertLoggedIn from '../../../graphql/assertLoggedIn';
 import { UserModel } from '../../user/UserModel';
 import { AidRequestModel } from '../AidRequestModel';
 import type { AidRequestType } from '../AidRequestModelTypes';
 
 const whoIsWorkingOnItUsers: ObjectTypeComposerFieldConfigAsObjectDefinition<
   Document<string, unknown, AidRequestType>,
-  unknown
+  Express.Request,
+  Record<string, never>
 > = {
-  resolve: async ({
-    _id,
-  }: Document<string, unknown, AidRequestType>): Promise<
-    Array<Express.User>
-  > => {
+  resolve: async (
+    { _id }: Document<string, unknown, AidRequestType>,
+    _args: Record<string, never>,
+    req: Express.Request,
+  ): Promise<Array<Express.User>> => {
+    assertLoggedIn(req, 'whoIsWorkingOnItUsers');
     const aidRequest = await AidRequestModel.findById(_id);
     if (aidRequest == null) {
       return [];

@@ -1,3 +1,4 @@
+import assertLoggedIn from '../../../graphql/assertLoggedIn';
 import { AidRequestGraphQLType } from '../AidRequestGraphQLTypes';
 import { AidRequestModel } from '../AidRequestModel';
 import type { AidRequestType } from '../AidRequestModelTypes';
@@ -7,10 +8,7 @@ async function updateIsAidRequestCompleteResolver(
   { id, newValue }: { id: string; newValue: boolean },
   req: Express.Request,
 ): Promise<AidRequestType | null> {
-  const { user } = req;
-  if (user == null) {
-    throw new Error('You must be logged in to create a request');
-  }
+  assertLoggedIn(req, 'Update is aid request complete');
   return await AidRequestModel.findOneAndUpdate(
     { _id: id },
     { completed: newValue },
