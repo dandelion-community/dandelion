@@ -9,6 +9,17 @@ export const AidRequestIsCompleteToggleFragments = {
   `,
 };
 
+export const AidRequestWorkingOnItSummaryFragments = {
+  aidRequest: gql`
+    fragment AidRequestWorkingOnItSummaryFragment on AidRequest {
+      _id
+      whoIsWorkingOnItUsers {
+        username
+      }
+    }
+  `,
+};
+
 export const AidRequestCardFragments = {
   aidRequest: gql`
     fragment AidRequestCardFragment on AidRequest {
@@ -17,7 +28,9 @@ export const AidRequestCardFragments = {
       whoIsItFor
       whoRecordedItUsername
       ...AidRequestIsCompleteToggleFragment
+      ...AidRequestWorkingOnItSummaryFragment
     }
     ${AidRequestIsCompleteToggleFragments.aidRequest}
+    ${AidRequestWorkingOnItSummaryFragments.aidRequest}
   `,
 };

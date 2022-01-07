@@ -3,8 +3,8 @@ import * as React from 'react';
 import type { ListRenderItemInfo } from 'react-native';
 import { FlatList, StyleSheet } from 'react-native';
 import { ActivityIndicator } from 'react-native-paper';
-import View from '../../general-purpose/components/light-or-dark-themed/View';
 import filterNulls from '../../../shared/utils/filterNulls';
+import View from '../../general-purpose/components/light-or-dark-themed/View';
 import AidRequestCard from './AidRequestCard';
 import { AidRequestCardFragments } from './AidRequestCardFragments';
 import type {

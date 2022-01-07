@@ -7,6 +7,11 @@
 // GraphQL mutation operation: updateIsAidRequestCompleteMutation
 // ====================================================
 
+export interface updateIsAidRequestCompleteMutation_updateIsAidRequestComplete_whoIsWorkingOnItUsers {
+  __typename: "User";
+  username: string | null;
+}
+
 export interface updateIsAidRequestCompleteMutation_updateIsAidRequestComplete {
   __typename: "AidRequest";
   _id: any;
@@ -14,6 +19,7 @@ export interface updateIsAidRequestCompleteMutation_updateIsAidRequestComplete {
   whoIsItFor: string | null;
   whoRecordedItUsername: string | null;
   completed: boolean | null;
+  whoIsWorkingOnItUsers: (updateIsAidRequestCompleteMutation_updateIsAidRequestComplete_whoIsWorkingOnItUsers | null)[] | null;
 }
 
 export interface updateIsAidRequestCompleteMutation {

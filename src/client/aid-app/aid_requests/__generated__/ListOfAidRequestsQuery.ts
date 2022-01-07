@@ -19,6 +19,11 @@ export interface ListOfAidRequestsQuery_allAidRequests_pageInfo {
   hasNextPage: boolean;
 }
 
+export interface ListOfAidRequestsQuery_allAidRequests_edges_node_whoIsWorkingOnItUsers {
+  __typename: "User";
+  username: string | null;
+}
+
 export interface ListOfAidRequestsQuery_allAidRequests_edges_node {
   __typename: "AidRequest";
   _id: any;
@@ -26,6 +31,7 @@ export interface ListOfAidRequestsQuery_allAidRequests_edges_node {
   whoIsItFor: string | null;
   whoRecordedItUsername: string | null;
   completed: boolean | null;
+  whoIsWorkingOnItUsers: (ListOfAidRequestsQuery_allAidRequests_edges_node_whoIsWorkingOnItUsers | null)[] | null;
 }
 
 export interface ListOfAidRequestsQuery_allAidRequests_edges {
