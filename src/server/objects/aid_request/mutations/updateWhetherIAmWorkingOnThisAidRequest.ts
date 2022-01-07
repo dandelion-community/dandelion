@@ -1,5 +1,6 @@
 import { ObjectId } from 'mongodb';
 import mongoose from 'mongoose';
+import assertLoggedIn from '../../../graphql/assertLoggedIn';
 import { AidRequestGraphQLType } from '../AidRequestGraphQLTypes';
 import { AidRequestModel } from '../AidRequestModel';
 import type { AidRequestType } from '../AidRequestModelTypes';
@@ -23,12 +24,10 @@ async function updateWhetherIAmWorkingOnThisAidRequestResolver(
   }: { aidRequestID: string; iAmWorkingOnIt: boolean },
   req: Express.Request,
 ): Promise<AidRequestType | null> {
-  const { user } = req;
-  if (user == null) {
-    throw new Error(
-      'You must be logged in to add a person who is working on it',
-    );
-  }
+  const user = assertLoggedIn(
+    req,
+    'Update whether I am working on this aid request',
+  );
   const { _id: userID } = user;
 
   await mongoose.connection.db.collection('userInfo').updateOne(

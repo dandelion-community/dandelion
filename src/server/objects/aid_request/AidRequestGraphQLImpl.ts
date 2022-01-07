@@ -1,3 +1,4 @@
+import { createAssertLoggedInMiddleware } from '../../graphql/assertLoggedIn';
 import { AidRequestGraphQLType } from './AidRequestGraphQLTypes';
 import createAidRequest from './mutations/createAidRequest';
 import updateIsAidRequestComplete from './mutations/updateIsAidRequestComplete';
@@ -15,7 +16,9 @@ const AidRequest = {
     updateWhetherIAmWorkingOnThisAidRequest,
   },
   QueryFields: {
-    allAidRequests: AidRequestGraphQLType.getResolver('connection'),
+    allAidRequests: AidRequestGraphQLType.getResolver('connection', [
+      createAssertLoggedInMiddleware('allAidRequests'),
+    ]),
   },
 };
 
