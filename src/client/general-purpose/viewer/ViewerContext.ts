@@ -3,20 +3,24 @@ import type { LoadingType } from '../utils/loading';
 import Loading from '../utils/loading';
 
 export type LoggedInViewer = Readonly<{
+  id: string;
   username: string;
 }>;
 
 export type LoggedOutViewer = Readonly<{
+  id: undefined;
   username: undefined;
 }>;
 
 export type LoadingViewer = Readonly<{
+  id: LoadingType;
   username: LoadingType;
 }>;
 
 export type Viewer = Readonly<LoggedInViewer | LoggedOutViewer | LoadingViewer>;
 
 const ViewerContext = React.createContext<Viewer>({
+  id: Loading,
   username: Loading,
 });
 
@@ -26,11 +30,16 @@ export function useViewerContext(): Viewer {
   return React.useContext(ViewerContext);
 }
 
-export function useViewerUsername(): string {
-  const { username } = useViewerContext();
-  if (username == null || username === Loading) {
-    throw new Error('Only call useViewerUsername when the viewer is logged in');
+export function useLoggedInViewer(): LoggedInViewer {
+  const viewer = useViewerContext();
+  if (viewer.username == null || viewer.username === Loading) {
+    throw new Error('Only call useLoggedInViewer when the viewer is logged in');
   }
+  return viewer;
+}
+
+export function useViewerUsername(): string {
+  const { username } = useLoggedInViewer();
   return username;
 }
 

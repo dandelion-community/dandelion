@@ -3,6 +3,7 @@ import * as React from 'react';
 import { View } from 'react-native';
 import { Button, Paragraph } from 'react-native-paper';
 import filterNulls from '../../../shared/utils/filterNulls';
+import client from '../../aid-app/graphql/client';
 import Text from '../../general-purpose/components/light-or-dark-themed/Text';
 import { useViewerUsername } from '../../general-purpose/viewer/ViewerContext';
 import { AidRequestCardFragments } from './AidRequestCardFragments';
@@ -100,14 +101,16 @@ export default function AidRequestWorkingOnItSummary({
     }
   }
 
-  function mutate(iAmWorkingOnIt: boolean): void {
-    runUpdateIsRequestCompleteMutation({
+  async function mutate(iAmWorkingOnIt: boolean): Promise<void> {
+    setOptimisticAmIWorkingOnItValue(iAmWorkingOnIt);
+    await runUpdateIsRequestCompleteMutation({
       variables: {
         aidRequestID,
         iAmWorkingOnIt,
       },
     });
-    setOptimisticAmIWorkingOnItValue(iAmWorkingOnIt);
+    await client.clearStore();
+    await client.refetchQueries({ include: ['ListOfAidRequestsQuery'] });
   }
 }
 
