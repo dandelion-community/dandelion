@@ -1,7 +1,9 @@
 import * as React from 'react';
 import type { ListOfAidRequestsQueryVariables } from '../../../../../aid_requests/__generated__/ListOfAidRequestsQuery';
 
-export type FilterType = ListOfAidRequestsQueryVariables['filter'];
+export type FilterType = NonNullable<ListOfAidRequestsQueryVariables['filter']>;
+
+export const DEFAULT_FILTER: FilterType = { completed: false };
 
 export type Filters = {
   filter: FilterType;
@@ -9,7 +11,7 @@ export type Filters = {
 };
 
 export const RequestExplorerFiltersContext = React.createContext<Filters>({
-  filter: null,
+  filter: DEFAULT_FILTER,
   setFilters: () => undefined,
 });
 

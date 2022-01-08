@@ -1,9 +1,9 @@
 import { gql, useMutation } from '@apollo/client';
 import * as React from 'react';
 import { Paragraph, Switch } from 'react-native-paper';
-import client from '../../aid-app/graphql/client';
 import { AidRequestCardFragments } from './AidRequestCardFragments';
 import AidRequestCardSection from './AidRequestCardSection';
+import { broadcastAidRequestUpdated } from './AidRequestFilterLocalCacheUpdater';
 import type { AidRequestIsCompleteToggleFragment } from './__generated__/AidRequestIsCompleteToggleFragment';
 import type {
   updateIsAidRequestCompleteMutation,
@@ -54,14 +54,13 @@ export default function AidRequestIsCompleteToggle({
   async function onToggleSwitch(): Promise<void> {
     const newValue = !displayValue;
     setOptimisticValue(newValue);
-    await runUpdateIsRequestCompleteMutation({
+    const { data } = await runUpdateIsRequestCompleteMutation({
       variables: {
         id,
         newValue,
       },
     });
-    await client.clearStore();
-    await client.refetchQueries({ include: ['ListOfAidRequestsQuery'] });
+    broadcastAidRequestUpdated(data?.updateIsAidRequestComplete);
   }
 }
 

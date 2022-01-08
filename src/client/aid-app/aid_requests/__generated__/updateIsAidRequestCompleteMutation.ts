@@ -10,6 +10,7 @@
 export interface updateIsAidRequestCompleteMutation_updateIsAidRequestComplete_whoIsWorkingOnItUsers {
   __typename: "User";
   username: string | null;
+  _id: string;
 }
 
 export interface updateIsAidRequestCompleteMutation_updateIsAidRequestComplete {

@@ -24,6 +24,7 @@ export interface ListOfAidRequestsQuery_allAidRequests_pageInfo {
 export interface ListOfAidRequestsQuery_allAidRequests_edges_node_whoIsWorkingOnItUsers {
   __typename: "User";
   username: string | null;
+  _id: string;
 }
 
 export interface ListOfAidRequestsQuery_allAidRequests_edges_node {

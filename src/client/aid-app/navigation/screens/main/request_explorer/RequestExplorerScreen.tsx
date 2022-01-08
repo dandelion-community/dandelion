@@ -4,11 +4,14 @@ import View from '../../../../../general-purpose/components/light-or-dark-themed
 import RequireLoggedInScreen from '../../../../../general-purpose/components/RequireLoggedInScreen';
 import ListOfRequests from '../../../../aid_requests/ListOfAidRequests';
 import type { FilterType } from './filters/RequestExplorerFiltersContext';
-import { RequestExplorerFiltersContext } from './filters/RequestExplorerFiltersContext';
+import {
+  DEFAULT_FILTER,
+  RequestExplorerFiltersContext,
+} from './filters/RequestExplorerFiltersContext';
 import RequestExplorerFilters from './RequestExplorerFilters';
 
 export default function RequestExplorerScreen(): JSX.Element {
-  const [filter, setFilters] = React.useState<FilterType>({ completed: false });
+  const [filter, setFilters] = React.useState<FilterType>(DEFAULT_FILTER);
 
   return (
     <RequireLoggedInScreen>
