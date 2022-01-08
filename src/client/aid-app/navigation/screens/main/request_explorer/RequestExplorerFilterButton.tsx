@@ -2,6 +2,7 @@ import * as React from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
 import Text from '../../../../../general-purpose/components/light-or-dark-themed/Text';
 import { useLoggedInViewer } from '../../../../../general-purpose/viewer/ViewerContext';
+import { ListOfAidRequestsQuery_allAidRequests_edges_node } from '../../../../aid_requests/__generated__/ListOfAidRequestsQuery';
 import type { FilterType } from './filters/RequestExplorerFiltersContext';
 import { useRequestExplorerFilters } from './filters/RequestExplorerFiltersContext';
 
@@ -20,6 +21,10 @@ export type FilterButtonProps = {
     context: FilterContext,
   ) => boolean;
   label: string;
+  passes: (
+    filter: FilterType,
+    aidRequest: ListOfAidRequestsQuery_allAidRequests_edges_node,
+  ) => boolean;
   toggleOff: UpdateFilter;
   toggleOn: UpdateFilter;
 };

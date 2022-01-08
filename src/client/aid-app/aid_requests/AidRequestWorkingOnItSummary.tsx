@@ -3,11 +3,14 @@ import * as React from 'react';
 import { View } from 'react-native';
 import { Button, Paragraph } from 'react-native-paper';
 import filterNulls from '../../../shared/utils/filterNulls';
-import client from '../../aid-app/graphql/client';
 import Text from '../../general-purpose/components/light-or-dark-themed/Text';
-import { useViewerUsername } from '../../general-purpose/viewer/ViewerContext';
+import {
+  LoggedInViewer,
+  useLoggedInViewer,
+} from '../../general-purpose/viewer/ViewerContext';
 import { AidRequestCardFragments } from './AidRequestCardFragments';
 import AidRequestCardSection from './AidRequestCardSection';
+import { broadcastAidRequestUpdated } from './AidRequestFilterLocalCacheUpdater';
 import type { AidRequestWorkingOnItSummaryFragment } from './__generated__/AidRequestWorkingOnItSummaryFragment';
 import type {
   updateWhetherIAmWorkingOnThisAidRequestMutation,
@@ -22,11 +25,11 @@ export default function AidRequestWorkingOnItSummary({
   aidRequest,
 }: Props): JSX.Element {
   const { _id: aidRequestID, whoIsWorkingOnItUsers } = aidRequest;
-  const viewerUsername = useViewerUsername();
+  const viewer = useLoggedInViewer();
   const amIAlreadyMarkedAsWorkingOnIt =
     whoIsWorkingOnItUsers?.some(
       (personWhoIsWorkingOnIt) =>
-        personWhoIsWorkingOnIt?.username === viewerUsername,
+        personWhoIsWorkingOnIt?.username === viewer.username,
     ) ?? false;
 
   const [
@@ -42,7 +45,7 @@ export default function AidRequestWorkingOnItSummary({
     optimisticAmIWorkingOnItValue,
     whoIsWorkingOnItUsers,
     amIAlreadyMarkedAsWorkingOnIt,
-    viewerUsername,
+    viewer,
   );
   const { loading, error } = updateIsRequestCompleteMutationState;
   const [displayError, setDisplayError] = React.useState<string | undefined>(
@@ -103,14 +106,13 @@ export default function AidRequestWorkingOnItSummary({
 
   async function mutate(iAmWorkingOnIt: boolean): Promise<void> {
     setOptimisticAmIWorkingOnItValue(iAmWorkingOnIt);
-    await runUpdateIsRequestCompleteMutation({
+    const { data } = await runUpdateIsRequestCompleteMutation({
       variables: {
         aidRequestID,
         iAmWorkingOnIt,
       },
     });
-    await client.clearStore();
-    await client.refetchQueries({ include: ['ListOfAidRequestsQuery'] });
+    broadcastAidRequestUpdated(data?.updateWhetherIAmWorkingOnThisAidRequest);
   }
 }
 
@@ -133,7 +135,7 @@ function processOptimisticValue(
   optimisticAmIWorkingOnItValue: boolean | undefined,
   whoIsWorkingOnItUsers: AidRequestWorkingOnItSummaryFragment['whoIsWorkingOnItUsers'],
   amIAlreadyMarkedAsWorkingOnIt: boolean,
-  viewerUsername: string,
+  viewer: LoggedInViewer,
 ): AidRequestWorkingOnItSummaryFragment['whoIsWorkingOnItUsers'] {
   switch (optimisticAmIWorkingOnItValue) {
     case undefined:
@@ -144,14 +146,14 @@ function processOptimisticValue(
       }
       return [
         ...(whoIsWorkingOnItUsers ?? []),
-        { __typename: 'User', username: viewerUsername },
+        { __typename: 'User', _id: viewer.id, username: viewer.username },
       ];
     case false:
       if (!amIAlreadyMarkedAsWorkingOnIt) {
         return whoIsWorkingOnItUsers;
       }
       return (whoIsWorkingOnItUsers ?? []).filter(
-        (user) => user?.username !== viewerUsername,
+        (user) => user?.username !== viewer.username,
       );
   }
 }

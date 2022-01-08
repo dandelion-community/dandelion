@@ -15,6 +15,7 @@ export const AidRequestWorkingOnItSummaryFragments = {
       _id
       whoIsWorkingOnItUsers {
         username
+        _id
       }
     }
   `,

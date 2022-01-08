@@ -10,6 +10,7 @@
 export interface AidRequestCardFragment_whoIsWorkingOnItUsers {
   __typename: "User";
   username: string | null;
+  _id: string;
 }
 
 export interface AidRequestCardFragment {

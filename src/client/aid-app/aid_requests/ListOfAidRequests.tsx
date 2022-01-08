@@ -1,4 +1,4 @@
-import { gql, useQuery } from '@apollo/client';
+import { useQuery } from '@apollo/client';
 import * as React from 'react';
 import type { ListRenderItemInfo } from 'react-native';
 import { FlatList, StyleSheet } from 'react-native';
@@ -8,35 +8,16 @@ import View from '../../general-purpose/components/light-or-dark-themed/View';
 import DebouncedLoadingIndicator from '../../general-purpose/utils/DebouncedLoadingIndicator';
 import { useRequestExplorerFilters } from '../navigation/screens/main/request_explorer/filters/RequestExplorerFiltersContext';
 import AidRequestCard from './AidRequestCard';
-import { AidRequestCardFragments } from './AidRequestCardFragments';
-import type {
+import { subscribeQueryToAidRequestUpdates } from './AidRequestFilterLocalCacheUpdater';
+import {
+  LIST_OF_AID_REQUESTS_QUERY,
+  PAGE_SIZE,
+} from './ListOfAidRequestsQuery';
+import {
   ListOfAidRequestsQuery,
   ListOfAidRequestsQueryVariables,
   ListOfAidRequestsQuery_allAidRequests_edges_node,
 } from './__generated__/ListOfAidRequestsQuery';
-
-const PAGE_SIZE = 5;
-
-const LIST_OF_AID_REQUESTS_QUERY = gql`
-  query ListOfAidRequestsQuery(
-    $pageSize: Int!
-    $after: String
-    $filter: FilterFindManyAidRequestInput
-  ) {
-    allAidRequests(first: $pageSize, after: $after, filter: $filter) {
-      pageInfo {
-        endCursor
-        hasNextPage
-      }
-      edges {
-        node {
-          ...AidRequestCardFragment
-        }
-      }
-    }
-  }
-  ${AidRequestCardFragments.aidRequest}
-`;
 
 export default function ListOfRequests(): JSX.Element {
   const { filter } = useRequestExplorerFilters();
@@ -52,6 +33,11 @@ export default function ListOfRequests(): JSX.Element {
       variables: { after: null, filter, pageSize: PAGE_SIZE },
     },
   );
+  React.useEffect(() => {
+    if (data != null) {
+      subscribeQueryToAidRequestUpdates(filter, data);
+    }
+  }, [filter, data]);
 
   const [isLoadingEntireScreen, setIsLoadingEntireScreen] =
     React.useState(true);
