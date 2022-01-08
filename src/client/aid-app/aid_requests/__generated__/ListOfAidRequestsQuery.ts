@@ -3,6 +3,8 @@
 // @generated
 // This file was automatically generated and should not be edited.
 
+import { FilterFindManyAidRequestInput } from "./../../../../../__generated__/globalTypes";
+
 // ====================================================
 // GraphQL query operation: ListOfAidRequestsQuery
 // ====================================================
@@ -61,4 +63,5 @@ export interface ListOfAidRequestsQuery {
 export interface ListOfAidRequestsQueryVariables {
   pageSize: number;
   after?: string | null;
+  filter?: FilterFindManyAidRequestInput | null;
 }

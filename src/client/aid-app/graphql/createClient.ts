@@ -18,7 +18,7 @@ export default function createClient(
             // cache entries. This is important so we can merge
             // old query results with new query results during
             // infinite scroll
-            keyArgs: false,
+            keyArgs: ['filter'],
             merge(
               existing:
                 | ListOfAidRequestsQuery_allAidRequests

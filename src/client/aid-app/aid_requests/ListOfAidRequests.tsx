@@ -5,6 +5,8 @@ import { FlatList, StyleSheet } from 'react-native';
 import { ActivityIndicator } from 'react-native-paper';
 import filterNulls from '../../../shared/utils/filterNulls';
 import View from '../../general-purpose/components/light-or-dark-themed/View';
+import DebouncedLoadingIndicator from '../../general-purpose/utils/DebouncedLoadingIndicator';
+import { useRequestExplorerFilters } from '../navigation/screens/main/request_explorer/filters/RequestExplorerFiltersContext';
 import AidRequestCard from './AidRequestCard';
 import { AidRequestCardFragments } from './AidRequestCardFragments';
 import type {
@@ -16,8 +18,12 @@ import type {
 const PAGE_SIZE = 5;
 
 const LIST_OF_AID_REQUESTS_QUERY = gql`
-  query ListOfAidRequestsQuery($pageSize: Int!, $after: String) {
-    allAidRequests(first: $pageSize, after: $after) {
+  query ListOfAidRequestsQuery(
+    $pageSize: Int!
+    $after: String
+    $filter: FilterFindManyAidRequestInput
+  ) {
+    allAidRequests(first: $pageSize, after: $after, filter: $filter) {
       pageInfo {
         endCursor
         hasNextPage
@@ -33,6 +39,7 @@ const LIST_OF_AID_REQUESTS_QUERY = gql`
 `;
 
 export default function ListOfRequests(): JSX.Element {
+  const { filter } = useRequestExplorerFilters();
   const {
     data,
     loading: isLoadingEitherIncrementallyOrEntireScreen,
@@ -42,7 +49,7 @@ export default function ListOfRequests(): JSX.Element {
     LIST_OF_AID_REQUESTS_QUERY,
     {
       notifyOnNetworkStatusChange: true,
-      variables: { after: null, pageSize: PAGE_SIZE },
+      variables: { after: null, filter, pageSize: PAGE_SIZE },
     },
   );
 
@@ -59,8 +66,10 @@ export default function ListOfRequests(): JSX.Element {
     if (!isLoadingEitherIncrementallyOrEntireScreen) {
       setIsLoadingIncremental(false);
       setIsLoadingEntireScreen(false);
+    } else if (!isLoadingIncremental) {
+      setIsLoadingEntireScreen(true);
     }
-  }, [isLoadingEitherIncrementallyOrEntireScreen]);
+  }, [isLoadingEitherIncrementallyOrEntireScreen, isLoadingIncremental]);
 
   const footer = React.useMemo(() => <ActivityIndicator />, []);
   const edges = data == null ? null : data.allAidRequests?.edges;
@@ -74,6 +83,11 @@ export default function ListOfRequests(): JSX.Element {
 
   return (
     <View style={styles.container}>
+      {isLoadingEntireScreen ? (
+        <View style={{ marginTop: 16 }}>
+          <DebouncedLoadingIndicator />
+        </View>
+      ) : null}
       <FlatList
         ListFooterComponent={isLoadingIncremental ? footer : null}
         data={nodes}
@@ -115,5 +129,4 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
   },
-  scrollView: {},
 });

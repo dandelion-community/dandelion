@@ -9,6 +9,7 @@
 
 export interface ViewerQuery_me {
   __typename: "User";
+  _id: string;
   username: string | null;
 }
 

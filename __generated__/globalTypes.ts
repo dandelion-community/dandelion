@@ -7,6 +7,37 @@
 // START Enums and Input Objects
 //==============================================================
 
+export interface FilterFindManyAidRequestInput {
+  completed?: boolean | null;
+  createdAt?: any | null;
+  whatIsNeeded?: string | null;
+  whoIsItFor?: string | null;
+  whoIsWorkingOnIt?: (string | null)[] | null;
+  whoRecordedItUsername?: string | null;
+  _id?: any | null;
+  _operators?: FilterFindManyAidRequestOperatorsInput | null;
+  OR?: FilterFindManyAidRequestInput[] | null;
+  AND?: FilterFindManyAidRequestInput[] | null;
+}
+
+/**
+ * For performance reason this type contains only *indexed* fields.
+ */
+export interface FilterFindManyAidRequestOperatorsInput {
+  _id?: FilterFindManyAidRequest_idOperatorsInput | null;
+}
+
+export interface FilterFindManyAidRequest_idOperatorsInput {
+  gt?: any | null;
+  gte?: any | null;
+  lt?: any | null;
+  lte?: any | null;
+  ne?: any | null;
+  in?: (any | null)[] | null;
+  nin?: (any | null)[] | null;
+  exists?: boolean | null;
+}
+
 //==============================================================
 // END Enums and Input Objects
 //==============================================================
