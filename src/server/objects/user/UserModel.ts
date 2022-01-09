@@ -11,12 +11,13 @@ import type {
 import mongoose, { Schema } from 'mongoose';
 import passport from 'passport';
 import passportLocalMongoose from 'passport-local-mongoose';
+import { AidRequestReference } from '../aid_request/AidRequestModelTypes';
 import type { UserDocType } from './UserModelTypes';
 
 dotenv.config();
 
 const UserSchema: PassportLocalSchema = new Schema<UserDocType>({
-  aidRequestsIAmWorkingOn: [String],
+  aidRequestsIAmWorkingOn: [AidRequestReference],
   password: String,
   username: String,
 });
