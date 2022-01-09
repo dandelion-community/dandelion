@@ -23,8 +23,8 @@ const aidRequestsIAmWorkingOn: ObjectTypeComposerFieldConfigAsObjectDefinition<
       return [];
     }
     const aidRequests = await Promise.all(
-      (dbUser.aidRequestsIAmWorkingOn ?? []).map((aidRequestID: string) =>
-        AidRequestModel.findById(new ObjectId(aidRequestID)),
+      (dbUser.aidRequestsIAmWorkingOn ?? []).map((aidRequestID: ObjectId) =>
+        AidRequestModel.findById(aidRequestID),
       ),
     );
     return filterNulls(aidRequests);

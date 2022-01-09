@@ -1,4 +1,5 @@
 import type { ObjectTypeComposerFieldConfigAsObjectDefinition } from 'graphql-compose';
+import type { ObjectId } from 'mongodb';
 import { Document } from 'mongoose';
 import filterNulls from '../../../../shared/utils/filterNulls';
 import assertLoggedIn from '../../../graphql/assertLoggedIn';
@@ -24,7 +25,7 @@ const whoIsWorkingOnItUsers: ObjectTypeComposerFieldConfigAsObjectDefinition<
     const { whoIsWorkingOnIt: whoIsWorkingOnItUserIDs } = aidRequest;
     const users = await Promise.all(
       whoIsWorkingOnItUserIDs.map(
-        async (userID: string): Promise<Express.User | null> => {
+        async (userID: ObjectId): Promise<Express.User | null> => {
           const dbUser = await UserModel.findById(userID);
           if (dbUser == null) {
             return null;
