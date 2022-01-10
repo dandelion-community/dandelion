@@ -43,7 +43,7 @@ const latestEvent: ObjectTypeComposerFieldConfigAsObjectDefinition<
       throw new Error('Action must have actor');
     }
     return `${timeAgo.format(event.timestamp)} - ${
-      user.username
+      user.displayName
     } ${getActionText(event.details)}`;
   },
   type: 'String!',

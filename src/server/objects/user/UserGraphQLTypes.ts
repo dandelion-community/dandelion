@@ -4,7 +4,8 @@ export const UserGraphQLType = schemaComposer.createObjectTC<Express.User>({
   fields: {
     _id: 'String!',
     aidRequestsIAmWorkingOn: '[AidRequest]',
-    username: 'String',
+    displayName: 'String!',
+    username: 'String!',
   },
   name: 'User',
 });

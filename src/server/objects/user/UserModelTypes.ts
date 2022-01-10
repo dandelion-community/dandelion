@@ -7,6 +7,7 @@ declare global {
       _id: ObjectId;
       aidRequestsIAmWorkingOn: Array<ObjectId>;
       username: string;
+      displayName: string;
     }
   }
 }
@@ -15,6 +16,7 @@ export interface UserDocType {
   password: string;
   username: string;
   aidRequestsIAmWorkingOn: Array<ObjectId>;
+  displayName: string;
 }
 
 export const UserReference = {
