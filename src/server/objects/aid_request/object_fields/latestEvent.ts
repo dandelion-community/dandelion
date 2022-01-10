@@ -29,7 +29,9 @@ const latestEvent: ObjectTypeComposerFieldConfigAsObjectDefinition<
       throw new Error('No request found for this ID');
     }
     if (aidRequest.history.length === 0) {
-      return 'No activity (yet!)';
+      return `${timeAgo.format(aidRequest.createdAt)} - ${
+        aidRequest.whoRecordedItUsername
+      } recorded this`;
     }
     const event = aidRequest.history.reduce((latestEvent, currentEvent) =>
       currentEvent.timestamp > latestEvent.timestamp
