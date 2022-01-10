@@ -6,7 +6,7 @@ import type {
   PassportLocalModel,
   // prettier expects a comma but "editor.codeActionsOnSave": { "source.organizeImports": true } removes the comma
   // eslint-disable-next-line prettier/prettier
-  PassportLocalSchema,
+  PassportLocalSchema
 } from 'mongoose';
 import mongoose, { Schema } from 'mongoose';
 import passport from 'passport';
@@ -18,6 +18,7 @@ dotenv.config();
 
 const UserSchema: PassportLocalSchema = new Schema<UserDocType>({
   aidRequestsIAmWorkingOn: [AidRequestReference],
+  displayName: String,
   password: String,
   username: String,
 });
