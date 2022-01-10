@@ -64,6 +64,7 @@
     "graphql-compose-mongoose": "^9.7.1",
     "http-errors": "~1.6.3",
     "http-proxy": "^1.18.1",
+    "javascript-time-ago": "^2.3.10",
     "mongodb": "^4.2.1",
     "mongoose": "^6.1.1",
     "mongoose-timestamp": "^0.6.0",
