@@ -27,7 +27,7 @@ const AidRequestSchema = new Schema<AidRequestType>({
   history: [AidRequestHistoryEventSchema],
   whatIsNeeded: String,
   whoIsItFor: String,
-  whoIsWorkingOnIt: [UserReference],
+  whoIsWorkingOnIt: [String],
   whoRecordedItUsername: String,
 });
 
