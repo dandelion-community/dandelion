@@ -35,6 +35,7 @@ export interface ListOfAidRequestsQuery_allAidRequests_edges_node_whoIsWorkingOn
 export interface ListOfAidRequestsQuery_allAidRequests_edges_node {
   __typename: "AidRequest";
   _id: any;
+  latestEvent: string;
   whatIsNeeded: string | null;
   whoIsItFor: string | null;
   whoRecordedIt: ListOfAidRequestsQuery_allAidRequests_edges_node_whoRecordedIt | null;

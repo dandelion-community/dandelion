@@ -21,6 +21,7 @@ export interface AidRequestCardFragment_whoIsWorkingOnItUsers {
 export interface AidRequestCardFragment {
   __typename: "AidRequest";
   _id: any;
+  latestEvent: string;
   whatIsNeeded: string | null;
   whoIsItFor: string | null;
   whoRecordedIt: AidRequestCardFragment_whoRecordedIt | null;
