@@ -3,7 +3,7 @@
 // @generated
 // This file was automatically generated and should not be edited.
 
-import { FilterFindManyAidRequestInput } from "./../../../../../__generated__/globalTypes";
+import { FilterFindManyAidRequestInput, AidRequestUpdateStatusType } from "./../../../../../__generated__/globalTypes";
 
 // ====================================================
 // GraphQL query operation: ListOfAidRequestsQuery
@@ -32,6 +32,23 @@ export interface ListOfAidRequestsQuery_allAidRequests_edges_node_whoIsWorkingOn
   _id: string;
 }
 
+export interface ListOfAidRequestsQuery_allAidRequests_edges_node_actionsAvailable_input_details {
+  __typename: "AidRequestHistoryEventPayload";
+  event: AidRequestUpdateStatusType;
+}
+
+export interface ListOfAidRequestsQuery_allAidRequests_edges_node_actionsAvailable_input {
+  __typename: "AidRequestActionInput";
+  action: string;
+  details: ListOfAidRequestsQuery_allAidRequests_edges_node_actionsAvailable_input_details;
+}
+
+export interface ListOfAidRequestsQuery_allAidRequests_edges_node_actionsAvailable {
+  __typename: "AidRequestActionOption";
+  message: string;
+  input: ListOfAidRequestsQuery_allAidRequests_edges_node_actionsAvailable_input;
+}
+
 export interface ListOfAidRequestsQuery_allAidRequests_edges_node {
   __typename: "AidRequest";
   _id: any;
@@ -41,6 +58,7 @@ export interface ListOfAidRequestsQuery_allAidRequests_edges_node {
   whoRecordedIt: ListOfAidRequestsQuery_allAidRequests_edges_node_whoRecordedIt | null;
   completed: boolean | null;
   whoIsWorkingOnItUsers: (ListOfAidRequestsQuery_allAidRequests_edges_node_whoIsWorkingOnItUsers | null)[] | null;
+  actionsAvailable: (ListOfAidRequestsQuery_allAidRequests_edges_node_actionsAvailable | null)[] | null;
 }
 
 export interface ListOfAidRequestsQuery_allAidRequests_edges {

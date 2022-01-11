@@ -9,20 +9,53 @@ export const AidRequestGraphQLType =
     AidRequestModel,
   );
 
+export const AidRequestUpdateStatusTypeGraphQLType =
+  schemaComposer.createEnumTC(
+    `enum AidRequestUpdateStatusType { 
+      Completed 
+      WorkingOn 
+      Created
+    }`,
+  );
+
+export const AidRequestUpdateActionTypeGraphQLType =
+  schemaComposer.createEnumTC(
+    `enum AidRequestUpdateActionType { 
+      Add
+      Remove
+    }`,
+  );
+
 export const AidRequestHistoryEventPayloadGraphQLType =
   schemaComposer.createObjectTC({
     fields: {
-      event: 'String!',
+      event: 'AidRequestUpdateStatusType!',
     },
     name: 'AidRequestHistoryEventPayload',
   });
 
 export const AidRequestHistoryEventGraphQLType = schemaComposer.createObjectTC({
   fields: {
-    action: 'String!',
+    action: 'AidRequestUpdateActionType!',
     actor: 'User',
-    details: 'AidRequestHistoryEventPayload',
+    details: 'AidRequestHistoryEventPayload!',
     timestamp: 'Date!',
   },
   name: 'AidRequestHistoryEvent',
+});
+
+export const AidRequestActionInputGraphQLType = schemaComposer.createObjectTC({
+  fields: {
+    action: 'AidRequestUpdateActionType!',
+    details: 'AidRequestHistoryEventPayload!',
+  },
+  name: 'AidRequestActionInput',
+});
+
+export const AidRequestActionOptionGraphQLType = schemaComposer.createObjectTC({
+  fields: {
+    input: 'AidRequestActionInput!',
+    message: 'String!',
+  },
+  name: 'AidRequestActionOption',
 });

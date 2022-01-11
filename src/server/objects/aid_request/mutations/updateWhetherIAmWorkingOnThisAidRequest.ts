@@ -29,6 +29,12 @@ async function updateWhetherIAmWorkingOnThisAidRequestResolver(
     'Update whether I am working on this aid request',
   );
   const { _id: userID } = user;
+  const history = {
+    action: iAmWorkingOnIt ? 'Add' : 'Remove',
+    actor: user._id,
+    details: { event: 'WorkingOn' },
+    timestamp: new Date(),
+  };
 
   await mongoose.connection.db.collection('userInfo').updateOne(
     { _id: new ObjectId(userID) },
@@ -37,9 +43,11 @@ async function updateWhetherIAmWorkingOnThisAidRequestResolver(
           $addToSet: {
             aidRequestsIAmWorkingOn: new ObjectId(aidRequestID),
           },
+          $push: { history },
         }
       : {
           $pullAll: { aidRequestsIAmWorkingOn: [new ObjectId(aidRequestID)] },
+          $push: { history },
         },
   );
   return await AidRequestModel.findOneAndUpdate(

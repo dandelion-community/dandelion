@@ -8,10 +8,20 @@ async function updateIsAidRequestCompleteResolver(
   { id, newValue }: { id: string; newValue: boolean },
   req: Express.Request,
 ): Promise<AidRequestType | null> {
-  assertLoggedIn(req, 'Update is aid request complete');
+  const user = assertLoggedIn(req, 'Update is aid request complete');
   return await AidRequestModel.findOneAndUpdate(
     { _id: id },
-    { completed: newValue },
+    {
+      $push: {
+        history: {
+          action: newValue === true ? 'Add' : 'Remove',
+          actor: user._id,
+          details: { event: 'Completed' },
+          timestamp: new Date(),
+        },
+      },
+      completed: newValue,
+    },
     { new: true },
   );
 }

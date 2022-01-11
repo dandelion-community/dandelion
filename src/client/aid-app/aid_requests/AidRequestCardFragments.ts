@@ -21,6 +21,23 @@ export const AidRequestWorkingOnItSummaryFragments = {
   `,
 };
 
+export const AidRequestEditDrawerFragments = {
+  aidRequest: gql`
+    fragment AidRequestEditDrawerFragment on AidRequest {
+      _id
+      actionsAvailable {
+        message
+        input {
+          action
+          details {
+            event
+          }
+        }
+      }
+    }
+  `,
+};
+
 export const AidRequestCardFragments = {
   aidRequest: gql`
     fragment AidRequestCardFragment on AidRequest {
@@ -33,8 +50,10 @@ export const AidRequestCardFragments = {
       }
       ...AidRequestIsCompleteToggleFragment
       ...AidRequestWorkingOnItSummaryFragment
+      ...AidRequestEditDrawerFragment
     }
     ${AidRequestIsCompleteToggleFragments.aidRequest}
     ${AidRequestWorkingOnItSummaryFragments.aidRequest}
+    ${AidRequestEditDrawerFragments.aidRequest}
   `,
 };
