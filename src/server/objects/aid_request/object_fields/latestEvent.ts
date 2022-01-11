@@ -30,7 +30,7 @@ const latestEvent: ObjectTypeComposerFieldConfigAsObjectDefinition<
     }
     if (aidRequest.history.length === 0) {
       return `${timeAgo.format(aidRequest.createdAt)} - ${
-        aidRequest.whoRecordedItUsername
+        aidRequest.whoRecordedIt
       } recorded this`;
     }
     const event = aidRequest.history.reduce((latestEvent, currentEvent) =>

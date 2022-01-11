@@ -21,6 +21,7 @@ export interface updateIsAidRequestCompleteMutation_updateIsAidRequestComplete_w
 export interface updateIsAidRequestCompleteMutation_updateIsAidRequestComplete {
   __typename: "AidRequest";
   _id: any;
+  latestEvent: string;
   whatIsNeeded: string | null;
   whoIsItFor: string | null;
   whoRecordedIt: updateIsAidRequestCompleteMutation_updateIsAidRequestComplete_whoRecordedIt | null;
