@@ -3,7 +3,7 @@
 // @generated
 // This file was automatically generated and should not be edited.
 
-import { AidRequestUpdateStatusType } from "./../../../../../__generated__/globalTypes";
+import { AidRequestUpdateActionType, AidRequestUpdateStatusType } from "./../../../../../__generated__/globalTypes";
 
 // ====================================================
 // GraphQL mutation operation: updateIsAidRequestCompleteMutation
@@ -27,7 +27,7 @@ export interface updateIsAidRequestCompleteMutation_updateIsAidRequestComplete_a
 
 export interface updateIsAidRequestCompleteMutation_updateIsAidRequestComplete_actionsAvailable_input {
   __typename: "AidRequestActionInput";
-  action: string;
+  action: AidRequestUpdateActionType;
   details: updateIsAidRequestCompleteMutation_updateIsAidRequestComplete_actionsAvailable_input_details;
 }
 

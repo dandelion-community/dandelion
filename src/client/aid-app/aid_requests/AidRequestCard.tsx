@@ -16,7 +16,7 @@ type Props = {
 
 export default function AidRequestCard({ aidRequest }: Props): JSX.Element {
   const { openDrawer } = useDrawerOpener();
-  const { whatIsNeeded, whoIsItFor, whoRecordedIt } = aidRequest;
+  const { whatIsNeeded, whoIsItFor } = aidRequest;
   const backgroundColor = useThemeColor({}, 'cardBackground');
 
   return (

@@ -34,6 +34,14 @@ export const AidRequestHistoryEventPayloadGraphQLType =
     name: 'AidRequestHistoryEventPayload',
   });
 
+export const AidRequestHistoryEventPayloadInputType =
+  schemaComposer.createInputTC({
+    fields: {
+      event: 'AidRequestUpdateStatusType!',
+    },
+    name: 'AidRequestHistoryEventPayloadInput',
+  });
+
 export const AidRequestHistoryEventGraphQLType = schemaComposer.createObjectTC({
   fields: {
     action: 'AidRequestUpdateActionType!',
@@ -50,6 +58,14 @@ export const AidRequestActionInputGraphQLType = schemaComposer.createObjectTC({
     details: 'AidRequestHistoryEventPayload!',
   },
   name: 'AidRequestActionInput',
+});
+
+export const AidRequestActionInputInputType = schemaComposer.createInputTC({
+  fields: {
+    action: 'AidRequestUpdateActionType!',
+    details: 'AidRequestHistoryEventPayloadInput!',
+  },
+  name: 'AidRequestActionInputInput',
 });
 
 export const AidRequestActionOptionGraphQLType = schemaComposer.createObjectTC({
