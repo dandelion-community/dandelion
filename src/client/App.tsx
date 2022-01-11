@@ -35,12 +35,12 @@ export default function App() {
     return (
       <SafeAreaProvider>
         <PaperProvider theme={paperTheme}>
-          <DrawerProvider>
-            <ApolloProvider client={client}>
+          <ApolloProvider client={client}>
+            <DrawerProvider>
               <Navigation colorScheme={colorScheme} />
               <StatusBar />
-            </ApolloProvider>
-          </DrawerProvider>
+            </DrawerProvider>
+          </ApolloProvider>
         </PaperProvider>
       </SafeAreaProvider>
     );
