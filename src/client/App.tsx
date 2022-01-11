@@ -12,6 +12,7 @@ import {
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import client from './aid-app/graphql/client';
 import Navigation from './aid-app/navigation/Navigation';
+import DrawerProvider from './general-purpose/drawer/DrawerProvider';
 import useCachedResources from './hooks/useCachedResources';
 import useColorScheme from './hooks/useColorScheme';
 
@@ -34,10 +35,12 @@ export default function App() {
     return (
       <SafeAreaProvider>
         <PaperProvider theme={paperTheme}>
-          <ApolloProvider client={client}>
-            <Navigation colorScheme={colorScheme} />
-            <StatusBar />
-          </ApolloProvider>
+          <DrawerProvider>
+            <ApolloProvider client={client}>
+              <Navigation colorScheme={colorScheme} />
+              <StatusBar />
+            </ApolloProvider>
+          </DrawerProvider>
         </PaperProvider>
       </SafeAreaProvider>
     );
