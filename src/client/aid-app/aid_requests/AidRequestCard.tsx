@@ -2,9 +2,11 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import * as React from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
 import { Card, Paragraph } from 'react-native-paper';
+import PressableText from '../../general-purpose/components/light-or-dark-themed/PressableText';
 import Text from '../../general-purpose/components/light-or-dark-themed/Text';
 import { useThemeColor } from '../../general-purpose/components/light-or-dark-themed/useThemeColor';
 import useDrawerOpener from '../../general-purpose/drawer/useDrawerOpener';
+import useRootNavigation from '../navigation/useRootNavigation';
 import AidRequestCompleteToggle from './AidRequestCompleteToggle';
 import AidRequestEditDrawer from './AidRequestEditDrawer';
 import AidRequestWorkingOnItSummary from './AidRequestWorkingOnItSummary';
@@ -12,11 +14,16 @@ import type { AidRequestCardFragment } from './__generated__/AidRequestCardFragm
 
 type Props = {
   aidRequest: AidRequestCardFragment;
+  viewRequestHistory: (requestID: string) => void;
 };
 
-export default function AidRequestCard({ aidRequest }: Props): JSX.Element {
+export default function AidRequestCard({
+  aidRequest,
+  viewRequestHistory,
+}: Props): JSX.Element {
   const { openDrawer } = useDrawerOpener();
-  const { whatIsNeeded, whoIsItFor, whoRecordedIt } = aidRequest;
+  const navigation = useRootNavigation();
+  const { whatIsNeeded, whoIsItFor } = aidRequest;
   const backgroundColor = useThemeColor({}, 'cardBackground');
 
   return (
@@ -42,7 +49,9 @@ export default function AidRequestCard({ aidRequest }: Props): JSX.Element {
           </Text>
         </Paragraph>
         <Paragraph>
-          <Text>{aidRequest.latestEvent}</Text>
+          <PressableText onPress={() => viewRequestHistory(aidRequest._id)}>
+            {aidRequest.latestEvent}
+          </PressableText>
         </Paragraph>
         <AidRequestCompleteToggle aidRequest={aidRequest} />
         <AidRequestWorkingOnItSummary aidRequest={aidRequest} />
