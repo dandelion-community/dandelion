@@ -28,6 +28,7 @@ const AidRequestSchema = new Schema<AidRequestType>({
   whatIsNeeded: String,
   whoIsItFor: String,
   whoIsWorkingOnIt: [String],
+  whoRecordedIt: String,
   whoRecordedItUsername: String,
 });
 

@@ -79,7 +79,9 @@ const CREATE_AID_REQUEST_MUTATION = gql`
       createdAt
       whatIsNeeded
       whoIsItFor
-      whoRecordedItUsername
+      whoRecordedIt {
+        username
+      }
     }
   }
 `;

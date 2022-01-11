@@ -30,6 +30,7 @@ export type AidRequestType = {
   whatIsNeeded: string;
   whoIsItFor: string;
   whoIsWorkingOnIt: ObjectId[];
+  whoRecordedIt: ObjectId;
   whoRecordedItUsername: string;
   _id: string;
 };

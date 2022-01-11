@@ -16,12 +16,14 @@ async function createAidRequestResolver(
 ): Promise<AidRequestType> {
   const user = assertLoggedIn(req, 'Create aid request');
   const whoRecordedItUsername = user.username;
+  const whoRecordedIt = user._id;
   const aidRequest = new AidRequestModel({
     completed: false,
     createdAt: Date.now(),
     whatIsNeeded,
     whoIsItFor,
     whoIsWorkingOnIt: [],
+    whoRecordedIt,
     whoRecordedItUsername,
   });
   return await aidRequest.save();
