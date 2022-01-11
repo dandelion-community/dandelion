@@ -3,6 +3,8 @@
 // @generated
 // This file was automatically generated and should not be edited.
 
+import { AidRequestUpdateStatusType } from "./../../../../../__generated__/globalTypes";
+
 // ====================================================
 // GraphQL fragment: AidRequestCardFragment
 // ====================================================
@@ -18,6 +20,23 @@ export interface AidRequestCardFragment_whoIsWorkingOnItUsers {
   _id: string;
 }
 
+export interface AidRequestCardFragment_actionsAvailable_input_details {
+  __typename: "AidRequestHistoryEventPayload";
+  event: AidRequestUpdateStatusType;
+}
+
+export interface AidRequestCardFragment_actionsAvailable_input {
+  __typename: "AidRequestActionInput";
+  action: string;
+  details: AidRequestCardFragment_actionsAvailable_input_details;
+}
+
+export interface AidRequestCardFragment_actionsAvailable {
+  __typename: "AidRequestActionOption";
+  message: string;
+  input: AidRequestCardFragment_actionsAvailable_input;
+}
+
 export interface AidRequestCardFragment {
   __typename: "AidRequest";
   _id: any;
@@ -26,4 +45,5 @@ export interface AidRequestCardFragment {
   whoRecordedIt: AidRequestCardFragment_whoRecordedIt | null;
   completed: boolean | null;
   whoIsWorkingOnItUsers: (AidRequestCardFragment_whoIsWorkingOnItUsers | null)[] | null;
+  actionsAvailable: (AidRequestCardFragment_actionsAvailable | null)[] | null;
 }

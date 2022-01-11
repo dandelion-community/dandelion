@@ -35,7 +35,10 @@ async function registerResolver(
         throw new Error('User already exists');
       }
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const newUser = await UserModel.register({ username } as any, password);
+      const newUser = await UserModel.register(
+        { displayName: allowlistEntry.displayName, username } as any,
+        password,
+      );
       analytics.identify({ traits: { username }, userId: newUser.id });
       analytics.track({ event: 'Create Account', userId: newUser.id });
       req.logIn(newUser, function (err) {
@@ -43,7 +46,7 @@ async function registerResolver(
           return reject(err);
         }
         return resolve({
-          user,
+          user: newUser,
         });
       });
       // eslint-disable-next-line @typescript-eslint/no-explicit-any

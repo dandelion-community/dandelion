@@ -7,6 +7,12 @@
 // START Enums and Input Objects
 //==============================================================
 
+export enum AidRequestUpdateStatusType {
+  Completed = "Completed",
+  Created = "Created",
+  WorkingOn = "WorkingOn",
+}
+
 export enum EnumAidRequestHistoryAction {
   Add = "Add",
   Remove = "Remove",
@@ -14,6 +20,7 @@ export enum EnumAidRequestHistoryAction {
 
 export enum EnumAidRequestHistoryDetailsEvent {
   Completed = "Completed",
+  Created = "Created",
   WorkingOn = "WorkingOn",
 }
 

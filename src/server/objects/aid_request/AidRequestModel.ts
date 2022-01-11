@@ -9,7 +9,7 @@ import type {
 const AidRequestHistoryEventPayloadSchema =
   new Schema<AidRequestHistoryEventPayload>({
     event: {
-      enum: ['Completed', 'WorkingOn'],
+      enum: ['Completed', 'Created', 'WorkingOn'],
       type: String,
     },
   });

@@ -7,20 +7,35 @@ export type AidRequestHistoryEventPayload =
     }
   | {
       event: 'WorkingOn';
+    }
+  | {
+      event: 'Created';
     };
+
+export type AidRequestActionType = 'Add' | 'Remove';
 
 export type AidRequestHistoryEvent = {
   timestamp: Date;
   actor: ObjectId;
   details: AidRequestHistoryEventPayload;
-  action: 'Add' | 'Remove';
+  action: AidRequestActionType;
+};
+
+export type AidRequestActionInput = {
+  action: AidRequestActionType;
+  details: AidRequestHistoryEventPayload;
+};
+
+export type AidRequestActionOption = {
+  input: AidRequestActionInput;
+  message: string;
 };
 
 export type AidRequestHistoryEventForGraphQL = {
   timestamp: Date;
   actor: () => Promise<Express.User | null>;
   details: AidRequestHistoryEventPayload;
-  action: 'Add' | 'Remove';
+  action: AidRequestActionType;
 };
 
 export type AidRequestType = {

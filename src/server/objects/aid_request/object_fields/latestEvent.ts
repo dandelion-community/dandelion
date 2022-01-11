@@ -55,6 +55,8 @@ function getActionText(details: AidRequestHistoryEventPayload): string {
       return 'started working on it';
     case 'Completed':
       return 'completed this';
+    case 'Created':
+      return 'created this';
   }
 }
 

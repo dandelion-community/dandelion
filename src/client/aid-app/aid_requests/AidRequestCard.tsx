@@ -6,6 +6,7 @@ import Text from '../../general-purpose/components/light-or-dark-themed/Text';
 import { useThemeColor } from '../../general-purpose/components/light-or-dark-themed/useThemeColor';
 import useDrawerOpener from '../../general-purpose/drawer/useDrawerOpener';
 import AidRequestCompleteToggle from './AidRequestCompleteToggle';
+import AidRequestEditDrawer from './AidRequestEditDrawer';
 import AidRequestWorkingOnItSummary from './AidRequestWorkingOnItSummary';
 import type { AidRequestCardFragment } from './__generated__/AidRequestCardFragment';
 
@@ -17,16 +18,6 @@ export default function AidRequestCard({ aidRequest }: Props): JSX.Element {
   const { openDrawer } = useDrawerOpener();
   const { whatIsNeeded, whoIsItFor, whoRecordedIt } = aidRequest;
   const backgroundColor = useThemeColor({}, 'cardBackground');
-
-  const renderEditDrawerContents = (): React.ReactElement => {
-    return (
-      <View style={{ height: 200, width: 200 }}>
-        <Text>
-          For <Text style={{ fontWeight: 'bold' }}>{whoIsItFor}</Text>
-        </Text>
-      </View>
-    );
-  };
 
   return (
     <Card elevation={4} style={[styles.card, { backgroundColor }]}>
@@ -58,6 +49,10 @@ export default function AidRequestCard({ aidRequest }: Props): JSX.Element {
       </Card.Content>
     </Card>
   );
+
+  function renderEditDrawerContents(): React.ReactElement {
+    return <AidRequestEditDrawer aidRequest={aidRequest} />;
+  }
 }
 
 const styles = StyleSheet.create({
