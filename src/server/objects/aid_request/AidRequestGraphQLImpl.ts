@@ -6,11 +6,13 @@ import updateWhetherIAmWorkingOnThisAidRequest from './mutations/updateWhetherIA
 import history from './object_fields/history';
 import latestEvent from './object_fields/latestEvent';
 import whoIsWorkingOnItUsers from './object_fields/whoIsWorkingOnItUsers';
+import whoRecordedIt from './object_fields/whoRecordedIt';
 
 AidRequestGraphQLType.addFields({
   history,
   latestEvent,
   whoIsWorkingOnItUsers,
+  whoRecordedIt,
 });
 
 const AidRequest = {

@@ -28,8 +28,7 @@ export default function AidRequestWorkingOnItSummary({
   const viewer = useLoggedInViewer();
   const amIAlreadyMarkedAsWorkingOnIt =
     whoIsWorkingOnItUsers?.some(
-      (personWhoIsWorkingOnIt) =>
-        personWhoIsWorkingOnIt?.username === viewer.username,
+      (personWhoIsWorkingOnIt) => personWhoIsWorkingOnIt?._id === viewer.id,
     ) ?? false;
 
   const [
@@ -80,7 +79,7 @@ export default function AidRequestWorkingOnItSummary({
     } else {
       return (
         <Text>
-          {filterNulls(displayList.map((node) => node?.username)).join(', ')}
+          {filterNulls(displayList.map((node) => node?.displayName)).join(', ')}
         </Text>
       );
     }
@@ -146,14 +145,14 @@ function processOptimisticValue(
       }
       return [
         ...(whoIsWorkingOnItUsers ?? []),
-        { __typename: 'User', _id: viewer.id, username: viewer.username },
+        { __typename: 'User', _id: viewer.id, displayName: viewer.displayName },
       ];
     case false:
       if (!amIAlreadyMarkedAsWorkingOnIt) {
         return whoIsWorkingOnItUsers;
       }
       return (whoIsWorkingOnItUsers ?? []).filter(
-        (user) => user?.username !== viewer.username,
+        (user) => user?._id !== viewer.id,
       );
   }
 }

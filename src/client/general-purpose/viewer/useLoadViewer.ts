@@ -9,6 +9,7 @@ const VIEWER_QUERY = gql`
     me {
       _id
       username
+      displayName
     }
   }
 `;
@@ -17,19 +18,23 @@ export default function useLoadViewer(): Viewer {
   const { data, loading } = useQuery<ViewerQuery>(VIEWER_QUERY);
   const username = data?.me?.username;
   const id = data?.me?._id;
+  const displayName = data?.me?.displayName || username;
   return React.useMemo((): Viewer => {
     if (loading) {
       return {
+        displayName: Loading,
         id: Loading,
         username: Loading,
       };
-    } else if (username == null || id == null) {
+    } else if (username == null || id == null || displayName == null) {
       return {
+        displayName: undefined,
         id: undefined,
         username: undefined,
       };
     } else {
       return {
+        displayName,
         id,
         username,
       };

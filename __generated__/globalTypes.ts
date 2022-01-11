@@ -7,12 +7,37 @@
 // START Enums and Input Objects
 //==============================================================
 
+export enum EnumAidRequestHistoryAction {
+  Add = "Add",
+  Remove = "Remove",
+}
+
+export enum EnumAidRequestHistoryDetailsEvent {
+  Completed = "Completed",
+  WorkingOn = "WorkingOn",
+}
+
+export interface FilterFindManyAidRequestHistoryDetailsInput {
+  event?: EnumAidRequestHistoryDetailsEvent | null;
+  _id?: any | null;
+}
+
+export interface FilterFindManyAidRequestHistoryInput {
+  action?: EnumAidRequestHistoryAction | null;
+  actor?: any | null;
+  details?: FilterFindManyAidRequestHistoryDetailsInput | null;
+  timestamp?: any | null;
+  _id?: any | null;
+}
+
 export interface FilterFindManyAidRequestInput {
   completed?: boolean | null;
   createdAt?: any | null;
+  history?: (FilterFindManyAidRequestHistoryInput | null)[] | null;
   whatIsNeeded?: string | null;
   whoIsItFor?: string | null;
   whoIsWorkingOnIt?: (string | null)[] | null;
+  whoRecordedIt?: string | null;
   whoRecordedItUsername?: string | null;
   _id?: any | null;
   _operators?: FilterFindManyAidRequestOperatorsInput | null;

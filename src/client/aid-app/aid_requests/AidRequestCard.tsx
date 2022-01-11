@@ -12,7 +12,7 @@ type Props = {
 };
 
 export default function AidRequestCard({ aidRequest }: Props): JSX.Element {
-  const { whatIsNeeded, whoIsItFor, whoRecordedItUsername } = aidRequest;
+  const { whatIsNeeded, whoIsItFor, whoRecordedIt } = aidRequest;
   const backgroundColor = useThemeColor({}, 'cardBackground');
   return (
     <Card elevation={4} style={[styles.card, { backgroundColor }]}>
@@ -24,7 +24,7 @@ export default function AidRequestCard({ aidRequest }: Props): JSX.Element {
           </Text>
         </Paragraph>
         <Paragraph>
-          <Text>Recorded by {whoRecordedItUsername}</Text>
+          <Text>Recorded by {whoRecordedIt?.displayName ?? 'Unknown'}</Text>
         </Paragraph>
         <AidRequestCompleteToggle aidRequest={aidRequest} />
         <AidRequestWorkingOnItSummary aidRequest={aidRequest} />

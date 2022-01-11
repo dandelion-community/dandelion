@@ -14,7 +14,7 @@ export const AidRequestWorkingOnItSummaryFragments = {
     fragment AidRequestWorkingOnItSummaryFragment on AidRequest {
       _id
       whoIsWorkingOnItUsers {
-        username
+        displayName
         _id
       }
     }
@@ -27,7 +27,9 @@ export const AidRequestCardFragments = {
       _id
       whatIsNeeded
       whoIsItFor
-      whoRecordedItUsername
+      whoRecordedIt {
+        displayName
+      }
       ...AidRequestIsCompleteToggleFragment
       ...AidRequestWorkingOnItSummaryFragment
     }
