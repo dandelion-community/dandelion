@@ -9,6 +9,7 @@ import type {
   AidRequestHistoryEventPayload,
   AidRequestType,
 } from '../AidRequestModelTypes';
+import getWhoRecordedRequest from '../helpers/getWhoRecordedRequest';
 
 TimeAgo.addDefaultLocale(en);
 const timeAgo = new TimeAgo('en-US');
@@ -29,8 +30,9 @@ const latestEvent: ObjectTypeComposerFieldConfigAsObjectDefinition<
       throw new Error('No request found for this ID');
     }
     if (aidRequest.history.length === 0) {
+    const recorder= await getWhoRecordedRequest(aidRequest);
       return `${timeAgo.format(aidRequest.createdAt)} - ${
-        aidRequest.whoRecordedIt
+        recorder?.displayName ?? 'Unknown'
       } recorded this`;
     }
     const event = aidRequest.history.reduce((latestEvent, currentEvent) =>

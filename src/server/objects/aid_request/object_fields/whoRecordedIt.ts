@@ -1,9 +1,9 @@
 import type { ObjectTypeComposerFieldConfigAsObjectDefinition } from 'graphql-compose';
 import { Document } from 'mongoose';
 import assertLoggedIn from '../../../graphql/assertLoggedIn';
-import { UserModel } from '../../user/UserModel';
 import { AidRequestModel } from '../AidRequestModel';
 import type { AidRequestType } from '../AidRequestModelTypes';
+import getWhoRecordedRequest from '../helpers/getWhoRecordedRequest';
 
 const whoRecordedIt: ObjectTypeComposerFieldConfigAsObjectDefinition<
   Document<string, unknown, AidRequestType>,
@@ -20,12 +20,7 @@ const whoRecordedIt: ObjectTypeComposerFieldConfigAsObjectDefinition<
     if (aidRequest == null) {
       return null;
     }
-    const { whoRecordedIt, whoRecordedItUsername } = aidRequest;
-    if (whoRecordedIt != null) {
-      return await UserModel.findById(whoRecordedIt);
-    } else {
-      return await UserModel.findOne({ username: whoRecordedItUsername });
-    }
+    return await getWhoRecordedRequest(aidRequest);
   },
   type: 'User',
 };

@@ -51,9 +51,6 @@ export default function AidRequestCard({ aidRequest }: Props): JSX.Element {
           </Text>
         </Paragraph>
         <Paragraph>
-          <Text>Recorded by {whoRecordedIt?.displayName ?? 'Unknown'}</Text>
-        </Paragraph>
-        <Paragraph>
           <Text>{aidRequest.latestEvent}</Text>
         </Paragraph>
         <AidRequestCompleteToggle aidRequest={aidRequest} />
