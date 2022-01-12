@@ -23,6 +23,7 @@ const linking: LinkingOptions<RootStackParamList> = {
           RequestExplorerTabStackContainer: {
             screens: {
               RequestExplorer: '',
+              RequestHistory: 'request_history',
             },
           },
           ThreeLinesMenuTabStackContainer: {

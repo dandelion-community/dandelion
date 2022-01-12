@@ -29,6 +29,7 @@ export type CreateRequestArgs = Partial<{ for_: WhoIsThisFor }>;
 
 export type RequestExplorerStackParamList = {
   RequestExplorer: NavigatorScreenParams<RootTabParamList> | undefined;
+  RequestHistory: { requestID: string };
 };
 
 export type ThreeLinesMenuStackParamList = {

@@ -10,6 +10,7 @@ import {
   RootTabScreenProps,
 } from '../../../NavigationTypes';
 import RequestExplorerRootScreen from './RequestExplorerScreen';
+import RequestHistoryScreen from './RequestHistoryScreen';
 
 const Stack = createNativeStackNavigator<RequestExplorerStackParamList>();
 
@@ -33,6 +34,18 @@ export default function RequestExplorerTabStackContainer({
               </Appbar.Header>
             ),
             title: 'All Requests',
+          })}
+        />
+        <Stack.Screen
+          component={RequestHistoryScreen}
+          name="RequestHistory"
+          options={() => ({
+            header: ({ options }) => (
+              <Appbar.Header style={{ backgroundColor: headerBackgroundColor }}>
+                <Appbar.Content title={options.title} />
+              </Appbar.Header>
+            ),
+            title: 'Request History',
           })}
         />
       </Stack.Navigator>
