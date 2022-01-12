@@ -28,7 +28,6 @@ export interface ListOfAidRequestsQuery_allAidRequests_edges_node_whoRecordedIt 
 
 export interface ListOfAidRequestsQuery_allAidRequests_edges_node_whoIsWorkingOnItUsers {
   __typename: "User";
-  displayName: string;
   _id: string;
 }
 
@@ -45,6 +44,7 @@ export interface ListOfAidRequestsQuery_allAidRequests_edges_node_actionsAvailab
 
 export interface ListOfAidRequestsQuery_allAidRequests_edges_node_actionsAvailable {
   __typename: "AidRequestActionOption";
+  icon: string | null;
   message: string;
   input: ListOfAidRequestsQuery_allAidRequests_edges_node_actionsAvailable_input;
 }
@@ -52,11 +52,11 @@ export interface ListOfAidRequestsQuery_allAidRequests_edges_node_actionsAvailab
 export interface ListOfAidRequestsQuery_allAidRequests_edges_node {
   __typename: "AidRequest";
   _id: any;
+  completed: boolean | null;
   latestEvent: string;
   whatIsNeeded: string | null;
   whoIsItFor: string | null;
   whoRecordedIt: ListOfAidRequestsQuery_allAidRequests_edges_node_whoRecordedIt | null;
-  completed: boolean | null;
   whoIsWorkingOnItUsers: (ListOfAidRequestsQuery_allAidRequests_edges_node_whoIsWorkingOnItUsers | null)[] | null;
   actionsAvailable: (ListOfAidRequestsQuery_allAidRequests_edges_node_actionsAvailable | null)[] | null;
 }

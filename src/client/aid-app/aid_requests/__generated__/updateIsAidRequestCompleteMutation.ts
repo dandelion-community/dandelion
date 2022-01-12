@@ -33,6 +33,7 @@ export interface updateIsAidRequestCompleteMutation_updateIsAidRequestComplete_a
 
 export interface updateIsAidRequestCompleteMutation_updateIsAidRequestComplete_actionsAvailable {
   __typename: "AidRequestActionOption";
+  icon: string | null;
   message: string;
   input: updateIsAidRequestCompleteMutation_updateIsAidRequestComplete_actionsAvailable_input;
 }

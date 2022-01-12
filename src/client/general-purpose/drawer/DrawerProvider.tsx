@@ -16,6 +16,9 @@ export default function DrawerProvider({
   }>({ renderer: undefined });
   const value = React.useMemo(
     () => ({
+      closeDrawer: () => {
+        setRenderer({ renderer: undefined });
+      },
       openDrawer: (renderer: () => React.ReactElement) =>
         setRenderer({ renderer }),
     }),

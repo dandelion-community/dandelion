@@ -4,10 +4,8 @@ import { Pressable, StyleSheet, View } from 'react-native';
 import { Card, Paragraph } from 'react-native-paper';
 import Text from '../../general-purpose/components/light-or-dark-themed/Text';
 import { useThemeColor } from '../../general-purpose/components/light-or-dark-themed/useThemeColor';
-import useDrawerOpener from '../../general-purpose/drawer/useDrawerOpener';
-import AidRequestCompleteToggle from './AidRequestCompleteToggle';
+import useDrawerContext from '../../general-purpose/drawer/useDrawerContext';
 import AidRequestEditDrawer from './AidRequestEditDrawer';
-import AidRequestWorkingOnItSummary from './AidRequestWorkingOnItSummary';
 import type { AidRequestCardFragment } from './__generated__/AidRequestCardFragment';
 
 type Props = {
@@ -15,7 +13,7 @@ type Props = {
 };
 
 export default function AidRequestCard({ aidRequest }: Props): JSX.Element {
-  const { openDrawer } = useDrawerOpener();
+  const { openDrawer } = useDrawerContext();
   const { whatIsNeeded, whoIsItFor } = aidRequest;
   const backgroundColor = useThemeColor({}, 'cardBackground');
 
@@ -44,8 +42,6 @@ export default function AidRequestCard({ aidRequest }: Props): JSX.Element {
         <Paragraph>
           <Text>{aidRequest.latestEvent}</Text>
         </Paragraph>
-        <AidRequestCompleteToggle aidRequest={aidRequest} />
-        <AidRequestWorkingOnItSummary aidRequest={aidRequest} />
       </Card.Content>
     </Card>
   );

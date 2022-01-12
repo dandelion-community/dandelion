@@ -27,6 +27,7 @@ export type AidRequestActionInput = {
 };
 
 export type AidRequestActionOption = {
+  icon: string | null;
   input: AidRequestActionInput;
   message: string;
 };
