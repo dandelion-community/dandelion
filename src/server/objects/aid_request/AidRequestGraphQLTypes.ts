@@ -70,6 +70,7 @@ export const AidRequestActionInputInputType = schemaComposer.createInputTC({
 
 export const AidRequestActionOptionGraphQLType = schemaComposer.createObjectTC({
   fields: {
+    icon: 'String',
     input: 'AidRequestActionInput!',
     message: 'String!',
   },

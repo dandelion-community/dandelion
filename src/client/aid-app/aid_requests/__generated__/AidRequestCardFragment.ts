@@ -16,7 +16,6 @@ export interface AidRequestCardFragment_whoRecordedIt {
 
 export interface AidRequestCardFragment_whoIsWorkingOnItUsers {
   __typename: "User";
-  displayName: string;
   _id: string;
 }
 
@@ -33,6 +32,7 @@ export interface AidRequestCardFragment_actionsAvailable_input {
 
 export interface AidRequestCardFragment_actionsAvailable {
   __typename: "AidRequestActionOption";
+  icon: string | null;
   message: string;
   input: AidRequestCardFragment_actionsAvailable_input;
 }
@@ -40,11 +40,11 @@ export interface AidRequestCardFragment_actionsAvailable {
 export interface AidRequestCardFragment {
   __typename: "AidRequest";
   _id: any;
+  completed: boolean | null;
   latestEvent: string;
   whatIsNeeded: string | null;
   whoIsItFor: string | null;
   whoRecordedIt: AidRequestCardFragment_whoRecordedIt | null;
-  completed: boolean | null;
   whoIsWorkingOnItUsers: (AidRequestCardFragment_whoIsWorkingOnItUsers | null)[] | null;
   actionsAvailable: (AidRequestCardFragment_actionsAvailable | null)[] | null;
 }
