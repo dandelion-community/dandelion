@@ -60,7 +60,6 @@ export default function CreateRequestForm({
       whoIsItFor,
     };
     setWhatIsNeeded('');
-    setwhoIsItFor('');
     await runCreateRequestMutation({
       variables,
     });
