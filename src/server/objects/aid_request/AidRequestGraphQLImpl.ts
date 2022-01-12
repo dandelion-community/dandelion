@@ -1,6 +1,7 @@
 import { createAssertLoggedInMiddleware } from '../../graphql/assertLoggedIn';
 import { AidRequestGraphQLType } from './AidRequestGraphQLTypes';
 import createAidRequest from './mutations/createAidRequest';
+import editAidRequest from './mutations/editAidRequest';
 import updateIsAidRequestComplete from './mutations/updateIsAidRequestComplete';
 import updateWhetherIAmWorkingOnThisAidRequest from './mutations/updateWhetherIAmWorkingOnThisAidRequest';
 import actionsAvailable from './object_fields/actionsAvailable';
@@ -20,6 +21,7 @@ AidRequestGraphQLType.addFields({
 const AidRequest = {
   MutationFields: {
     createAidRequest,
+    editAidRequest,
     updateIsAidRequestComplete,
     updateWhetherIAmWorkingOnThisAidRequest,
   },

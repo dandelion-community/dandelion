@@ -22,7 +22,6 @@ export default function AidRequestCard({
   viewRequestHistory,
 }: Props): JSX.Element {
   const { openDrawer } = useDrawerOpener();
-  const navigation = useRootNavigation();
   const { whatIsNeeded, whoIsItFor } = aidRequest;
   const backgroundColor = useThemeColor({}, 'cardBackground');
 

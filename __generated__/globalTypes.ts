@@ -7,6 +7,11 @@
 // START Enums and Input Objects
 //==============================================================
 
+export enum AidRequestUpdateActionType {
+  Add = "Add",
+  Remove = "Remove",
+}
+
 export enum AidRequestUpdateStatusType {
   Completed = "Completed",
   Created = "Created",
@@ -22,6 +27,15 @@ export enum EnumAidRequestHistoryDetailsEvent {
   Completed = "Completed",
   Created = "Created",
   WorkingOn = "WorkingOn",
+}
+
+export interface AidRequestActionInputInput {
+  action: AidRequestUpdateActionType;
+  details: AidRequestHistoryEventPayloadInput;
+}
+
+export interface AidRequestHistoryEventPayloadInput {
+  event: AidRequestUpdateStatusType;
 }
 
 export interface FilterFindManyAidRequestHistoryDetailsInput {

@@ -3,7 +3,7 @@
 // @generated
 // This file was automatically generated and should not be edited.
 
-import { FilterFindManyAidRequestInput, AidRequestUpdateStatusType } from "./../../../../../__generated__/globalTypes";
+import { FilterFindManyAidRequestInput, AidRequestUpdateActionType, AidRequestUpdateStatusType } from "./../../../../../__generated__/globalTypes";
 
 // ====================================================
 // GraphQL query operation: ListOfAidRequestsQuery
@@ -39,7 +39,7 @@ export interface ListOfAidRequestsQuery_allAidRequests_edges_node_actionsAvailab
 
 export interface ListOfAidRequestsQuery_allAidRequests_edges_node_actionsAvailable_input {
   __typename: "AidRequestActionInput";
-  action: string;
+  action: AidRequestUpdateActionType;
   details: ListOfAidRequestsQuery_allAidRequests_edges_node_actionsAvailable_input_details;
 }
 
