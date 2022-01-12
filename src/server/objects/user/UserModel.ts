@@ -1,3 +1,4 @@
+import MongoStore from 'connect-mongo';
 import dotenv from 'dotenv';
 import type { Express } from 'express';
 import expressSession from 'express-session';
@@ -6,11 +7,12 @@ import type {
   PassportLocalModel,
   // prettier expects a comma but "editor.codeActionsOnSave": { "source.organizeImports": true } removes the comma
   // eslint-disable-next-line prettier/prettier
-  PassportLocalSchema
+  PassportLocalSchema,
 } from 'mongoose';
 import mongoose, { Schema } from 'mongoose';
 import passport from 'passport';
 import passportLocalMongoose from 'passport-local-mongoose';
+import { MONGO_DB_URI } from '../../mongo/client';
 import { AidRequestReference } from '../aid_request/AidRequestModelTypes';
 import type { UserDocType } from './UserModelTypes';
 
@@ -42,6 +44,10 @@ if (SESSION_SECRET == null) {
 }
 
 export function initUserModels(app: Express): void {
+  const store = MongoStore.create({
+    mongoUrl: MONGO_DB_URI,
+    ttl: 1000 * 365 * 24 * 60 * 60,
+  });
   const sessionConfig = expressSession({
     cookie: {
       maxAge: 1000 * 3600 * 24 * 365 * 1000,
@@ -52,6 +58,7 @@ export function initUserModels(app: Express): void {
     // forces a session that is “uninitialized” to be saved to the store
     saveUninitialized: false,
     secret: SESSION_SECRET as string,
+    store,
   });
   app.use(sessionConfig);
   app.use(passport.initialize());

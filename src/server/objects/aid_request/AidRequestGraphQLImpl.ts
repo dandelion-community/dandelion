@@ -2,8 +2,6 @@ import { createAssertLoggedInMiddleware } from '../../graphql/assertLoggedIn';
 import { AidRequestGraphQLType } from './AidRequestGraphQLTypes';
 import createAidRequest from './mutations/createAidRequest';
 import editAidRequest from './mutations/editAidRequest';
-import updateIsAidRequestComplete from './mutations/updateIsAidRequestComplete';
-import updateWhetherIAmWorkingOnThisAidRequest from './mutations/updateWhetherIAmWorkingOnThisAidRequest';
 import actionsAvailable from './object_fields/actionsAvailable';
 import history from './object_fields/history';
 import latestEvent from './object_fields/latestEvent';
@@ -22,8 +20,6 @@ const AidRequest = {
   MutationFields: {
     createAidRequest,
     editAidRequest,
-    updateIsAidRequestComplete,
-    updateWhetherIAmWorkingOnThisAidRequest,
   },
   QueryFields: {
     allAidRequests: AidRequestGraphQLType.getResolver('connection', [
