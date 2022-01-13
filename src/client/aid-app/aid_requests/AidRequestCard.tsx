@@ -1,9 +1,10 @@
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import * as React from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
-import { Card, Paragraph } from 'react-native-paper';
+import { Card } from 'react-native-paper';
 import PressableText from '../../general-purpose/components/light-or-dark-themed/PressableText';
 import Text from '../../general-purpose/components/light-or-dark-themed/Text';
+import useColorScheme from '../../general-purpose/components/light-or-dark-themed/useColorScheme';
 import { useThemeColor } from '../../general-purpose/components/light-or-dark-themed/useThemeColor';
 import useDrawerContext from '../../general-purpose/drawer/useDrawerContext';
 import AidRequestEditDrawer from './AidRequestEditDrawer';
@@ -21,35 +22,32 @@ export default function AidRequestCard({
   const { openDrawer } = useDrawerContext();
   const { whatIsNeeded, whoIsItFor } = aidRequest;
   const backgroundColor = useThemeColor({}, 'cardBackground');
+  const colorScheme = useColorScheme();
 
   return (
-    <Card elevation={4} style={[styles.card, { backgroundColor }]}>
-      <Card.Title
-        right={() => (
-          <View style={{ padding: 4 }}>
-            <Pressable onPress={() => openDrawer(renderEditDrawerContents)}>
-              <MaterialCommunityIcons
-                color="white"
-                name="dots-vertical"
-                size={24}
-              />
-            </Pressable>
-          </View>
-        )}
-        title={whatIsNeeded}
-      />
-      <Card.Content>
-        <Paragraph>
-          <Text>
-            For <Text style={{ fontWeight: 'bold' }}>{whoIsItFor}!</Text>
-          </Text>
-        </Paragraph>
-        <Paragraph>
-          <PressableText onPress={() => viewRequestHistory(aidRequest._id)}>
-            {aidRequest.latestEvent}
-          </PressableText>
-        </Paragraph>
-      </Card.Content>
+    <Card elevation={8} style={[styles.card, { backgroundColor }]}>
+      <View style={[styles.row, styles.topRow]}>
+        <Text>{whatIsNeeded}</Text>
+        <View>
+          <Pressable onPress={() => openDrawer(renderEditDrawerContents)}>
+            <MaterialCommunityIcons
+              color={colorScheme === 'light' ? 'black' : 'white'}
+              name="dots-vertical"
+              size={24}
+            />
+          </Pressable>
+        </View>
+      </View>
+      <View style={styles.row}>
+        <Text style={{ fontSize: 12 }}>
+          for <Text style={{ fontWeight: 'bold' }}>{whoIsItFor}</Text>
+        </Text>
+      </View>
+      <View style={[styles.row, styles.bottomRow]}>
+        <PressableText onPress={() => viewRequestHistory(aidRequest._id)}>
+          {aidRequest.latestEvent}
+        </PressableText>
+      </View>
     </Card>
   );
 
@@ -59,8 +57,32 @@ export default function AidRequestCard({
 }
 
 const styles = StyleSheet.create({
+  bottomRow: {
+    height: 26,
+    paddingTop: 8,
+  },
   card: {
     alignSelf: 'stretch',
+    elevation: 8,
+    flexDirection: 'column',
     margin: 10,
+    paddingLeft: 8,
+    paddingVertical: 8,
+    shadowColor: '#000',
+    shadowOffset: {
+      height: 4,
+      width: 4,
+    },
+    shadowOpacity: 0.3,
+    shadowRadius: 4.65,
+  },
+  row: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: '100%',
+  },
+  topRow: {
+    paddingBottom: 8,
   },
 });

@@ -4,6 +4,7 @@ import type { ListRenderItemInfo } from 'react-native';
 import { FlatList, Image, StyleSheet, View } from 'react-native';
 import { List, Paragraph } from 'react-native-paper';
 import filterNulls from '../../../shared/utils/filterNulls';
+import useColorScheme from '../../general-purpose/components/light-or-dark-themed/useColorScheme';
 import useDrawerContext from '../../general-purpose/drawer/useDrawerContext';
 import DebouncedLoadingIndicator from '../../general-purpose/utils/DebouncedLoadingIndicator';
 import { AidRequestCardFragments } from './AidRequestCardFragments';
@@ -28,6 +29,7 @@ export default function AidRequestEditDrawer({
   const { closeDrawer } = useDrawerContext();
   const { actionsAvailable, _id: aidRequestID } = aidRequest;
   const actions = filterNulls(actionsAvailable ?? []);
+  const scheme = useColorScheme();
   const [runEditAidRequestMutation, editAidRequestMutationState] = useMutation<
     editAidRequestMutation,
     editAidRequestMutationVariables
@@ -56,7 +58,10 @@ export default function AidRequestEditDrawer({
         left={() => (
           <View style={styles.icon}>
             {icon == null ? null : (
-              <Image source={{ uri: icon }} style={styles.icon} />
+              <Image
+                source={{ uri: `/icons/${scheme}/${icon}.png` }}
+                style={styles.icon}
+              />
             )}
           </View>
         )}
