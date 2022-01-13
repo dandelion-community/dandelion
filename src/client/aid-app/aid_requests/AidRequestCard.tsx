@@ -41,7 +41,7 @@ export default function AidRequestCard({
       <Card.Content>
         <Paragraph>
           <Text>
-            For <Text style={{ fontWeight: 'bold' }}>{whoIsItFor}</Text>
+            For <Text style={{ fontWeight: 'bold' }}>{whoIsItFor}!</Text>
           </Text>
         </Paragraph>
         <Paragraph>
