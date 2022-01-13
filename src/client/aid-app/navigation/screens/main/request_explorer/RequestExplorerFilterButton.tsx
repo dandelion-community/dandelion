@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
 import Text from '../../../../../general-purpose/components/light-or-dark-themed/Text';
+import useColorScheme from '../../../../../general-purpose/components/light-or-dark-themed/useColorScheme';
 import { useLoggedInViewer } from '../../../../../general-purpose/viewer/ViewerContext';
 import { ListOfAidRequestsQuery_allAidRequests_edges_node } from '../../../../aid_requests/__generated__/ListOfAidRequestsQuery';
 import type { FilterType } from './filters/RequestExplorerFiltersContext';
@@ -39,9 +40,15 @@ export default function RequestExplorerFilterButton({
   const { id: viewerID } = useLoggedInViewer();
   const context = { viewerID };
   const enabled = getCurrentToggleState(filter, context);
+  const theme = useColorScheme();
+  const style = [
+    styles.container,
+    theme === 'light' ? styles.containerLight : styles.containerDark,
+    ...(enabled ? [theme === 'light' ? styles.onLight : styles.onDark] : []),
+  ];
   return (
     <Pressable onPress={onPress}>
-      <View style={[styles.container, ...(enabled ? [styles.on] : [])]}>
+      <View style={style}>
         <Text>{label}</Text>
       </View>
     </Pressable>
@@ -59,15 +66,24 @@ export default function RequestExplorerFilterButton({
 const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
-    backgroundColor: '#333',
-    borderColor: '#444',
     borderRadius: 20,
     borderWidth: 3,
     justifyContent: 'center',
     margin: 2,
     padding: 6,
   },
-  on: {
+  containerDark: {
+    backgroundColor: '#333',
+    borderColor: '#444',
+  },
+  containerLight: {
+    backgroundColor: '#bbb',
+    borderColor: '#b5b5b5',
+  },
+  onDark: {
     borderColor: '#bbb',
+  },
+  onLight: {
+    borderColor: '#333',
   },
 });

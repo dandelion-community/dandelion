@@ -25,6 +25,7 @@ initMongoClient();
 initUserModels(app);
 initGraphQL(app);
 
+app.use(express.static(path.join(rootDirectory, 'assets')));
 app.use(express.static(path.join(rootDirectory, 'web-build')));
 app.get('/*', (req, res) =>
   res.sendFile('web-build/index.html', { root: rootDirectory }),

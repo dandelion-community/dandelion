@@ -12,9 +12,9 @@ import {
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import client from './aid-app/graphql/client';
 import Navigation from './aid-app/navigation/Navigation';
+import useColorScheme from './general-purpose/components/light-or-dark-themed/useColorScheme';
 import DrawerProvider from './general-purpose/drawer/DrawerProvider';
 import useCachedResources from './hooks/useCachedResources';
-import useColorScheme from './hooks/useColorScheme';
 
 const DARK_THEME = {
   ...DarkTheme,
