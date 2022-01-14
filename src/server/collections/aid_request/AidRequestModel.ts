@@ -19,6 +19,7 @@ const AidRequestHistoryEventSchema = new Schema<AidRequestHistoryEvent>({
   actor: UserReference,
   details: AidRequestHistoryEventPayloadSchema,
   timestamp: Date,
+  undoID: String,
 });
 
 const AidRequestSchema = new Schema<AidRequestType>({

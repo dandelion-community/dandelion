@@ -6,18 +6,14 @@ import client from '../../aid-app/graphql/client';
 import Text from '../../general-purpose/components/light-or-dark-themed/Text';
 import View from '../../general-purpose/components/light-or-dark-themed/View';
 import TextInput from '../../general-purpose/components/TextInput';
+import useToastContext from '../../general-purpose/toast/useToastContext';
 import type {
   CreateAidRequestMutation,
   CreateAidRequestMutationVariables,
 } from './__generated__/CreateAidRequestMutation';
 
-type Props = {
-  setShowCreationToast: (showCreationToast: boolean) => void;
-};
-
-export default function CreateRequestForm({
-  setShowCreationToast,
-}: Props): JSX.Element {
+export default function CreateRequestForm(): JSX.Element {
+  const { publishToast } = useToastContext();
   const [whoIsItFor, setwhoIsItFor] = React.useState<string>('');
   const [whatIsNeeded, setWhatIsNeeded] = React.useState<string>('');
   const areInputsValid = whoIsItFor.length > 0 && whatIsNeeded.length > 0;
@@ -54,7 +50,7 @@ export default function CreateRequestForm({
     </>
   );
   async function submit(): Promise<void> {
-    setShowCreationToast(false);
+    publishToast(undefined);
     const variables = {
       whatIsNeeded,
       whoIsItFor,
@@ -63,7 +59,9 @@ export default function CreateRequestForm({
     await runCreateRequestMutation({
       variables,
     });
-    setShowCreationToast(true);
+    publishToast({
+      message: `Recorded request: ${whatIsNeeded} for ${whoIsItFor}`,
+    });
     await client.refetchQueries({ include: ['ListOfAidRequestsQuery'] });
   }
 }

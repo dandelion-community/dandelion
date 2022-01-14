@@ -48,6 +48,7 @@ export interface FilterFindManyAidRequestHistoryInput {
   actor?: any | null;
   details?: FilterFindManyAidRequestHistoryDetailsInput | null;
   timestamp?: any | null;
+  undoID?: string | null;
   _id?: any | null;
 }
 

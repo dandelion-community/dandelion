@@ -15,10 +15,11 @@ export type AidRequestHistoryEventPayload =
 export type AidRequestActionType = 'Add' | 'Remove';
 
 export type AidRequestHistoryEvent = {
-  timestamp: Date;
+  action: AidRequestActionType;
   actor: ObjectId;
   details: AidRequestHistoryEventPayload;
-  action: AidRequestActionType;
+  timestamp: Date;
+  undoID: string;
 };
 
 export type AidRequestActionInput = {
@@ -33,10 +34,13 @@ export type AidRequestActionOption = {
 };
 
 export type AidRequestHistoryEventForGraphQL = {
-  timestamp: Date;
-  actor: () => Promise<Express.User | null>;
-  details: AidRequestHistoryEventPayload;
   action: AidRequestActionType;
+  actor: () => Promise<Express.User | null>;
+  aidRequest: () => Promise<AidRequestType | null>;
+  details: AidRequestHistoryEventPayload;
+  postpublishSummary: string;
+  timestamp: Date;
+  undoID: string;
 };
 
 export type AidRequestType = {

@@ -28,8 +28,11 @@ const history: ObjectTypeComposerFieldConfigAsObjectDefinition<
       actor: async (): Promise<Express.User | null> => {
         return await UserModel.findById(event.actor);
       },
+      aidRequest: async () => aidRequest,
       details: event.details,
+      postpublishSummary: '',
       timestamp: event.timestamp,
+      undoID: event.undoID,
     }));
   },
   type: '[AidRequestHistoryEvent]',

@@ -1,10 +1,7 @@
 import assertLoggedIn from '../../../graphql/assertLoggedIn';
 import { AidRequestGraphQLType } from '../AidRequestGraphQLTypes';
 import { AidRequestModel } from '../AidRequestModel';
-import type {
-  AidRequestHistoryEvent,
-  AidRequestType,
-} from '../AidRequestModelTypes';
+import type { AidRequestType } from '../AidRequestModelTypes';
 
 async function createAidRequestResolver(
   _: unknown,
@@ -21,7 +18,7 @@ async function createAidRequestResolver(
   const whoRecordedItUsername = user.username;
   const whoRecordedIt = user._id;
   const timestamp = new Date();
-  const creationEvent: AidRequestHistoryEvent = {
+  const creationEvent = {
     action: 'Add',
     actor: user._id,
     details: { event: 'Created' },

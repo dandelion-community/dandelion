@@ -32,6 +32,7 @@ jobs:
         with:
           envkey_GRAPHQL_URI: "/graphql"
           envkey_MONGODB_USER_0_PASSWORD: ${{ secrets.MONGODB_USER_0_PASSWORD }}
+          envkey_MONGODB_DB_NAME: ${{ secrets.MONGODB_DB_NAME }}
           envkey_SEGMENT_ANALYTICS_WRITE_KEY: ${{ secrets.SEGMENT_ANALYTICS_WRITE_KEY }}
           envkey_SESSION_SECRET: ${{ secrets.SESSION_SECRET }}
 
