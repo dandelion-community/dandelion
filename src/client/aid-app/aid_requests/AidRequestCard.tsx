@@ -59,10 +59,11 @@ export default function AidRequestCard({
 const styles = StyleSheet.create({
   bottomRow: {
     height: 26,
-    paddingTop: 8,
+    paddingTop: 4,
   },
   card: {
     alignSelf: 'stretch',
+    borderRadius: 4,
     elevation: 8,
     flexDirection: 'column',
     margin: 10,
@@ -83,6 +84,6 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   topRow: {
-    paddingBottom: 8,
+    paddingBottom: 4,
   },
 });

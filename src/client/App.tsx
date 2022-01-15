@@ -14,13 +14,16 @@ import client from './aid-app/graphql/client';
 import Navigation from './aid-app/navigation/Navigation';
 import useColorScheme from './general-purpose/components/light-or-dark-themed/useColorScheme';
 import DrawerProvider from './general-purpose/drawer/DrawerProvider';
+import ToastProvider from './general-purpose/toast/ToastProvider';
 import useCachedResources from './hooks/useCachedResources';
 
 const DARK_THEME = {
   ...DarkTheme,
   colors: {
     ...DarkTheme.colors,
-    onSurface: '#38956a',
+    accent: '#a577e7',
+    onSurface: '#482d48',
+    surface: '#eee',
   },
 };
 
@@ -36,10 +39,12 @@ export default function App() {
       <SafeAreaProvider>
         <PaperProvider theme={paperTheme}>
           <ApolloProvider client={client}>
-            <DrawerProvider>
-              <Navigation colorScheme={colorScheme} />
-              <StatusBar />
-            </DrawerProvider>
+            <ToastProvider>
+              <DrawerProvider>
+                <Navigation colorScheme={colorScheme} />
+                <StatusBar />
+              </DrawerProvider>
+            </ToastProvider>
           </ApolloProvider>
         </PaperProvider>
       </SafeAreaProvider>

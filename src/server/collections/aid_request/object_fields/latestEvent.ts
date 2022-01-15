@@ -6,6 +6,7 @@ import assertLoggedIn from '../../../graphql/assertLoggedIn';
 import { UserModel } from '../../user/UserModel';
 import { AidRequestModel } from '../AidRequestModel';
 import type {
+  AidRequestHistoryEvent,
   AidRequestHistoryEventPayload,
   AidRequestType,
 } from '../AidRequestModelTypes';
@@ -29,13 +30,15 @@ const latestEvent: ObjectTypeComposerFieldConfigAsObjectDefinition<
     if (aidRequest == null) {
       throw new Error('No request found for this ID');
     }
-    if (aidRequest.history.length === 0) {
-    const recorder= await getWhoRecordedRequest(aidRequest);
+    const { history: rawHistory } = aidRequest;
+    const history = filterRemovals(rawHistory);
+    if (history.length === 0) {
+      const recorder = await getWhoRecordedRequest(aidRequest);
       return `${timeAgo.format(aidRequest.createdAt)} - ${
         recorder?.displayName ?? 'Unknown'
       } recorded this`;
     }
-    const event = aidRequest.history.reduce((latestEvent, currentEvent) =>
+    const event = history.reduce((latestEvent, currentEvent) =>
       currentEvent.timestamp > latestEvent.timestamp
         ? currentEvent
         : latestEvent,
@@ -63,3 +66,36 @@ function getActionText(details: AidRequestHistoryEventPayload): string {
 }
 
 export default latestEvent;
+
+function filterRemovals(
+  history: Array<AidRequestHistoryEvent>,
+): Array<AidRequestHistoryEvent> {
+  const toRemove = new Set<AidRequestHistoryEvent>();
+  const unpairedAdds: Map<string, AidRequestHistoryEvent> = new Map();
+  [...history]
+    .sort((a, b) => a.timestamp.getTime() - b.timestamp.getTime())
+    .forEach((event) => {
+      const { action, actor, details } = event;
+      const key = `${actor}.${encodeDetails(details)}`;
+      if (action === 'Add') {
+        unpairedAdds.set(key, event);
+      } else {
+        const unpairedEvent = unpairedAdds.get(key);
+        if (unpairedEvent != null) {
+          unpairedAdds.delete(key);
+          toRemove.add(event);
+          toRemove.add(unpairedEvent);
+        }
+      }
+    });
+  return history.filter((event) => !toRemove.has(event));
+}
+
+function encodeDetails(details: AidRequestHistoryEventPayload): string {
+  switch (details.event) {
+    case 'Completed':
+    case 'Created':
+    case 'WorkingOn':
+      return details.event;
+  }
+}

@@ -6,7 +6,9 @@ import { List, Paragraph } from 'react-native-paper';
 import filterNulls from '../../../shared/utils/filterNulls';
 import useColorScheme from '../../general-purpose/components/light-or-dark-themed/useColorScheme';
 import useDrawerContext from '../../general-purpose/drawer/useDrawerContext';
+import useToastContext from '../../general-purpose/toast/useToastContext';
 import DebouncedLoadingIndicator from '../../general-purpose/utils/DebouncedLoadingIndicator';
+import client from '../graphql/client';
 import { AidRequestCardFragments } from './AidRequestCardFragments';
 import { broadcastAidRequestUpdated } from './AidRequestFilterLocalCacheUpdater';
 import type {
@@ -26,6 +28,7 @@ type Props = {
 export default function AidRequestEditDrawer({
   aidRequest,
 }: Props): JSX.Element {
+  const { publishToast } = useToastContext();
   const { closeDrawer } = useDrawerContext();
   const { actionsAvailable, _id: aidRequestID } = aidRequest;
   const actions = filterNulls(actionsAvailable ?? []);
@@ -74,19 +77,35 @@ export default function AidRequestEditDrawer({
   async function mutate(
     input: AidRequestEditDrawerFragment_actionsAvailable_input,
   ): Promise<void> {
-    const { data } = await runEditAidRequestMutation({
-      variables: {
-        aidRequestID,
-        input: {
-          action: input.action,
-          details: {
-            event: input.details.event,
-          },
+    const variables = {
+      aidRequestID,
+      input: {
+        action: input.action,
+        details: {
+          event: input.details.event,
         },
       },
-    });
-    broadcastAidRequestUpdated(data?.editAidRequest);
+    };
+    const { data } = await runEditAidRequestMutation({ variables });
+    broadcastAidRequestUpdated(data?.editAidRequest?.aidRequest);
     closeDrawer();
+    const editAidRequest = data?.editAidRequest;
+    if (editAidRequest != null) {
+      const { undoID } = editAidRequest;
+      publishToast({
+        message: editAidRequest.postpublishSummary || 'Updated',
+        undo:
+          undoID == null
+            ? null
+            : async () => {
+                const { data } = await client.mutate({
+                  mutation: EDIT_AID_REQUEST_MUTATION,
+                  variables: { ...variables, undoID },
+                });
+                broadcastAidRequestUpdated(data?.editAidRequest?.aidRequest);
+              },
+      });
+    }
   }
 }
 
@@ -94,9 +113,18 @@ const EDIT_AID_REQUEST_MUTATION = gql`
   mutation editAidRequestMutation(
     $aidRequestID: String!
     $input: AidRequestActionInputInput!
+    $undoID: String
   ) {
-    editAidRequest(aidRequestID: $aidRequestID, input: $input) {
-      ...AidRequestCardFragment
+    editAidRequest(
+      aidRequestID: $aidRequestID
+      input: $input
+      undoID: $undoID
+    ) {
+      aidRequest {
+        ...AidRequestCardFragment
+      }
+      undoID
+      postpublishSummary
     }
   }
   ${AidRequestCardFragments.aidRequest}
