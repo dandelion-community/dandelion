@@ -1,4 +1,5 @@
 import passport from 'passport';
+import analytics from '../../../analytics';
 import type { CurrentUserPayload } from '../UserGraphQLTypes';
 import { CurrentUserGraphQLType } from '../UserGraphQLTypes';
 
@@ -28,6 +29,11 @@ async function loginResolver(
         resolve({
           user,
         });
+      });
+
+      analytics.track({
+        event: 'Logged In',
+        user,
       });
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     })(req, (req as any).response, (req as any).next);

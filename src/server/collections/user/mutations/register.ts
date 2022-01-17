@@ -39,8 +39,14 @@ async function registerResolver(
         { displayName: allowlistEntry.displayName, username } as any,
         password,
       );
-      analytics.identify({ traits: { username }, userId: newUser.id });
-      analytics.track({ event: 'Create Account', userId: newUser.id });
+      analytics.identify({
+        traits: { username },
+        userId: newUser._id.toString(),
+      });
+      analytics.track({
+        event: 'Create Account',
+        user: newUser,
+      });
       req.logIn(newUser, function (err) {
         if (err) {
           return reject(err);

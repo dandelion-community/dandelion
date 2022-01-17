@@ -1,3 +1,4 @@
+import analytics from '../../../analytics/index';
 import assertLoggedIn from '../../../graphql/assertLoggedIn';
 import { AidRequestGraphQLType } from '../AidRequestGraphQLTypes';
 import { AidRequestModel } from '../AidRequestModel';
@@ -34,7 +35,17 @@ async function createAidRequestResolver(
     whoRecordedIt,
     whoRecordedItUsername,
   });
-  return await aidRequest.save();
+  const savedRequest = await aidRequest.save();
+  analytics.track({
+    event: 'Created Aid Request',
+    properties: {
+      aidRequestID: aidRequest._id,
+      whatIsNeeded,
+      whoIsItFor,
+    },
+    user,
+  });
+  return savedRequest;
 }
 
 const createAidRequest = {
