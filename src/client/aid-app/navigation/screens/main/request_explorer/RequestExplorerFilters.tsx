@@ -53,7 +53,7 @@ export const FILTERS: FilterButtonProps[] = [
     getCurrentToggleState: (filter: FilterType): boolean => {
       return filter?.completed === true;
     },
-    label: 'Completed',
+    label: 'Closed',
     passes: (
       filter: FilterType,
       aidRequest: ListOfAidRequestsQuery_allAidRequests_edges_node,
@@ -115,16 +115,16 @@ function getFilterDescription(
 ): string {
   if (isMeEnabled) {
     if (isCompletedEnabled) {
-      return 'Completed requests I worked on';
+      return 'Closed requests I worked on';
     } else {
-      return "Incomplete requests I'm working on";
+      return "Open requests I'm working on";
     }
   } else {
     // me disabled
     if (isCompletedEnabled) {
-      return 'All completed requests';
+      return 'All closed requests';
     } else {
-      return 'All incomplete requests';
+      return 'All open requests';
     }
   }
 }
