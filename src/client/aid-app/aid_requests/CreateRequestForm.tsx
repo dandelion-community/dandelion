@@ -2,11 +2,12 @@ import { gql, useMutation } from '@apollo/client';
 import * as React from 'react';
 import { StyleSheet } from 'react-native';
 import { Button } from 'react-native-paper';
-import client from '../../aid-app/graphql/client';
 import Text from '../../general-purpose/components/light-or-dark-themed/Text';
 import View from '../../general-purpose/components/light-or-dark-themed/View';
 import TextInput from '../../general-purpose/components/TextInput';
 import useToastContext from '../../general-purpose/toast/useToastContext';
+import { AidRequestCardFragments } from './AidRequestCardFragments';
+import { broadcastAidRequestUpdated } from './AidRequestFilterLocalCacheUpdater';
 import type {
   CreateAidRequestMutation,
   CreateAidRequestMutationVariables,
@@ -56,13 +57,18 @@ export default function CreateRequestForm(): JSX.Element {
       whoIsItFor,
     };
     setWhatIsNeeded('');
-    await runCreateRequestMutation({
+    const { data } = await runCreateRequestMutation({
       variables,
     });
+    const aidRequest = data?.createAidRequest;
+    if (aidRequest == null) {
+      console.error('Failed to create aidRequest');
+      return;
+    }
     publishToast({
       message: `Recorded request: ${whatIsNeeded} for ${whoIsItFor}`,
     });
-    await client.refetchQueries({ include: ['ListOfAidRequestsQuery'] });
+    broadcastAidRequestUpdated(aidRequest._id, aidRequest);
   }
 }
 
@@ -72,15 +78,10 @@ const CREATE_AID_REQUEST_MUTATION = gql`
     $whoIsItFor: String!
   ) {
     createAidRequest(whatIsNeeded: $whatIsNeeded, whoIsItFor: $whoIsItFor) {
-      _id
-      createdAt
-      whatIsNeeded
-      whoIsItFor
-      whoRecordedIt {
-        username
-      }
+      ...AidRequestCardFragment
     }
   }
+  ${AidRequestCardFragments.aidRequest}
 `;
 
 const styles = StyleSheet.create({
