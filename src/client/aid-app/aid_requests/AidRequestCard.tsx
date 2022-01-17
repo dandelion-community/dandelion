@@ -1,7 +1,6 @@
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import * as React from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
-import { Card } from 'react-native-paper';
 import PressableText from '../../general-purpose/components/light-or-dark-themed/PressableText';
 import Text from '../../general-purpose/components/light-or-dark-themed/Text';
 import useColorScheme from '../../general-purpose/components/light-or-dark-themed/useColorScheme';
@@ -25,7 +24,7 @@ export default function AidRequestCard({
   const colorScheme = useColorScheme();
 
   return (
-    <Card elevation={8} style={[styles.card, { backgroundColor }]}>
+    <View style={[styles.card, { backgroundColor }]}>
       <View style={[styles.row, styles.topRow]}>
         <Text>{whatIsNeeded}</Text>
         <View>
@@ -48,7 +47,7 @@ export default function AidRequestCard({
           {aidRequest.latestEvent}
         </PressableText>
       </View>
-    </Card>
+    </View>
   );
 
   function renderEditDrawerContents(): React.ReactElement {
@@ -63,19 +62,11 @@ const styles = StyleSheet.create({
   },
   card: {
     alignSelf: 'stretch',
-    borderRadius: 4,
+    borderBottomWidth: 1,
     elevation: 8,
     flexDirection: 'column',
-    margin: 10,
     paddingLeft: 8,
     paddingVertical: 8,
-    shadowColor: '#000',
-    shadowOffset: {
-      height: 4,
-      width: 4,
-    },
-    shadowOpacity: 0.3,
-    shadowRadius: 4.65,
   },
   row: {
     alignItems: 'center',
