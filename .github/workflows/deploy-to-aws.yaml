@@ -32,6 +32,7 @@ jobs:
         with:
           envkey_GRAPHQL_URI: "/graphql"
           envkey_MONGODB_USER_0_PASSWORD: ${{ secrets.MONGODB_USER_0_PASSWORD }}
+          envkey_MONGODB_DB_NAME: ${{ secrets.MONGODB_DB_NAME }}
           envkey_SEGMENT_ANALYTICS_WRITE_KEY: ${{ secrets.SEGMENT_ANALYTICS_WRITE_KEY }}
           envkey_SESSION_SECRET: ${{ secrets.SESSION_SECRET }}
 
@@ -54,8 +55,8 @@ jobs:
         with:
           aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          application_name: aid-app-monorepo-${{ github.ref_name }}
-          environment_name: aid-app-monorepo-${{ github.ref_name }}-env
+          application_name: dandelion-aid-app-${{ github.ref_name }}
+          environment_name: dandelion-aid-app-env-${{ github.ref_name }}
           version_label: ${{ github.ref_name }}.${{ github.sha }}
           region: us-east-2
           deployment_package: deploy.zip

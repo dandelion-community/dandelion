@@ -1,38 +1,30 @@
-import { gql, useQuery } from '@apollo/client';
+import { useQuery } from '@apollo/client';
 import * as React from 'react';
 import type { ListRenderItemInfo } from 'react-native';
 import { FlatList, StyleSheet } from 'react-native';
 import { ActivityIndicator } from 'react-native-paper';
 import filterNulls from '../../../shared/utils/filterNulls';
 import View from '../../general-purpose/components/light-or-dark-themed/View';
+import DebouncedLoadingIndicator from '../../general-purpose/utils/DebouncedLoadingIndicator';
+import { useRequestExplorerFilters } from '../navigation/screens/main/request_explorer/filters/RequestExplorerFiltersContext';
 import AidRequestCard from './AidRequestCard';
-import { AidRequestCardFragments } from './AidRequestCardFragments';
-import type {
+import { subscribeQueryToAidRequestUpdates } from './AidRequestFilterLocalCacheUpdater';
+import {
+  LIST_OF_AID_REQUESTS_QUERY,
+  PAGE_SIZE,
+} from './ListOfAidRequestsQuery';
+import {
   ListOfAidRequestsQuery,
   ListOfAidRequestsQueryVariables,
   ListOfAidRequestsQuery_allAidRequests_edges_node,
 } from './__generated__/ListOfAidRequestsQuery';
 
-const PAGE_SIZE = 5;
+type Props = { viewRequestHistory: (requestID: string) => void };
 
-const LIST_OF_AID_REQUESTS_QUERY = gql`
-  query ListOfAidRequestsQuery($pageSize: Int!, $after: String) {
-    allAidRequests(first: $pageSize, after: $after) {
-      pageInfo {
-        endCursor
-        hasNextPage
-      }
-      edges {
-        node {
-          ...AidRequestCardFragment
-        }
-      }
-    }
-  }
-  ${AidRequestCardFragments.aidRequest}
-`;
-
-export default function ListOfRequests(): JSX.Element {
+export default function ListOfRequests({
+  viewRequestHistory,
+}: Props): JSX.Element {
+  const { filter } = useRequestExplorerFilters();
   const {
     data,
     loading: isLoadingEitherIncrementallyOrEntireScreen,
@@ -42,9 +34,14 @@ export default function ListOfRequests(): JSX.Element {
     LIST_OF_AID_REQUESTS_QUERY,
     {
       notifyOnNetworkStatusChange: true,
-      variables: { after: null, pageSize: PAGE_SIZE },
+      variables: { after: null, filter, pageSize: PAGE_SIZE },
     },
   );
+  React.useEffect(() => {
+    if (data != null) {
+      subscribeQueryToAidRequestUpdates(filter, data);
+    }
+  }, [filter, data]);
 
   const [isLoadingEntireScreen, setIsLoadingEntireScreen] =
     React.useState(true);
@@ -59,8 +56,10 @@ export default function ListOfRequests(): JSX.Element {
     if (!isLoadingEitherIncrementallyOrEntireScreen) {
       setIsLoadingIncremental(false);
       setIsLoadingEntireScreen(false);
+    } else if (!isLoadingIncremental) {
+      setIsLoadingEntireScreen(true);
     }
-  }, [isLoadingEitherIncrementallyOrEntireScreen]);
+  }, [isLoadingEitherIncrementallyOrEntireScreen, isLoadingIncremental]);
 
   const footer = React.useMemo(() => <ActivityIndicator />, []);
   const edges = data == null ? null : data.allAidRequests?.edges;
@@ -74,6 +73,11 @@ export default function ListOfRequests(): JSX.Element {
 
   return (
     <View style={styles.container}>
+      {isLoadingEntireScreen ? (
+        <View style={{ marginTop: 16 }}>
+          <DebouncedLoadingIndicator />
+        </View>
+      ) : null}
       <FlatList
         ListFooterComponent={isLoadingIncremental ? footer : null}
         data={nodes}
@@ -92,7 +96,12 @@ export default function ListOfRequests(): JSX.Element {
     index: _index,
     separators: _separators,
   }: ListRenderItemInfo<ListOfAidRequestsQuery_allAidRequests_edges_node>): React.ReactElement | null {
-    return <AidRequestCard aidRequest={item} />;
+    return (
+      <AidRequestCard
+        aidRequest={item}
+        viewRequestHistory={viewRequestHistory}
+      />
+    );
   }
 
   function onEndReached(data: ListOfAidRequestsQuery): void {
@@ -115,5 +124,4 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
   },
-  scrollView: {},
 });

@@ -1,6 +1,5 @@
 import * as React from 'react';
-import { Pressable } from 'react-native';
-import Text from './Text';
+import { Pressable, StyleSheet, Text } from 'react-native';
 import { useThemeColor } from './useThemeColor';
 
 type Props = {
@@ -13,13 +12,20 @@ export default function PressableText({
   onPress,
 }: Props): JSX.Element {
   const linkColor = useThemeColor(
-    { dark: '#edbfbf', light: '#8a67cf' },
+    { dark: '#a577e7', light: '#6200EE' },
     'text',
   );
 
   return (
     <Pressable onPress={onPress}>
-      <Text style={{ color: linkColor }}>{children}</Text>
+      <Text style={[{ color: linkColor }, styles.text]}>{children}</Text>
     </Pressable>
   );
 }
+
+const styles = StyleSheet.create({
+  text: {
+    fontSize: 10,
+    textTransform: 'uppercase',
+  },
+});

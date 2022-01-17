@@ -3,6 +3,8 @@
 // @generated
 // This file was automatically generated and should not be edited.
 
+import { FilterFindManyAidRequestInput, AidRequestUpdateActionType, AidRequestUpdateStatusType } from "./../../../../../__generated__/globalTypes";
+
 // ====================================================
 // GraphQL query operation: ListOfAidRequestsQuery
 // ====================================================
@@ -19,19 +21,44 @@ export interface ListOfAidRequestsQuery_allAidRequests_pageInfo {
   hasNextPage: boolean;
 }
 
+export interface ListOfAidRequestsQuery_allAidRequests_edges_node_whoRecordedIt {
+  __typename: "User";
+  displayName: string;
+}
+
 export interface ListOfAidRequestsQuery_allAidRequests_edges_node_whoIsWorkingOnItUsers {
   __typename: "User";
-  username: string | null;
+  _id: string;
+}
+
+export interface ListOfAidRequestsQuery_allAidRequests_edges_node_actionsAvailable_input_details {
+  __typename: "AidRequestHistoryEventPayload";
+  event: AidRequestUpdateStatusType;
+}
+
+export interface ListOfAidRequestsQuery_allAidRequests_edges_node_actionsAvailable_input {
+  __typename: "AidRequestActionInput";
+  action: AidRequestUpdateActionType;
+  details: ListOfAidRequestsQuery_allAidRequests_edges_node_actionsAvailable_input_details;
+}
+
+export interface ListOfAidRequestsQuery_allAidRequests_edges_node_actionsAvailable {
+  __typename: "AidRequestActionOption";
+  icon: string | null;
+  message: string;
+  input: ListOfAidRequestsQuery_allAidRequests_edges_node_actionsAvailable_input;
 }
 
 export interface ListOfAidRequestsQuery_allAidRequests_edges_node {
   __typename: "AidRequest";
   _id: any;
+  completed: boolean | null;
+  latestEvent: string;
   whatIsNeeded: string | null;
   whoIsItFor: string | null;
-  whoRecordedItUsername: string | null;
-  completed: boolean | null;
+  whoRecordedIt: ListOfAidRequestsQuery_allAidRequests_edges_node_whoRecordedIt | null;
   whoIsWorkingOnItUsers: (ListOfAidRequestsQuery_allAidRequests_edges_node_whoIsWorkingOnItUsers | null)[] | null;
+  actionsAvailable: (ListOfAidRequestsQuery_allAidRequests_edges_node_actionsAvailable | null)[] | null;
 }
 
 export interface ListOfAidRequestsQuery_allAidRequests_edges {
@@ -61,4 +88,5 @@ export interface ListOfAidRequestsQuery {
 export interface ListOfAidRequestsQueryVariables {
   pageSize: number;
   after?: string | null;
+  filter?: FilterFindManyAidRequestInput | null;
 }

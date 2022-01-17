@@ -2,22 +2,19 @@ import { gql, useMutation } from '@apollo/client';
 import * as React from 'react';
 import { StyleSheet } from 'react-native';
 import { Button } from 'react-native-paper';
-import client from '../../aid-app/graphql/client';
 import Text from '../../general-purpose/components/light-or-dark-themed/Text';
 import View from '../../general-purpose/components/light-or-dark-themed/View';
 import TextInput from '../../general-purpose/components/TextInput';
+import useToastContext from '../../general-purpose/toast/useToastContext';
+import { AidRequestCardFragments } from './AidRequestCardFragments';
+import { broadcastAidRequestUpdated } from './AidRequestFilterLocalCacheUpdater';
 import type {
   CreateAidRequestMutation,
   CreateAidRequestMutationVariables,
 } from './__generated__/CreateAidRequestMutation';
 
-type Props = {
-  setShowCreationToast: (showCreationToast: boolean) => void;
-};
-
-export default function CreateRequestForm({
-  setShowCreationToast,
-}: Props): JSX.Element {
+export default function CreateRequestForm(): JSX.Element {
+  const { publishToast } = useToastContext();
   const [whoIsItFor, setwhoIsItFor] = React.useState<string>('');
   const [whatIsNeeded, setWhatIsNeeded] = React.useState<string>('');
   const areInputsValid = whoIsItFor.length > 0 && whatIsNeeded.length > 0;
@@ -54,18 +51,24 @@ export default function CreateRequestForm({
     </>
   );
   async function submit(): Promise<void> {
-    setShowCreationToast(false);
+    publishToast(undefined);
     const variables = {
       whatIsNeeded,
       whoIsItFor,
     };
     setWhatIsNeeded('');
-    setwhoIsItFor('');
-    await runCreateRequestMutation({
+    const { data } = await runCreateRequestMutation({
       variables,
     });
-    setShowCreationToast(true);
-    await client.refetchQueries({ include: ['ListOfAidRequestsQuery'] });
+    const aidRequest = data?.createAidRequest;
+    if (aidRequest == null) {
+      console.error('Failed to create aidRequest');
+      return;
+    }
+    publishToast({
+      message: `Recorded request: ${whatIsNeeded} for ${whoIsItFor}`,
+    });
+    broadcastAidRequestUpdated(aidRequest._id, aidRequest);
   }
 }
 
@@ -75,13 +78,10 @@ const CREATE_AID_REQUEST_MUTATION = gql`
     $whoIsItFor: String!
   ) {
     createAidRequest(whatIsNeeded: $whatIsNeeded, whoIsItFor: $whoIsItFor) {
-      _id
-      createdAt
-      whatIsNeeded
-      whoIsItFor
-      whoRecordedItUsername
+      ...AidRequestCardFragment
     }
   }
+  ${AidRequestCardFragments.aidRequest}
 `;
 
 const styles = StyleSheet.create({

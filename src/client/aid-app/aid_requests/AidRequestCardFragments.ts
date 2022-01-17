@@ -1,20 +1,18 @@
 import { gql } from '@apollo/client';
 
-export const AidRequestIsCompleteToggleFragments = {
+export const AidRequestEditDrawerFragments = {
   aidRequest: gql`
-    fragment AidRequestIsCompleteToggleFragment on AidRequest {
+    fragment AidRequestEditDrawerFragment on AidRequest {
       _id
-      completed
-    }
-  `,
-};
-
-export const AidRequestWorkingOnItSummaryFragments = {
-  aidRequest: gql`
-    fragment AidRequestWorkingOnItSummaryFragment on AidRequest {
-      _id
-      whoIsWorkingOnItUsers {
-        username
+      actionsAvailable {
+        icon
+        message
+        input {
+          action
+          details {
+            event
+          }
+        }
       }
     }
   `,
@@ -24,13 +22,18 @@ export const AidRequestCardFragments = {
   aidRequest: gql`
     fragment AidRequestCardFragment on AidRequest {
       _id
+      completed
+      latestEvent
       whatIsNeeded
       whoIsItFor
-      whoRecordedItUsername
-      ...AidRequestIsCompleteToggleFragment
-      ...AidRequestWorkingOnItSummaryFragment
+      whoRecordedIt {
+        displayName
+      }
+      whoIsWorkingOnItUsers {
+        _id
+      }
+      ...AidRequestEditDrawerFragment
     }
-    ${AidRequestIsCompleteToggleFragments.aidRequest}
-    ${AidRequestWorkingOnItSummaryFragments.aidRequest}
+    ${AidRequestEditDrawerFragments.aidRequest}
   `,
 };
