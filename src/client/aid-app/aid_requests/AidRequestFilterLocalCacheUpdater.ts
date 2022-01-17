@@ -27,43 +27,47 @@ export function subscribeQueryToAidRequestUpdates(
 }
 
 export function broadcastAidRequestUpdated(
+  aidRequestID: string,
   aidRequest:
     | ListOfAidRequestsQuery_allAidRequests_edges_node
     | undefined
     | null,
 ): void {
-  if (aidRequest == null) {
-    console.error('Unexpected null');
-    return;
-  }
   SUBSCRIBERS.forEach((entry: SubscriberEntry): void => {
-    processAidRequestUpdateForQuery(entry, aidRequest);
+    processAidRequestUpdateForQuery(entry, aidRequestID, aidRequest ?? null);
   });
 }
 
 function processAidRequestUpdateForQuery(
   { filter, data: list }: SubscriberEntry,
-  aidRequest: ListOfAidRequestsQuery_allAidRequests_edges_node,
+  aidRequestID: string,
+  aidRequest: ListOfAidRequestsQuery_allAidRequests_edges_node | null,
 ): void {
   if (passesFilter(filter, aidRequest)) {
     addAidRequestIfNotPresent(filter, list, aidRequest);
   } else {
-    removeAidRequestIfPresent(filter, list, aidRequest);
+    removeAidRequestIfPresent(filter, list, aidRequestID);
   }
 }
 
 function passesFilter(
   filter: FilterType,
-  aidRequest: ListOfAidRequestsQuery_allAidRequests_edges_node,
+  aidRequest: ListOfAidRequestsQuery_allAidRequests_edges_node | null,
 ): boolean {
+  if (aidRequest == null) {
+    return false;
+  }
   return FILTERS.every(({ passes }) => passes(filter, aidRequest));
 }
 
 function addAidRequestIfNotPresent(
   filter: FilterType,
   list: ListOfAidRequestsQuery,
-  aidRequest: ListOfAidRequestsQuery_allAidRequests_edges_node,
+  aidRequest: ListOfAidRequestsQuery_allAidRequests_edges_node | null,
 ): void {
+  if (aidRequest == null) {
+    return;
+  }
   const { _id: aidRequestID } = aidRequest;
   if (
     list.allAidRequests?.edges.some((edge) => edge.node._id === aidRequestID)
@@ -84,9 +88,8 @@ function addAidRequestIfNotPresent(
 function removeAidRequestIfPresent(
   filter: FilterType,
   list: ListOfAidRequestsQuery,
-  aidRequest: ListOfAidRequestsQuery_allAidRequests_edges_node,
+  aidRequestID: string,
 ): void {
-  const { _id: aidRequestID } = aidRequest;
   if (
     !list.allAidRequests?.edges.some((edge) => edge.node._id === aidRequestID)
   ) {

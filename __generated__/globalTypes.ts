@@ -15,6 +15,7 @@ export enum AidRequestUpdateActionType {
 export enum AidRequestUpdateStatusType {
   Completed = "Completed",
   Created = "Created",
+  Deleted = "Deleted",
   WorkingOn = "WorkingOn",
 }
 
@@ -26,6 +27,7 @@ export enum EnumAidRequestHistoryAction {
 export enum EnumAidRequestHistoryDetailsEvent {
   Completed = "Completed",
   Created = "Created",
+  Deleted = "Deleted",
   WorkingOn = "WorkingOn",
 }
 

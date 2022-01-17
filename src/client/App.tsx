@@ -13,6 +13,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import client from './aid-app/graphql/client';
 import Navigation from './aid-app/navigation/Navigation';
 import useColorScheme from './general-purpose/components/light-or-dark-themed/useColorScheme';
+import DialogProvider from './general-purpose/dialog/DialogProvider';
 import DrawerProvider from './general-purpose/drawer/DrawerProvider';
 import ToastProvider from './general-purpose/toast/ToastProvider';
 import useCachedResources from './hooks/useCachedResources';
@@ -39,12 +40,14 @@ export default function App() {
       <SafeAreaProvider>
         <PaperProvider theme={paperTheme}>
           <ApolloProvider client={client}>
-            <ToastProvider>
-              <DrawerProvider>
-                <Navigation colorScheme={colorScheme} />
-                <StatusBar />
-              </DrawerProvider>
-            </ToastProvider>
+            <DialogProvider>
+              <ToastProvider>
+                <DrawerProvider>
+                  <Navigation colorScheme={colorScheme} />
+                  <StatusBar />
+                </DrawerProvider>
+              </ToastProvider>
+            </DialogProvider>
           </ApolloProvider>
         </PaperProvider>
       </SafeAreaProvider>
