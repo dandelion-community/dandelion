@@ -1,5 +1,6 @@
 import type { UpdateQuery } from 'mongoose';
 import { nanoid } from 'nanoid';
+import analytics from '../../../analytics';
 import assertLoggedIn from '../../../graphql/assertLoggedIn';
 import {
   AidRequestActionInputInputType,
@@ -29,6 +30,9 @@ async function editAidRequestResolver(
   req: Express.Request,
 ): Promise<AidRequestHistoryEventForGraphQL | null> {
   const user = assertLoggedIn(req, 'editAidRequest');
+  const originalAidRequest = await AidRequestModel.findById(aidRequestID);
+  const whatIsNeeded = originalAidRequest?.whatIsNeeded ?? '';
+  const whoIsItFor = originalAidRequest?.whoIsItFor ?? '';
   const { postpublishSummary, updater, historyEvent } = await getUpdateInfo(
     user,
     aidRequestID,
@@ -45,6 +49,20 @@ async function editAidRequestResolver(
       },
     );
   }
+  analytics.track({
+    event: 'Edited Aid Request',
+    properties: {
+      action: input.action,
+      aidRequestID,
+      canUndo: historyEvent.undoID != null ? 'true' : 'false',
+      event: input.details.event,
+      isUndo: undoID != null ? 'true' : 'false',
+      postpublishSummary,
+      whatIsNeeded,
+      whoIsItFor,
+    },
+    user,
+  });
   return {
     ...historyEvent,
     actor: async () => user,
