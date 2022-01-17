@@ -3,6 +3,7 @@ import { ScrollView, StyleSheet } from 'react-native';
 import View from '../../../../../general-purpose/components/light-or-dark-themed/View';
 import RequireLoggedInScreen from '../../../../../general-purpose/components/RequireLoggedInScreen';
 import YourAccountMenuCard from '../../../../../general-purpose/viewer/YourAccountMenuCard';
+import AttributionCard from '../../../../menu/attribution/AttributionCard';
 import DebugInfoCard from '../../../../menu/debug/DebugInfoCard';
 
 export default function ThreeLinesMenuScreen(): JSX.Element {
@@ -13,6 +14,7 @@ export default function ThreeLinesMenuScreen(): JSX.Element {
           <View style={styles.scrollView}>
             <YourAccountMenuCard />
             <DebugInfoCard />
+            <AttributionCard />
           </View>
         </ScrollView>
       </View>
