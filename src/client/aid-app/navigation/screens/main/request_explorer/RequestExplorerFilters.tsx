@@ -8,6 +8,9 @@ import type {
   FilterContext,
 } from './RequestExplorerFilterButton';
 import RequestExplorerFilterButton from './RequestExplorerFilterButton';
+import Text from '../../../../../general-purpose/components/light-or-dark-themed/Text';
+import { useRequestExplorerFilters } from './filters/RequestExplorerFiltersContext';
+import { useLoggedInViewer } from '../../../../../general-purpose/viewer/ViewerContext';
 
 export const FILTERS: FilterButtonProps[] = [
   {
@@ -77,6 +80,9 @@ export const FILTERS: FilterButtonProps[] = [
 ];
 
 export default function RequestExplorerFilters(): JSX.Element {
+  const { filter } = useRequestExplorerFilters();
+  const { id: viewerID } = useLoggedInViewer();
+  const context = { viewerID };
   return (
     <View style={styles.container}>
       <FlatList
@@ -85,6 +91,12 @@ export default function RequestExplorerFilters(): JSX.Element {
         keyExtractor={({ label }) => label}
         renderItem={renderItem}
       />
+      <Text>
+        {getFilterDescription(
+          FILTERS[0].getCurrentToggleState(filter, context),
+          FILTERS[1].getCurrentToggleState(filter, context),
+        )}
+      </Text>
     </View>
   );
 
@@ -94,6 +106,26 @@ export default function RequestExplorerFilters(): JSX.Element {
     separators: _separators,
   }: ListRenderItemInfo<FilterButtonProps>): React.ReactElement | null {
     return <RequestExplorerFilterButton {...item} />;
+  }
+}
+
+function getFilterDescription(
+  isMeEnabled: boolean,
+  isCompletedEnabled: boolean,
+): string {
+  if (isMeEnabled) {
+    if (isCompletedEnabled) {
+      return 'Completed requests I worked on';
+    } else {
+      return "Incomplete requests I'm working on";
+    }
+  } else {
+    // me disabled
+    if (isCompletedEnabled) {
+      return 'All completed requests';
+    } else {
+      return 'All incomplete requests';
+    }
   }
 }
 
