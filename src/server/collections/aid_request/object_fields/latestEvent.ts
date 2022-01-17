@@ -62,6 +62,8 @@ function getActionText(details: AidRequestHistoryEventPayload): string {
       return 'completed this';
     case 'Created':
       return 'created this';
+    case 'Deleted':
+      return 'deleted this';
   }
 }
 
@@ -96,6 +98,7 @@ function encodeDetails(details: AidRequestHistoryEventPayload): string {
     case 'Completed':
     case 'Created':
     case 'WorkingOn':
+    case 'Deleted':
       return details.event;
   }
 }

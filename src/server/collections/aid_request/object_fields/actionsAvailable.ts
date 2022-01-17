@@ -1,4 +1,5 @@
 import type { ObjectTypeComposerFieldConfigAsObjectDefinition } from 'graphql-compose';
+import { ObjectId } from 'mongodb';
 import { Document } from 'mongoose';
 import assertLoggedIn from '../../../graphql/assertLoggedIn';
 import { AidRequestModel } from '../AidRequestModel';
@@ -22,6 +23,7 @@ const actionsAvailable: ObjectTypeComposerFieldConfigAsObjectDefinition<
     if (aidRequest == null) {
       return [];
     }
+    const isCreator = new ObjectId(aidRequest.whoRecordedIt).equals(user._id);
     const options: Array<AidRequestActionOption> = [
       aidRequest.completed
         ? markAsNotCompletedOption()
@@ -29,6 +31,7 @@ const actionsAvailable: ObjectTypeComposerFieldConfigAsObjectDefinition<
       aidRequest.whoIsWorkingOnIt.includes(user._id)
         ? iAmNotWorkingOnItOption()
         : iAmWorkingOnItOption(),
+      ...(isCreator ? [deleteOption()] : []),
     ];
     return options;
   },
@@ -84,6 +87,19 @@ function iAmNotWorkingOnItOption(): AidRequestActionOption {
       },
     },
     message: "I'm not working on it",
+  };
+}
+
+function deleteOption(): AidRequestActionOption {
+  return {
+    icon: 'delete',
+    input: {
+      action: 'Add',
+      details: {
+        event: 'Deleted',
+      },
+    },
+    message: 'Delete',
   };
 }
 

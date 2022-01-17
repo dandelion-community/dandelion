@@ -12,6 +12,7 @@ import type {
   AidRequestHistoryEventForGraphQL,
   AidRequestType,
 } from '../AidRequestModelTypes';
+import deleteAidRequest from './deleteAidRequest';
 import workingOn from './workingOn';
 
 async function editAidRequestResolver(
@@ -34,13 +35,16 @@ async function editAidRequestResolver(
     input,
     undoID,
   );
-  const aidRequest = await AidRequestModel.findByIdAndUpdate(
-    aidRequestID,
-    updater,
-    {
-      new: true,
-    },
-  );
+  let aidRequest: null | AidRequestType = null;
+  if (updater != null) {
+    aidRequest = await AidRequestModel.findByIdAndUpdate(
+      aidRequestID,
+      updater,
+      {
+        new: true,
+      },
+    );
+  }
   return {
     ...historyEvent,
     actor: async () => user,
@@ -62,7 +66,7 @@ const editAidRequest = {
 export default editAidRequest;
 
 type UpdateInfo = {
-  updater: UpdateQuery<AidRequestType>;
+  updater: null | UpdateQuery<AidRequestType>;
   postpublishSummary: string;
   historyEvent: AidRequestHistoryEvent;
 };
@@ -89,7 +93,7 @@ async function getUpdateInfo(
         const updater = await workingOn(
           user,
           aidRequestID,
-          input.action,
+          action,
           undoID,
           historyEvent,
         );
@@ -113,5 +117,12 @@ async function getUpdateInfo(
           action === 'Add' ? 'Marked as complete' : 'Marked as incomplete';
         return { historyEvent, postpublishSummary, updater };
       })();
+    case 'Deleted':
+      await deleteAidRequest(user, aidRequestID, historyEvent, action, undoID);
+      return {
+        historyEvent: { ...historyEvent, undoID: null },
+        postpublishSummary: 'Deleted',
+        updater: null,
+      };
   }
 }

@@ -10,6 +10,9 @@ export type AidRequestHistoryEventPayload =
     }
   | {
       event: 'Created';
+    }
+  | {
+      event: 'Deleted';
     };
 
 export type AidRequestActionType = 'Add' | 'Remove';
@@ -19,7 +22,7 @@ export type AidRequestHistoryEvent = {
   actor: ObjectId;
   details: AidRequestHistoryEventPayload;
   timestamp: Date;
-  undoID: string;
+  undoID: string | null;
 };
 
 export type AidRequestActionInput = {
@@ -40,7 +43,7 @@ export type AidRequestHistoryEventForGraphQL = {
   details: AidRequestHistoryEventPayload;
   postpublishSummary: string;
   timestamp: Date;
-  undoID: string;
+  undoID: string | null;
 };
 
 export type AidRequestType = {

@@ -9,7 +9,7 @@ import type {
 const AidRequestHistoryEventPayloadSchema =
   new Schema<AidRequestHistoryEventPayload>({
     event: {
-      enum: ['Completed', 'Created', 'WorkingOn'],
+      enum: ['Completed', 'Created', 'WorkingOn', 'Deleted'],
       type: String,
     },
   });
@@ -35,5 +35,10 @@ const AidRequestSchema = new Schema<AidRequestType>({
 
 export const AidRequestModel = model<AidRequestType>(
   'AidRequest',
+  AidRequestSchema,
+);
+
+export const AidRequestDeletedModel = model<AidRequestType>(
+  'AidRequestDeleted',
   AidRequestSchema,
 );

@@ -3,8 +3,10 @@ import * as React from 'react';
 import type { ListRenderItemInfo } from 'react-native';
 import { FlatList, Image, StyleSheet, View } from 'react-native';
 import { List, Paragraph } from 'react-native-paper';
+import { AidRequestUpdateStatusType } from '../../../../__generated__/globalTypes';
 import filterNulls from '../../../shared/utils/filterNulls';
 import useColorScheme from '../../general-purpose/components/light-or-dark-themed/useColorScheme';
+import useDialogContext from '../../general-purpose/dialog/useDialogContext';
 import useDrawerContext from '../../general-purpose/drawer/useDrawerContext';
 import useToastContext from '../../general-purpose/toast/useToastContext';
 import DebouncedLoadingIndicator from '../../general-purpose/utils/DebouncedLoadingIndicator';
@@ -30,6 +32,7 @@ export default function AidRequestEditDrawer({
 }: Props): JSX.Element {
   const { publishToast } = useToastContext();
   const { closeDrawer } = useDrawerContext();
+  const { shouldDelete } = useDialogContext();
   const { actionsAvailable, _id: aidRequestID } = aidRequest;
   const actions = filterNulls(actionsAvailable ?? []);
   const scheme = useColorScheme();
@@ -77,6 +80,13 @@ export default function AidRequestEditDrawer({
   async function mutate(
     input: AidRequestEditDrawerFragment_actionsAvailable_input,
   ): Promise<void> {
+    if (input.details.event === AidRequestUpdateStatusType.Deleted) {
+      const shouldContinue = await shouldDelete();
+      if (!shouldContinue) {
+        return;
+      }
+    }
+
     const variables = {
       aidRequestID,
       input: {
@@ -87,7 +97,7 @@ export default function AidRequestEditDrawer({
       },
     };
     const { data } = await runEditAidRequestMutation({ variables });
-    broadcastAidRequestUpdated(data?.editAidRequest?.aidRequest);
+    broadcastAidRequestUpdated(aidRequestID, data?.editAidRequest?.aidRequest);
     closeDrawer();
     const editAidRequest = data?.editAidRequest;
     if (editAidRequest != null) {
@@ -102,7 +112,10 @@ export default function AidRequestEditDrawer({
                   mutation: EDIT_AID_REQUEST_MUTATION,
                   variables: { ...variables, undoID },
                 });
-                broadcastAidRequestUpdated(data?.editAidRequest?.aidRequest);
+                broadcastAidRequestUpdated(
+                  aidRequestID,
+                  data?.editAidRequest?.aidRequest,
+                );
               },
       });
     }

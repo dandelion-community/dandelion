@@ -15,6 +15,7 @@ export const AidRequestUpdateStatusTypeGraphQLType =
       Completed 
       WorkingOn 
       Created
+      Deleted
     }`,
   );
 
@@ -46,11 +47,11 @@ export const AidRequestHistoryEventGraphQLType = schemaComposer.createObjectTC({
   fields: {
     action: 'AidRequestUpdateActionType!',
     actor: 'User',
-    aidRequest: 'AidRequest!',
+    aidRequest: 'AidRequest',
     details: 'AidRequestHistoryEventPayload!',
     postpublishSummary: 'String',
     timestamp: 'Date!',
-    undoID: 'String!',
+    undoID: 'String',
   },
   name: 'AidRequestHistoryEvent',
 });
