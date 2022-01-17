@@ -61,7 +61,7 @@ function getActionText(details: AidRequestHistoryEventPayload): string {
     case 'Completed':
       return 'completed this';
     case 'Created':
-      return 'created this';
+      return 'recorded this';
     case 'Deleted':
       return 'deleted this';
   }
