@@ -1,7 +1,7 @@
 import { gql, useQuery } from '@apollo/client';
-import DebugInfoSection from 'menu/debug/DebugInfoSection';
-import NetworkDiagnostics from 'menu/debug/NetworkDiagnostics';
 import * as React from 'react';
+import DebugInfoSection from 'src/client/menu/debug/DebugInfoSection';
+import NetworkDiagnostics from 'src/client/menu/debug/NetworkDiagnostics';
 
 const SPOT_CHECK_ME_QUERY = gql`
   query SpotCheckMeQuery {

@@ -1,8 +1,8 @@
-import View from 'components/View';
-import CreateRequestForm from 'create_request/CreateRequestForm';
 import * as React from 'react';
 import { ScrollView, StyleSheet } from 'react-native';
-import RequireLoggedInScreen from 'viewer/RequireLoggedInScreen';
+import View from 'src/client/components/View';
+import CreateRequestForm from 'src/client/create_request/CreateRequestForm';
+import RequireLoggedInScreen from 'src/client/viewer/RequireLoggedInScreen';
 
 export default function CreateRequestScreen(): React.ReactElement {
   return (

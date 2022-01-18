@@ -1,12 +1,12 @@
 import type { ObjectTypeComposerFieldConfigAsObjectDefinition } from 'graphql-compose';
 import { ObjectId } from 'mongodb';
 import { Document } from 'mongoose';
-import assertLoggedIn from '../../../graphql/assertLoggedIn';
-import { AidRequestModel } from '../AidRequestModel';
+import { AidRequestModel } from 'src/server/collections/aid_request/AidRequestModel';
 import type {
   AidRequestActionOption,
   AidRequestType,
-} from '../AidRequestModelTypes';
+} from 'src/server/collections/aid_request/AidRequestModelTypes';
+import assertLoggedIn from 'src/server/graphql/assertLoggedIn';
 
 const actionsAvailable: ObjectTypeComposerFieldConfigAsObjectDefinition<
   Document<string, unknown, AidRequestType>,

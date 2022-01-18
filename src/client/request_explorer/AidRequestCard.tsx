@@ -1,11 +1,11 @@
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import PressableText from 'components/PressableText';
-import Text from 'components/Text';
-import useColorScheme from 'light-or-dark/useColorScheme';
-import { useThemeColor } from 'light-or-dark/useThemeColor';
-import useDrawerContext from 'drawer/useDrawerContext';
 import * as React from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
+import PressableText from 'src/client/components/PressableText';
+import Text from 'src/client/components/Text';
+import useDrawerContext from 'src/client/drawer/useDrawerContext';
+import useColorScheme from 'src/client/light-or-dark/useColorScheme';
+import { useThemeColor } from 'src/client/light-or-dark/useThemeColor';
 import AidRequestEditDrawer from './AidRequestEditDrawer';
 import type { AidRequestCardFragment } from './__generated__/AidRequestCardFragment';
 

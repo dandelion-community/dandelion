@@ -7,10 +7,8 @@ module.exports = function (api) {
         'module-resolver',
         {
           alias: {
-            ['aid-app']: './src/client/aid-app',
-            ['general-purpose']: './src/client/general-purpose',
+            src: './src',
           },
-          root: './src',
         },
       ],
     ],

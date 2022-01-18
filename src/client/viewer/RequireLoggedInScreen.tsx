@@ -1,14 +1,14 @@
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import LoadingScreen from 'components/LoadingScreen';
-import View from 'components/View';
-import { RootStackParamList } from 'navigation/NavigationTypes';
 import * as React from 'react';
-import useHandleViewer from 'viewer/useHandleViewer';
+import LoadingScreen from 'src/client/components/LoadingScreen';
+import View from 'src/client/components/View';
+import { RootStackParamList } from 'src/client/navigation/NavigationTypes';
+import useHandleViewer from 'src/client/viewer/useHandleViewer';
 import {
   useIsLoadingLoggedInStatus,
   useIsLoggedOut,
-} from 'viewer/ViewerContext';
+} from 'src/client/viewer/ViewerContext';
 
 type Props = {
   children: React.ReactElement;

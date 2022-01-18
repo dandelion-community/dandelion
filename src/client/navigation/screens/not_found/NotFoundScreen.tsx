@@ -1,9 +1,9 @@
-import Text from 'components/Text';
-import View from 'components/View';
-import { RootStackScreenProps } from 'navigation/NavigationTypes';
-import useSetRootNavigation from 'navigation/useSetRootNavigation';
 import * as React from 'react';
 import { StyleSheet, TouchableOpacity } from 'react-native';
+import Text from 'src/client/components/Text';
+import View from 'src/client/components/View';
+import { RootStackScreenProps } from 'src/client/navigation/NavigationTypes';
+import useSetRootNavigation from 'src/client/navigation/useSetRootNavigation';
 
 export default function NotFoundScreen({
   navigation,

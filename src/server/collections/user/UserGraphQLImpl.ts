@@ -1,9 +1,9 @@
-import login from './mutations/login';
-import logout from './mutations/logout';
-import register from './mutations/register';
-import aidRequestsIAmWorkingOn from './object_fields/aidRequestsIAmWorkingOn';
-import me from './root_fields/me';
-import { UserGraphQLType } from './UserGraphQLTypes';
+import login from 'src/server/collections/user/mutations/login';
+import logout from 'src/server/collections/user/mutations/logout';
+import register from 'src/server/collections/user/mutations/register';
+import aidRequestsIAmWorkingOn from 'src/server/collections/user/object_fields/aidRequestsIAmWorkingOn';
+import me from 'src/server/collections/user/root_fields/me';
+import { UserGraphQLType } from 'src/server/collections/user/UserGraphQLTypes';
 
 UserGraphQLType.addFields({
   aidRequestsIAmWorkingOn,

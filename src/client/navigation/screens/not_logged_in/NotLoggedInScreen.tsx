@@ -1,11 +1,11 @@
-import CardButtonRow from 'components/CardButtonRow';
-import Text from 'components/Text';
-import View from 'components/View';
-import { RootStackScreenProps } from 'navigation/NavigationTypes';
-import useSetRootNavigation from 'navigation/useSetRootNavigation';
 import * as React from 'react';
 import { StyleSheet } from 'react-native';
-import useHandleViewer from 'viewer/useHandleViewer';
+import CardButtonRow from 'src/client/components/CardButtonRow';
+import Text from 'src/client/components/Text';
+import View from 'src/client/components/View';
+import { RootStackScreenProps } from 'src/client/navigation/NavigationTypes';
+import useSetRootNavigation from 'src/client/navigation/useSetRootNavigation';
+import useHandleViewer from 'src/client/viewer/useHandleViewer';
 
 export default function NotLoggedInScreen({
   navigation,

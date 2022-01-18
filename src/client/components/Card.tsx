@@ -1,7 +1,7 @@
-import useColorScheme from 'light-or-dark/useColorScheme';
 import * as React from 'react';
 import { StyleSheet } from 'react-native';
 import { Card as PaperCard } from 'react-native-paper';
+import useColorScheme from 'src/client/light-or-dark/useColorScheme';
 
 export default function Card({
   children,

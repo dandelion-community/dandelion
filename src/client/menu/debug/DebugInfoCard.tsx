@@ -1,8 +1,8 @@
-import StyledCard from 'components/Card';
-import PressableText from 'components/PressableText';
-import DebugInfo from 'menu/debug/DebugInfo';
 import * as React from 'react';
 import { Card } from 'react-native-paper';
+import StyledCard from 'src/client/components/Card';
+import PressableText from 'src/client/components/PressableText';
+import DebugInfo from 'src/client/menu/debug/DebugInfo';
 
 export default function DebugInfoCard(): JSX.Element {
   const [shown, setShown] = React.useState<boolean>(false);

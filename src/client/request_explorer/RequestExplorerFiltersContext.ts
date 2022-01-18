@@ -1,5 +1,5 @@
-import type { ListOfAidRequestsQueryVariables } from 'request_explorer/__generated__/ListOfAidRequestsQuery';
 import * as React from 'react';
+import type { ListOfAidRequestsQueryVariables } from 'src/client/request_explorer/__generated__/ListOfAidRequestsQuery';
 
 export type FilterType = NonNullable<ListOfAidRequestsQueryVariables['filter']>;
 

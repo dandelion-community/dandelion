@@ -17,9 +17,9 @@ import {
   supportedCpuArchitectures,
   totalMemory,
 } from 'expo-device';
-import DebugInfoSection from 'menu/debug/DebugInfoSection';
-import DenseText from 'menu/debug/DenseText';
 import * as React from 'react';
+import DebugInfoSection from 'src/client/menu/debug/DebugInfoSection';
+import DenseText from 'src/client/menu/debug/DenseText';
 
 export default function ExpoConstantsSummary(): JSX.Element {
   return (

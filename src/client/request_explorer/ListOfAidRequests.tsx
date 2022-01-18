@@ -1,11 +1,11 @@
 import { useQuery } from '@apollo/client';
-import View from 'components/View';
-import DebouncedLoadingIndicator from 'utils/DebouncedLoadingIndicator';
-import { useRequestExplorerFilters } from 'request_explorer/RequestExplorerFiltersContext';
 import * as React from 'react';
 import type { ListRenderItemInfo } from 'react-native';
 import { FlatList, StyleSheet } from 'react-native';
 import { ActivityIndicator } from 'react-native-paper';
+import View from 'src/client/components/View';
+import { useRequestExplorerFilters } from 'src/client/request_explorer/RequestExplorerFiltersContext';
+import DebouncedLoadingIndicator from 'src/client/utils/DebouncedLoadingIndicator';
 import filterNulls from '../../shared/utils/filterNulls';
 import AidRequestCard from './AidRequestCard';
 import { subscribeQueryToAidRequestUpdates } from './AidRequestFilterLocalCacheUpdater';

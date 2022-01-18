@@ -3,10 +3,10 @@
  * https://docs.expo.io/guides/color-schemes/
  */
 
-import type { ThemeProps } from 'light-or-dark/ThemePropsType';
-import { useThemeColor } from 'light-or-dark/useThemeColor';
 import * as React from 'react';
 import { View as ReactNativeView } from 'react-native';
+import type { ThemeProps } from 'src/client/light-or-dark/ThemePropsType';
+import { useThemeColor } from 'src/client/light-or-dark/useThemeColor';
 
 export type ViewProps = ThemeProps & ReactNativeView['props'];
 

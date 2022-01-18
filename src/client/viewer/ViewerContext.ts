@@ -1,6 +1,6 @@
-import type { LoadingType } from 'utils/loading';
-import Loading from 'utils/loading';
 import * as React from 'react';
+import type { LoadingType } from 'src/client/utils/loading';
+import Loading from 'src/client/utils/loading';
 
 export type LoggedInViewer = Readonly<{
   displayName: string;

@@ -1,10 +1,10 @@
-import View from 'components/View';
-import AttributionCard from 'menu/attribution/AttributionCard';
-import DebugInfoCard from 'menu/debug/DebugInfoCard';
 import * as React from 'react';
 import { ScrollView, StyleSheet } from 'react-native';
-import RequireLoggedInScreen from 'viewer/RequireLoggedInScreen';
-import YourAccountMenuCard from 'viewer/YourAccountMenuCard';
+import View from 'src/client/components/View';
+import AttributionCard from 'src/client/menu/attribution/AttributionCard';
+import DebugInfoCard from 'src/client/menu/debug/DebugInfoCard';
+import RequireLoggedInScreen from 'src/client/viewer/RequireLoggedInScreen';
+import YourAccountMenuCard from 'src/client/viewer/YourAccountMenuCard';
 
 export default function ThreeLinesMenuScreen(): JSX.Element {
   return (

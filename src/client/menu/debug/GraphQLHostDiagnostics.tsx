@@ -1,10 +1,10 @@
-import GraphQLErrorSummary from 'menu/debug/GraphQLErrorSummary';
-import GraphQLResponseSummary from 'menu/debug/GraphQLResponseSummary';
-import SmallText from 'menu/debug/SmallText';
 import * as React from 'react';
 import { View } from 'react-native';
-import Loading from 'utils/loading';
-import usePromise from 'utils/usePromise';
+import GraphQLErrorSummary from 'src/client/menu/debug/GraphQLErrorSummary';
+import GraphQLResponseSummary from 'src/client/menu/debug/GraphQLResponseSummary';
+import SmallText from 'src/client/menu/debug/SmallText';
+import Loading from 'src/client/utils/loading';
+import usePromise from 'src/client/utils/usePromise';
 
 type Props = { host: string };
 

@@ -1,9 +1,9 @@
 import { gql, useMutation } from '@apollo/client';
-import CardButtonRow from 'components/CardButtonRow';
-import Text from 'components/Text';
-import DebouncedLoadingIndicator from 'utils/DebouncedLoadingIndicator';
 import * as React from 'react';
-import reloadViewer from 'viewer/reloadViewer';
+import CardButtonRow from 'src/client/components/CardButtonRow';
+import Text from 'src/client/components/Text';
+import DebouncedLoadingIndicator from 'src/client/utils/DebouncedLoadingIndicator';
+import reloadViewer from 'src/client/viewer/reloadViewer';
 import type { LogoutActionMutation } from './__generated__/LogoutActionMutation';
 
 export default function LogoutOrRegisterActionsRow(): JSX.Element {

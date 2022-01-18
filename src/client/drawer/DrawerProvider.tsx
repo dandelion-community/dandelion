@@ -1,8 +1,8 @@
-import DrawerContext from 'drawer/DrawerContext';
-import useColorScheme from 'light-or-dark/useColorScheme';
 import * as React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { BottomSheet } from 'react-native-btr';
+import DrawerContext from 'src/client/drawer/DrawerContext';
+import useColorScheme from 'src/client/light-or-dark/useColorScheme';
 
 type Props = {
   children: React.ReactChild[];

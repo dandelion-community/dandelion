@@ -1,17 +1,17 @@
 import { FontAwesome } from '@expo/vector-icons';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
-import Colors from 'components/Colors';
-import useColorScheme from 'light-or-dark/useColorScheme';
+import * as React from 'react';
+import Colors from 'src/client/components/Colors';
+import useColorScheme from 'src/client/light-or-dark/useColorScheme';
 import {
   RootStackScreenProps,
   RootTabParamList,
   RootTabScreenProps,
-} from 'navigation/NavigationTypes';
-import useSetRootNavigation from 'navigation/useSetRootNavigation';
-import * as React from 'react';
+} from 'src/client/navigation/NavigationTypes';
+import useSetRootNavigation from 'src/client/navigation/useSetRootNavigation';
 import CreateRequestTabStackContainer from '../../../create_request/CreateRequestTabStackContainer';
-import RequestExplorerTabStackContainer from '../../../request_explorer/RequestExplorerTabStackContainer';
 import ThreeLinesMenuTabStackContainer from '../../../menu/ThreeLinesMenuTabStackContainer';
+import RequestExplorerTabStackContainer from '../../../request_explorer/RequestExplorerTabStackContainer';
 
 /**
  * A bottom tab navigator displays tab buttons on the bottom of the display to switch screens.

@@ -1,16 +1,16 @@
 import { gql, useMutation } from '@apollo/client';
-import Text from 'components/Text';
-import TextInput from 'components/TextInput';
-import View from 'components/View';
 import * as WebBrowser from 'expo-web-browser';
-import { RootStackScreenProps } from 'navigation/NavigationTypes';
-import useCreateCrumbtrailsToLandingScreenIfNeeded from 'navigation/useCreateCrumbtrailsToLandingScreenIfNeeded';
-import useSetRootNavigation from 'navigation/useSetRootNavigation';
 import * as React from 'react';
 import { StyleSheet } from 'react-native';
 import { Button } from 'react-native-paper';
-import reloadViewer from 'viewer/reloadViewer';
-import useHandleViewer from 'viewer/useHandleViewer';
+import Text from 'src/client/components/Text';
+import TextInput from 'src/client/components/TextInput';
+import View from 'src/client/components/View';
+import { RootStackScreenProps } from 'src/client/navigation/NavigationTypes';
+import useCreateCrumbtrailsToLandingScreenIfNeeded from 'src/client/navigation/useCreateCrumbtrailsToLandingScreenIfNeeded';
+import useSetRootNavigation from 'src/client/navigation/useSetRootNavigation';
+import reloadViewer from 'src/client/viewer/reloadViewer';
+import useHandleViewer from 'src/client/viewer/useHandleViewer';
 import type { Login } from './__generated__/Login';
 
 WebBrowser.maybeCompleteAuthSession();

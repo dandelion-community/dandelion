@@ -1,8 +1,8 @@
-import Text from 'components/Text';
-import View from 'components/View';
 import * as React from 'react';
 import { StyleSheet } from 'react-native';
-import RequireLoggedInScreen from 'viewer/RequireLoggedInScreen';
+import Text from 'src/client/components/Text';
+import View from 'src/client/components/View';
+import RequireLoggedInScreen from 'src/client/viewer/RequireLoggedInScreen';
 
 export default function RequestHistoryScreen(): JSX.Element {
   return (

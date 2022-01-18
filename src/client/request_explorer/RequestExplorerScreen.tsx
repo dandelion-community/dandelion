@@ -1,15 +1,15 @@
-import ListOfRequests from 'request_explorer/ListOfAidRequests';
-import View from 'components/View';
-import { HomeStackScreenProps } from 'navigation/NavigationTypes';
 import * as React from 'react';
 import { StyleSheet } from 'react-native';
-import RequireLoggedInScreen from 'viewer/RequireLoggedInScreen';
+import View from 'src/client/components/View';
+import { HomeStackScreenProps } from 'src/client/navigation/NavigationTypes';
+import ListOfRequests from 'src/client/request_explorer/ListOfAidRequests';
+import RequireLoggedInScreen from 'src/client/viewer/RequireLoggedInScreen';
+import RequestExplorerFilters from './RequestExplorerFilters';
 import type { FilterType } from './RequestExplorerFiltersContext';
 import {
   DEFAULT_FILTER,
   RequestExplorerFiltersContext,
 } from './RequestExplorerFiltersContext';
-import RequestExplorerFilters from './RequestExplorerFilters';
 
 type Props = HomeStackScreenProps<'RequestExplorer'>;
 

@@ -11,13 +11,13 @@ import {
   NavigationContainer,
 } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import Colors from 'components/Colors';
-import useColorScheme from 'light-or-dark/useColorScheme';
 import * as React from 'react';
 import { ColorSchemeName } from 'react-native';
 import { Appbar } from 'react-native-paper';
-import useLoadViewer from 'viewer/useLoadViewer';
-import ViewerContext from 'viewer/ViewerContext';
+import Colors from 'src/client/components/Colors';
+import useColorScheme from 'src/client/light-or-dark/useColorScheme';
+import useLoadViewer from 'src/client/viewer/useLoadViewer';
+import ViewerContext from 'src/client/viewer/ViewerContext';
 import LinkingConfiguration from './LinkingConfiguration';
 import type {
   RootNavigationAllTypes,

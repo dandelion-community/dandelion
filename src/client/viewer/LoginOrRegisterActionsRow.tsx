@@ -1,6 +1,6 @@
-import useRootNavigation from 'navigation/useRootNavigation';
-import CardButtonRow from 'components/CardButtonRow';
 import * as React from 'react';
+import CardButtonRow from 'src/client/components/CardButtonRow';
+import useRootNavigation from 'src/client/navigation/useRootNavigation';
 
 export default function LoginOrRegisterActionsRow(): JSX.Element {
   const rootNavigation = useRootNavigation();

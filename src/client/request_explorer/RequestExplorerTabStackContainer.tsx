@@ -1,14 +1,14 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import Colors from 'components/Colors';
-import useColorScheme from 'light-or-dark/useColorScheme';
-import StackNavigatorInsideTabNavigator from 'navigation/StackNavigatorInsideTabNavigator';
+import * as React from 'react';
+import { Appbar } from 'react-native-paper';
+import Colors from 'src/client/components/Colors';
+import useColorScheme from 'src/client/light-or-dark/useColorScheme';
 import {
   RequestExplorerStackParamList,
   // prettier expects a comma but "editor.codeActionsOnSave": { "source.organizeImports": true } removes the comma
   RootTabScreenProps,
-} from 'navigation/NavigationTypes';
-import * as React from 'react';
-import { Appbar } from 'react-native-paper';
+} from 'src/client/navigation/NavigationTypes';
+import StackNavigatorInsideTabNavigator from 'src/client/navigation/StackNavigatorInsideTabNavigator';
 import RequestExplorerRootScreen from './RequestExplorerScreen';
 import RequestHistoryScreen from './RequestHistoryScreen';
 

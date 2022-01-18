@@ -5,7 +5,7 @@ import type {
   AidRequestActionType,
   AidRequestHistoryEvent,
   AidRequestType,
-} from '../AidRequestModelTypes';
+} from 'src/server/collections/aid_request/AidRequestModelTypes';
 
 export default async function getUpdater(
   user: Express.User,

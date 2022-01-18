@@ -4,6 +4,7 @@
     "strict": true,
     "noUnusedLocals": false,
     "noUnusedParameters": false,
-    "baseUrl": "../../src/client"
+    "skipLibCheck": true,
+    "baseUrl": "../.."
   }
 }

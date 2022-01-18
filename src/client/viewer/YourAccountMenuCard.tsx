@@ -1,12 +1,12 @@
-import StyledCard from 'components/Card';
-import DebouncedLoadingIndicator from 'utils/DebouncedLoadingIndicator';
-import Loading from 'utils/loading';
-import LoginOrRegisterActionsRow from 'viewer/LoginOrRegisterActionsRow';
-import LogoutAction from 'viewer/LogoutAction';
-import { useViewerContext } from 'viewer/ViewerContext';
 import * as React from 'react';
 import { View } from 'react-native';
 import { Card, Paragraph } from 'react-native-paper';
+import StyledCard from 'src/client/components/Card';
+import DebouncedLoadingIndicator from 'src/client/utils/DebouncedLoadingIndicator';
+import Loading from 'src/client/utils/loading';
+import LoginOrRegisterActionsRow from 'src/client/viewer/LoginOrRegisterActionsRow';
+import LogoutAction from 'src/client/viewer/LogoutAction';
+import { useViewerContext } from 'src/client/viewer/ViewerContext';
 
 export default function YourAccountMenuCard(): JSX.Element {
   const { username } = useViewerContext();

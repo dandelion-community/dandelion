@@ -1,8 +1,8 @@
-import DialogContext from 'dialog/DialogContext';
 import * as React from 'react';
 import { Text } from 'react-native';
 import Modal from 'react-native-modal';
 import { Button, Dialog } from 'react-native-paper';
+import DialogContext from 'src/client/dialog/DialogContext';
 
 type Props = {
   children: React.ReactChild;

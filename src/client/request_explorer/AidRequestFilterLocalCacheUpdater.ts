@@ -1,6 +1,6 @@
-import client from 'graphql/client';
-import type { FilterType } from 'request_explorer/RequestExplorerFiltersContext';
-import { FILTERS } from 'request_explorer/RequestExplorerFilters';
+import client from 'src/client/graphql/client';
+import { FILTERS } from 'src/client/request_explorer/RequestExplorerFilters';
+import type { FilterType } from 'src/client/request_explorer/RequestExplorerFiltersContext';
 import {
   LIST_OF_AID_REQUESTS_QUERY,
   PAGE_SIZE,

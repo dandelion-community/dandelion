@@ -1,8 +1,8 @@
-import analytics from '../../../analytics/index';
-import assertLoggedIn from '../../../graphql/assertLoggedIn';
-import { AidRequestGraphQLType } from '../AidRequestGraphQLTypes';
-import { AidRequestModel } from '../AidRequestModel';
-import type { AidRequestType } from '../AidRequestModelTypes';
+import analytics from 'src/server/analytics';
+import { AidRequestGraphQLType } from 'src/server/collections/aid_request/AidRequestGraphQLTypes';
+import { AidRequestModel } from 'src/server/collections/aid_request/AidRequestModel';
+import type { AidRequestType } from 'src/server/collections/aid_request/AidRequestModelTypes';
+import assertLoggedIn from 'src/server/graphql/assertLoggedIn';
 
 async function createAidRequestResolver(
   _: unknown,

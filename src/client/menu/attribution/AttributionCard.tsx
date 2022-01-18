@@ -1,6 +1,4 @@
 import { gql, useQuery } from '@apollo/client';
-import StyledCard from 'components/Card';
-import useColorScheme from 'light-or-dark/useColorScheme';
 import * as React from 'react';
 import {
   FlatList,
@@ -10,6 +8,8 @@ import {
   View,
 } from 'react-native';
 import { Card, List } from 'react-native-paper';
+import StyledCard from 'src/client/components/Card';
+import useColorScheme from 'src/client/light-or-dark/useColorScheme';
 import filterNulls from '../../../shared/utils/filterNulls';
 import {
   AttributionCardQuery,

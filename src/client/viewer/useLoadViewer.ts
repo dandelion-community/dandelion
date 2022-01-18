@@ -1,6 +1,6 @@
 import { gql, useQuery } from '@apollo/client';
-import Loading from 'utils/loading';
 import * as React from 'react';
+import Loading from 'src/client/utils/loading';
 import type { Viewer } from './ViewerContext';
 import type { ViewerQuery } from './__generated__/ViewerQuery';
 

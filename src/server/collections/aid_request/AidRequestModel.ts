@@ -1,10 +1,10 @@
 import { model, Schema } from 'mongoose';
-import { UserReference } from '../user/UserModelTypes';
 import type {
   AidRequestHistoryEvent,
   AidRequestHistoryEventPayload,
   AidRequestType,
-} from './AidRequestModelTypes';
+} from 'src/server/collections/aid_request/AidRequestModelTypes';
+import { UserReference } from 'src/server/collections/user/UserModelTypes';
 
 const AidRequestHistoryEventPayloadSchema =
   new Schema<AidRequestHistoryEventPayload>({

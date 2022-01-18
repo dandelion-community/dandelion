@@ -1,6 +1,6 @@
 import type { NormalizedCacheObject } from '@apollo/client';
 import { ApolloClient, createHttpLink, InMemoryCache } from '@apollo/client';
-import type { ListOfAidRequestsQuery_allAidRequests } from 'request_explorer/__generated__/ListOfAidRequestsQuery';
+import type { ListOfAidRequestsQuery_allAidRequests } from 'src/client/request_explorer/__generated__/ListOfAidRequestsQuery';
 
 export default function createClient(
   uri: string,

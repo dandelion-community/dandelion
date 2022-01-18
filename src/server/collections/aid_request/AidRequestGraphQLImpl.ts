@@ -1,13 +1,13 @@
-import { createAssertLoggedInMiddleware } from '../../graphql/assertLoggedIn';
-import { AidRequestGraphQLType } from './AidRequestGraphQLTypes';
-import logAllAidRequestsMiddleware from './helpers/logAllAidRequestsMiddleware';
-import createAidRequest from './mutations/createAidRequest';
-import editAidRequest from './mutations/editAidRequest';
-import actionsAvailable from './object_fields/actionsAvailable';
-import history from './object_fields/history';
-import latestEvent from './object_fields/latestEvent';
-import whoIsWorkingOnItUsers from './object_fields/whoIsWorkingOnItUsers';
-import whoRecordedIt from './object_fields/whoRecordedIt';
+import { AidRequestGraphQLType } from 'src/server/collections/aid_request/AidRequestGraphQLTypes';
+import logAllAidRequestsMiddleware from 'src/server/collections/aid_request/helpers/logAllAidRequestsMiddleware';
+import createAidRequest from 'src/server/collections/aid_request/mutations/createAidRequest';
+import editAidRequest from 'src/server/collections/aid_request/mutations/editAidRequest';
+import actionsAvailable from 'src/server/collections/aid_request/object_fields/actionsAvailable';
+import history from 'src/server/collections/aid_request/object_fields/history';
+import latestEvent from 'src/server/collections/aid_request/object_fields/latestEvent';
+import whoIsWorkingOnItUsers from 'src/server/collections/aid_request/object_fields/whoIsWorkingOnItUsers';
+import whoRecordedIt from 'src/server/collections/aid_request/object_fields/whoRecordedIt';
+import { createAssertLoggedInMiddleware } from 'src/server/graphql/assertLoggedIn';
 
 AidRequestGraphQLType.addFields({
   actionsAvailable,

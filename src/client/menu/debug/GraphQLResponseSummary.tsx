@@ -1,5 +1,5 @@
-import SmallText from 'menu/debug/SmallText';
 import * as React from 'react';
+import SmallText from 'src/client/menu/debug/SmallText';
 
 type Props = { request: XMLHttpRequest };
 

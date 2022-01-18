@@ -1,6 +1,6 @@
-import { useThemeColor } from 'light-or-dark/useThemeColor';
 import * as React from 'react';
 import { Pressable, StyleSheet, Text } from 'react-native';
+import { useThemeColor } from 'src/client/light-or-dark/useThemeColor';
 
 type Props = {
   children: string;

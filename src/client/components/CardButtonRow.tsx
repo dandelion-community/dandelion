@@ -1,6 +1,6 @@
-import Button from 'components/Button';
 import * as React from 'react';
 import { StyleSheet, View } from 'react-native';
+import Button from 'src/client/components/Button';
 
 type Props = {
   buttons: Array<Parameters<typeof Button>[0]>;

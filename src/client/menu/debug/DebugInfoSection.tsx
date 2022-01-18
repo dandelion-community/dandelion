@@ -1,7 +1,7 @@
-import PressableText from 'components/PressableText';
-import SmallText from 'menu/debug/SmallText';
 import * as React from 'react';
 import { View } from 'react-native';
+import PressableText from 'src/client/components/PressableText';
+import SmallText from 'src/client/menu/debug/SmallText';
 
 type Props = {
   title: string;

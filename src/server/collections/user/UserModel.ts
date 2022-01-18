@@ -12,9 +12,9 @@ import type {
 import mongoose, { Schema } from 'mongoose';
 import passport from 'passport';
 import passportLocalMongoose from 'passport-local-mongoose';
-import { MONGO_DB_URI } from '../../mongo/client';
-import { AidRequestReference } from '../aid_request/AidRequestModelTypes';
-import type { UserDocType } from './UserModelTypes';
+import { AidRequestReference } from 'src/server/collections/aid_request/AidRequestModelTypes';
+import type { UserDocType } from 'src/server/collections/user/UserModelTypes';
+import { MONGO_DB_URI } from 'src/server/mongo/client';
 
 dotenv.config();
 

@@ -1,7 +1,7 @@
-import View from 'components/View';
 import * as React from 'react';
 import { StyleSheet } from 'react-native';
 import { TextInput as PaperTextInput } from 'react-native-paper';
+import View from 'src/client/components/View';
 
 type Props = {
   autoComplete: 'email' | 'password' | 'off';

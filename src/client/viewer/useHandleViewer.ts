@@ -1,7 +1,7 @@
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { RootStackParamList } from 'navigation/NavigationTypes';
-import Loading from 'utils/loading';
 import * as React from 'react';
+import { RootStackParamList } from 'src/client/navigation/NavigationTypes';
+import Loading from 'src/client/utils/loading';
 import type { LoggedInViewer, LoggedOutViewer, Viewer } from './ViewerContext';
 import { useViewerContext } from './ViewerContext';
 
