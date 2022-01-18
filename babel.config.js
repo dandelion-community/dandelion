@@ -8,8 +8,9 @@ module.exports = function (api) {
         {
           alias: {
             ['aid-app']: './src/client/aid-app',
-            ['general-purpose']: './client/general-purpose',
+            ['general-purpose']: './src/client/general-purpose',
           },
+          root: './src',
         },
       ],
     ],

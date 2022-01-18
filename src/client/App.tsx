@@ -10,13 +10,13 @@ import {
   Provider as PaperProvider,
 } from 'react-native-paper';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import client from './aid-app/graphql/client';
-import Navigation from './aid-app/navigation/Navigation';
-import useColorScheme from './general-purpose/components/light-or-dark-themed/useColorScheme';
-import DialogProvider from './general-purpose/dialog/DialogProvider';
-import DrawerProvider from './general-purpose/drawer/DrawerProvider';
-import ToastProvider from './general-purpose/toast/ToastProvider';
+import useColorScheme from './light-or-dark/useColorScheme';
+import DialogProvider from './dialog/DialogProvider';
+import DrawerProvider from './drawer/DrawerProvider';
+import ToastProvider from './toast/ToastProvider';
+import client from './graphql/client';
 import useCachedResources from './hooks/useCachedResources';
+import Navigation from './navigation/Navigation';
 
 const DARK_THEME = {
   ...DarkTheme,
