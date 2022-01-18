@@ -25,41 +25,18 @@ export default function ListOfRequests({
   viewRequestHistory,
 }: Props): JSX.Element {
   const { filter } = useRequestExplorerFilters();
-  const {
-    data,
-    loading: isLoadingEitherIncrementallyOrEntireScreen,
-    fetchMore,
-    refetch,
-  } = useQuery<ListOfAidRequestsQuery, ListOfAidRequestsQueryVariables>(
-    LIST_OF_AID_REQUESTS_QUERY,
-    {
-      notifyOnNetworkStatusChange: true,
-      variables: { after: null, filter, pageSize: PAGE_SIZE },
-    },
-  );
+  const { data, loading, fetchMore, refetch } = useQuery<
+    ListOfAidRequestsQuery,
+    ListOfAidRequestsQueryVariables
+  >(LIST_OF_AID_REQUESTS_QUERY, {
+    notifyOnNetworkStatusChange: true,
+    variables: { after: null, filter, pageSize: PAGE_SIZE },
+  });
   React.useEffect(() => {
     if (data != null) {
       subscribeQueryToAidRequestUpdates(filter, data);
     }
   }, [filter, data]);
-
-  const [isLoadingEntireScreen, setIsLoadingEntireScreen] =
-    React.useState(true);
-  const [isLoadingIncremental, setIsLoadingIncremental] = React.useState(false);
-
-  const refresh = React.useCallback(() => {
-    setIsLoadingEntireScreen(true);
-    refetch();
-  }, []);
-
-  React.useEffect(() => {
-    if (!isLoadingEitherIncrementallyOrEntireScreen) {
-      setIsLoadingIncremental(false);
-      setIsLoadingEntireScreen(false);
-    } else if (!isLoadingIncremental) {
-      setIsLoadingEntireScreen(true);
-    }
-  }, [isLoadingEitherIncrementallyOrEntireScreen, isLoadingIncremental]);
 
   const footer = React.useMemo(() => <ActivityIndicator />, []);
   const edges = data == null ? null : data.allAidRequests?.edges;
@@ -70,6 +47,10 @@ export default function ListOfRequests({
       }
       return filterNulls(edges.map((edge) => edge?.node));
     }, [edges]);
+
+  const isLoadingEntireScreen =
+    loading && (nodes == null || nodes.length === 0);
+  const isLoadingIncremental = loading && !isLoadingEntireScreen;
 
   return (
     <View style={styles.container}>
@@ -84,7 +65,7 @@ export default function ListOfRequests({
         keyExtractor={({ _id }) => _id}
         onEndReached={data == null ? () => null : () => onEndReached(data)}
         onEndReachedThreshold={0.5}
-        onRefresh={refresh}
+        onRefresh={refetch}
         refreshing={isLoadingEntireScreen}
         renderItem={renderItem}
       />
@@ -108,7 +89,6 @@ export default function ListOfRequests({
     if (!data.allAidRequests?.pageInfo.hasNextPage || isLoadingIncremental) {
       return;
     }
-    setIsLoadingIncremental(true);
     fetchMore({
       variables: {
         after: data.allAidRequests.pageInfo.endCursor,
