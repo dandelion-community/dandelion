@@ -1,9 +1,12 @@
 import { ObjectId } from 'mongodb';
-import { AidRequestDeletedModel, AidRequestModel } from '../AidRequestModel';
+import {
+  AidRequestDeletedModel,
+  AidRequestModel,
+} from 'src/server/collections/aid_request/AidRequestModel';
 import type {
   AidRequestActionType,
   AidRequestHistoryEvent,
-} from '../AidRequestModelTypes';
+} from 'src/server/collections/aid_request/AidRequestModelTypes';
 
 export default async function deleteAidRequest(
   user: Express.User,

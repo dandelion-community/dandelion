@@ -1,8 +1,8 @@
 import { schemaComposer } from 'graphql-compose';
 import { composeWithMongoose } from 'graphql-compose-mongoose';
 import { Document } from 'mongoose';
-import { AidRequestModel } from './AidRequestModel';
-import type { AidRequestType } from './AidRequestModelTypes';
+import { AidRequestModel } from 'src/server/collections/aid_request/AidRequestModel';
+import type { AidRequestType } from 'src/server/collections/aid_request/AidRequestModelTypes';
 
 export const AidRequestGraphQLType =
   composeWithMongoose<Document<string, unknown, AidRequestType>>(

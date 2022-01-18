@@ -1,6 +1,6 @@
 import type { GraphQLResolveInfo } from 'graphql';
 import type { ResolverMiddleware } from 'graphql-compose';
-import analytics from '../../../analytics';
+import analytics from 'src/server/analytics';
 
 export default function logAllAidRequestsMiddleware<
   TSource,

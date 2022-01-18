@@ -1,9 +1,9 @@
 import type { ObjectTypeComposerFieldConfigAsObjectDefinition } from 'graphql-compose';
 import { Document } from 'mongoose';
-import assertLoggedIn from '../../../graphql/assertLoggedIn';
-import { AidRequestModel } from '../AidRequestModel';
-import type { AidRequestType } from '../AidRequestModelTypes';
-import getWhoRecordedRequest from '../helpers/getWhoRecordedRequest';
+import { AidRequestModel } from 'src/server/collections/aid_request/AidRequestModel';
+import type { AidRequestType } from 'src/server/collections/aid_request/AidRequestModelTypes';
+import getWhoRecordedRequest from 'src/server/collections/aid_request/helpers/getWhoRecordedRequest';
+import assertLoggedIn from 'src/server/graphql/assertLoggedIn';
 
 const whoRecordedIt: ObjectTypeComposerFieldConfigAsObjectDefinition<
   Document<string, unknown, AidRequestType>,

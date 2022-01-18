@@ -2,15 +2,15 @@ import type { ObjectTypeComposerFieldConfigAsObjectDefinition } from 'graphql-co
 import TimeAgo from 'javascript-time-ago';
 import en from 'javascript-time-ago/locale/en.json';
 import { Document } from 'mongoose';
-import assertLoggedIn from '../../../graphql/assertLoggedIn';
-import { UserModel } from '../../user/UserModel';
-import { AidRequestModel } from '../AidRequestModel';
+import { AidRequestModel } from 'src/server/collections/aid_request/AidRequestModel';
 import type {
   AidRequestHistoryEvent,
   AidRequestHistoryEventPayload,
   AidRequestType,
-} from '../AidRequestModelTypes';
-import getWhoRecordedRequest from '../helpers/getWhoRecordedRequest';
+} from 'src/server/collections/aid_request/AidRequestModelTypes';
+import getWhoRecordedRequest from 'src/server/collections/aid_request/helpers/getWhoRecordedRequest';
+import { UserModel } from 'src/server/collections/user/UserModel';
+import assertLoggedIn from 'src/server/graphql/assertLoggedIn';
 
 TimeAgo.addDefaultLocale(en);
 const timeAgo = new TimeAgo('en-US');

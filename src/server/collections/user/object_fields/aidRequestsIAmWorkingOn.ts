@@ -1,11 +1,11 @@
 import type { ObjectTypeComposerFieldConfigAsObjectDefinition } from 'graphql-compose';
 import { ObjectId } from 'mongodb';
 import { Document } from 'mongoose';
-import filterNulls from '../../../../shared/utils/filterNulls';
-import assertLoggedIn from '../../../graphql/assertLoggedIn';
-import { AidRequestModel } from '../../aid_request/AidRequestModel';
-import type { AidRequestType } from '../../aid_request/AidRequestModelTypes';
-import { UserModel } from '../UserModel';
+import { AidRequestModel } from 'src/server/collections/aid_request/AidRequestModel';
+import type { AidRequestType } from 'src/server/collections/aid_request/AidRequestModelTypes';
+import { UserModel } from 'src/server/collections/user/UserModel';
+import assertLoggedIn from 'src/server/graphql/assertLoggedIn';
+import filterNulls from 'src/shared/utils/filterNulls';
 
 const aidRequestsIAmWorkingOn: ObjectTypeComposerFieldConfigAsObjectDefinition<
   Express.User,

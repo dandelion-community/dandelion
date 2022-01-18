@@ -1,4 +1,4 @@
-import { UserGraphQLType } from '../UserGraphQLTypes';
+import { UserGraphQLType } from 'src/server/collections/user/UserGraphQLTypes';
 
 function meResolver(
   _: unknown,

@@ -6,9 +6,9 @@ import express from 'express';
 import proxy from 'express-http-proxy';
 import logger from 'morgan';
 import path from 'path';
-import { initUserModels } from '../collections/user/UserModel';
-import { initGraphQL } from '../graphql/GraphQLSchema';
-import { initMongoClient } from '../mongo/client';
+import { initUserModels } from 'src/server/collections/user/UserModel';
+import { initGraphQL } from 'src/server/graphql/GraphQLSchema';
+import { initMongoClient } from 'src/server/mongo/client';
 
 dotenv.config();
 
