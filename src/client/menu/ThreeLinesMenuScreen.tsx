@@ -5,6 +5,8 @@ import AttributionCard from 'src/client/menu/attribution/AttributionCard';
 import DebugInfoCard from 'src/client/menu/debug/DebugInfoCard';
 import RequireLoggedInScreen from 'src/client/viewer/RequireLoggedInScreen';
 import YourAccountMenuCard from 'src/client/viewer/YourAccountMenuCard';
+import FeedbackCard from './FeedbackCard';
+import SupportAppCard from './SupportAppCard';
 
 export default function ThreeLinesMenuScreen(): JSX.Element {
   return (
@@ -13,6 +15,8 @@ export default function ThreeLinesMenuScreen(): JSX.Element {
         <ScrollView>
           <View style={styles.scrollView}>
             <YourAccountMenuCard />
+            <FeedbackCard />
+            <SupportAppCard />
             <DebugInfoCard />
             <AttributionCard />
           </View>
