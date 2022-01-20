@@ -3,7 +3,7 @@
 // @generated
 // This file was automatically generated and should not be edited.
 
-import { AidRequestActionInputInput, AidRequestUpdateActionType, AidRequestUpdateStatusType } from "../../../../__generated__/globalTypes";
+import { AidRequestActionInputInput, AidRequestUpdateActionType, AidRequestUpdateStatusType } from "./../../../../__generated__/globalTypes";
 
 // ====================================================
 // GraphQL mutation operation: editAidRequestMutation
@@ -12,6 +12,7 @@ import { AidRequestActionInputInput, AidRequestUpdateActionType, AidRequestUpdat
 export interface editAidRequestMutation_editAidRequest_aidRequest_whoRecordedIt {
   __typename: "User";
   displayName: string;
+  username: string;
 }
 
 export interface editAidRequestMutation_editAidRequest_aidRequest_whoIsWorkingOnItUsers {

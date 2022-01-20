@@ -3,7 +3,7 @@
 // @generated
 // This file was automatically generated and should not be edited.
 
-import { FilterFindManyAidRequestInput, AidRequestUpdateActionType, AidRequestUpdateStatusType } from "../../../../__generated__/globalTypes";
+import { FilterFindManyAidRequestInput, AidRequestUpdateActionType, AidRequestUpdateStatusType } from "./../../../../__generated__/globalTypes";
 
 // ====================================================
 // GraphQL query operation: ListOfAidRequestsQuery
@@ -24,6 +24,7 @@ export interface ListOfAidRequestsQuery_allAidRequests_pageInfo {
 export interface ListOfAidRequestsQuery_allAidRequests_edges_node_whoRecordedIt {
   __typename: "User";
   displayName: string;
+  username: string;
 }
 
 export interface ListOfAidRequestsQuery_allAidRequests_edges_node_whoIsWorkingOnItUsers {
