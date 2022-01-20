@@ -10,12 +10,10 @@ import {
   Provider as PaperProvider,
 } from 'react-native-paper';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import useColorScheme from './light-or-dark/useColorScheme';
-import DialogProvider from './dialog/DialogProvider';
-import DrawerProvider from './drawer/DrawerProvider';
-import ToastProvider from './toast/ToastProvider';
+import GlobalProviders from 'src/client/root/GlobalProviders';
 import client from './graphql/client';
 import useCachedResources from './hooks/useCachedResources';
+import useColorScheme from './light-or-dark/useColorScheme';
 import Navigation from './navigation/Navigation';
 
 const DARK_THEME = {
@@ -40,14 +38,10 @@ export default function App() {
       <SafeAreaProvider>
         <PaperProvider theme={paperTheme}>
           <ApolloProvider client={client}>
-            <DialogProvider>
-              <ToastProvider>
-                <DrawerProvider>
-                  <Navigation colorScheme={colorScheme} />
-                  <StatusBar />
-                </DrawerProvider>
-              </ToastProvider>
-            </DialogProvider>
+            <GlobalProviders>
+              <Navigation colorScheme={colorScheme} />
+              <StatusBar />
+            </GlobalProviders>
           </ApolloProvider>
         </PaperProvider>
       </SafeAreaProvider>

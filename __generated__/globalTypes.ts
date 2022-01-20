@@ -8,27 +8,27 @@
 //==============================================================
 
 export enum AidRequestUpdateActionType {
-  Add = "Add",
-  Remove = "Remove",
+  Add = 'Add',
+  Remove = 'Remove',
 }
 
 export enum AidRequestUpdateStatusType {
-  Completed = "Completed",
-  Created = "Created",
-  Deleted = "Deleted",
-  WorkingOn = "WorkingOn",
+  Completed = 'Completed',
+  Created = 'Created',
+  Deleted = 'Deleted',
+  WorkingOn = 'WorkingOn',
 }
 
 export enum EnumAidRequestHistoryAction {
-  Add = "Add",
-  Remove = "Remove",
+  Add = 'Add',
+  Remove = 'Remove',
 }
 
 export enum EnumAidRequestHistoryDetailsEvent {
-  Completed = "Completed",
-  Created = "Created",
-  Deleted = "Deleted",
-  WorkingOn = "WorkingOn",
+  Completed = 'Completed',
+  Created = 'Created',
+  Deleted = 'Deleted',
+  WorkingOn = 'WorkingOn',
 }
 
 export interface AidRequestActionInputInput {
@@ -67,6 +67,7 @@ export interface FilterFindManyAidRequestInput {
   _operators?: FilterFindManyAidRequestOperatorsInput | null;
   OR?: FilterFindManyAidRequestInput[] | null;
   AND?: FilterFindManyAidRequestInput[] | null;
+  search?: string | null;
 }
 
 /**

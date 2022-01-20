@@ -9,6 +9,7 @@ import {
   RootTabScreenProps,
 } from 'src/client/navigation/NavigationTypes';
 import StackNavigatorInsideTabNavigator from 'src/client/navigation/StackNavigatorInsideTabNavigator';
+import RequestExplorerHeader from './RequestExplorerHeader';
 import RequestExplorerRootScreen from './RequestExplorerScreen';
 import RequestHistoryScreen from './RequestHistoryScreen';
 
@@ -28,11 +29,7 @@ export default function RequestExplorerTabStackContainer({
           component={RequestExplorerRootScreen}
           name="RequestExplorer"
           options={() => ({
-            header: ({ options }) => (
-              <Appbar.Header style={{ backgroundColor: headerBackgroundColor }}>
-                <Appbar.Content title={options.title} />
-              </Appbar.Header>
-            ),
+            header: () => <RequestExplorerHeader />,
             title: 'All Requests',
           })}
         />

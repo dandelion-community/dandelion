@@ -27,16 +27,26 @@ const AidRequestSchema = new Schema<AidRequestType>({
   createdAt: Date,
   history: [AidRequestHistoryEventSchema],
   whatIsNeeded: String,
+  whatIsNeededSearch: String,
   whoIsItFor: String,
+  whoIsItForSearch: String,
   whoIsWorkingOnIt: [String],
   whoRecordedIt: String,
   whoRecordedItUsername: String,
+});
+
+AidRequestSchema.index({
+  whatIsNeeded: 'text',
+  whatIsNeededSearch: 'text',
+  whoIsItFor: 'text',
+  whoIsItForSearch: 'text',
 });
 
 export const AidRequestModel = model<AidRequestType>(
   'AidRequest',
   AidRequestSchema,
 );
+AidRequestModel.ensureIndexes();
 
 export const AidRequestDeletedModel = model<AidRequestType>(
   'AidRequestDeleted',

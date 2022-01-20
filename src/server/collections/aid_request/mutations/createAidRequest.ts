@@ -2,6 +2,7 @@ import analytics from 'src/server/analytics';
 import { AidRequestGraphQLType } from 'src/server/collections/aid_request/AidRequestGraphQLTypes';
 import { AidRequestModel } from 'src/server/collections/aid_request/AidRequestModel';
 import type { AidRequestType } from 'src/server/collections/aid_request/AidRequestModelTypes';
+import searchPrefixes from 'src/server/collections/aid_request/helpers/searchPrefixes';
 import assertLoggedIn from 'src/server/graphql/assertLoggedIn';
 
 async function createAidRequestResolver(
@@ -30,7 +31,9 @@ async function createAidRequestResolver(
     createdAt: Date.now(),
     history: [creationEvent],
     whatIsNeeded,
+    whatIsNeededSearch: searchPrefixes(whatIsNeeded),
     whoIsItFor,
+    whoIsItForSearch: searchPrefixes(whoIsItFor),
     whoIsWorkingOnIt: [],
     whoRecordedIt,
     whoRecordedItUsername,

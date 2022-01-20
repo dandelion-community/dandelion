@@ -5,7 +5,7 @@ import DrawerContext from 'src/client/drawer/DrawerContext';
 import useColorScheme from 'src/client/light-or-dark/useColorScheme';
 
 type Props = {
-  children: React.ReactChild[];
+  children: React.ReactChild;
 };
 
 export default function DrawerProvider({
