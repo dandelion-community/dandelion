@@ -6,10 +6,10 @@ import StyledCard from 'src/client/components/Card';
 export default function SupportAppCard(): JSX.Element {
   return (
     <StyledCard>
-      <Card.Title title="Support this App 💸" />
+      <Card.Title title="Support Dandelion 💸" />
       <Card.Content>
         <Paragraph>
-          A monthly contribution will help keep this app going!
+          Dandelion is powered by people like you!
         </Paragraph>
         <Button
           onPress={() =>
