@@ -1,6 +1,6 @@
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import * as React from 'react';
-import { Pressable, StyleSheet, View } from 'react-native';
+import { Linking, Pressable, StyleSheet, View } from 'react-native';
 import PressableText from 'src/client/components/PressableText';
 import Text from 'src/client/components/Text';
 import useDrawerContext from 'src/client/drawer/useDrawerContext';
@@ -11,13 +11,9 @@ import type { AidRequestCardFragment } from './__generated__/AidRequestCardFragm
 
 type Props = {
   aidRequest: AidRequestCardFragment;
-  viewRequestHistory: (requestID: string) => void;
 };
 
-export default function AidRequestCard({
-  aidRequest,
-  viewRequestHistory,
-}: Props): JSX.Element {
+export default function AidRequestCard({ aidRequest }: Props): JSX.Element {
   const { openDrawer } = useDrawerContext();
   const { whatIsNeeded, whoIsItFor } = aidRequest;
   const backgroundColor = useThemeColor({}, 'cardBackground');
@@ -43,7 +39,13 @@ export default function AidRequestCard({
         </Text>
       </View>
       <View style={[styles.row, styles.bottomRow]}>
-        <PressableText onPress={() => viewRequestHistory(aidRequest._id)}>
+        <PressableText
+          onPress={() =>
+            Linking.openURL(
+              `mailto:${aidRequest.whoRecordedIt?.username}?subject=RE: ${whatIsNeeded} for ${whoIsItFor}`,
+            )
+          }
+        >
           {aidRequest.latestEvent}
         </PressableText>
       </View>
