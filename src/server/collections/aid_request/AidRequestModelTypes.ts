@@ -55,6 +55,8 @@ export type AidRequestType = {
   whoIsWorkingOnIt: ObjectId[];
   whoRecordedIt: ObjectId;
   whoRecordedItUsername: string;
+  whoIsItForSearch: string;
+  whatIsNeededSearch: string;
   _id: string;
 };
 

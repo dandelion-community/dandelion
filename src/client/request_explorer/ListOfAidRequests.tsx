@@ -19,11 +19,7 @@ import {
   ListOfAidRequestsQuery_allAidRequests_edges_node,
 } from './__generated__/ListOfAidRequestsQuery';
 
-type Props = { viewRequestHistory: (requestID: string) => void };
-
-export default function ListOfRequests({
-  viewRequestHistory,
-}: Props): JSX.Element {
+export default function ListOfRequests(): JSX.Element {
   const { filter } = useRequestExplorerFilters();
   const { data, loading, fetchMore, refetch } = useQuery<
     ListOfAidRequestsQuery,
@@ -77,12 +73,7 @@ export default function ListOfRequests({
     index: _index,
     separators: _separators,
   }: ListRenderItemInfo<ListOfAidRequestsQuery_allAidRequests_edges_node>): React.ReactElement | null {
-    return (
-      <AidRequestCard
-        aidRequest={item}
-        viewRequestHistory={viewRequestHistory}
-      />
-    );
+    return <AidRequestCard aidRequest={item} />;
   }
 
   function onEndReached(data: ListOfAidRequestsQuery): void {
