@@ -9,7 +9,7 @@ export default function FeedbackCard(): JSX.Element {
       <Card.Title title="Got Feedback? 🗣️" />
       <Card.Content>
         <Paragraph>
-          We'd love to hear any feedback you have about this app!
+          We'd love to hear any feedback you have about Dandelion!
         </Paragraph>
         <Button
           onPress={() =>
