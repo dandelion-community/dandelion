@@ -13,7 +13,7 @@ export default {
   },
   light: {
     background: '#ccc',
-    cardBackground: '#e8e8e8',
+    cardBackground: '#f8f8f8',
     tabBarBackground: '#6200ee',
     tabIconDefault: '#ccc',
     tabIconSelected: '#f7ff7e',

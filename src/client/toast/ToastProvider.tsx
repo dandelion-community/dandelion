@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Dimensions, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { Snackbar } from 'react-native-paper';
 import type { ToastConfig } from './ToastContext';
 import ToastContext from './ToastContext';
@@ -9,7 +9,6 @@ type Props = {
 };
 
 export default function ToastProvider({ children }: Props): React.ReactElement {
-  const windowWidth = Dimensions.get('window').width;
   const [toastContext, setToastContext] = React.useState<
     ToastConfig | undefined
   >(undefined);
@@ -23,7 +22,7 @@ export default function ToastProvider({ children }: Props): React.ReactElement {
   return (
     <ToastContext.Provider value={value}>
       {children}
-      <View style={[styles.snackbar, { minWidth: windowWidth - 32 }]}>
+      <View style={styles.snackbar}>
         <Snackbar
           action={
             toastContext?.undo == null
@@ -47,9 +46,10 @@ export default function ToastProvider({ children }: Props): React.ReactElement {
 
 const styles = StyleSheet.create({
   snackbar: {
-    bottom: 40,
+    bottom: 80,
     elevation: 1,
-    margin: 16,
+    left: 0,
+    minWidth: '100%',
     position: 'absolute',
   },
 });

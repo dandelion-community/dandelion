@@ -126,5 +126,8 @@
     "trailingComma": "all"
   },
   "private": true,
-  "babelrcRoots": [".", "src"]
+  "babelrcRoots": [
+    ".",
+    "src"
+  ]
 }
