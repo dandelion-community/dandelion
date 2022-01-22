@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { ScrollView, StyleSheet } from 'react-native';
+import EndOfListSpacer from 'src/client/components/EndOfListSpacer';
 import View from 'src/client/components/View';
 import AttributionCard from 'src/client/menu/attribution/AttributionCard';
 import DebugInfoCard from 'src/client/menu/debug/DebugInfoCard';
@@ -19,6 +20,7 @@ export default function ThreeLinesMenuScreen(): JSX.Element {
             <SupportAppCard />
             <DebugInfoCard />
             <AttributionCard />
+            <EndOfListSpacer />
           </View>
         </ScrollView>
       </View>

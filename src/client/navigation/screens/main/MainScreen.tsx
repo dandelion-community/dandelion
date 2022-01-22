@@ -1,8 +1,10 @@
 import { FontAwesome } from '@expo/vector-icons';
-import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import * as React from 'react';
 import Colors from 'src/client/components/Colors';
+import AidRequestCreateDrawer from 'src/client/create_request/AidRequestCreateDrawer';
+import useDrawerContext from 'src/client/drawer/useDrawerContext';
 import useColorScheme from 'src/client/light-or-dark/useColorScheme';
+import createMaterialBottomTabNavigator from 'src/client/navigation/bottom-navigator/createMaterialBottomTabNavigator';
 import {
   RootStackScreenProps,
   RootTabParamList,
@@ -24,12 +26,16 @@ export default function MainScreen({
 }: RootStackScreenProps<'Main'>): React.ReactElement {
   const colorScheme = useColorScheme();
   useSetRootNavigation(navigation);
+  const { openDrawer } = useDrawerContext();
   return (
     <BottomTab.Navigator
       activeColor={Colors[colorScheme].tabIconSelected}
       barStyle={{ backgroundColor: Colors[colorScheme].tabBarBackground }}
       inactiveColor={Colors[colorScheme].tabIconDefault}
       initialRouteName="RequestExplorerTabStackContainer"
+      onFABPress={() => {
+        openDrawer(renderCreateDrawerContents);
+      }}
       shifting={true}
     >
       <BottomTab.Screen
@@ -74,6 +80,10 @@ export default function MainScreen({
       />
     </BottomTab.Navigator>
   );
+
+  function renderCreateDrawerContents(): React.ReactElement {
+    return <AidRequestCreateDrawer />;
+  }
 }
 
 /**

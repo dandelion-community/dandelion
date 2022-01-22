@@ -3,6 +3,7 @@ import * as React from 'react';
 import type { ListRenderItemInfo } from 'react-native';
 import { FlatList, StyleSheet } from 'react-native';
 import { ActivityIndicator } from 'react-native-paper';
+import EndOfListSpacer from 'src/client/components/EndOfListSpacer';
 import View from 'src/client/components/View';
 import { useRequestExplorerFilters } from 'src/client/request_explorer/RequestExplorerFiltersContext';
 import DebouncedLoadingIndicator from 'src/client/utils/DebouncedLoadingIndicator';
@@ -36,13 +37,14 @@ export default function ListOfRequests(): JSX.Element {
 
   const footer = React.useMemo(() => <ActivityIndicator />, []);
   const edges = data == null ? null : data.allAidRequests?.edges;
-  const nodes: null | Array<ListOfAidRequestsQuery_allAidRequests_edges_node> =
-    React.useMemo(() => {
-      if (edges == null) {
-        return null;
-      }
-      return filterNulls(edges.map((edge) => edge?.node));
-    }, [edges]);
+  const nodes: null | Array<
+    undefined | ListOfAidRequestsQuery_allAidRequests_edges_node
+  > = React.useMemo(() => {
+    if (edges == null) {
+      return null;
+    }
+    return [...filterNulls(edges.map((edge) => edge?.node)), undefined];
+  }, [edges]);
 
   const isLoadingEntireScreen =
     loading && (nodes == null || nodes.length === 0);
@@ -58,7 +60,7 @@ export default function ListOfRequests(): JSX.Element {
       <FlatList
         ListFooterComponent={isLoadingIncremental ? footer : null}
         data={nodes}
-        keyExtractor={({ _id }) => _id}
+        keyExtractor={(item) => (item === undefined ? 'undefined' : item._id)}
         onEndReached={data == null ? () => null : () => onEndReached(data)}
         onEndReachedThreshold={0.5}
         onRefresh={refetch}
@@ -72,7 +74,12 @@ export default function ListOfRequests(): JSX.Element {
     item,
     index: _index,
     separators: _separators,
-  }: ListRenderItemInfo<ListOfAidRequestsQuery_allAidRequests_edges_node>): React.ReactElement | null {
+  }: ListRenderItemInfo<
+    undefined | ListOfAidRequestsQuery_allAidRequests_edges_node
+  >): React.ReactElement | null {
+    if (item === undefined) {
+      return <EndOfListSpacer />;
+    }
     return <AidRequestCard aidRequest={item} />;
   }
 
