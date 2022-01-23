@@ -25,6 +25,7 @@ const AidRequestHistoryEventSchema = new Schema<AidRequestHistoryEvent>({
 const AidRequestSchema = new Schema<AidRequestType>({
   completed: Boolean,
   createdAt: Date,
+  crew: String,
   history: [AidRequestHistoryEventSchema],
   whatIsNeeded: String,
   whatIsNeededSearch: String,

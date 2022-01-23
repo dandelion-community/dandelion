@@ -3,18 +3,21 @@ import type { LoadingType } from 'src/client/utils/loading';
 import Loading from 'src/client/utils/loading';
 
 export type LoggedInViewer = Readonly<{
+  crews: string[];
   displayName: string;
   id: string;
   username: string;
 }>;
 
 export type LoggedOutViewer = Readonly<{
+  crews: undefined;
   displayName: undefined;
   id: undefined;
   username: undefined;
 }>;
 
 export type LoadingViewer = Readonly<{
+  crews: LoadingType;
   displayName: LoadingType;
   id: LoadingType;
   username: LoadingType;
@@ -23,6 +26,7 @@ export type LoadingViewer = Readonly<{
 export type Viewer = Readonly<LoggedInViewer | LoggedOutViewer | LoadingViewer>;
 
 const ViewerContext = React.createContext<Viewer>({
+  crews: Loading,
   displayName: Loading,
   id: Loading,
   username: Loading,

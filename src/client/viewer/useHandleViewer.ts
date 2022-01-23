@@ -2,8 +2,12 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import * as React from 'react';
 import { RootStackParamList } from 'src/client/navigation/NavigationTypes';
 import Loading from 'src/client/utils/loading';
-import type { LoggedInViewer, LoggedOutViewer, Viewer } from './ViewerContext';
-import { useViewerContext } from './ViewerContext';
+import type {
+  LoggedInViewer,
+  LoggedOutViewer,
+  Viewer,
+} from 'src/client/viewer/ViewerContext';
+import { useViewerContext } from 'src/client/viewer/ViewerContext';
 
 type Handler<TContext extends Viewer> = (
   viewer: TContext,

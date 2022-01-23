@@ -12,6 +12,7 @@ import type {
   AidRequestHistoryEventForGraphQL,
   AidRequestType,
 } from 'src/server/collections/aid_request/AidRequestModelTypes';
+import loadAidRequestForViewer from 'src/server/collections/aid_request/helpers/loadAidRequestForViewer';
 import deleteAidRequest from 'src/server/collections/aid_request/mutations/deleteAidRequest';
 import workingOn from 'src/server/collections/aid_request/mutations/workingOn';
 import assertLoggedIn from 'src/server/graphql/assertLoggedIn';
@@ -30,7 +31,7 @@ async function editAidRequestResolver(
   req: Express.Request,
 ): Promise<AidRequestHistoryEventForGraphQL | null> {
   const user = assertLoggedIn(req, 'editAidRequest');
-  const originalAidRequest = await AidRequestModel.findById(aidRequestID);
+  const originalAidRequest = await loadAidRequestForViewer(user, aidRequestID);
   const whatIsNeeded = originalAidRequest?.whatIsNeeded ?? '';
   const whoIsItFor = originalAidRequest?.whoIsItFor ?? '';
   const { postpublishSummary, updater, historyEvent } = await getUpdateInfo(

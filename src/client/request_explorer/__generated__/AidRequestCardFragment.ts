@@ -40,11 +40,11 @@ export interface AidRequestCardFragment_actionsAvailable {
 
 export interface AidRequestCardFragment {
   __typename: "AidRequest";
-  _id: any;
-  completed: boolean | null;
+  _id: string;
+  completed: boolean;
   latestEvent: string;
-  whatIsNeeded: string | null;
-  whoIsItFor: string | null;
+  whatIsNeeded: string;
+  whoIsItFor: string;
   whoRecordedIt: AidRequestCardFragment_whoRecordedIt | null;
   whoIsWorkingOnItUsers: (AidRequestCardFragment_whoIsWorkingOnItUsers | null)[] | null;
   actionsAvailable: (AidRequestCardFragment_actionsAvailable | null)[] | null;

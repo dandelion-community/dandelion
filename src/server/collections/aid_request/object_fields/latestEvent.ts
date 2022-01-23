@@ -2,13 +2,13 @@ import type { ObjectTypeComposerFieldConfigAsObjectDefinition } from 'graphql-co
 import TimeAgo from 'javascript-time-ago';
 import en from 'javascript-time-ago/locale/en.json';
 import { Document } from 'mongoose';
-import { AidRequestModel } from 'src/server/collections/aid_request/AidRequestModel';
 import type {
   AidRequestHistoryEvent,
   AidRequestHistoryEventPayload,
   AidRequestType,
 } from 'src/server/collections/aid_request/AidRequestModelTypes';
 import getWhoRecordedRequest from 'src/server/collections/aid_request/helpers/getWhoRecordedRequest';
+import loadAidRequestForViewer from 'src/server/collections/aid_request/helpers/loadAidRequestForViewer';
 import { UserModel } from 'src/server/collections/user/UserModel';
 import assertLoggedIn from 'src/server/graphql/assertLoggedIn';
 
@@ -21,15 +21,12 @@ const latestEvent: ObjectTypeComposerFieldConfigAsObjectDefinition<
   Record<string, never>
 > = {
   resolve: async (
-    { _id }: Document<string, unknown, AidRequestType>,
+    { _id: aidRequestID }: Document<string, unknown, AidRequestType>,
     _args: Record<string, never>,
     req: Express.Request,
   ): Promise<string> => {
-    assertLoggedIn(req, 'latestEvent');
-    const aidRequest = await AidRequestModel.findById(_id);
-    if (aidRequest == null) {
-      throw new Error('No request found for this ID');
-    }
+    const user = assertLoggedIn(req, 'AidRequest.latestEvent');
+    const aidRequest = await loadAidRequestForViewer(user, aidRequestID);
     const { history: rawHistory } = aidRequest;
     const history = filterRemovals(rawHistory);
     if (history.length === 0) {
@@ -43,12 +40,13 @@ const latestEvent: ObjectTypeComposerFieldConfigAsObjectDefinition<
         ? currentEvent
         : latestEvent,
     );
-    const user = await UserModel.findById(event.actor);
-    if (user == null) {
+    const actor = await UserModel.findById(event.actor);
+    if (actor == null) {
       throw new Error('Action must have actor');
     }
+    const userIsActor = actor._id.equals(user._id);
     return `${timeAgo.format(event.timestamp)} - ${
-      user.displayName
+      userIsActor ? 'You' : user.displayName
     } ${getActionText(event.details)}`;
   },
   type: 'String!',

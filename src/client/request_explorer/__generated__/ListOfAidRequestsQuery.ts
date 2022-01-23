@@ -52,11 +52,11 @@ export interface ListOfAidRequestsQuery_allAidRequests_edges_node_actionsAvailab
 
 export interface ListOfAidRequestsQuery_allAidRequests_edges_node {
   __typename: "AidRequest";
-  _id: any;
-  completed: boolean | null;
+  _id: string;
+  completed: boolean;
   latestEvent: string;
-  whatIsNeeded: string | null;
-  whoIsItFor: string | null;
+  whatIsNeeded: string;
+  whoIsItFor: string;
   whoRecordedIt: ListOfAidRequestsQuery_allAidRequests_edges_node_whoRecordedIt | null;
   whoIsWorkingOnItUsers: (ListOfAidRequestsQuery_allAidRequests_edges_node_whoIsWorkingOnItUsers | null)[] | null;
   actionsAvailable: (ListOfAidRequestsQuery_allAidRequests_edges_node_actionsAvailable | null)[] | null;

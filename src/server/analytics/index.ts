@@ -13,6 +13,7 @@ const mongoAnalytics = {
       event,
       ...(properties ?? {}),
       timestamp: new Date(),
+      userCrews: user.crews.join(', '),
       userDisplayName: user.displayName,
       userId: user._id.toString(),
       username: user.username,

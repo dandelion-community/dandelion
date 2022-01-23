@@ -1,5 +1,5 @@
-export type LoadingType = '~~Loading~~';
+export type LoadingType = -1;
 
-const Loading: LoadingType = '~~Loading~~';
+const Loading: LoadingType = -1;
 
 export default Loading;

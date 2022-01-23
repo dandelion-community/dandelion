@@ -49,6 +49,7 @@ export type AidRequestHistoryEventForGraphQL = {
 export type AidRequestType = {
   completed: boolean;
   createdAt: Date;
+  crew: string;
   history: AidRequestHistoryEvent[];
   whatIsNeeded: string;
   whoIsItFor: string;

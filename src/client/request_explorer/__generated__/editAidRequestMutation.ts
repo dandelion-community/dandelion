@@ -40,11 +40,11 @@ export interface editAidRequestMutation_editAidRequest_aidRequest_actionsAvailab
 
 export interface editAidRequestMutation_editAidRequest_aidRequest {
   __typename: "AidRequest";
-  _id: any;
-  completed: boolean | null;
+  _id: string;
+  completed: boolean;
   latestEvent: string;
-  whatIsNeeded: string | null;
-  whoIsItFor: string | null;
+  whatIsNeeded: string;
+  whoIsItFor: string;
   whoRecordedIt: editAidRequestMutation_editAidRequest_aidRequest_whoRecordedIt | null;
   whoIsWorkingOnItUsers: (editAidRequestMutation_editAidRequest_aidRequest_whoIsWorkingOnItUsers | null)[] | null;
   actionsAvailable: (editAidRequestMutation_editAidRequest_aidRequest_actionsAvailable | null)[] | null;

@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { ScrollView, StyleSheet } from 'react-native';
 import View from 'src/client/components/View';
-import CreateRequestForm from 'src/client/create_request/CreateRequestForm';
 import RequireLoggedInScreen from 'src/client/viewer/RequireLoggedInScreen';
 
 export default function CreateRequestScreen(): React.ReactElement {
@@ -9,9 +8,7 @@ export default function CreateRequestScreen(): React.ReactElement {
     <RequireLoggedInScreen>
       <View style={styles.container}>
         <ScrollView>
-          <View style={styles.scrollView}>
-            <CreateRequestForm />
-          </View>
+          <View style={styles.scrollView}></View>
         </ScrollView>
       </View>
     </RequireLoggedInScreen>

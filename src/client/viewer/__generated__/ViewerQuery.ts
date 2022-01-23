@@ -12,6 +12,7 @@ export interface ViewerQuery_me {
   _id: string;
   username: string;
   displayName: string;
+  crews: string[];
 }
 
 export interface ViewerQuery {

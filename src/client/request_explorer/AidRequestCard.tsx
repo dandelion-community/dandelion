@@ -20,36 +20,38 @@ export default function AidRequestCard({ aidRequest }: Props): JSX.Element {
   const colorScheme = useColorScheme();
 
   return (
-    <View style={[styles.card, { backgroundColor }]}>
-      <View style={[styles.row, styles.topRow]}>
-        <Text>{whatIsNeeded}</Text>
-        <View>
-          <Pressable onPress={() => openDrawer(renderEditDrawerContents)}>
-            <MaterialCommunityIcons
-              color={colorScheme === 'light' ? 'black' : 'white'}
-              name="dots-vertical"
-              size={24}
-            />
-          </Pressable>
+    <Pressable onPress={() => openDrawer(renderEditDrawerContents)}>
+      <View style={[styles.card, { backgroundColor }]}>
+        <View style={[styles.row, styles.topRow]}>
+          <Text>{whatIsNeeded}</Text>
+          <View>
+            <Pressable onPress={() => openDrawer(renderEditDrawerContents)}>
+              <MaterialCommunityIcons
+                color={colorScheme === 'light' ? 'black' : 'white'}
+                name="dots-vertical"
+                size={24}
+              />
+            </Pressable>
+          </View>
+        </View>
+        <View style={styles.row}>
+          <Text style={{ fontSize: 12 }}>
+            for <Text style={{ fontWeight: 'bold' }}>{whoIsItFor}</Text>
+          </Text>
+        </View>
+        <View style={[styles.row, styles.bottomRow]}>
+          <PressableText
+            onPress={() =>
+              Linking.openURL(
+                `mailto:${aidRequest.whoRecordedIt?.username}?subject=RE: ${whatIsNeeded} for ${whoIsItFor}`,
+              )
+            }
+          >
+            {aidRequest.latestEvent}
+          </PressableText>
         </View>
       </View>
-      <View style={styles.row}>
-        <Text style={{ fontSize: 12 }}>
-          for <Text style={{ fontWeight: 'bold' }}>{whoIsItFor}</Text>
-        </Text>
-      </View>
-      <View style={[styles.row, styles.bottomRow]}>
-        <PressableText
-          onPress={() =>
-            Linking.openURL(
-              `mailto:${aidRequest.whoRecordedIt?.username}?subject=RE: ${whatIsNeeded} for ${whoIsItFor}`,
-            )
-          }
-        >
-          {aidRequest.latestEvent}
-        </PressableText>
-      </View>
-    </View>
+    </Pressable>
   );
 
   function renderEditDrawerContents(): React.ReactElement {
