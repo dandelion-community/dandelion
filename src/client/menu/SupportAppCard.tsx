@@ -8,9 +8,7 @@ export default function SupportAppCard(): JSX.Element {
     <StyledCard>
       <Card.Title title="Support Dandelion 💸" />
       <Card.Content>
-        <Paragraph>
-          Dandelion is powered by people like you!
-        </Paragraph>
+        <Paragraph>Dandelion is powered by people like you!</Paragraph>
         <Button
           onPress={() =>
             Linking.openURL('https://www.patreon.com/dandelion_community_aid')
