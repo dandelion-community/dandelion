@@ -29,6 +29,6 @@ export interface AidRequestEditDrawerFragment_actionsAvailable {
 
 export interface AidRequestEditDrawerFragment {
   __typename: "AidRequest";
-  _id: any;
+  _id: string;
   actionsAvailable: (AidRequestEditDrawerFragment_actionsAvailable | null)[] | null;
 }

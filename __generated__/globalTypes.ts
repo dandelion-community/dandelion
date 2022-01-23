@@ -8,27 +8,27 @@
 //==============================================================
 
 export enum AidRequestUpdateActionType {
-  Add = 'Add',
-  Remove = 'Remove',
+  Add = "Add",
+  Remove = "Remove",
 }
 
 export enum AidRequestUpdateStatusType {
-  Completed = 'Completed',
-  Created = 'Created',
-  Deleted = 'Deleted',
-  WorkingOn = 'WorkingOn',
+  Completed = "Completed",
+  Created = "Created",
+  Deleted = "Deleted",
+  WorkingOn = "WorkingOn",
 }
 
 export enum EnumAidRequestHistoryAction {
-  Add = 'Add',
-  Remove = 'Remove',
+  Add = "Add",
+  Remove = "Remove",
 }
 
 export enum EnumAidRequestHistoryDetailsEvent {
-  Completed = 'Completed',
-  Created = 'Created',
-  Deleted = 'Deleted',
-  WorkingOn = 'WorkingOn',
+  Completed = "Completed",
+  Created = "Created",
+  Deleted = "Deleted",
+  WorkingOn = "WorkingOn",
 }
 
 export interface AidRequestActionInputInput {
@@ -57,12 +57,12 @@ export interface FilterFindManyAidRequestHistoryInput {
 export interface FilterFindManyAidRequestInput {
   completed?: boolean | null;
   createdAt?: any | null;
+  crew?: string | null;
   history?: (FilterFindManyAidRequestHistoryInput | null)[] | null;
   whatIsNeeded?: string | null;
   whoIsItFor?: string | null;
   whoIsWorkingOnIt?: (string | null)[] | null;
   whoRecordedIt?: string | null;
-  whoRecordedItUsername?: string | null;
   _id?: any | null;
   _operators?: FilterFindManyAidRequestOperatorsInput | null;
   OR?: FilterFindManyAidRequestInput[] | null;

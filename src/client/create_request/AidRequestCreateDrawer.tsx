@@ -1,7 +1,7 @@
 import { gql, useMutation } from '@apollo/client';
 import * as React from 'react';
-import { Dimensions, StyleSheet, View } from 'react-native';
-import { Button } from 'react-native-paper';
+import { Dimensions, Pressable, StyleSheet, View } from 'react-native';
+import { Button, RadioButton } from 'react-native-paper';
 import Text from 'src/client/components/Text';
 import TextInput from 'src/client/components/TextInput';
 import type {
@@ -12,12 +12,15 @@ import useDrawerContext from 'src/client/drawer/useDrawerContext';
 import { AidRequestCardFragments } from 'src/client/request_explorer/AidRequestCardFragments';
 import { broadcastAidRequestUpdated } from 'src/client/request_explorer/AidRequestFilterLocalCacheUpdater';
 import useToastContext from 'src/client/toast/useToastContext';
+import { useLoggedInViewer } from 'src/client/viewer/ViewerContext';
 
 export default function AidRequestCreateDrawer(): JSX.Element {
   const { publishToast } = useToastContext();
   const { closeDrawer } = useDrawerContext();
+  const { crews } = useLoggedInViewer();
   const [whoIsItFor, setwhoIsItFor] = React.useState<string>('');
   const [whatIsNeeded, setWhatIsNeeded] = React.useState<string>('');
+  const [crew, setCrew] = React.useState<string>(crews[0] ?? 'None');
   const areInputsValid = whoIsItFor.length > 0 && whatIsNeeded.length > 0;
   const [runCreateRequestMutation, createRequestMutationState] = useMutation<
     CreateAidRequestMutation,
@@ -27,6 +30,18 @@ export default function AidRequestCreateDrawer(): JSX.Element {
 
   return (
     <View style={{ height: Dimensions.get('window').height - 50 }}>
+      {crews.length <= 1 ? null : (
+        <RadioButton.Group onValueChange={setCrew} value={crew}>
+          {crews.map((crew) => (
+            <Pressable key={crew} onPress={() => setCrew(crew)}>
+              <View style={{ alignItems: 'center', flexDirection: 'row' }}>
+                <RadioButton value={crew} />
+                <Text>{crew}</Text>
+              </View>
+            </Pressable>
+          ))}
+        </RadioButton.Group>
+      )}
       <TextInput
         autoComplete="off"
         label="Who is it for?"
@@ -62,6 +77,7 @@ export default function AidRequestCreateDrawer(): JSX.Element {
   async function submit(): Promise<void> {
     publishToast(undefined);
     const variables = {
+      crew,
       whatIsNeeded,
       whoIsItFor,
     };
@@ -84,10 +100,15 @@ export default function AidRequestCreateDrawer(): JSX.Element {
 
 const CREATE_AID_REQUEST_MUTATION = gql`
   mutation CreateAidRequestMutation(
+    $crew: String!
     $whatIsNeeded: String!
     $whoIsItFor: String!
   ) {
-    createAidRequest(whatIsNeeded: $whatIsNeeded, whoIsItFor: $whoIsItFor) {
+    createAidRequest(
+      crew: $crew
+      whatIsNeeded: $whatIsNeeded
+      whoIsItFor: $whoIsItFor
+    ) {
       ...AidRequestCardFragment
     }
   }

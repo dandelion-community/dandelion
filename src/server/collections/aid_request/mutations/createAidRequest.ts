@@ -8,15 +8,22 @@ import assertLoggedIn from 'src/server/graphql/assertLoggedIn';
 async function createAidRequestResolver(
   _: unknown,
   {
+    crew,
     whatIsNeeded,
     whoIsItFor,
   }: {
+    crew: string;
     whatIsNeeded: string;
     whoIsItFor: string;
   },
   req: Express.Request,
 ): Promise<AidRequestType> {
   const user = assertLoggedIn(req, 'Create aid request');
+  if (!user.crews.includes(crew)) {
+    throw new Error(
+      "You don't have permission to create a request for this crew",
+    );
+  }
   const whoRecordedItUsername = user.username;
   const whoRecordedIt = user._id;
   const timestamp = new Date();
@@ -29,6 +36,7 @@ async function createAidRequestResolver(
   const aidRequest = new AidRequestModel({
     completed: false,
     createdAt: Date.now(),
+    crew,
     history: [creationEvent],
     whatIsNeeded,
     whatIsNeededSearch: searchPrefixes(whatIsNeeded),
@@ -53,6 +61,7 @@ async function createAidRequestResolver(
 
 const createAidRequest = {
   args: {
+    crew: 'String!',
     whatIsNeeded: 'String!',
     whoIsItFor: 'String!',
   },

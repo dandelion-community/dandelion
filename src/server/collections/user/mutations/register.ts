@@ -34,9 +34,13 @@ async function registerResolver(
       if (user) {
         throw new Error('User already exists');
       }
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const newUser = await UserModel.register(
-        { displayName: allowlistEntry.displayName, username } as any,
+        {
+          crews: allowlistEntry.crews,
+          displayName: allowlistEntry.displayName,
+          username,
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        } as any,
         password,
       );
       analytics.identify({

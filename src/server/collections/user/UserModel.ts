@@ -20,6 +20,7 @@ dotenv.config();
 
 const UserSchema: PassportLocalSchema = new Schema<UserDocType>({
   aidRequestsIAmWorkingOn: [AidRequestReference],
+  crews: [String],
   displayName: String,
   password: String,
   username: String,

@@ -1,4 +1,5 @@
 import { AidRequestGraphQLType } from 'src/server/collections/aid_request/AidRequestGraphQLTypes';
+import createAidRequestPermissionMiddleware from 'src/server/collections/aid_request/helpers/createAidRequestPermissionMiddleware';
 import logAllAidRequestsMiddleware from 'src/server/collections/aid_request/helpers/logAllAidRequestsMiddleware';
 import { createAssertLoggedInMiddleware } from 'src/server/graphql/assertLoggedIn';
 
@@ -7,6 +8,7 @@ const allAidRequests = AidRequestGraphQLType.getResolver<
 >('connection', [
   createAssertLoggedInMiddleware('allAidRequests'),
   logAllAidRequestsMiddleware(),
+  createAidRequestPermissionMiddleware(),
 ]).addFilterArg({
   name: 'search',
   query: (query, value) => {

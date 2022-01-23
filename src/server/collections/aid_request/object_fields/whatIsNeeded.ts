@@ -1,11 +1,13 @@
 import type { ObjectTypeComposerFieldConfigAsObjectDefinition } from 'graphql-compose';
 import { Document } from 'mongoose';
 import type { AidRequestType } from 'src/server/collections/aid_request/AidRequestModelTypes';
-import getWhoRecordedRequest from 'src/server/collections/aid_request/helpers/getWhoRecordedRequest';
 import loadAidRequestForViewer from 'src/server/collections/aid_request/helpers/loadAidRequestForViewer';
 import assertLoggedIn from 'src/server/graphql/assertLoggedIn';
 
-const whoRecordedIt: ObjectTypeComposerFieldConfigAsObjectDefinition<
+type ReturnType = string;
+const GraphQLType = 'String!';
+
+const whatIsNeeded: ObjectTypeComposerFieldConfigAsObjectDefinition<
   Document<string, unknown, AidRequestType>,
   Express.Request,
   Record<string, never>
@@ -14,12 +16,12 @@ const whoRecordedIt: ObjectTypeComposerFieldConfigAsObjectDefinition<
     { _id: aidRequestID }: Document<string, unknown, AidRequestType>,
     _args: Record<string, never>,
     req: Express.Request,
-  ): Promise<Express.User | null> => {
-    const user = assertLoggedIn(req, 'AidRequest.whoRecordedIt');
+  ): Promise<ReturnType> => {
+    const user = assertLoggedIn(req, 'AidRequest.whatIsNeeded');
     const aidRequest = await loadAidRequestForViewer(user, aidRequestID);
-    return await getWhoRecordedRequest(aidRequest);
+    return aidRequest.whatIsNeeded;
   },
-  type: 'User',
+  type: GraphQLType,
 };
 
-export default whoRecordedIt;
+export default whatIsNeeded;

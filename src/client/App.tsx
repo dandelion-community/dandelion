@@ -11,6 +11,7 @@ import {
 } from 'react-native-paper';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import GlobalProviders from 'src/client/root/GlobalProviders';
+import ViewerProvider from 'src/client/viewer/ViewerProvider';
 import client from './graphql/client';
 import useCachedResources from './hooks/useCachedResources';
 import useColorScheme from './light-or-dark/useColorScheme';
@@ -38,10 +39,12 @@ export default function App() {
       <SafeAreaProvider>
         <PaperProvider theme={paperTheme}>
           <ApolloProvider client={client}>
-            <GlobalProviders>
-              <Navigation colorScheme={colorScheme} />
-              <StatusBar />
-            </GlobalProviders>
+            <ViewerProvider>
+              <GlobalProviders>
+                <Navigation colorScheme={colorScheme} />
+                <StatusBar />
+              </GlobalProviders>
+            </ViewerProvider>
           </ApolloProvider>
         </PaperProvider>
       </SafeAreaProvider>

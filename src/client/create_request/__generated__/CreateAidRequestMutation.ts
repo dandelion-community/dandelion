@@ -40,11 +40,11 @@ export interface CreateAidRequestMutation_createAidRequest_actionsAvailable {
 
 export interface CreateAidRequestMutation_createAidRequest {
   __typename: "AidRequest";
-  _id: any;
-  completed: boolean | null;
+  _id: string;
+  completed: boolean;
   latestEvent: string;
-  whatIsNeeded: string | null;
-  whoIsItFor: string | null;
+  whatIsNeeded: string;
+  whoIsItFor: string;
   whoRecordedIt: CreateAidRequestMutation_createAidRequest_whoRecordedIt | null;
   whoIsWorkingOnItUsers: (CreateAidRequestMutation_createAidRequest_whoIsWorkingOnItUsers | null)[] | null;
   actionsAvailable: (CreateAidRequestMutation_createAidRequest_actionsAvailable | null)[] | null;
@@ -55,6 +55,7 @@ export interface CreateAidRequestMutation {
 }
 
 export interface CreateAidRequestMutationVariables {
+  crew: string;
   whatIsNeeded: string;
   whoIsItFor: string;
 }
