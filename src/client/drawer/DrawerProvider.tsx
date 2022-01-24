@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { BottomSheet } from 'react-native-btr';
+import Colors from 'src/client/components/Colors';
 import DrawerContext from 'src/client/drawer/DrawerContext';
 import useColorScheme from 'src/client/light-or-dark/useColorScheme';
 
@@ -54,9 +55,9 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   dark: {
-    backgroundColor: '#333333',
+    backgroundColor: Colors.dark.background,
   },
   light: {
-    backgroundColor: '#FFFFFF',
+    backgroundColor: Colors.light.background,
   },
 });

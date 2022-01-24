@@ -100,3 +100,17 @@ export const AidRequestActionOptionGraphQLType = schemaComposer.createObjectTC({
   },
   name: 'AidRequestActionOption',
 });
+
+export type CreateAidRequestsPayloadType = {
+  postpublishSummary: string;
+  requests: Document<string, unknown, AidRequestType>[];
+};
+
+export const CreateAidRequestsPayloadGraphQLType =
+  schemaComposer.createObjectTC({
+    fields: {
+      postpublishSummary: 'String!',
+      requests: [AidRequestGraphQLType],
+    },
+    name: 'CreateAidRequestsPayload',
+  });

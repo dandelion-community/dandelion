@@ -47,12 +47,14 @@ export default function CreateAccountScreen(
     <View style={styles.container}>
       <TextInput
         autoComplete="email"
+        autoFocus={true}
         label="Email"
         setValue={(value: string) => !loading && setEmail(value)}
         value={email}
       />
       <TextInput
         autoComplete="password"
+        autoFocus={false}
         label="Password"
         secureTextEntry={true}
         setValue={(value: string) => !loading && setPassword(value)}
