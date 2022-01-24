@@ -8,6 +8,7 @@ declare global {
       aidRequestsIAmWorkingOn: Array<ObjectId>;
       username: string;
       displayName: string;
+      crews: Array<string>;
     }
   }
 }
@@ -17,6 +18,7 @@ export interface UserDocType {
   username: string;
   aidRequestsIAmWorkingOn: Array<ObjectId>;
   displayName: string;
+  crews: Array<string>;
 }
 
 export const UserReference = {

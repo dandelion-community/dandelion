@@ -1,18 +1,28 @@
-import { createAssertLoggedInMiddleware } from '../../graphql/assertLoggedIn';
-import { AidRequestGraphQLType } from './AidRequestGraphQLTypes';
-import logAllAidRequestsMiddleware from './helpers/logAllAidRequestsMiddleware';
-import createAidRequest from './mutations/createAidRequest';
-import editAidRequest from './mutations/editAidRequest';
-import actionsAvailable from './object_fields/actionsAvailable';
-import history from './object_fields/history';
-import latestEvent from './object_fields/latestEvent';
-import whoIsWorkingOnItUsers from './object_fields/whoIsWorkingOnItUsers';
-import whoRecordedIt from './object_fields/whoRecordedIt';
+import { AidRequestGraphQLType } from 'src/server/collections/aid_request/AidRequestGraphQLTypes';
+import createAidRequest from 'src/server/collections/aid_request/mutations/createAidRequest';
+import createAidRequests from 'src/server/collections/aid_request/mutations/createAidRequests';
+import editAidRequest from 'src/server/collections/aid_request/mutations/editAidRequest';
+import actionsAvailable from 'src/server/collections/aid_request/object_fields/actionsAvailable';
+import completed from 'src/server/collections/aid_request/object_fields/completed';
+import createdAt from 'src/server/collections/aid_request/object_fields/createdAt';
+import history from 'src/server/collections/aid_request/object_fields/history';
+import latestEvent from 'src/server/collections/aid_request/object_fields/latestEvent';
+import whatIsNeeded from 'src/server/collections/aid_request/object_fields/whatIsNeeded';
+import whoIsItFor from 'src/server/collections/aid_request/object_fields/whoIsItFor';
+import whoIsWorkingOnItUsers from 'src/server/collections/aid_request/object_fields/whoIsWorkingOnItUsers';
+import whoRecordedIt from 'src/server/collections/aid_request/object_fields/whoRecordedIt';
+import _id from 'src/server/collections/aid_request/object_fields/_id';
+import allAidRequests from 'src/server/collections/aid_request/query_fields/allAidRequests';
 
 AidRequestGraphQLType.addFields({
+  _id,
   actionsAvailable,
+  completed,
+  createdAt,
   history,
   latestEvent,
+  whatIsNeeded,
+  whoIsItFor,
   whoIsWorkingOnItUsers,
   whoRecordedIt,
 });
@@ -20,13 +30,11 @@ AidRequestGraphQLType.addFields({
 const AidRequest = {
   MutationFields: {
     createAidRequest,
+    createAidRequests,
     editAidRequest,
   },
   QueryFields: {
-    allAidRequests: AidRequestGraphQLType.getResolver('connection', [
-      createAssertLoggedInMiddleware('allAidRequests'),
-      logAllAidRequestsMiddleware(),
-    ]),
+    allAidRequests,
   },
 };
 

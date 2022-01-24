@@ -1,9 +1,9 @@
 import mongoose from 'mongoose';
 import passport from 'passport';
-import analytics from '../../../analytics';
-import type { CurrentUserPayload } from '../UserGraphQLTypes';
-import { CurrentUserGraphQLType } from '../UserGraphQLTypes';
-import { UserModel } from '../UserModel';
+import analytics from 'src/server/analytics';
+import type { CurrentUserPayload } from 'src/server/collections/user/UserGraphQLTypes';
+import { CurrentUserGraphQLType } from 'src/server/collections/user/UserGraphQLTypes';
+import { UserModel } from 'src/server/collections/user/UserModel';
 
 async function registerResolver(
   _: unknown,
@@ -34,9 +34,13 @@ async function registerResolver(
       if (user) {
         throw new Error('User already exists');
       }
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const newUser = await UserModel.register(
-        { displayName: allowlistEntry.displayName, username } as any,
+        {
+          crews: allowlistEntry.crews,
+          displayName: allowlistEntry.displayName,
+          username,
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        } as any,
         password,
       );
       analytics.identify({

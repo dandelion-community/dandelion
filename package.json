@@ -14,7 +14,7 @@
     "eslint": "eslint",
     "build:client": "expo build:web",
     "build:graphql": "apollo client:codegen --endpoint=http://localhost:3000/graphql --target=typescript",
-    "build:server": "tsc --project src/server",
+    "build:server": "./build_server.sh",
     "deploy:local:all": "npm run deploy:local:ios:all; npm run deploy:local:android:all",
     "deploy:local:ios:all": "npm run deploy:local:ios:preview; npm run deploy:local:ios:development; npm run deploy:local:ios:production",
     "deploy:local:ios:preview": "eas build --platform ios --profile preview",
@@ -30,6 +30,7 @@
   },
   "dependencies": {
     "@apollo/client": "^3.5.6",
+    "@babel/cli": "^7.16.8",
     "@expo/vector-icons": "^12.0.0",
     "@react-navigation/bottom-tabs": "^6.0.5",
     "@react-navigation/material-bottom-tabs": "^6.0.9",
@@ -83,10 +84,12 @@
     "react-native-safe-area-context": "3.3.2",
     "react-native-screens": "~3.8.0",
     "react-native-vector-icons": "^9.0.0",
-    "react-native-web": "0.17.1"
+    "react-native-web": "0.17.1",
+    "tsconfig-paths": "^3.12.0"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",
+    "@babel/preset-typescript": "^7.16.7",
     "@types/analytics-node": "^3.1.7",
     "@types/connect-ensure-login": "^0.1.7",
     "@types/cookie-parser": "^1.4.2",
@@ -122,5 +125,9 @@
     "singleQuote": true,
     "trailingComma": "all"
   },
-  "private": true
+  "private": true,
+  "babelrcRoots": [
+    ".",
+    "src"
+  ]
 }

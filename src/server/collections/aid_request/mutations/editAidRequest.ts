@@ -1,20 +1,21 @@
 import type { UpdateQuery } from 'mongoose';
 import { nanoid } from 'nanoid';
-import analytics from '../../../analytics';
-import assertLoggedIn from '../../../graphql/assertLoggedIn';
+import analytics from 'src/server/analytics';
 import {
   AidRequestActionInputInputType,
   AidRequestHistoryEventGraphQLType,
-} from '../AidRequestGraphQLTypes';
-import { AidRequestModel } from '../AidRequestModel';
+} from 'src/server/collections/aid_request/AidRequestGraphQLTypes';
+import { AidRequestModel } from 'src/server/collections/aid_request/AidRequestModel';
 import type {
   AidRequestActionInput,
   AidRequestHistoryEvent,
   AidRequestHistoryEventForGraphQL,
   AidRequestType,
-} from '../AidRequestModelTypes';
-import deleteAidRequest from './deleteAidRequest';
-import workingOn from './workingOn';
+} from 'src/server/collections/aid_request/AidRequestModelTypes';
+import loadAidRequestForViewer from 'src/server/collections/aid_request/helpers/loadAidRequestForViewer';
+import deleteAidRequest from 'src/server/collections/aid_request/mutations/deleteAidRequest';
+import workingOn from 'src/server/collections/aid_request/mutations/workingOn';
+import assertLoggedIn from 'src/server/graphql/assertLoggedIn';
 
 async function editAidRequestResolver(
   _: unknown,
@@ -30,7 +31,7 @@ async function editAidRequestResolver(
   req: Express.Request,
 ): Promise<AidRequestHistoryEventForGraphQL | null> {
   const user = assertLoggedIn(req, 'editAidRequest');
-  const originalAidRequest = await AidRequestModel.findById(aidRequestID);
+  const originalAidRequest = await loadAidRequestForViewer(user, aidRequestID);
   const whatIsNeeded = originalAidRequest?.whatIsNeeded ?? '';
   const whoIsItFor = originalAidRequest?.whoIsItFor ?? '';
   const { postpublishSummary, updater, historyEvent } = await getUpdateInfo(
