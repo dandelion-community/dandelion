@@ -2,7 +2,7 @@ import { gql, useMutation } from '@apollo/client';
 import * as WebBrowser from 'expo-web-browser';
 import * as React from 'react';
 import { StyleSheet } from 'react-native';
-import { Button } from 'react-native-paper';
+import { Button, Paragraph } from 'react-native-paper';
 import Text from 'src/client/components/Text';
 import TextInput from 'src/client/components/TextInput';
 import View from 'src/client/components/View';
@@ -37,11 +37,11 @@ export default function CreateAccountScreen(
   });
 
   const isEmailValid = /.+@.+\..+/.test(email);
-
-  // Idk what the requirements from django are yet. Let's be permissive,
-  // and render any errors we receive from the server.
   const isPasswordValid = password.length >= 8;
   const areInputsValid = isEmailValid && isPasswordValid;
+  const hints = `${isEmailValid ? '' : 'Please enter a valid email address.'} ${
+    isPasswordValid ? '' : 'Please use a password of at least 8 characters.'
+  }`;
 
   return (
     <View style={styles.container}>
@@ -67,6 +67,7 @@ export default function CreateAccountScreen(
         >
           Create Account
         </Button>
+        <Paragraph>{hints}</Paragraph>
       </View>
       {error != null ? <Text>{error.message}</Text> : null}
     </View>
