@@ -15,31 +15,7 @@ export default async function loadAidRequestForViewer(
   return aidRequest;
 }
 
-const CACHE: Map<
-  string,
-  Promise<(Document<string, unknown, AidRequestType> & AidRequestType) | null>
-> = new Map();
-
-export function maybeLoadAidRequestForViewer(
-  user: Express.User,
-  aidRequestID: string | undefined,
-): Promise<
-  (Document<string, unknown, AidRequestType> & AidRequestType) | null
-> {
-  const cacheKey = `${user._id.toString()}~${aidRequestID ?? ''}`;
-  const cachedValue = CACHE.get(cacheKey);
-  if (cachedValue != null) {
-    return cachedValue;
-  }
-  const newValue = maybeLoadAidRequestForViewerImpl(user, aidRequestID);
-  CACHE.set(cacheKey, newValue);
-  if (CACHE.size > 10000) {
-    CACHE.clear();
-  }
-  return newValue;
-}
-
-async function maybeLoadAidRequestForViewerImpl(
+export async function maybeLoadAidRequestForViewer(
   user: Express.User,
   aidRequestID: string | undefined,
 ): Promise<
