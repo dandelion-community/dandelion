@@ -1,6 +1,6 @@
 import type { GraphQLResolveInfo } from 'graphql';
 import type { ResolverMiddleware } from 'graphql-compose';
-import analytics from '../../../analytics';
+import analytics from 'src/server/analytics';
 
 export default function logAllAidRequestsMiddleware<
   TSource,
@@ -21,19 +21,24 @@ export default function logAllAidRequestsMiddleware<
   ): TOut {
     const args = args_ as unknown as {
       after: null | string;
-      filter: { completed?: boolean; whoIsWorkingOnIt?: Array<string> | null };
+      filter?: {
+        completed?: boolean;
+        search?: string | null | undefined;
+        whoIsWorkingOnIt?: Array<string> | null;
+      };
     };
     const user = req.user as Express.User;
     analytics.track({
       event: 'Loaded Aid Requests',
       properties: {
-        isCompletedFilter: args.filter.completed === true ? 'true' : 'false',
+        isCompletedFilter: args.filter?.completed === true ? 'true' : 'false',
         isFirstPage: args.after == null ? 'true' : 'false',
-        isMeFilter: (args.filter.whoIsWorkingOnIt ?? []).includes(
+        isMeFilter: (args.filter?.whoIsWorkingOnIt ?? []).includes(
           user._id.toString(),
         )
           ? 'true'
           : 'false',
+        search: args.filter?.search || '',
       },
       user: req.user as Express.User,
     });

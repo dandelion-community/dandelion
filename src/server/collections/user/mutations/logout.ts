@@ -1,6 +1,6 @@
-import analytics from '../../../analytics';
-import type { CurrentUserPayload } from '../UserGraphQLTypes';
-import { CurrentUserGraphQLType } from '../UserGraphQLTypes';
+import analytics from 'src/server/analytics';
+import type { CurrentUserPayload } from 'src/server/collections/user/UserGraphQLTypes';
+import { CurrentUserGraphQLType } from 'src/server/collections/user/UserGraphQLTypes';
 
 function logoutResolver(
   _: unknown,

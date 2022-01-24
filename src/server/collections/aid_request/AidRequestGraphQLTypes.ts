@@ -1,13 +1,33 @@
 import { schemaComposer } from 'graphql-compose';
 import { composeWithMongoose } from 'graphql-compose-mongoose';
 import { Document } from 'mongoose';
-import { AidRequestModel } from './AidRequestModel';
-import type { AidRequestType } from './AidRequestModelTypes';
+import { AidRequestModel } from 'src/server/collections/aid_request/AidRequestModel';
+import type { AidRequestType } from 'src/server/collections/aid_request/AidRequestModelTypes';
 
-export const AidRequestGraphQLType =
-  composeWithMongoose<Document<string, unknown, AidRequestType>>(
-    AidRequestModel,
-  );
+export const AidRequestGraphQLType = composeWithMongoose<
+  Document<string, unknown, AidRequestType>
+>(AidRequestModel, {
+  fields: {
+    only: [
+      // Whenever you add a field here make sure to
+      // implement a resolver in the object_fields directory
+      // and register it in AidRequestGraphQLImpl
+      // that checks the user's permission to load the aidRequest
+      '_id',
+      'actionsAvailable',
+      'completed',
+      'createdAt',
+      'crew',
+      'history',
+      'latestEvent',
+      'whatIsNeeded',
+      'whoIsItFor',
+      'whoIsWorkingOnIt',
+      'whoIsWorkingOnItUsers',
+      'whoRecordedIt',
+    ],
+  },
+});
 
 export const AidRequestUpdateStatusTypeGraphQLType =
   schemaComposer.createEnumTC(
@@ -80,3 +100,17 @@ export const AidRequestActionOptionGraphQLType = schemaComposer.createObjectTC({
   },
   name: 'AidRequestActionOption',
 });
+
+export type CreateAidRequestsPayloadType = {
+  postpublishSummary: string;
+  requests: Document<string, unknown, AidRequestType>[];
+};
+
+export const CreateAidRequestsPayloadGraphQLType =
+  schemaComposer.createObjectTC({
+    fields: {
+      postpublishSummary: 'String!',
+      requests: [AidRequestGraphQLType],
+    },
+    name: 'CreateAidRequestsPayload',
+  });

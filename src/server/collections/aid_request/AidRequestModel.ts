@@ -1,10 +1,10 @@
 import { model, Schema } from 'mongoose';
-import { UserReference } from '../user/UserModelTypes';
 import type {
   AidRequestHistoryEvent,
   AidRequestHistoryEventPayload,
   AidRequestType,
-} from './AidRequestModelTypes';
+} from 'src/server/collections/aid_request/AidRequestModelTypes';
+import { UserReference } from 'src/server/collections/user/UserModelTypes';
 
 const AidRequestHistoryEventPayloadSchema =
   new Schema<AidRequestHistoryEventPayload>({
@@ -25,18 +25,29 @@ const AidRequestHistoryEventSchema = new Schema<AidRequestHistoryEvent>({
 const AidRequestSchema = new Schema<AidRequestType>({
   completed: Boolean,
   createdAt: Date,
+  crew: String,
   history: [AidRequestHistoryEventSchema],
   whatIsNeeded: String,
+  whatIsNeededSearch: String,
   whoIsItFor: String,
+  whoIsItForSearch: String,
   whoIsWorkingOnIt: [String],
   whoRecordedIt: String,
   whoRecordedItUsername: String,
+});
+
+AidRequestSchema.index({
+  whatIsNeeded: 'text',
+  whatIsNeededSearch: 'text',
+  whoIsItFor: 'text',
+  whoIsItForSearch: 'text',
 });
 
 export const AidRequestModel = model<AidRequestType>(
   'AidRequest',
   AidRequestSchema,
 );
+AidRequestModel.ensureIndexes();
 
 export const AidRequestDeletedModel = model<AidRequestType>(
   'AidRequestDeleted',

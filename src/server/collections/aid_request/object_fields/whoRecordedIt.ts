@@ -1,9 +1,9 @@
 import type { ObjectTypeComposerFieldConfigAsObjectDefinition } from 'graphql-compose';
 import { Document } from 'mongoose';
-import assertLoggedIn from '../../../graphql/assertLoggedIn';
-import { AidRequestModel } from '../AidRequestModel';
-import type { AidRequestType } from '../AidRequestModelTypes';
-import getWhoRecordedRequest from '../helpers/getWhoRecordedRequest';
+import type { AidRequestType } from 'src/server/collections/aid_request/AidRequestModelTypes';
+import getWhoRecordedRequest from 'src/server/collections/aid_request/helpers/getWhoRecordedRequest';
+import loadAidRequestForViewer from 'src/server/collections/aid_request/helpers/loadAidRequestForViewer';
+import assertLoggedIn from 'src/server/graphql/assertLoggedIn';
 
 const whoRecordedIt: ObjectTypeComposerFieldConfigAsObjectDefinition<
   Document<string, unknown, AidRequestType>,
@@ -15,11 +15,8 @@ const whoRecordedIt: ObjectTypeComposerFieldConfigAsObjectDefinition<
     _args: Record<string, never>,
     req: Express.Request,
   ): Promise<Express.User | null> => {
-    assertLoggedIn(req, 'whoRecordedIt');
-    const aidRequest = await AidRequestModel.findById(aidRequestID);
-    if (aidRequest == null) {
-      return null;
-    }
+    const user = assertLoggedIn(req, 'AidRequest.whoRecordedIt');
+    const aidRequest = await loadAidRequestForViewer(user, aidRequestID);
     return await getWhoRecordedRequest(aidRequest);
   },
   type: 'User',

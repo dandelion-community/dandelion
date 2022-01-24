@@ -1,12 +1,12 @@
 import type { ObjectTypeComposerFieldConfigAsObjectDefinition } from 'graphql-compose';
 import { Document } from 'mongoose';
-import assertLoggedIn from '../../../graphql/assertLoggedIn';
-import { UserModel } from '../../user/UserModel';
-import { AidRequestModel } from '../AidRequestModel';
 import type {
   AidRequestHistoryEventForGraphQL,
   AidRequestType,
-} from '../AidRequestModelTypes';
+} from 'src/server/collections/aid_request/AidRequestModelTypes';
+import loadAidRequestForViewer from 'src/server/collections/aid_request/helpers/loadAidRequestForViewer';
+import { UserModel } from 'src/server/collections/user/UserModel';
+import assertLoggedIn from 'src/server/graphql/assertLoggedIn';
 
 const history: ObjectTypeComposerFieldConfigAsObjectDefinition<
   Document<string, unknown, AidRequestType>,
@@ -14,15 +14,12 @@ const history: ObjectTypeComposerFieldConfigAsObjectDefinition<
   Record<string, never>
 > = {
   resolve: async (
-    { _id }: Document<string, unknown, AidRequestType>,
+    { _id: aidRequestID }: Document<string, unknown, AidRequestType>,
     _args: Record<string, never>,
     req: Express.Request,
   ): Promise<Array<AidRequestHistoryEventForGraphQL>> => {
-    assertLoggedIn(req, 'history');
-    const aidRequest = await AidRequestModel.findById(_id);
-    if (aidRequest == null) {
-      return [];
-    }
+    const user = assertLoggedIn(req, 'AidRequest.history');
+    const aidRequest = await loadAidRequestForViewer(user, aidRequestID);
     return aidRequest.history.map((event) => ({
       action: event.action,
       actor: async (): Promise<Express.User | null> => {

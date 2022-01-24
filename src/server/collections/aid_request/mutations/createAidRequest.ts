@@ -1,21 +1,29 @@
-import analytics from '../../../analytics/index';
-import assertLoggedIn from '../../../graphql/assertLoggedIn';
-import { AidRequestGraphQLType } from '../AidRequestGraphQLTypes';
-import { AidRequestModel } from '../AidRequestModel';
-import type { AidRequestType } from '../AidRequestModelTypes';
+import analytics from 'src/server/analytics';
+import { AidRequestGraphQLType } from 'src/server/collections/aid_request/AidRequestGraphQLTypes';
+import { AidRequestModel } from 'src/server/collections/aid_request/AidRequestModel';
+import type { AidRequestType } from 'src/server/collections/aid_request/AidRequestModelTypes';
+import searchPrefixes from 'src/server/collections/aid_request/helpers/searchPrefixes';
+import assertLoggedIn from 'src/server/graphql/assertLoggedIn';
 
 async function createAidRequestResolver(
   _: unknown,
   {
+    crew,
     whatIsNeeded,
     whoIsItFor,
   }: {
+    crew: string;
     whatIsNeeded: string;
     whoIsItFor: string;
   },
   req: Express.Request,
 ): Promise<AidRequestType> {
   const user = assertLoggedIn(req, 'Create aid request');
+  if (!user.crews.includes(crew)) {
+    throw new Error(
+      "You don't have permission to create a request for this crew",
+    );
+  }
   const whoRecordedItUsername = user.username;
   const whoRecordedIt = user._id;
   const timestamp = new Date();
@@ -28,9 +36,12 @@ async function createAidRequestResolver(
   const aidRequest = new AidRequestModel({
     completed: false,
     createdAt: Date.now(),
+    crew,
     history: [creationEvent],
     whatIsNeeded,
+    whatIsNeededSearch: searchPrefixes(whatIsNeeded),
     whoIsItFor,
+    whoIsItForSearch: searchPrefixes(whoIsItFor),
     whoIsWorkingOnIt: [],
     whoRecordedIt,
     whoRecordedItUsername,
@@ -50,6 +61,7 @@ async function createAidRequestResolver(
 
 const createAidRequest = {
   args: {
+    crew: 'String!',
     whatIsNeeded: 'String!',
     whoIsItFor: 'String!',
   },
