@@ -41,6 +41,7 @@ export interface editAidRequestMutation_editAidRequest_aidRequest_actionsAvailab
 export interface editAidRequestMutation_editAidRequest_aidRequest {
   __typename: "AidRequest";
   _id: string;
+  crew: string | null;
   completed: boolean;
   latestEvent: string;
   whatIsNeeded: string;

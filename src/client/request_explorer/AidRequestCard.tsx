@@ -6,6 +6,7 @@ import Text from 'src/client/components/Text';
 import useDrawerContext from 'src/client/drawer/useDrawerContext';
 import useColorScheme from 'src/client/light-or-dark/useColorScheme';
 import { useThemeColor } from 'src/client/light-or-dark/useThemeColor';
+import { useViewerContext } from '../viewer/ViewerContext';
 import AidRequestEditDrawer from './AidRequestEditDrawer';
 import type { AidRequestCardFragment } from './__generated__/AidRequestCardFragment';
 
@@ -15,9 +16,15 @@ type Props = {
 
 export default function AidRequestCard({ aidRequest }: Props): JSX.Element {
   const { openDrawer } = useDrawerContext();
+  const viewer = useViewerContext();
   const { whatIsNeeded, whoIsItFor } = aidRequest;
   const backgroundColor = useThemeColor({}, 'cardBackground');
   const colorScheme = useColorScheme();
+
+  const suffix =
+    Array.isArray(viewer.crews) && viewer.crews.length > 1
+      ? ` (${aidRequest.crew})`
+      : null;
 
   return (
     <Pressable onPress={() => openDrawer(renderEditDrawerContents)}>
@@ -37,6 +44,7 @@ export default function AidRequestCard({ aidRequest }: Props): JSX.Element {
         <View style={styles.row}>
           <Text style={{ fontSize: 12 }}>
             for <Text style={{ fontWeight: 'bold' }}>{whoIsItFor}</Text>
+            {suffix}
           </Text>
         </View>
         <View style={[styles.row, styles.bottomRow]}>

@@ -22,6 +22,7 @@ export const AidRequestCardFragments = {
   aidRequest: gql`
     fragment AidRequestCardFragment on AidRequest {
       _id
+      crew
       completed
       latestEvent
       whatIsNeeded

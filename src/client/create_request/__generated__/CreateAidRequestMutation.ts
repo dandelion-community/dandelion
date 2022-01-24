@@ -41,6 +41,7 @@ export interface CreateAidRequestMutation_createAidRequest_actionsAvailable {
 export interface CreateAidRequestMutation_createAidRequest {
   __typename: "AidRequest";
   _id: string;
+  crew: string | null;
   completed: boolean;
   latestEvent: string;
   whatIsNeeded: string;
