@@ -1,78 +1,75 @@
 import { gql, useMutation } from '@apollo/client';
 import * as React from 'react';
-import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
-import { Button, RadioButton } from 'react-native-paper';
+import { ScrollView, StyleSheet, View } from 'react-native';
+import { Button } from 'react-native-paper';
 import Text from 'src/client/components/Text';
-import TextInput from 'src/client/components/TextInput';
 import type {
-  CreateAidRequestMutation,
-  CreateAidRequestMutationVariables,
-} from 'src/client/create_request/__generated__/CreateAidRequestMutation';
+  CreateAidRequestsMutation,
+  CreateAidRequestsMutationVariables,
+} from 'src/client/create_request/__generated__/CreateAidRequestsMutation';
+import DrawerFormTitle from 'src/client/drawer/DrawerFormTitle';
 import useDrawerContext from 'src/client/drawer/useDrawerContext';
 import { AidRequestCardFragments } from 'src/client/request_explorer/AidRequestCardFragments';
 import { broadcastAidRequestUpdated } from 'src/client/request_explorer/AidRequestFilterLocalCacheUpdater';
 import useToastContext from 'src/client/toast/useToastContext';
 import { useLoggedInViewer } from 'src/client/viewer/ViewerContext';
+import filterNulls from 'src/shared/utils/filterNulls';
+import CrewSelector from './CrewSelector';
+import WhatIsNeeded from './WhatIsNeeded';
+import WhoIsItFor from './WhoIsItFor';
+
+const APPROX_ROW_HEIGHT = 47;
 
 export default function AidRequestCreateDrawer(): JSX.Element {
   const { publishToast } = useToastContext();
   const { closeDrawer } = useDrawerContext();
   const { crews } = useLoggedInViewer();
-  const [whoIsItFor, setwhoIsItFor] = React.useState<string>('');
-  const [whatIsNeeded, setWhatIsNeeded] = React.useState<string>('');
+  const scrollView = React.useRef<ScrollView | null | undefined>();
+  const [whoIsItFor, setWhoIsItFor] = React.useState<string>('');
+  const [whatIsNeeded, setWhatIsNeeded] = React.useState<string[]>(['']);
   const [crew, setCrew] = React.useState<string>(crews[0] ?? 'None');
-  const areInputsValid = whoIsItFor.length > 0 && whatIsNeeded.length > 0;
+  const areInputsValid =
+    whoIsItFor.length > 0 && whatIsNeeded.filter(Boolean).length > 0;
   const [runCreateRequestMutation, createRequestMutationState] = useMutation<
-    CreateAidRequestMutation,
-    CreateAidRequestMutationVariables
-  >(CREATE_AID_REQUEST_MUTATION);
+    CreateAidRequestsMutation,
+    CreateAidRequestsMutationVariables
+  >(CREATE_AID_REQUESTS_MUTATION);
   const { loading, error } = createRequestMutationState;
 
   return (
-    <ScrollView>
-      {crews.length <= 1 ? null : (
-        <RadioButton.Group onValueChange={setCrew} value={crew}>
-          {crews.map((crew) => (
-            <Pressable key={crew} onPress={() => setCrew(crew)}>
-              <View style={{ alignItems: 'center', flexDirection: 'row' }}>
-                <RadioButton value={crew} />
-                <Text>{crew}</Text>
-              </View>
-            </Pressable>
-          ))}
-        </RadioButton.Group>
-      )}
-      <TextInput
-        autoComplete="off"
-        label="Who is it for?"
-        setValue={setwhoIsItFor}
-        value={whoIsItFor}
-      />
-      <TextInput
-        autoComplete="off"
-        label="What is needed?"
-        setValue={setWhatIsNeeded}
-        value={whatIsNeeded}
-      />
+    <View>
+      <DrawerFormTitle>New Request</DrawerFormTitle>
+      <CrewSelector crew={crew} crews={crews} setCrew={setCrew} />
+      <WhoIsItFor setWhoIsItFor={setWhoIsItFor} whoIsItFor={whoIsItFor} />
+      {whoIsItFor ? (
+        <ScrollView
+          ref={(ref) => {
+            scrollView.current = ref;
+          }}
+          style={{ maxHeight: APPROX_ROW_HEIGHT * 4 }}
+        >
+          <WhatIsNeeded
+            scrollToEnd={() => scrollView.current?.scrollToEnd()}
+            setWhatIsNeeded={setWhatIsNeeded}
+            whatIsNeeded={whatIsNeeded}
+          />
+        </ScrollView>
+      ) : null}
       <View style={styles.buttonRow}>
-        <View style={styles.button}>
-          <Button
-            disabled={!areInputsValid}
-            loading={loading}
-            mode="contained"
-            onPress={submit}
-          >
-            Submit
-          </Button>
-        </View>
-        <View style={styles.button}>
-          <Button disabled={loading} mode="text" onPress={closeDrawer}>
-            Cancel
-          </Button>
-        </View>
+        <Button
+          disabled={!areInputsValid}
+          loading={loading}
+          mode="contained"
+          onPress={submit}
+        >
+          Submit
+        </Button>
+        <Button disabled={loading} mode="text" onPress={closeDrawer}>
+          Cancel
+        </Button>
       </View>
       {error != null ? <Text>{error.message}</Text> : null}
-    </ScrollView>
+    </View>
   );
   async function submit(): Promise<void> {
     publishToast(undefined);
@@ -81,44 +78,47 @@ export default function AidRequestCreateDrawer(): JSX.Element {
       whatIsNeeded,
       whoIsItFor,
     };
-    setWhatIsNeeded('');
+    setWhatIsNeeded([]);
     const { data } = await runCreateRequestMutation({
       variables,
     });
-    const aidRequest = data?.createAidRequest;
-    if (aidRequest == null) {
+    const aidRequests = data?.createAidRequests?.requests;
+    const postpublishSummary = data?.createAidRequests?.postpublishSummary;
+    if (aidRequests == null || postpublishSummary == null) {
       console.error('Failed to create aidRequest');
       return;
     }
     publishToast({
-      message: `Recorded request: ${whatIsNeeded} for ${whoIsItFor}`,
+      message: postpublishSummary,
     });
-    broadcastAidRequestUpdated(aidRequest._id, aidRequest);
+    filterNulls(aidRequests).forEach((aidRequest) => {
+      broadcastAidRequestUpdated(aidRequest._id, aidRequest);
+    });
     closeDrawer();
   }
 }
 
-const CREATE_AID_REQUEST_MUTATION = gql`
-  mutation CreateAidRequestMutation(
+const CREATE_AID_REQUESTS_MUTATION = gql`
+  mutation CreateAidRequestsMutation(
     $crew: String!
-    $whatIsNeeded: String!
+    $whatIsNeeded: [String!]!
     $whoIsItFor: String!
   ) {
-    createAidRequest(
+    createAidRequests(
       crew: $crew
       whatIsNeeded: $whatIsNeeded
       whoIsItFor: $whoIsItFor
     ) {
-      ...AidRequestCardFragment
+      postpublishSummary
+      requests {
+        ...AidRequestCardFragment
+      }
     }
   }
   ${AidRequestCardFragments.aidRequest}
 `;
 
 const styles = StyleSheet.create({
-  button: {
-    marginLeft: 15,
-  },
   buttonRow: {
     flexDirection: 'row-reverse',
     marginTop: 15,

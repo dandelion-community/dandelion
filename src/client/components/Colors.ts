@@ -12,7 +12,7 @@ export default {
     tint: tintColorDark,
   },
   light: {
-    background: '#ccc',
+    background: '#fff',
     cardBackground: '#f8f8f8',
     tabBarBackground: '#6200ee',
     tabIconDefault: '#ccc',
