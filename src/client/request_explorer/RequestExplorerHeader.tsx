@@ -34,5 +34,6 @@ export default function RequestExplorerHeader(): JSX.Element {
 const styles = StyleSheet.create({
   searchbar: {
     backgroundColor: 'rgba(0,0,0,0)',
+    width: '100%',
   },
 });

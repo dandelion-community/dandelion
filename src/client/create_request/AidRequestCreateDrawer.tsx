@@ -1,6 +1,6 @@
 import { gql, useMutation } from '@apollo/client';
 import * as React from 'react';
-import { Dimensions, Pressable, StyleSheet, View } from 'react-native';
+import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { Button, RadioButton } from 'react-native-paper';
 import Text from 'src/client/components/Text';
 import TextInput from 'src/client/components/TextInput';
@@ -29,7 +29,7 @@ export default function AidRequestCreateDrawer(): JSX.Element {
   const { loading, error } = createRequestMutationState;
 
   return (
-    <View style={{ height: Dimensions.get('window').height - 50 }}>
+    <ScrollView>
       {crews.length <= 1 ? null : (
         <RadioButton.Group onValueChange={setCrew} value={crew}>
           {crews.map((crew) => (
@@ -72,7 +72,7 @@ export default function AidRequestCreateDrawer(): JSX.Element {
         </View>
       </View>
       {error != null ? <Text>{error.message}</Text> : null}
-    </View>
+    </ScrollView>
   );
   async function submit(): Promise<void> {
     publishToast(undefined);

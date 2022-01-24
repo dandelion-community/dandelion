@@ -25,8 +25,8 @@ const latestEvent: ObjectTypeComposerFieldConfigAsObjectDefinition<
     _args: Record<string, never>,
     req: Express.Request,
   ): Promise<string> => {
-    const user = assertLoggedIn(req, 'AidRequest.latestEvent');
-    const aidRequest = await loadAidRequestForViewer(user, aidRequestID);
+    const viewer = assertLoggedIn(req, 'AidRequest.latestEvent');
+    const aidRequest = await loadAidRequestForViewer(viewer, aidRequestID);
     const { history: rawHistory } = aidRequest;
     const history = filterRemovals(rawHistory);
     if (history.length === 0) {
@@ -44,9 +44,9 @@ const latestEvent: ObjectTypeComposerFieldConfigAsObjectDefinition<
     if (actor == null) {
       throw new Error('Action must have actor');
     }
-    const userIsActor = actor._id.equals(user._id);
+    const actorIsViewer = actor._id.equals(viewer._id);
     return `${timeAgo.format(event.timestamp)} - ${
-      userIsActor ? 'You' : user.displayName
+      actorIsViewer ? 'You' : actor.displayName
     } ${getActionText(event.details)}`;
   },
   type: 'String!',
