@@ -1,10 +1,12 @@
 import client from 'src/client/graphql/client';
 import { FILTERS } from 'src/client/request_explorer/RequestExplorerFilters';
 import type { FilterType } from 'src/client/request_explorer/RequestExplorerFiltersContext';
+import filterNulls from 'src/shared/utils/filterNulls';
 import {
   LIST_OF_AID_REQUESTS_QUERY,
   PAGE_SIZE,
 } from './ListOfAidRequestsQuery';
+import { FilterContext } from './RequestExplorerFilterButton';
 import {
   ListOfAidRequestsQuery,
   ListOfAidRequestsQueryVariables,
@@ -32,9 +34,15 @@ export function broadcastAidRequestUpdated(
     | ListOfAidRequestsQuery_allAidRequests_edges_node
     | undefined
     | null,
+  filterContext: FilterContext,
 ): void {
   SUBSCRIBERS.forEach((entry: SubscriberEntry): void => {
-    processAidRequestUpdateForQuery(entry, aidRequestID, aidRequest ?? null);
+    processAidRequestUpdateForQuery(
+      entry,
+      aidRequestID,
+      aidRequest ?? null,
+      filterContext,
+    );
   });
 }
 
@@ -42,8 +50,9 @@ function processAidRequestUpdateForQuery(
   { filter, data: list }: SubscriberEntry,
   aidRequestID: string,
   aidRequest: ListOfAidRequestsQuery_allAidRequests_edges_node | null,
+  filterContext: FilterContext,
 ): void {
-  if (passesFilter(filter, aidRequest)) {
+  if (passesFilter(filter, aidRequest, filterContext)) {
     addAidRequestIfNotPresent(filter, list, aidRequest);
   } else {
     removeAidRequestIfPresent(filter, list, aidRequestID);
@@ -53,11 +62,14 @@ function processAidRequestUpdateForQuery(
 function passesFilter(
   filter: FilterType,
   aidRequest: ListOfAidRequestsQuery_allAidRequests_edges_node | null,
+  filterContext: FilterContext,
 ): boolean {
   if (aidRequest == null) {
     return false;
   }
-  return FILTERS.every(({ passes }) => passes(filter, aidRequest));
+  return FILTERS.every(({ passes }) =>
+    passes(filter, aidRequest, filterContext),
+  );
 }
 
 function addAidRequestIfNotPresent(
@@ -70,11 +82,13 @@ function addAidRequestIfNotPresent(
   }
   const { _id: aidRequestID } = aidRequest;
   if (
-    list.allAidRequests?.edges.some((edge) => edge.node._id === aidRequestID)
+    (list.allAidRequests?.edges ?? []).some(
+      (edge) => edge?.node?._id === aidRequestID,
+    )
   ) {
     return;
   }
-  const oldEdges = list.allAidRequests?.edges ?? [];
+  const oldEdges = filterNulls(list.allAidRequests?.edges ?? []);
   const newEdges: ListOfAidRequestsQuery_allAidRequests_edges[] = [
     {
       __typename: 'AidRequestEdge',
@@ -91,7 +105,7 @@ function removeAidRequestIfPresent(
   aidRequestID: string,
 ): void {
   if (
-    !list.allAidRequests?.edges.some((edge) => edge.node._id === aidRequestID)
+    !list.allAidRequests.edges.some((edge) => edge.node._id === aidRequestID)
   ) {
     return;
   }

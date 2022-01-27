@@ -1,20 +1,17 @@
 import type { ObjectTypeComposerFieldConfigAsObjectDefinition } from 'graphql-compose';
-import { Document } from 'mongoose';
-import type {
-  AidRequestHistoryEventForGraphQL,
-  AidRequestType,
-} from 'src/server/collections/aid_request/AidRequestModelTypes';
+import type { AidRequest } from 'src/server/collections/aid_request/AidRequestGraphQLTypes';
+import type { AidRequestHistoryEventForGraphQL } from 'src/server/collections/aid_request/AidRequestModelTypes';
 import loadAidRequestForViewer from 'src/server/collections/aid_request/helpers/loadAidRequestForViewer';
 import { UserModel } from 'src/server/collections/user/UserModel';
 import assertLoggedIn from 'src/server/graphql/assertLoggedIn';
 
 const history: ObjectTypeComposerFieldConfigAsObjectDefinition<
-  Document<string, unknown, AidRequestType>,
+  AidRequest,
   Express.Request,
   Record<string, never>
 > = {
   resolve: async (
-    { _id: aidRequestID }: Document<string, unknown, AidRequestType>,
+    { _id: aidRequestID }: AidRequest,
     _args: Record<string, never>,
     req: Express.Request,
   ): Promise<Array<AidRequestHistoryEventForGraphQL>> => {

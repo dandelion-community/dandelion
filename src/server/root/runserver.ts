@@ -1,5 +1,7 @@
 #!/usr/bin/env node
 
+Error.stackTraceLimit = Infinity;
+
 import debugModule from 'debug';
 import http from 'http';
 import express_app from './express_app';

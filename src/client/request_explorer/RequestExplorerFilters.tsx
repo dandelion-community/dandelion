@@ -4,6 +4,7 @@ import { FlatList, StyleSheet, View } from 'react-native';
 import Text from 'src/client/components/Text';
 import { ListOfAidRequestsQuery_allAidRequests_edges_node } from 'src/client/request_explorer/__generated__/ListOfAidRequestsQuery';
 import { useLoggedInViewer } from 'src/client/viewer/ViewerContext';
+import filterNulls from 'src/shared/utils/filterNulls';
 import type {
   FilterButtonProps,
   FilterContext,
@@ -14,39 +15,38 @@ import { useRequestExplorerFilters } from './RequestExplorerFiltersContext';
 
 export const FILTERS: FilterButtonProps[] = [
   {
-    getCurrentToggleState: (
-      filter: FilterType,
-      { viewerID }: FilterContext,
-    ): boolean => {
-      return (filter?.whoIsWorkingOnIt ?? []).includes(viewerID);
+    getCurrentToggleState: (filter: FilterType): boolean => {
+      return filter?.iAmWorkingOnIt === true;
     },
     label: 'Me',
     passes: (
       filter: FilterType,
       aidRequest: ListOfAidRequestsQuery_allAidRequests_edges_node,
+      { viewerID }: FilterContext,
     ): boolean => {
-      if (!('whoIsWorkingOnIt' in filter)) {
+      if (!('iAmWorkingOnIt' in filter)) {
         return true;
       }
-      const { whoIsWorkingOnIt: filterUserIDs } = filter;
-      const { whoIsWorkingOnItUsers: aidReqeustUsers } = aidRequest;
-      if (filterUserIDs == null || aidReqeustUsers == null) {
-        return (
-          (filterUserIDs ?? []).length === 0 &&
-          (aidReqeustUsers ?? []).length === 0
-        );
+      const { iAmWorkingOnIt } = filter;
+      if (iAmWorkingOnIt == null) {
+        return true;
       }
-      return aidReqeustUsers.some(
-        (user) => user != null && filterUserIDs.includes(user?._id),
+      const { whoIsWorkingOnItUsers: aidReqeustUsers } = aidRequest;
+      return (
+        iAmWorkingOnIt ===
+        filterNulls(aidReqeustUsers ?? []).some(
+          ({ _id: userWorkingOnTheRequest }) =>
+            userWorkingOnTheRequest === viewerID,
+        )
       );
     },
     toggleOff: (filter: FilterType): FilterType => {
-      const { whoIsWorkingOnIt: _whoIsWorkingOnIt, ...rest } = filter;
-      _whoIsWorkingOnIt;
+      const { iAmWorkingOnIt: _iAmWorkingOnIt, ...rest } = filter;
+      _iAmWorkingOnIt;
       return rest;
     },
-    toggleOn: (filter: FilterType, { viewerID }: FilterContext): FilterType => {
-      return { ...filter, whoIsWorkingOnIt: [viewerID] };
+    toggleOn: (filter: FilterType): FilterType => {
+      return { ...filter, iAmWorkingOnIt: true };
     },
   },
   {

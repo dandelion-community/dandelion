@@ -12,7 +12,7 @@ import whoIsItFor from 'src/server/collections/aid_request/object_fields/whoIsIt
 import whoIsWorkingOnItUsers from 'src/server/collections/aid_request/object_fields/whoIsWorkingOnItUsers';
 import whoRecordedIt from 'src/server/collections/aid_request/object_fields/whoRecordedIt';
 import _id from 'src/server/collections/aid_request/object_fields/_id';
-import allAidRequests from 'src/server/collections/aid_request/query_fields/allAidRequests';
+import allAidRequests from 'src/server/collections/aid_request/query_fields/allAidRequests/allAidRequests';
 
 AidRequestGraphQLType.addFields({
   _id,

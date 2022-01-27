@@ -22,7 +22,7 @@ export type AidRequestHistoryEvent = {
   actor: ObjectId;
   details: AidRequestHistoryEventPayload;
   timestamp: Date;
-  undoID: string | null;
+  undoID?: string | null | undefined;
 };
 
 export type AidRequestActionInput = {
@@ -43,22 +43,24 @@ export type AidRequestHistoryEventForGraphQL = {
   details: AidRequestHistoryEventPayload;
   postpublishSummary: string;
   timestamp: Date;
-  undoID: string | null;
+  undoID?: string | null | undefined;
 };
 
 export type AidRequestType = {
+  _id: string;
   completed: boolean;
   createdAt: Date;
   crew: string;
   history: AidRequestHistoryEvent[];
   whatIsNeeded: string;
-  whoIsItFor: string;
-  whoIsWorkingOnIt: ObjectId[];
-  whoRecordedIt: ObjectId;
-  whoRecordedItUsername: string;
-  whoIsItForSearch: string;
   whatIsNeededSearch: string;
-  _id: string;
+  whoIsItFor: string;
+  whoIsItForSearch: string;
+  whoIsWorkingOnIt: ObjectId[];
+  whoIsWorkingOnItSearch: string;
+  whoRecordedIt: ObjectId;
+  whoRecordedItSearch: string;
+  whoRecordedItUsername: string;
 };
 
 export const AidRequestReference = {

@@ -1,11 +1,10 @@
 import type { ObjectTypeComposerFieldConfigAsObjectDefinition } from 'graphql-compose';
 import TimeAgo from 'javascript-time-ago';
 import en from 'javascript-time-ago/locale/en.json';
-import { Document } from 'mongoose';
+import type { AidRequest } from 'src/server/collections/aid_request/AidRequestGraphQLTypes';
 import type {
   AidRequestHistoryEvent,
   AidRequestHistoryEventPayload,
-  AidRequestType,
 } from 'src/server/collections/aid_request/AidRequestModelTypes';
 import getWhoRecordedRequest from 'src/server/collections/aid_request/helpers/getWhoRecordedRequest';
 import loadAidRequestForViewer from 'src/server/collections/aid_request/helpers/loadAidRequestForViewer';
@@ -16,12 +15,12 @@ TimeAgo.addDefaultLocale(en);
 const timeAgo = new TimeAgo('en-US');
 
 const latestEvent: ObjectTypeComposerFieldConfigAsObjectDefinition<
-  Document<string, unknown, AidRequestType>,
+  AidRequest,
   Express.Request,
   Record<string, never>
 > = {
   resolve: async (
-    { _id: aidRequestID }: Document<string, unknown, AidRequestType>,
+    { _id: aidRequestID }: AidRequest,
     _args: Record<string, never>,
     req: Express.Request,
   ): Promise<string> => {

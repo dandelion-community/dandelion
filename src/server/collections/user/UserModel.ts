@@ -2,6 +2,7 @@ import MongoStore from 'connect-mongo';
 import dotenv from 'dotenv';
 import type { Express } from 'express';
 import expressSession from 'express-session';
+import type { ObjectId } from 'mongodb';
 import type {
   HydratedDocument,
   PassportLocalModel,
@@ -9,7 +10,7 @@ import type {
   // eslint-disable-next-line prettier/prettier
   PassportLocalSchema,
 } from 'mongoose';
-import mongoose, { Schema } from 'mongoose';
+import mongoose, { Document, Schema } from 'mongoose';
 import passport from 'passport';
 import passportLocalMongoose from 'passport-local-mongoose';
 import { AidRequestReference } from 'src/server/collections/aid_request/AidRequestModelTypes';
@@ -17,6 +18,9 @@ import type { UserDocType } from 'src/server/collections/user/UserModelTypes';
 import { MONGO_DB_URI } from 'src/server/mongo/client';
 
 dotenv.config();
+
+export type UserType = Document<string, unknown, UserDocType> &
+  UserDocType & { _id: ObjectId };
 
 const UserSchema: PassportLocalSchema = new Schema<UserDocType>({
   aidRequestsIAmWorkingOn: [AidRequestReference],

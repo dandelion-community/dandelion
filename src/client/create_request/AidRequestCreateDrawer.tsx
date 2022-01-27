@@ -23,7 +23,7 @@ const APPROX_ROW_HEIGHT = 47;
 export default function AidRequestCreateDrawer(): JSX.Element {
   const { publishToast } = useToastContext();
   const { closeDrawer } = useDrawerContext();
-  const { crews } = useLoggedInViewer();
+  const { crews, id: viewerID } = useLoggedInViewer();
   const scrollView = React.useRef<ScrollView | null | undefined>();
   const [whoIsItFor, setWhoIsItFor] = React.useState<string>('');
   const [whatIsNeeded, setWhatIsNeeded] = React.useState<string[]>(['']);
@@ -92,7 +92,7 @@ export default function AidRequestCreateDrawer(): JSX.Element {
       message: postpublishSummary,
     });
     filterNulls(aidRequests).forEach((aidRequest) => {
-      broadcastAidRequestUpdated(aidRequest._id, aidRequest);
+      broadcastAidRequestUpdated(aidRequest._id, aidRequest, { viewerID });
     });
     closeDrawer();
   }
