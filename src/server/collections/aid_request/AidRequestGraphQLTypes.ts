@@ -134,18 +134,6 @@ export const AidRequestActionInputInputType = schemaComposer.createInputTC({
   name: 'AidRequestActionInputInput',
 });
 
-export type AidRequestSearchFilterType = {
-  search: string;
-};
-
-export type AllAidRequestsFilterInput = {
-  search: string;
-};
-
-export type AllAidRequestsInput = {
-  filter: AllAidRequestsFilterInput;
-};
-
 export const AidRequestFilterInputType = schemaComposer.createInputTC({
   fields: {
     completed: 'Boolean',
