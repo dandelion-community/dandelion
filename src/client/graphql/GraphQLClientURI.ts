@@ -1,8 +1,5 @@
-import { Platform } from 'react-native';
+import getURL from './host';
 
-const URI =
-  Platform.OS === 'web'
-    ? '/graphql'
-    : 'https://graphql.dandelion.supplies/graphql';
+const URI = getURL('graphql');
 
 export default URI;

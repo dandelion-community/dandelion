@@ -1,15 +1,9 @@
 import { gql, useQuery } from '@apollo/client';
 import * as React from 'react';
-import {
-  FlatList,
-  Image,
-  ListRenderItemInfo,
-  StyleSheet,
-  View,
-} from 'react-native';
+import { FlatList, ListRenderItemInfo } from 'react-native';
 import { Card, List } from 'react-native-paper';
 import StyledCard from 'src/client/components/Card';
-import useColorScheme from 'src/client/light-or-dark/useColorScheme';
+import Icon from 'src/client/components/Icon';
 import filterNulls from '../../../shared/utils/filterNulls';
 import {
   AttributionCardQuery,
@@ -17,7 +11,6 @@ import {
 } from './__generated__/AttributionCardQuery';
 
 export default function AttributionCard(): JSX.Element {
-  const scheme = useColorScheme();
   const { data } = useQuery<AttributionCardQuery>(ATTRIBUTION_CARD_QUERY);
   const attributions = filterNulls(data?.attributions ?? []);
   return (
@@ -40,14 +33,7 @@ export default function AttributionCard(): JSX.Element {
     return (
       <List.Item
         description={text}
-        left={() => (
-          <View style={styles.icon}>
-            <Image
-              source={{ uri: `/icons/${scheme}/${icon}.png` }}
-              style={styles.icon}
-            />
-          </View>
-        )}
+        left={() => <Icon path={icon} />}
         title={text}
       />
     );
@@ -62,10 +48,3 @@ export const ATTRIBUTION_CARD_QUERY = gql`
     }
   }
 `;
-
-const styles = StyleSheet.create({
-  icon: {
-    height: 30,
-    width: 30,
-  },
-});

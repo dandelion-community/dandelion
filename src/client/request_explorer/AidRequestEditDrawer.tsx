@@ -1,12 +1,12 @@
 import { gql, useMutation } from '@apollo/client';
 import * as React from 'react';
 import type { ListRenderItemInfo } from 'react-native';
-import { FlatList, Image, StyleSheet, View } from 'react-native';
+import { FlatList } from 'react-native';
 import { List, Paragraph } from 'react-native-paper';
+import Icon from 'src/client/components/Icon';
 import useDialogContext from 'src/client/dialog/useDialogContext';
 import useDrawerContext from 'src/client/drawer/useDrawerContext';
 import client from 'src/client/graphql/client';
-import useColorScheme from 'src/client/light-or-dark/useColorScheme';
 import useToastContext from 'src/client/toast/useToastContext';
 import DebouncedLoadingIndicator from 'src/client/utils/DebouncedLoadingIndicator';
 import { useLoggedInViewerID } from 'src/client/viewer/ViewerContext';
@@ -37,7 +37,6 @@ export default function AidRequestEditDrawer({
   const { shouldDelete } = useDialogContext();
   const { actionsAvailable, _id: aidRequestID } = aidRequest;
   const actions = filterNulls(actionsAvailable ?? []);
-  const scheme = useColorScheme();
   const [runEditAidRequestMutation, editAidRequestMutationState] = useMutation<
     editAidRequestMutation,
     editAidRequestMutationVariables
@@ -63,16 +62,7 @@ export default function AidRequestEditDrawer({
     const { icon } = action;
     return (
       <List.Item
-        left={() => (
-          <View style={styles.icon}>
-            {icon == null ? null : (
-              <Image
-                source={{ uri: `/icons/${scheme}/${icon}.png` }}
-                style={styles.icon}
-              />
-            )}
-          </View>
-        )}
+        left={() => <Icon path={icon} />}
         onPress={() => mutate(action.input)}
         title={action.message}
       />
@@ -147,10 +137,3 @@ const EDIT_AID_REQUEST_MUTATION = gql`
   }
   ${AidRequestCardFragments.aidRequest}
 `;
-
-const styles = StyleSheet.create({
-  icon: {
-    height: 30,
-    width: 30,
-  },
-});

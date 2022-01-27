@@ -14,6 +14,7 @@ type Props = {
   label: string;
   mode?: 'outlined' | 'flat';
   secureTextEntry?: boolean;
+  onSubmitEditing?: (() => void) | undefined;
   setFocused?: (value: boolean) => void;
   setValue: (value: string) => void;
   value: string;
@@ -40,6 +41,7 @@ export default function TextInput({
   autoFocus,
   label,
   mode,
+  onSubmitEditing,
   secureTextEntry,
   setFocused,
   setValue,
@@ -57,6 +59,7 @@ export default function TextInput({
         onBlur={() => setFocused?.(false)}
         onChangeText={setValue}
         onFocus={() => setFocused?.(true)}
+        onSubmitEditing={onSubmitEditing}
         secureTextEntry={secureTextEntry}
         theme={scheme === 'light' ? LIGHT_THEME : DARK_THEME}
         value={value}
