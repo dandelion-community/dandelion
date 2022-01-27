@@ -29,34 +29,42 @@ export default function AidRequestCard({ aidRequest }: Props): JSX.Element {
   return (
     <Pressable onPress={() => openDrawer(renderEditDrawerContents)}>
       <View style={[styles.card, { backgroundColor }]}>
-        <View style={[styles.row, styles.topRow]}>
-          <Text>{whatIsNeeded}</Text>
-          <View>
-            <Pressable onPress={() => openDrawer(renderEditDrawerContents)}>
-              <MaterialCommunityIcons
-                color={colorScheme === 'light' ? 'black' : 'white'}
-                name="dots-vertical"
-                size={24}
-              />
-            </Pressable>
+        <View
+          style={{
+            alignSelf: 'stretch',
+            flexBasis: '93%',
+            flexDirection: 'column',
+            flexGrow: 0,
+            flexShrink: 1,
+          }}
+        >
+          <Text numberOfLines={2}>{whatIsNeeded}</Text>
+          <View style={styles.row}>
+            <Text style={{ fontSize: 12 }}>
+              for <Text style={{ fontWeight: 'bold' }}>{whoIsItFor}</Text>
+              {suffix}
+            </Text>
+          </View>
+          <View style={[styles.row, styles.bottomRow]}>
+            <PressableText
+              onPress={() =>
+                Linking.openURL(
+                  `mailto:${aidRequest.whoRecordedIt?.username}?subject=RE: ${whatIsNeeded} for ${whoIsItFor}`,
+                )
+              }
+            >
+              {aidRequest.latestEvent}
+            </PressableText>
           </View>
         </View>
-        <View style={styles.row}>
-          <Text style={{ fontSize: 12 }}>
-            for <Text style={{ fontWeight: 'bold' }}>{whoIsItFor}</Text>
-            {suffix}
-          </Text>
-        </View>
-        <View style={[styles.row, styles.bottomRow]}>
-          <PressableText
-            onPress={() =>
-              Linking.openURL(
-                `mailto:${aidRequest.whoRecordedIt?.username}?subject=RE: ${whatIsNeeded} for ${whoIsItFor}`,
-              )
-            }
-          >
-            {aidRequest.latestEvent}
-          </PressableText>
+        <View style={{ flexBasis: '1%', flexGrow: 1 }}>
+          <Pressable onPress={() => openDrawer(renderEditDrawerContents)}>
+            <MaterialCommunityIcons
+              color={colorScheme === 'light' ? 'black' : 'white'}
+              name="dots-vertical"
+              size={24}
+            />
+          </Pressable>
         </View>
       </View>
     </Pressable>
@@ -76,7 +84,8 @@ const styles = StyleSheet.create({
     alignSelf: 'stretch',
     borderBottomWidth: 1,
     elevation: 8,
-    flexDirection: 'column',
+    flexDirection: 'row',
+    maxWidth: '100%',
     paddingLeft: 8,
     paddingVertical: 8,
   },
@@ -84,9 +93,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    width: '100%',
-  },
-  topRow: {
-    paddingBottom: 4,
+    paddingTop: 8,
   },
 });
