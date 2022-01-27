@@ -9,6 +9,7 @@ import client from 'src/client/graphql/client';
 import useColorScheme from 'src/client/light-or-dark/useColorScheme';
 import useToastContext from 'src/client/toast/useToastContext';
 import DebouncedLoadingIndicator from 'src/client/utils/DebouncedLoadingIndicator';
+import { useLoggedInViewerID } from 'src/client/viewer/ViewerContext';
 import { AidRequestUpdateStatusType } from '../../../__generated__/globalTypes';
 import filterNulls from '../../shared/utils/filterNulls';
 import { AidRequestCardFragments } from './AidRequestCardFragments';
@@ -30,6 +31,7 @@ type Props = {
 export default function AidRequestEditDrawer({
   aidRequest,
 }: Props): JSX.Element {
+  const viewerID = useLoggedInViewerID();
   const { publishToast } = useToastContext();
   const { closeDrawer } = useDrawerContext();
   const { shouldDelete } = useDialogContext();
@@ -97,7 +99,9 @@ export default function AidRequestEditDrawer({
       },
     };
     const { data } = await runEditAidRequestMutation({ variables });
-    broadcastAidRequestUpdated(aidRequestID, data?.editAidRequest?.aidRequest);
+    broadcastAidRequestUpdated(aidRequestID, data?.editAidRequest?.aidRequest, {
+      viewerID,
+    });
     closeDrawer();
     const editAidRequest = data?.editAidRequest;
     if (editAidRequest != null) {
@@ -115,6 +119,7 @@ export default function AidRequestEditDrawer({
                 broadcastAidRequestUpdated(
                   aidRequestID,
                   data?.editAidRequest?.aidRequest,
+                  { viewerID },
                 );
               },
       });

@@ -15,12 +15,11 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.dandelion-aid-app.dandelion"
+      "bundleIdentifier": "com.dandelion-aid-app.dandelion",
+      "buildNumber": "0.4.0"
     },
     "android": {
       "adaptiveIcon": {
@@ -28,7 +27,7 @@
         "backgroundColor": "#ffffff"
       },
       "package": "com.dandelion_aid_app.dandelion",
-      "versionCode": 4
+      "versionCode": 5
     },
     "web": {
       "favicon": "./assets/images/favicon.png"

@@ -1,7 +1,7 @@
 import dotenv from 'dotenv';
 import mongoose from 'mongoose';
 
-dotenv.config(); //
+dotenv.config();
 
 const PASSWORD = process.env.MONGODB_USER_0_PASSWORD;
 const CLUSTER = 'aid-app-cluster-0';

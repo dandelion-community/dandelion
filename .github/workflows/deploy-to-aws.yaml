@@ -35,6 +35,8 @@ jobs:
           envkey_SEGMENT_ANALYTICS_WRITE_KEY:
             ${{ secrets.SEGMENT_ANALYTICS_WRITE_KEY }}
           envkey_SESSION_SECRET: ${{ secrets.SESSION_SECRET }}
+          envkey_MONGO_AID_REQUEST_INDEX_NAME:
+            ${{ secrets.MONGO_AID_REQUEST_INDEX_NAME }}
 
       - name: Build Client JavaScript
         run: npm run build:client

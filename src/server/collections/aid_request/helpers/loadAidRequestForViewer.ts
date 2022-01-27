@@ -1,13 +1,13 @@
-import { Document } from 'mongoose';
+import type { AidRequest } from 'src/server/collections/aid_request/AidRequestGraphQLTypes';
 import { AidRequestModel } from 'src/server/collections/aid_request/AidRequestModel';
-import type { AidRequestType } from 'src/server/collections/aid_request/AidRequestModelTypes';
 
 export default async function loadAidRequestForViewer(
   user: Express.User,
   aidRequestID: string | undefined,
-): Promise<Document<string, unknown, AidRequestType> & AidRequestType> {
+): Promise<AidRequest> {
   const aidRequest = await maybeLoadAidRequestForViewer(user, aidRequestID);
   if (aidRequest == null) {
+    console.log('Tried to load aid request: ' + JSON.stringify(aidRequestID));
     throw new Error(
       'No request found for this ID or You do not have permission to view this aid request',
     );
@@ -18,9 +18,7 @@ export default async function loadAidRequestForViewer(
 export async function maybeLoadAidRequestForViewer(
   user: Express.User,
   aidRequestID: string | undefined,
-): Promise<
-  (Document<string, unknown, AidRequestType> & AidRequestType) | null
-> {
+): Promise<AidRequest | null> {
   const aidRequest = await AidRequestModel.findById(aidRequestID);
   if (aidRequest == null) {
     return null;
