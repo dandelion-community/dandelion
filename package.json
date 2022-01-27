@@ -121,7 +121,6 @@
     "expo-dev-menu-interface": "^0.4.2",
     "jest-expo": "~43.0.0",
     "prettier": "2.4.1",
-    "ts-node": "^10.4.0",
     "typescript": "^4.5.3"
   },
   "prettier": {

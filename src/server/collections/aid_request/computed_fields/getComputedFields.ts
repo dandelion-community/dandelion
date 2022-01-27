@@ -15,7 +15,7 @@ export default async function getComputedFields(
   const { whatIsNeeded, whoIsItFor, whoIsWorkingOnIt, whoRecordedIt } = fields;
 
   const whoIsWorkingOnItUsers = await Promise.all(
-    whoIsWorkingOnIt.map(UserModel.findById),
+    whoIsWorkingOnIt.map((id) => UserModel.findById(id)),
   );
   const whoRecordedItUser = await UserModel.findById(whoRecordedIt);
   const whatIsNeededSearch = searchPrefixes(whatIsNeeded);
