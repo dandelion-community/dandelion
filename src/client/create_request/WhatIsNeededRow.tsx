@@ -1,11 +1,11 @@
 import * as React from 'react';
 import { Platform, Pressable, StyleSheet, TextInput, View } from 'react-native';
 import { useTheme } from 'react-native-paper';
-import Colors from 'src/client/components/Colors';
+import { useColor } from 'src/client/components/Colors';
 import Icon from 'src/client/components/Icon';
-import useColorScheme from 'src/client/light-or-dark/useColorScheme';
 
 type Props = {
+  isFirst: boolean;
   next: () => void;
   removeRow: undefined | (() => void);
   request: string | undefined;
@@ -20,6 +20,7 @@ const ICON_SIZE = 24;
 const WhatIsNeededRow = React.forwardRef<TextInputHandles, Props>(
   (
     {
+      isFirst,
       next,
       removeRow,
       request,
@@ -28,20 +29,26 @@ const WhatIsNeededRow = React.forwardRef<TextInputHandles, Props>(
     }: Props,
     ref,
   ): JSX.Element => {
-    const scheme = useColorScheme();
+    const placeholderTextColor = useColor('placeholderText');
+    const textColor = useColor('text');
     const paperTheme = useTheme();
     const [isFocused, setIsFocusedInternal] = React.useState<boolean>(false);
     const textInputRef = React.useRef<TextInput | undefined | null>();
     React.useImperativeHandle(ref, () => ({
-      focus: () => textInputRef.current?.focus(),
+      focus: () => setTimeout(() => textInputRef.current?.focus(), 400),
     }));
+    const canSeeX = removeRow != null && isFocused;
 
     return (
       <>
         <View style={styles.row}>
-          <Pressable onPress={() => textInputRef.current?.focus()}>
+          <Pressable onPress={focus}>
             <View style={styles.icon}>
-              <View style={{ opacity: request === undefined ? 0.6 : 0.9 }}>
+              <View
+                style={{
+                  opacity: request === undefined ? 0.9 : 0.6,
+                }}
+              >
                 <Icon
                   path={request === undefined ? 'plus' : 'flower'}
                   size={ICON_SIZE}
@@ -57,33 +64,35 @@ const WhatIsNeededRow = React.forwardRef<TextInputHandles, Props>(
               onFocus={() => setIsFocused(true)}
               onSubmitEditing={next}
               placeholder={
-                request === undefined ? 'Add another request' : 'Add a request'
+                request === undefined && !isFirst
+                  ? 'Add another request'
+                  : 'Add a request'
               }
+              placeholderTextColor={placeholderTextColor}
               ref={(ref) => {
                 textInputRef.current = ref;
               }}
               style={[
                 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                // @ts-ignore ts thinks outline: 'none' is invalid but it's not
+                // @ts-ignore ts thinks outline: 'none'  is invalid but it's not
                 Platform.OS === 'web' ? { outline: 'none' } : {},
                 {
-                  color:
-                    scheme === 'dark' ? Colors.dark.text : Colors.light.text,
+                  color: textColor,
                 },
               ]}
               underlineColorAndroid="transparent"
               value={request ?? ''}
             />
           </View>
-          <View style={styles.icon}>
-            {removeRow === undefined ? null : (
-              <Pressable onPress={removeRow}>
+          <Pressable onPress={canSeeX ? removeRow : focus}>
+            <View style={styles.icon}>
+              {!canSeeX ? null : (
                 <View style={{ opacity: 0.6 }}>
                   <Icon path="x" size={ICON_SIZE} />
                 </View>
-              </Pressable>
-            )}
-          </View>
+              )}
+            </View>
+          </Pressable>
         </View>
         <View
           style={{
@@ -100,8 +109,14 @@ const WhatIsNeededRow = React.forwardRef<TextInputHandles, Props>(
     );
 
     function setIsFocused(val: boolean): void {
-      setIsFocusedInternal(val);
-      setIsFocusedParent(val);
+      setTimeout(() => {
+        setIsFocusedInternal(val);
+        setIsFocusedParent(val);
+      }, 0);
+    }
+
+    function focus(): void {
+      textInputRef.current?.focus();
     }
   },
 );
@@ -120,6 +135,7 @@ const styles = StyleSheet.create({
     margin: 10,
   },
   textInput: {
+    color: '#ffffff',
     flexGrow: 1,
     marginHorizontal: 8,
   },

@@ -7,8 +7,6 @@ import type {
   CreateAidRequestsMutation,
   CreateAidRequestsMutationVariables,
 } from 'src/client/create_request/__generated__/CreateAidRequestsMutation';
-import DrawerFormTitle from 'src/client/drawer/DrawerFormTitle';
-import useDrawerContext from 'src/client/drawer/useDrawerContext';
 import { AidRequestCardFragments } from 'src/client/request_explorer/AidRequestCardFragments';
 import { broadcastAidRequestUpdated } from 'src/client/request_explorer/AidRequestFilterLocalCacheUpdater';
 import useToastContext from 'src/client/toast/useToastContext';
@@ -16,17 +14,20 @@ import { useLoggedInViewer } from 'src/client/viewer/ViewerContext';
 import filterNulls from 'src/shared/utils/filterNulls';
 import CrewSelector from './CrewSelector';
 import WhatIsNeeded from './WhatIsNeeded';
+import { TextInputHandles } from './WhatIsNeededRow';
 import WhoIsItFor from './WhoIsItFor';
 
-const APPROX_ROW_HEIGHT = 47;
+type Props = {
+  pop: () => void;
+};
 
-export default function AidRequestCreateDrawer(): JSX.Element {
+export default function RecordAidRequestForm({ pop }: Props): JSX.Element {
   const { publishToast } = useToastContext();
-  const { closeDrawer } = useDrawerContext();
-  const { crews } = useLoggedInViewer();
+  const whatIsNeededRef = React.useRef<TextInputHandles | null>(null);
+  const { crews, id: viewerID } = useLoggedInViewer();
   const scrollView = React.useRef<ScrollView | null | undefined>();
   const [whoIsItFor, setWhoIsItFor] = React.useState<string>('');
-  const [whatIsNeeded, setWhatIsNeeded] = React.useState<string[]>(['']);
+  const [whatIsNeeded, setWhatIsNeeded] = React.useState<string[]>([]);
   const [crew, setCrew] = React.useState<string>(crews[0] ?? 'None');
   const areInputsValid =
     whoIsItFor.length > 0 && whatIsNeeded.filter(Boolean).length > 0;
@@ -37,23 +38,27 @@ export default function AidRequestCreateDrawer(): JSX.Element {
   const { loading, error } = createRequestMutationState;
 
   return (
-    <View>
-      <DrawerFormTitle>New Request</DrawerFormTitle>
+    <ScrollView
+      ref={(ref) => {
+        scrollView.current = ref;
+      }}
+      style={{ flex: 1 }}
+    >
       <CrewSelector crew={crew} crews={crews} setCrew={setCrew} />
-      <WhoIsItFor setWhoIsItFor={setWhoIsItFor} whoIsItFor={whoIsItFor} />
+      <WhoIsItFor
+        next={focusWhatIsNeeded}
+        setWhoIsItFor={setWhoIsItFor}
+        whoIsItFor={whoIsItFor}
+      />
       {whoIsItFor ? (
-        <ScrollView
+        <WhatIsNeeded
           ref={(ref) => {
-            scrollView.current = ref;
+            whatIsNeededRef.current = ref;
           }}
-          style={{ maxHeight: APPROX_ROW_HEIGHT * 4 }}
-        >
-          <WhatIsNeeded
-            scrollToEnd={() => scrollView.current?.scrollToEnd()}
-            setWhatIsNeeded={setWhatIsNeeded}
-            whatIsNeeded={whatIsNeeded}
-          />
-        </ScrollView>
+          scrollToEnd={() => scrollView.current?.scrollToEnd()}
+          setWhatIsNeeded={setWhatIsNeeded}
+          whatIsNeeded={whatIsNeeded}
+        />
       ) : null}
       <View style={styles.buttonRow}>
         <Button
@@ -64,13 +69,14 @@ export default function AidRequestCreateDrawer(): JSX.Element {
         >
           Submit
         </Button>
-        <Button disabled={loading} mode="text" onPress={closeDrawer}>
+        <Button disabled={loading} mode="text" onPress={pop}>
           Cancel
         </Button>
       </View>
       {error != null ? <Text>{error.message}</Text> : null}
-    </View>
+    </ScrollView>
   );
+
   async function submit(): Promise<void> {
     publishToast(undefined);
     const variables = {
@@ -92,9 +98,13 @@ export default function AidRequestCreateDrawer(): JSX.Element {
       message: postpublishSummary,
     });
     filterNulls(aidRequests).forEach((aidRequest) => {
-      broadcastAidRequestUpdated(aidRequest._id, aidRequest);
+      broadcastAidRequestUpdated(aidRequest._id, aidRequest, { viewerID });
     });
-    closeDrawer();
+    pop();
+  }
+
+  function focusWhatIsNeeded(): void {
+    whatIsNeededRef.current?.focus();
   }
 }
 

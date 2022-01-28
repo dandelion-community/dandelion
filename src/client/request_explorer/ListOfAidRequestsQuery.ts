@@ -14,7 +14,7 @@ export const LIST_OF_AID_REQUESTS_QUERY = gql`
   query ListOfAidRequestsQuery(
     $pageSize: Int!
     $after: String
-    $filter: FilterFindManyAidRequestInput
+    $filter: AidRequestFilterInput
   ) {
     allAidRequests(first: $pageSize, after: $after, filter: $filter) {
       pageInfo {

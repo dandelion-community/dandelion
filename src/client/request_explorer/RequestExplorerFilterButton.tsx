@@ -25,6 +25,7 @@ export type FilterButtonProps = {
   passes: (
     filter: FilterType,
     aidRequest: ListOfAidRequestsQuery_allAidRequests_edges_node,
+    context: FilterContext,
   ) => boolean;
   toggleOff: UpdateFilter;
   toggleOn: UpdateFilter;

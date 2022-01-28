@@ -3,7 +3,7 @@
 // @generated
 // This file was automatically generated and should not be edited.
 
-import { FilterFindManyAidRequestInput, AidRequestUpdateActionType, AidRequestUpdateStatusType } from "./../../../../__generated__/globalTypes";
+import { AidRequestFilterInput, AidRequestUpdateActionType, AidRequestUpdateStatusType } from "./../../../../__generated__/globalTypes";
 
 // ====================================================
 // GraphQL query operation: ListOfAidRequestsQuery
@@ -11,13 +11,7 @@ import { FilterFindManyAidRequestInput, AidRequestUpdateActionType, AidRequestUp
 
 export interface ListOfAidRequestsQuery_allAidRequests_pageInfo {
   __typename: "PageInfo";
-  /**
-   * When paginating forwards, the cursor to continue.
-   */
   endCursor: string | null;
-  /**
-   * When paginating forwards, are there more items?
-   */
   hasNextPage: boolean;
 }
 
@@ -65,30 +59,21 @@ export interface ListOfAidRequestsQuery_allAidRequests_edges_node {
 
 export interface ListOfAidRequestsQuery_allAidRequests_edges {
   __typename: "AidRequestEdge";
-  /**
-   * The item at the end of the edge
-   */
   node: ListOfAidRequestsQuery_allAidRequests_edges_node;
 }
 
 export interface ListOfAidRequestsQuery_allAidRequests {
   __typename: "AidRequestConnection";
-  /**
-   * Information to aid in pagination.
-   */
   pageInfo: ListOfAidRequestsQuery_allAidRequests_pageInfo;
-  /**
-   * Information to aid in pagination.
-   */
   edges: ListOfAidRequestsQuery_allAidRequests_edges[];
 }
 
 export interface ListOfAidRequestsQuery {
-  allAidRequests: ListOfAidRequestsQuery_allAidRequests | null;
+  allAidRequests: ListOfAidRequestsQuery_allAidRequests;
 }
 
 export interface ListOfAidRequestsQueryVariables {
   pageSize: number;
   after?: string | null;
-  filter?: FilterFindManyAidRequestInput | null;
+  filter?: AidRequestFilterInput | null;
 }

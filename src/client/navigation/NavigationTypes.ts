@@ -19,6 +19,7 @@ export type RootStackParamList = {
   Login: NavigatorScreenParams<RootTabParamList> | undefined;
   Modal: NavigatorScreenParams<RootTabParamList> | undefined;
   NotFound: NavigatorScreenParams<RootTabParamList> | undefined;
+  ['Record Request']: NavigatorScreenParams<RootTabParamList> | undefined;
 };
 
 export type RootStackScreenProps<Screen extends keyof RootStackParamList> =

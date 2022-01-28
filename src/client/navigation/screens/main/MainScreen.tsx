@@ -1,8 +1,6 @@
 import { FontAwesome } from '@expo/vector-icons';
 import * as React from 'react';
 import Colors from 'src/client/components/Colors';
-import AidRequestCreateDrawer from 'src/client/create_request/AidRequestCreateDrawer';
-import useDrawerContext from 'src/client/drawer/useDrawerContext';
 import useColorScheme from 'src/client/light-or-dark/useColorScheme';
 import createMaterialBottomTabNavigator from 'src/client/navigation/bottom-navigator/createMaterialBottomTabNavigator';
 import {
@@ -26,7 +24,6 @@ export default function MainScreen({
 }: RootStackScreenProps<'Main'>): React.ReactElement {
   const colorScheme = useColorScheme();
   useSetRootNavigation(navigation);
-  const { openDrawer } = useDrawerContext();
   return (
     <BottomTab.Navigator
       activeColor={Colors[colorScheme].tabIconSelected}
@@ -34,7 +31,7 @@ export default function MainScreen({
       inactiveColor={Colors[colorScheme].tabIconDefault}
       initialRouteName="RequestExplorerTabStackContainer"
       onFABPress={() => {
-        openDrawer(renderCreateDrawerContents);
+        navigation.push('Record Request');
       }}
       shifting={true}
     >
@@ -80,10 +77,6 @@ export default function MainScreen({
       />
     </BottomTab.Navigator>
   );
-
-  function renderCreateDrawerContents(): React.ReactElement {
-    return <AidRequestCreateDrawer />;
-  }
 }
 
 /**

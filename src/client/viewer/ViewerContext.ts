@@ -46,6 +46,11 @@ export function useLoggedInViewer(): LoggedInViewer {
   return viewer;
 }
 
+export function useLoggedInViewerID(): string {
+  const viewer = useLoggedInViewer();
+  return viewer.id;
+}
+
 export function useViewerUsername(): string {
   const { username } = useLoggedInViewer();
   return username;

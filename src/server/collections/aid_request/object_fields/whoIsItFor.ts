@@ -1,6 +1,5 @@
 import type { ObjectTypeComposerFieldConfigAsObjectDefinition } from 'graphql-compose';
-import { Document } from 'mongoose';
-import type { AidRequestType } from 'src/server/collections/aid_request/AidRequestModelTypes';
+import type { AidRequest } from 'src/server/collections/aid_request/AidRequestGraphQLTypes';
 import loadAidRequestForViewer from 'src/server/collections/aid_request/helpers/loadAidRequestForViewer';
 import assertLoggedIn from 'src/server/graphql/assertLoggedIn';
 
@@ -8,12 +7,12 @@ type ReturnType = string;
 const GraphQLType = 'String!';
 
 const whoIsItFor: ObjectTypeComposerFieldConfigAsObjectDefinition<
-  Document<string, unknown, AidRequestType>,
+  AidRequest,
   Express.Request,
   Record<string, never>
 > = {
   resolve: async (
-    { _id: aidRequestID }: Document<string, unknown, AidRequestType>,
+    { _id: aidRequestID }: AidRequest,
     _args: Record<string, never>,
     req: Express.Request,
   ): Promise<ReturnType> => {
