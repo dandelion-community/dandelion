@@ -5,6 +5,7 @@ const tintColorDark = '#fff';
 
 const Colors = {
   dark: {
+    accent: '#bb86fc',
     background: '#181818',
     cardBackground: '#282828',
     placeholderText: 'rgba(255,255,255,0.6)',
@@ -15,6 +16,7 @@ const Colors = {
     tint: tintColorDark,
   },
   light: {
+    accent: '#bb86fc',
     background: '#fff',
     cardBackground: '#f8f8f8',
     placeholderText: 'rgba(0,0,0,0.6)',

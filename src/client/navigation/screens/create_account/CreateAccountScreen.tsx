@@ -4,7 +4,7 @@ import * as React from 'react';
 import { StyleSheet } from 'react-native';
 import { Button, Paragraph } from 'react-native-paper';
 import Text from 'src/client/components/Text';
-import TextInput from 'src/client/components/TextInput';
+import TextInput, { TextInputHandles } from 'src/client/components/TextInput';
 import View from 'src/client/components/View';
 import { RootStackScreenProps } from 'src/client/navigation/NavigationTypes';
 import useCreateCrumbtrailsToLandingScreenIfNeeded from 'src/client/navigation/useCreateCrumbtrailsToLandingScreenIfNeeded';
@@ -27,6 +27,7 @@ export default function CreateAccountScreen(
   );
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
+  const [confirmPassword, setConfirmPassword] = React.useState('');
   const [runRegisterMutation, registerMutationState] =
     useMutation<Register>(REGISTER_MUTATION);
   const { loading, error } = registerMutationState;
@@ -36,12 +37,18 @@ export default function CreateAccountScreen(
     },
   });
 
+  const emailRef = React.useRef<TextInputHandles | null>(null);
+  const passwordRef = React.useRef<TextInputHandles | null>(null);
+  const confirmPasswordRef = React.useRef<TextInputHandles | null>(null);
+
   const isEmailValid = /.+@.+\..+/.test(email);
   const isPasswordValid = password.length >= 8;
-  const areInputsValid = isEmailValid && isPasswordValid;
+  const isConfirmPasswordValid = password === confirmPassword;
+  const areInputsValid =
+    isEmailValid && isPasswordValid && isConfirmPasswordValid;
   const hints = `${isEmailValid ? '' : 'Please enter a valid email address.'} ${
     isPasswordValid ? '' : 'Please use a password of at least 8 characters.'
-  }`;
+  } ${isConfirmPasswordValid ? '' : 'Passwords do not match.'}`;
 
   return (
     <View style={styles.container}>
@@ -49,6 +56,13 @@ export default function CreateAccountScreen(
         autoComplete="email"
         autoFocus={true}
         label="Email"
+        onSubmitEditing={() => {
+          passwordRef.current?.focus();
+        }}
+        ref={(ref) => {
+          emailRef.current = ref;
+        }}
+        returnKeyType="next"
         setValue={(value: string) => !loading && setEmail(value)}
         value={email}
       />
@@ -56,9 +70,31 @@ export default function CreateAccountScreen(
         autoComplete="password"
         autoFocus={false}
         label="Password"
-        secureTextEntry={true}
+        onSubmitEditing={() => {
+          confirmPasswordRef.current?.focus();
+        }}
+        ref={(ref) => {
+          passwordRef.current = ref;
+        }}
+        returnKeyType="next"
         setValue={(value: string) => !loading && setPassword(value)}
         value={password}
+      />
+      <TextInput
+        autoComplete="password"
+        autoFocus={false}
+        label="Confirm Password"
+        onSubmitEditing={() => {
+          if (areInputsValid) {
+            createAccount();
+          }
+        }}
+        ref={(ref) => {
+          confirmPasswordRef.current = ref;
+        }}
+        returnKeyType="go"
+        setValue={(value: string) => !loading && setConfirmPassword(value)}
+        value={confirmPassword}
       />
       <View style={styles.button}>
         <Button
