@@ -15,7 +15,7 @@ async function registerResolver(
     .findOne({ email: username });
   if (allowlistEntry == null) {
     throw new Error(
-      "To protect the privacy of our users' data, you cannot create an account without first being added to the list of allowed users. Please email lowell.organizing@gmail.com if you'd like to be added!",
+      "To protect the privacy of our users' data, you cannot create an account without first being added to the list of allowed users. Please email new.user@dandelion.supplies if you'd like to be added!",
     );
   }
 
