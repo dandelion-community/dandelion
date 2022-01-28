@@ -34,6 +34,7 @@ async function editAidRequestResolver(
   const originalAidRequest = await loadAidRequestForViewer(user, aidRequestID);
   const whatIsNeeded = originalAidRequest?.whatIsNeeded ?? '';
   const whoIsItFor = originalAidRequest?.whoIsItFor ?? '';
+  const requestCrew = originalAidRequest?.crew ?? '';
   const { postpublishSummary, updater, historyEvent } = await getUpdateInfo(
     user,
     aidRequestID,
@@ -59,6 +60,7 @@ async function editAidRequestResolver(
       event: input.details.event,
       isUndo: undoID != null ? 'true' : 'false',
       postpublishSummary,
+      requestCrew,
       whatIsNeeded,
       whoIsItFor,
     },

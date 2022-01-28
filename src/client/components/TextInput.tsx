@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, TextInput as NativeTextInput, View } from 'react-native';
 import {
   DarkTheme,
   DefaultTheme,
@@ -8,12 +8,15 @@ import {
 import Colors from 'src/client/components/Colors';
 import useColorScheme from 'src/client/light-or-dark/useColorScheme';
 
+export type TextInputHandles = Pick<NativeTextInput, 'focus'>;
+
 type Props = {
   autoComplete: 'email' | 'password' | 'off';
   autoFocus: boolean;
   label: string;
   mode?: 'outlined' | 'flat';
-  secureTextEntry?: boolean;
+  onSubmitEditing?: (() => void) | undefined;
+  returnKeyType?: 'next' | 'go' | 'done' | undefined;
   setFocused?: (value: boolean) => void;
   setValue: (value: string) => void;
   value: string;
@@ -35,35 +38,59 @@ const LIGHT_THEME = {
   },
 };
 
-export default function TextInput({
-  autoComplete,
-  autoFocus,
-  label,
-  mode,
-  secureTextEntry,
-  setFocused,
-  setValue,
-  value,
-}: Props) {
-  const scheme = useColorScheme();
-  return (
-    <View>
-      <View style={styles.topSpacer} />
-      <PaperTextInput
-        autoComplete={autoComplete}
-        autoFocus={autoFocus}
-        label={label}
-        mode={mode ?? 'outlined'}
-        onBlur={() => setFocused?.(false)}
-        onChangeText={setValue}
-        onFocus={() => setFocused?.(true)}
-        secureTextEntry={secureTextEntry}
-        theme={scheme === 'light' ? LIGHT_THEME : DARK_THEME}
-        value={value}
-      />
-    </View>
-  );
-}
+const TextInput = React.forwardRef<TextInputHandles, Props>(
+  (
+    {
+      autoComplete,
+      autoFocus,
+      label,
+      mode,
+      onSubmitEditing,
+      returnKeyType,
+      setFocused,
+      setValue,
+      value,
+    }: Props,
+    ref,
+  ) => {
+    const scheme = useColorScheme();
+    const isExactInput =
+      autoComplete === 'email' || autoComplete === 'password';
+
+    const textInputRef = React.useRef<NativeTextInput | undefined | null>();
+    React.useImperativeHandle(ref, () => ({
+      focus: () => textInputRef.current?.focus(),
+    }));
+    return (
+      <View>
+        <View style={styles.topSpacer} />
+        <PaperTextInput
+          autoCapitalize={isExactInput ? 'none' : 'sentences'}
+          autoComplete={autoComplete}
+          autoCorrect={!isExactInput}
+          autoFocus={autoFocus}
+          keyboardType={autoComplete === 'email' ? 'email-address' : 'default'}
+          label={label}
+          maxLength={1024}
+          mode={mode ?? 'outlined'}
+          onBlur={() => setFocused?.(false)}
+          onChangeText={setValue}
+          onFocus={() => setFocused?.(true)}
+          onSubmitEditing={onSubmitEditing}
+          ref={(ref) => {
+            textInputRef.current = ref;
+          }}
+          returnKeyType={returnKeyType}
+          secureTextEntry={autoComplete === 'password'}
+          theme={scheme === 'light' ? LIGHT_THEME : DARK_THEME}
+          value={value}
+        />
+      </View>
+    );
+  },
+);
+
+export default TextInput;
 
 const styles = StyleSheet.create({
   topSpacer: {

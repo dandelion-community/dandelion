@@ -1,29 +1,21 @@
 import * as React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import Colors from 'src/client/components/Colors';
-import useColorScheme from 'src/client/light-or-dark/useColorScheme';
+import { useColor } from 'src/client/components/Colors';
 
-type Props = { show: boolean };
+type Props = {
+  show: boolean;
+};
 
 export default function WhatIsNeededLabel({ show }: Props): JSX.Element {
-  const scheme = useColorScheme();
+  const backgroundColor = useColor('background');
+  const textColor = useColor('text');
   return (
-    <View
-      style={[
-        styles.container,
-        {
-          backgroundColor:
-            scheme === 'light'
-              ? Colors.light.background
-              : Colors.dark.background,
-        },
-      ]}
-    >
+    <View style={[styles.container, { backgroundColor }]}>
       <Text
         style={[
           styles.text,
           {
-            color: scheme === 'light' ? Colors.light.text : Colors.dark.text,
+            color: textColor,
             opacity: show ? 0.6 : 0,
           },
         ]}

@@ -27,13 +27,24 @@ import LoginScreen from './screens/login/LoginScreen';
 import MainScreen from './screens/main/MainScreen';
 import NotFoundScreen from './screens/not_found/NotFoundScreen';
 import NotLoggedInScreen from './screens/not_logged_in/NotLoggedInScreen';
+import RecordAidRequestScreen from './screens/record_aid_request/RecordAidRequestScreen';
+
+const LIGHT_THEME = {
+  ...DefaultTheme,
+  colors: { ...DefaultTheme.colors, background: Colors.light.background },
+};
+
+const DARK_THEME = {
+  ...DarkTheme,
+  colors: { ...DarkTheme.colors, background: Colors.dark.background },
+};
 
 export default function Navigation({
   colorScheme,
 }: {
   colorScheme: ColorSchemeName;
 }): JSX.Element {
-  const theme = colorScheme === 'dark' ? DarkTheme : DefaultTheme;
+  const theme = colorScheme === 'dark' ? DARK_THEME : LIGHT_THEME;
   return (
     <NavigationContainer linking={LinkingConfiguration} theme={theme}>
       <RootNavigator />
@@ -115,6 +126,25 @@ function RootNavigator() {
               </Appbar.Header>
             ),
             title: 'Log In',
+          })}
+        />
+        <Stack.Screen
+          component={RecordAidRequestScreen}
+          name="Record Request"
+          options={() => ({
+            header: ({ options }) => (
+              <Appbar.Header style={{ backgroundColor: headerBackgroundColor }}>
+                <Appbar.BackAction
+                  onPress={() =>
+                    rootNavigation?.canGoBack()
+                      ? rootNavigation.goBack()
+                      : rootNavigation?.replace('Main')
+                  }
+                />
+                <Appbar.Content title={options.title} />
+              </Appbar.Header>
+            ),
+            title: 'Record Request',
           })}
         />
       </Stack.Navigator>

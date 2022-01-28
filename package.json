@@ -4,7 +4,7 @@
   "scripts": {
     "start": "node server-build/server/root/runserver.js",
     "dev:client": "yarn install && npm run web",
-    "dev:server": "yarn install && MONGODB_DB_NAME=\"AidApp-Test\" HOT_RELOAD=True DEBUG=server nodemon --config nodemon.json src/server/root/runserver.ts",
+    "dev:server": "yarn install && MONGODB_DB_NAME=\"AidApp-Test\" MONGO_AID_REQUEST_INDEX_NAME=\"aid-request-test\" HOT_RELOAD=True DEBUG=server nodemon --config nodemon.json src/server/root/runserver.ts",
     "android": "expo run:android",
     "ios": "expo run:ios",
     "web": "expo start --web",
@@ -23,7 +23,9 @@
     "deploy:local:android:all": "npm run deploy:local:android:preview; npm run deploy:local:android:development; npm run deploy:local:android:production",
     "deploy:local:android:preview": "eas build --platform android --profile preview",
     "deploy:local:android:development": "eas build --platform android --profile development",
-    "deploy:local:android:production": "eas build --platform android --profile production"
+    "deploy:local:android:production": "eas build --platform android --profile production",
+    "scripts:set-precomputed-fields:test": "npm run build:server && MONGODB_DB_NAME=\"AidApp-Test\" node server-build/server/scripts/set-precomputed-fields.js",
+    "scripts:set-precomputed-fields:prod": "npm run build:server && MONGODB_DB_NAME=\"AidApp\" node server-build/server/scripts/set-precomputed-fields.js"
   },
   "jest": {
     "preset": "jest-expo"
