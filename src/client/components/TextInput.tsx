@@ -69,7 +69,7 @@ const TextInput = React.forwardRef<TextInputHandles, Props>(
           autoComplete={autoComplete}
           autoCorrect={!isExactInput}
           autoFocus={autoFocus}
-          keyboardType="email-address"
+          keyboardType={autoComplete === 'email' ? 'email-address' : 'default'}
           label={label}
           maxLength={1024}
           mode={mode ?? 'outlined'}
