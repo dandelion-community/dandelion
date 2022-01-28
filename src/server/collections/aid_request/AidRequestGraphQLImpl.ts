@@ -1,5 +1,4 @@
 import { AidRequestGraphQLType } from 'src/server/collections/aid_request/AidRequestGraphQLTypes';
-import createAidRequest from 'src/server/collections/aid_request/mutations/createAidRequest';
 import createAidRequests from 'src/server/collections/aid_request/mutations/createAidRequests';
 import editAidRequest from 'src/server/collections/aid_request/mutations/editAidRequest';
 import actionsAvailable from 'src/server/collections/aid_request/object_fields/actionsAvailable';
@@ -29,7 +28,6 @@ AidRequestGraphQLType.addFields({
 
 const AidRequest = {
   MutationFields: {
-    createAidRequest,
     createAidRequests,
     editAidRequest,
   },
