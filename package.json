@@ -25,7 +25,8 @@
     "deploy:local:android:development": "eas build --platform android --profile development",
     "deploy:local:android:production": "eas build --platform android --profile production",
     "scripts:set-precomputed-fields:test": "npm run build:server && MONGODB_DB_NAME=\"AidApp-Test\" node server-build/server/scripts/set-precomputed-fields.js",
-    "scripts:set-precomputed-fields:prod": "npm run build:server && MONGODB_DB_NAME=\"AidApp\" node server-build/server/scripts/set-precomputed-fields.js"
+    "scripts:set-precomputed-fields:prod": "npm run build:server && MONGODB_DB_NAME=\"AidApp\" node server-build/server/scripts/set-precomputed-fields.js",
+    "scripts:backfill-who-is-working-on-it": "npm run build:server && MONGODB_DB_NAME=\"AidApp\" node server-build/server/scripts/backfill-who-is-working-on-it.js"
   },
   "jest": {
     "preset": "jest-expo"
