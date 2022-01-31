@@ -4,7 +4,7 @@ import en from 'javascript-time-ago/locale/en.json';
 import type { AidRequest } from 'src/server/collections/aid_request/AidRequestGraphQLTypes';
 import type {
   AidRequestHistoryEvent,
-  AidRequestHistoryEventPayload,
+  AidRequestHistoryEventType,
 } from 'src/server/collections/aid_request/AidRequestModelTypes';
 import getWhoRecordedRequest from 'src/server/collections/aid_request/helpers/getWhoRecordedRequest';
 import loadAidRequestForViewer from 'src/server/collections/aid_request/helpers/loadAidRequestForViewer';
@@ -46,13 +46,13 @@ const latestEvent: ObjectTypeComposerFieldConfigAsObjectDefinition<
     const actorIsViewer = actor._id.equals(viewer._id);
     return `${timeAgo.format(event.timestamp)} - ${
       actorIsViewer ? 'You' : actor.displayName
-    } ${getActionText(event.details)}`;
+    } ${getActionText(event.event)}`;
   },
   type: 'String!',
 };
 
-function getActionText(details: AidRequestHistoryEventPayload): string {
-  switch (details.event) {
+function getActionText(event: AidRequestHistoryEventType): string {
+  switch (event) {
     case 'WorkingOn':
       return 'started working on it';
     case 'Completed':
@@ -61,6 +61,8 @@ function getActionText(details: AidRequestHistoryEventPayload): string {
       return 'recorded this';
     case 'Deleted':
       return 'deleted this';
+    case 'Comment':
+      return 'commented';
   }
 }
 
@@ -73,16 +75,16 @@ function filterRemovals(
   const unpairedAdds: Map<string, AidRequestHistoryEvent> = new Map();
   [...history]
     .sort((a, b) => a.timestamp.getTime() - b.timestamp.getTime())
-    .forEach((event) => {
-      const { action, actor, details } = event;
-      const key = `${actor}.${encodeDetails(details)}`;
+    .forEach((historyEvent) => {
+      const { action, actor, event, eventSpecificData } = historyEvent;
+      const key = `${actor}.${encodeDetails(event, eventSpecificData)}`;
       if (action === 'Add') {
-        unpairedAdds.set(key, event);
+        unpairedAdds.set(key, historyEvent);
       } else {
         const unpairedEvent = unpairedAdds.get(key);
         if (unpairedEvent != null) {
           unpairedAdds.delete(key);
-          toRemove.add(event);
+          toRemove.add(historyEvent);
           toRemove.add(unpairedEvent);
         }
       }
@@ -90,12 +92,17 @@ function filterRemovals(
   return history.filter((event) => !toRemove.has(event));
 }
 
-function encodeDetails(details: AidRequestHistoryEventPayload): string {
-  switch (details.event) {
+function encodeDetails(
+  event: AidRequestHistoryEventType,
+  eventSpecificData: string | undefined,
+): string {
+  switch (event) {
     case 'Completed':
     case 'Created':
     case 'WorkingOn':
     case 'Deleted':
-      return details.event;
+      return event;
+    case 'Comment':
+      return `Comment:${eventSpecificData ?? ''}`;
   }
 }

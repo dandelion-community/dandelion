@@ -71,13 +71,14 @@ export const AidRequestConnectionGraphQLType =
     name: 'AidRequestConnection',
   });
 
-export const AidRequestUpdateStatusTypeGraphQLType =
+export const AidRequestHistoryEventTypeGraphQLType =
   schemaComposer.createEnumTC(
-    `enum AidRequestUpdateStatusType { 
+    `enum AidRequestHistoryEventType { 
       Completed 
       WorkingOn 
       Created
       Deleted
+      Comment
     }`,
   );
 
@@ -89,28 +90,13 @@ export const AidRequestUpdateActionTypeGraphQLType =
     }`,
   );
 
-export const AidRequestHistoryEventPayloadGraphQLType =
-  schemaComposer.createObjectTC({
-    fields: {
-      event: 'AidRequestUpdateStatusType!',
-    },
-    name: 'AidRequestHistoryEventPayload',
-  });
-
-export const AidRequestHistoryEventPayloadInputType =
-  schemaComposer.createInputTC({
-    fields: {
-      event: 'AidRequestUpdateStatusType!',
-    },
-    name: 'AidRequestHistoryEventPayloadInput',
-  });
-
 export const AidRequestHistoryEventGraphQLType = schemaComposer.createObjectTC({
   fields: {
     action: 'AidRequestUpdateActionType!',
     actor: 'User',
     aidRequest: 'AidRequest',
-    details: 'AidRequestHistoryEventPayload!',
+    event: 'AidRequestHistoryEventType!',
+    eventSpecificData: 'String',
     postpublishSummary: 'String',
     timestamp: 'Date!',
     undoID: 'String',
@@ -121,7 +107,8 @@ export const AidRequestHistoryEventGraphQLType = schemaComposer.createObjectTC({
 export const AidRequestActionInputGraphQLType = schemaComposer.createObjectTC({
   fields: {
     action: 'AidRequestUpdateActionType!',
-    details: 'AidRequestHistoryEventPayload!',
+    event: 'AidRequestHistoryEventType!',
+    eventSpecificData: 'String',
   },
   name: 'AidRequestActionInput',
 });
@@ -129,7 +116,8 @@ export const AidRequestActionInputGraphQLType = schemaComposer.createObjectTC({
 export const AidRequestActionInputInputType = schemaComposer.createInputTC({
   fields: {
     action: 'AidRequestUpdateActionType!',
-    details: 'AidRequestHistoryEventPayloadInput!',
+    event: 'AidRequestHistoryEventType!',
+    eventSpecificData: 'String',
   },
   name: 'AidRequestActionInputInput',
 });
