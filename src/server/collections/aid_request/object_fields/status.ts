@@ -81,7 +81,7 @@ async function getWhoCompletedThis(
   const { history } = aidRequest;
   for (let i = history.length - 1; i >= 0; i--) {
     const event = history[i];
-    if (event.details.event === 'Completed' && event.action === 'Add') {
+    if (event.event === 'Completed' && event.action === 'Add') {
       return await maybeLoadUserForViewer(user, event.actor.toString());
     }
   }

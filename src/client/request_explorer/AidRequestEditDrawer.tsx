@@ -10,7 +10,7 @@ import client from 'src/client/graphql/client';
 import useToastContext from 'src/client/toast/useToastContext';
 import DebouncedLoadingIndicator from 'src/client/utils/DebouncedLoadingIndicator';
 import { useLoggedInViewerID } from 'src/client/viewer/ViewerContext';
-import { AidRequestUpdateStatusType } from '../../../__generated__/globalTypes';
+import { AidRequestHistoryEventType } from '../../../__generated__/globalTypes';
 import filterNulls from '../../shared/utils/filterNulls';
 import { GoToRequestDetailScreen } from '../aid_request/detail/AidRequestDetailScreen';
 import { AidRequestCardFragments } from './AidRequestCardFragments';
@@ -95,7 +95,7 @@ export default function AidRequestEditDrawer({
   async function mutate(
     input: AidRequestEditDrawerFragment_actionsAvailable_input,
   ): Promise<void> {
-    if (input.details.event === AidRequestUpdateStatusType.Deleted) {
+    if (input.event === AidRequestHistoryEventType.Deleted) {
       const shouldContinue = await shouldDelete();
       if (!shouldContinue) {
         return;
@@ -106,9 +106,7 @@ export default function AidRequestEditDrawer({
       aidRequestID,
       input: {
         action: input.action,
-        details: {
-          event: input.details.event,
-        },
+        event: input.event,
       },
     };
     const { data } = await runEditAidRequestMutation({ variables });

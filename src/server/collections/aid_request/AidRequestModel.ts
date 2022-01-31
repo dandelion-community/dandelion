@@ -1,23 +1,18 @@
 import { model, Schema } from 'mongoose';
 import type {
   AidRequestHistoryEvent,
-  AidRequestHistoryEventPayload,
   AidRequestType,
 } from 'src/server/collections/aid_request/AidRequestModelTypes';
 import { UserReference } from 'src/server/collections/user/UserModelTypes';
 
-const AidRequestHistoryEventPayloadSchema =
-  new Schema<AidRequestHistoryEventPayload>({
-    event: {
-      enum: ['Completed', 'Created', 'WorkingOn', 'Deleted'],
-      type: String,
-    },
-  });
-
 const AidRequestHistoryEventSchema = new Schema<AidRequestHistoryEvent>({
   action: { enum: ['Add', 'Remove'], type: String },
   actor: UserReference,
-  details: AidRequestHistoryEventPayloadSchema,
+  event: {
+    enum: ['Completed', 'Created', 'WorkingOn', 'Deleted', 'Comment'],
+    type: String,
+  },
+  eventSpecificData: String,
   timestamp: Date,
   undoID: String,
 });

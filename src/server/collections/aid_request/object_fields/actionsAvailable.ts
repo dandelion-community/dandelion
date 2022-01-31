@@ -37,9 +37,7 @@ function markAsNotCompletedOption(): AidRequestActionOption {
     icon: 'uncheck',
     input: {
       action: 'Remove',
-      details: {
-        event: 'Completed',
-      },
+      event: 'Completed',
     },
     message: 'Mark as incomplete',
   };
@@ -50,9 +48,7 @@ function markAsCompletedOption(): AidRequestActionOption {
     icon: 'check',
     input: {
       action: 'Add',
-      details: {
-        event: 'Completed',
-      },
+      event: 'Completed',
     },
     message: 'Mark as complete',
   };
@@ -63,9 +59,7 @@ function iAmWorkingOnItOption(): AidRequestActionOption {
     icon: 'raised-hand',
     input: {
       action: 'Add',
-      details: {
-        event: 'WorkingOn',
-      },
+      event: 'WorkingOn',
     },
     message: "I'm working on it",
   };
@@ -76,9 +70,7 @@ function iAmNotWorkingOnItOption(): AidRequestActionOption {
     icon: 'x',
     input: {
       action: 'Remove',
-      details: {
-        event: 'WorkingOn',
-      },
+      event: 'WorkingOn',
     },
     message: "I'm not working on it",
   };
@@ -89,9 +81,7 @@ function deleteOption(): AidRequestActionOption {
     icon: 'delete',
     input: {
       action: 'Add',
-      details: {
-        event: 'Deleted',
-      },
+      event: 'Deleted',
     },
     message: 'Delete',
   };
