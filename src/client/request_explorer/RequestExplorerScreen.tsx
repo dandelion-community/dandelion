@@ -3,6 +3,7 @@ import { StyleSheet } from 'react-native';
 import View from 'src/client/components/View';
 import ListOfRequests from 'src/client/request_explorer/ListOfAidRequests';
 import RequireLoggedInScreen from 'src/client/viewer/RequireLoggedInScreen';
+import { RequestExplorerStackScreenProps } from '../navigation/NavigationTypes';
 import RequestExplorerFilters from './RequestExplorerFilters';
 import type { FilterType } from './RequestExplorerFiltersContext';
 import {
@@ -10,7 +11,9 @@ import {
   RequestExplorerFiltersContext,
 } from './RequestExplorerFiltersContext';
 
-export default function RequestExplorerScreen(): JSX.Element {
+export default function RequestExplorerScreen({
+  navigation,
+}: RequestExplorerStackScreenProps<'RequestExplorer'>): JSX.Element {
   const [filter, setFilters] = React.useState<FilterType>(DEFAULT_FILTER);
 
   return (
@@ -18,11 +21,15 @@ export default function RequestExplorerScreen(): JSX.Element {
       <RequestExplorerFiltersContext.Provider value={{ filter, setFilters }}>
         <View style={styles.container}>
           <RequestExplorerFilters />
-          <ListOfRequests />
+          <ListOfRequests goToRequestDetailScreen={goToRequestDetailScreen} />
         </View>
       </RequestExplorerFiltersContext.Provider>
     </RequireLoggedInScreen>
   );
+
+  function goToRequestDetailScreen(aidRequestID: string): void {
+    navigation.push('AidRequestDetail', { id: aidRequestID });
+  }
 }
 
 const styles = StyleSheet.create({

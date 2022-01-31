@@ -1,6 +1,6 @@
 {
   "name": "community-aid-app",
-  "version": "0.1.0",
+  "version": "0.6.0",
   "scripts": {
     "start": "node server-build/server/root/runserver.js",
     "dev:client": "yarn install && npm run web",
