@@ -86,7 +86,7 @@ function getListItems(data: AidRequestDetailsQuery | undefined): Array<Item> {
     {
       key: `${aidRequest._id}:status`,
       render: () => {
-        return <Status status={aidRequest.status} />;
+        return <Status aidRequest={aidRequest} status={aidRequest.status} />;
       },
     },
   ];

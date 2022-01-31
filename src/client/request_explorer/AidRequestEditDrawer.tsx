@@ -27,7 +27,7 @@ import {
 
 type Props = {
   aidRequest: AidRequestEditDrawerFragment;
-  goToRequestDetailScreen: GoToRequestDetailScreen;
+  goToRequestDetailScreen?: GoToRequestDetailScreen;
 };
 
 type Item = AidRequestEditDrawerFragment_actionsAvailable | 'View details';
@@ -47,6 +47,8 @@ export default function AidRequestEditDrawer({
     editAidRequestMutationVariables
   >(EDIT_AID_REQUEST_MUTATION);
   const { loading, error } = editAidRequestMutationState;
+  const extraActions: Array<Item> =
+    goToRequestDetailScreen == null ? [] : ['View details'];
 
   return loading ? (
     <DebouncedLoadingIndicator />
@@ -54,7 +56,7 @@ export default function AidRequestEditDrawer({
     <>
       {error == null ? null : <Paragraph>{error.message}</Paragraph>}
       <FlatList
-        data={[...actions, 'View details']}
+        data={[...actions, ...extraActions]}
         keyExtractor={extractKey}
         renderItem={renderItem}
       />
@@ -68,10 +70,14 @@ export default function AidRequestEditDrawer({
       return (
         <List.Item
           left={() => <Icon path="more" />}
-          onPress={() => {
-            closeDrawer();
-            goToRequestDetailScreen(aidRequest._id);
-          }}
+          onPress={
+            goToRequestDetailScreen == null
+              ? undefined
+              : () => {
+                  closeDrawer();
+                  goToRequestDetailScreen(aidRequest._id);
+                }
+          }
           title={action}
         />
       );
