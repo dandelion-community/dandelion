@@ -23,7 +23,8 @@ const history: ObjectTypeComposerFieldConfigAsObjectDefinition<
         return await UserModel.findById(event.actor);
       },
       aidRequest: async () => aidRequest,
-      details: event.details,
+      event: event.event,
+      eventSpecificData: event.eventSpecificData,
       postpublishSummary: '',
       timestamp: event.timestamp,
       undoID: event.undoID,

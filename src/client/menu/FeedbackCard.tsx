@@ -14,7 +14,7 @@ export default function FeedbackCard(): JSX.Element {
         <Button
           onPress={() =>
             Linking.openURL(
-              'mailto:lowell.organizing@gmail.com?subject=Dandy Feedback',
+              'mailto:feedback@dandelion.supplies?subject=Dandy Feedback',
             )
           }
         >

@@ -9,9 +9,7 @@ export const AidRequestEditDrawerFragments = {
         message
         input {
           action
-          details {
-            event
-          }
+          event
         }
       }
     }

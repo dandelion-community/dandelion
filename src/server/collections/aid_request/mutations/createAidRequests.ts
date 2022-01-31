@@ -30,7 +30,7 @@ async function createAidRequestsResolver(
   const creationEvent = {
     action: 'Add',
     actor: user._id,
-    details: { event: 'Created' },
+    event: 'Created',
     timestamp,
   };
   const aidRequests = whatAllIsNeeded.map(

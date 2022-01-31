@@ -1,33 +1,28 @@
 import type { ObjectId } from 'mongodb';
 import { Schema } from 'mongoose';
 
-export type AidRequestHistoryEventPayload =
-  | {
-      event: 'Completed';
-    }
-  | {
-      event: 'WorkingOn';
-    }
-  | {
-      event: 'Created';
-    }
-  | {
-      event: 'Deleted';
-    };
+export type AidRequestHistoryEventType =
+  | 'Completed'
+  | 'WorkingOn'
+  | 'Created'
+  | 'Deleted'
+  | 'Comment';
 
 export type AidRequestActionType = 'Add' | 'Remove';
 
 export type AidRequestHistoryEvent = {
   action: AidRequestActionType;
   actor: ObjectId;
-  details: AidRequestHistoryEventPayload;
+  event: AidRequestHistoryEventType;
+  eventSpecificData?: string | undefined;
   timestamp: Date;
   undoID?: string | null | undefined;
 };
 
 export type AidRequestActionInput = {
   action: AidRequestActionType;
-  details: AidRequestHistoryEventPayload;
+  event: AidRequestHistoryEventType;
+  eventSpecificData?: string | undefined;
 };
 
 export type AidRequestActionOption = {
@@ -40,7 +35,8 @@ export type AidRequestHistoryEventForGraphQL = {
   action: AidRequestActionType;
   actor: () => Promise<Express.User | null>;
   aidRequest: () => Promise<AidRequestType | null>;
-  details: AidRequestHistoryEventPayload;
+  event: AidRequestHistoryEventType;
+  eventSpecificData?: string | undefined;
   postpublishSummary: string;
   timestamp: Date;
   undoID?: string | null | undefined;

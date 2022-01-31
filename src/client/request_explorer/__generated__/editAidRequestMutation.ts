@@ -3,7 +3,7 @@
 // @generated
 // This file was automatically generated and should not be edited.
 
-import { AidRequestActionInputInput, AidRequestUpdateActionType, AidRequestUpdateStatusType } from "./../../../../__generated__/globalTypes";
+import { AidRequestActionInputInput, AidRequestUpdateActionType, AidRequestHistoryEventType } from "./../../../../__generated__/globalTypes";
 
 // ====================================================
 // GraphQL mutation operation: editAidRequestMutation
@@ -20,15 +20,10 @@ export interface editAidRequestMutation_editAidRequest_aidRequest_whoIsWorkingOn
   _id: string;
 }
 
-export interface editAidRequestMutation_editAidRequest_aidRequest_actionsAvailable_input_details {
-  __typename: "AidRequestHistoryEventPayload";
-  event: AidRequestUpdateStatusType;
-}
-
 export interface editAidRequestMutation_editAidRequest_aidRequest_actionsAvailable_input {
   __typename: "AidRequestActionInput";
   action: AidRequestUpdateActionType;
-  details: editAidRequestMutation_editAidRequest_aidRequest_actionsAvailable_input_details;
+  event: AidRequestHistoryEventType;
 }
 
 export interface editAidRequestMutation_editAidRequest_aidRequest_actionsAvailable {

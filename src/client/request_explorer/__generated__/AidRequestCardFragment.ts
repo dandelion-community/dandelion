@@ -3,7 +3,7 @@
 // @generated
 // This file was automatically generated and should not be edited.
 
-import { AidRequestUpdateActionType, AidRequestUpdateStatusType } from "./../../../../__generated__/globalTypes";
+import { AidRequestUpdateActionType, AidRequestHistoryEventType } from "./../../../../__generated__/globalTypes";
 
 // ====================================================
 // GraphQL fragment: AidRequestCardFragment
@@ -20,15 +20,10 @@ export interface AidRequestCardFragment_whoIsWorkingOnItUsers {
   _id: string;
 }
 
-export interface AidRequestCardFragment_actionsAvailable_input_details {
-  __typename: "AidRequestHistoryEventPayload";
-  event: AidRequestUpdateStatusType;
-}
-
 export interface AidRequestCardFragment_actionsAvailable_input {
   __typename: "AidRequestActionInput";
   action: AidRequestUpdateActionType;
-  details: AidRequestCardFragment_actionsAvailable_input_details;
+  event: AidRequestHistoryEventType;
 }
 
 export interface AidRequestCardFragment_actionsAvailable {

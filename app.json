@@ -2,7 +2,7 @@
   "expo": {
     "name": "Dandelion Community Aid",
     "slug": "dandelion-community-aid",
-    "version": "0.1.0",
+    "version": "0.6.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "myapp",
@@ -19,7 +19,7 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.dandelion-aid-app.dandelion",
-      "buildNumber": "0.4.0"
+      "buildNumber": "0.6.0"
     },
     "android": {
       "adaptiveIcon": {
@@ -27,7 +27,7 @@
         "backgroundColor": "#ffffff"
       },
       "package": "com.dandelion_aid_app.dandelion",
-      "versionCode": 5
+      "versionCode": 6
     },
     "web": {
       "favicon": "./assets/images/favicon.png"

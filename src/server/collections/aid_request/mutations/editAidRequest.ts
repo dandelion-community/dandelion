@@ -57,7 +57,7 @@ async function editAidRequestResolver(
       action: input.action,
       aidRequestID,
       canUndo: historyEvent.undoID != null ? 'true' : 'false',
-      event: input.details.event,
+      event: input.event,
       isUndo: undoID != null ? 'true' : 'false',
       postpublishSummary,
       requestCrew,
@@ -98,15 +98,16 @@ async function getUpdateInfo(
   input: AidRequestActionInput,
   undoID: string | null,
 ): Promise<UpdateInfo> {
-  const { action, details } = input;
+  const { action, event, eventSpecificData } = input;
   const historyEvent = {
     action,
     actor: user._id,
-    details,
+    event,
+    eventSpecificData,
     timestamp: new Date(),
     undoID: nanoid(),
   };
-  switch (details.event) {
+  switch (event) {
     case 'Created':
       throw new Error('Cannot create an aid request through editAidRequest');
     case 'WorkingOn':
@@ -145,5 +146,17 @@ async function getUpdateInfo(
         postpublishSummary: 'Deleted',
         updater: null,
       };
+    case 'Comment':
+      if (action !== 'Add') {
+        throw new Error('editAidRequest only supports Add action for Comments');
+      }
+      return (() => {
+        const updater =
+          undoID == null
+            ? { $push: { history: historyEvent } }
+            : { $pull: { history: { undoID } } };
+        const postpublishSummary = 'Added comment';
+        return { historyEvent, postpublishSummary, updater };
+      })();
   }
 }

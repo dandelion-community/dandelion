@@ -9,16 +9,16 @@ import {
   RootTabScreenProps,
 } from 'src/client/navigation/NavigationTypes';
 import StackNavigatorInsideTabNavigator from 'src/client/navigation/StackNavigatorInsideTabNavigator';
+import AidRequestDetailScreen from '../aid_request/detail/AidRequestDetailScreen';
 import RequestExplorerHeader from './RequestExplorerHeader';
-import RequestExplorerRootScreen from './RequestExplorerScreen';
-import RequestHistoryScreen from './RequestHistoryScreen';
+import RequestExplorerScreen from './RequestExplorerScreen';
 
 const Stack = createNativeStackNavigator<RequestExplorerStackParamList>();
 
 export type ExtraProps = { navigateToProfile: () => void };
 
 export default function RequestExplorerTabStackContainer({
-  navigation: _parentNavigation,
+  navigation,
 }: RootTabScreenProps<'RequestExplorerTabStackContainer'>): JSX.Element {
   const colorScheme = useColorScheme();
   const headerBackgroundColor = Colors[colorScheme].tabBarBackground;
@@ -26,7 +26,7 @@ export default function RequestExplorerTabStackContainer({
     <StackNavigatorInsideTabNavigator>
       <Stack.Navigator>
         <Stack.Screen
-          component={RequestExplorerRootScreen}
+          component={RequestExplorerScreen}
           name="RequestExplorer"
           options={() => ({
             header: () => <RequestExplorerHeader />,
@@ -34,15 +34,22 @@ export default function RequestExplorerTabStackContainer({
           })}
         />
         <Stack.Screen
-          component={RequestHistoryScreen}
-          name="RequestHistory"
+          component={AidRequestDetailScreen}
+          name="AidRequestDetail"
           options={() => ({
             header: ({ options }) => (
               <Appbar.Header style={{ backgroundColor: headerBackgroundColor }}>
+                <Appbar.BackAction
+                  onPress={() =>
+                    navigation?.canGoBack()
+                      ? navigation.goBack()
+                      : navigation?.replace('Main')
+                  }
+                />
                 <Appbar.Content title={options.title} />
               </Appbar.Header>
             ),
-            title: 'Request History',
+            title: 'Request',
           })}
         />
       </Stack.Navigator>

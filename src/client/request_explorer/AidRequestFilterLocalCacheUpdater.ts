@@ -1,3 +1,4 @@
+import { notifyAidRequestDetailScreenAboutMutation } from 'src/client/aid_request/detail/AidRequestDetailScreen';
 import client from 'src/client/graphql/client';
 import { FILTERS } from 'src/client/request_explorer/RequestExplorerFilters';
 import type { FilterType } from 'src/client/request_explorer/RequestExplorerFiltersContext';
@@ -36,6 +37,7 @@ export function broadcastAidRequestUpdated(
     | null,
   filterContext: FilterContext,
 ): void {
+  notifyAidRequestDetailScreenAboutMutation(aidRequestID);
   SUBSCRIBERS.forEach((entry: SubscriberEntry): void => {
     processAidRequestUpdateForQuery(
       entry,

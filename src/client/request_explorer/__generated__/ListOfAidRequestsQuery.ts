@@ -3,7 +3,7 @@
 // @generated
 // This file was automatically generated and should not be edited.
 
-import { AidRequestFilterInput, AidRequestUpdateActionType, AidRequestUpdateStatusType } from "./../../../../__generated__/globalTypes";
+import { AidRequestFilterInput, AidRequestUpdateActionType, AidRequestHistoryEventType } from "./../../../../__generated__/globalTypes";
 
 // ====================================================
 // GraphQL query operation: ListOfAidRequestsQuery
@@ -26,15 +26,10 @@ export interface ListOfAidRequestsQuery_allAidRequests_edges_node_whoIsWorkingOn
   _id: string;
 }
 
-export interface ListOfAidRequestsQuery_allAidRequests_edges_node_actionsAvailable_input_details {
-  __typename: "AidRequestHistoryEventPayload";
-  event: AidRequestUpdateStatusType;
-}
-
 export interface ListOfAidRequestsQuery_allAidRequests_edges_node_actionsAvailable_input {
   __typename: "AidRequestActionInput";
   action: AidRequestUpdateActionType;
-  details: ListOfAidRequestsQuery_allAidRequests_edges_node_actionsAvailable_input_details;
+  event: AidRequestHistoryEventType;
 }
 
 export interface ListOfAidRequestsQuery_allAidRequests_edges_node_actionsAvailable {

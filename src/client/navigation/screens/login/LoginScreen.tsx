@@ -80,7 +80,7 @@ export default function LoginScreen(props: RootStackScreenProps<'Login'>) {
           <Text
             onPress={() =>
               Linking.openURL(
-                `mailto:lowell.organizing@gmail.com?subject=Dandelion Password Reset (${email})`,
+                `mailto:password.reset@dandelion.supplies?subject=Dandelion Password Reset (${email})`,
               )
             }
             style={{ color: linkColor }}
