@@ -23,6 +23,13 @@ export default function createClient(
   });
   const cache = new InMemoryCache({
     typePolicies: {
+      AidRequest: {
+        fields: {
+          whoIsWorkingOnItUsers: {
+            merge: false,
+          },
+        },
+      },
       Query: {
         fields: {
           allAidRequests: {

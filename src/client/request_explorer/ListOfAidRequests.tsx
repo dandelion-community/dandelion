@@ -8,6 +8,7 @@ import View from 'src/client/components/View';
 import { useRequestExplorerFilters } from 'src/client/request_explorer/RequestExplorerFiltersContext';
 import DebouncedLoadingIndicator from 'src/client/utils/DebouncedLoadingIndicator';
 import filterNulls from '../../shared/utils/filterNulls';
+import { GoToRequestDetailScreen } from '../aid_request/detail/AidRequestDetailScreen';
 import AidRequestCard from './AidRequestCard';
 import { subscribeQueryToAidRequestUpdates } from './AidRequestFilterLocalCacheUpdater';
 import {
@@ -20,7 +21,13 @@ import {
   ListOfAidRequestsQuery_allAidRequests_edges_node,
 } from './__generated__/ListOfAidRequestsQuery';
 
-export default function ListOfRequests(): JSX.Element {
+type Props = {
+  goToRequestDetailScreen: GoToRequestDetailScreen;
+};
+
+export default function ListOfRequests({
+  goToRequestDetailScreen,
+}: Props): JSX.Element {
   const { filter } = useRequestExplorerFilters();
   const { data, loading, fetchMore, refetch } = useQuery<
     ListOfAidRequestsQuery,
@@ -80,7 +87,12 @@ export default function ListOfRequests(): JSX.Element {
     if (item === undefined) {
       return <EndOfListSpacer />;
     }
-    return <AidRequestCard aidRequest={item} />;
+    return (
+      <AidRequestCard
+        aidRequest={item}
+        goToRequestDetailScreen={goToRequestDetailScreen}
+      />
+    );
   }
 
   function onEndReached(data: ListOfAidRequestsQuery): void {

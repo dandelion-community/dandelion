@@ -6,15 +6,20 @@ import Text from 'src/client/components/Text';
 import useDrawerContext from 'src/client/drawer/useDrawerContext';
 import useColorScheme from 'src/client/light-or-dark/useColorScheme';
 import { useThemeColor } from 'src/client/light-or-dark/useThemeColor';
+import { GoToRequestDetailScreen } from '../aid_request/detail/AidRequestDetailScreen';
 import { useViewerContext } from '../viewer/ViewerContext';
 import AidRequestEditDrawer from './AidRequestEditDrawer';
 import type { AidRequestCardFragment } from './__generated__/AidRequestCardFragment';
 
 type Props = {
   aidRequest: AidRequestCardFragment;
+  goToRequestDetailScreen: GoToRequestDetailScreen;
 };
 
-export default function AidRequestCard({ aidRequest }: Props): JSX.Element {
+export default function AidRequestCard({
+  aidRequest,
+  goToRequestDetailScreen,
+}: Props): JSX.Element {
   const { openDrawer } = useDrawerContext();
   const viewer = useViewerContext();
   const { whatIsNeeded, whoIsItFor } = aidRequest;
@@ -27,7 +32,7 @@ export default function AidRequestCard({ aidRequest }: Props): JSX.Element {
       : null;
 
   return (
-    <Pressable onPress={() => openDrawer(renderEditDrawerContents)}>
+    <Pressable onPress={() => goToRequestDetailScreen(aidRequest._id)}>
       <View style={[styles.card, { backgroundColor }]}>
         <View
           style={{
@@ -71,7 +76,12 @@ export default function AidRequestCard({ aidRequest }: Props): JSX.Element {
   );
 
   function renderEditDrawerContents(): React.ReactElement {
-    return <AidRequestEditDrawer aidRequest={aidRequest} />;
+    return (
+      <AidRequestEditDrawer
+        aidRequest={aidRequest}
+        goToRequestDetailScreen={goToRequestDetailScreen}
+      />
+    );
   }
 }
 

@@ -12,6 +12,7 @@ import DebouncedLoadingIndicator from 'src/client/utils/DebouncedLoadingIndicato
 import { useLoggedInViewerID } from 'src/client/viewer/ViewerContext';
 import { AidRequestUpdateStatusType } from '../../../__generated__/globalTypes';
 import filterNulls from '../../shared/utils/filterNulls';
+import { GoToRequestDetailScreen } from '../aid_request/detail/AidRequestDetailScreen';
 import { AidRequestCardFragments } from './AidRequestCardFragments';
 import { broadcastAidRequestUpdated } from './AidRequestFilterLocalCacheUpdater';
 import type {
@@ -26,10 +27,14 @@ import {
 
 type Props = {
   aidRequest: AidRequestEditDrawerFragment;
+  goToRequestDetailScreen?: GoToRequestDetailScreen;
 };
+
+type Item = AidRequestEditDrawerFragment_actionsAvailable | 'View details';
 
 export default function AidRequestEditDrawer({
   aidRequest,
+  goToRequestDetailScreen,
 }: Props): JSX.Element {
   const viewerID = useLoggedInViewerID();
   const { publishToast } = useToastContext();
@@ -42,6 +47,8 @@ export default function AidRequestEditDrawer({
     editAidRequestMutationVariables
   >(EDIT_AID_REQUEST_MUTATION);
   const { loading, error } = editAidRequestMutationState;
+  const extraActions: Array<Item> =
+    goToRequestDetailScreen == null ? [] : ['View details'];
 
   return loading ? (
     <DebouncedLoadingIndicator />
@@ -49,8 +56,8 @@ export default function AidRequestEditDrawer({
     <>
       {error == null ? null : <Paragraph>{error.message}</Paragraph>}
       <FlatList
-        data={actions}
-        keyExtractor={({ message }) => message}
+        data={[...actions, ...extraActions]}
+        keyExtractor={extractKey}
         renderItem={renderItem}
       />
     </>
@@ -58,7 +65,23 @@ export default function AidRequestEditDrawer({
 
   function renderItem({
     item: action,
-  }: ListRenderItemInfo<AidRequestEditDrawerFragment_actionsAvailable>): React.ReactElement {
+  }: ListRenderItemInfo<Item>): React.ReactElement {
+    if (action === 'View details') {
+      return (
+        <List.Item
+          left={() => <Icon path="more" />}
+          onPress={
+            goToRequestDetailScreen == null
+              ? undefined
+              : () => {
+                  closeDrawer();
+                  goToRequestDetailScreen(aidRequest._id);
+                }
+          }
+          title={action}
+        />
+      );
+    }
     const { icon } = action;
     return (
       <List.Item
@@ -114,6 +137,14 @@ export default function AidRequestEditDrawer({
               },
       });
     }
+  }
+}
+
+function extractKey(item: Item): string {
+  if (item === 'View details') {
+    return 'View details';
+  } else {
+    return item.message;
   }
 }
 

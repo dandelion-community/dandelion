@@ -30,7 +30,7 @@ export type CreateRequestArgs = Partial<{ for_: WhoIsThisFor }>;
 
 export type RequestExplorerStackParamList = {
   RequestExplorer: NavigatorScreenParams<RootTabParamList> | undefined;
-  RequestHistory: { requestID: string };
+  AidRequestDetail: { id: string };
 };
 
 export type ThreeLinesMenuStackParamList = {
@@ -41,7 +41,7 @@ export type CreateRequestStackParamList = {
   CreateRequest: NavigatorScreenParams<RootTabParamList> | undefined;
 };
 
-export type HomeStackScreenProps<
+export type RequestExplorerStackScreenProps<
   Screen extends keyof RequestExplorerStackParamList,
 > = NativeStackScreenProps<RequestExplorerStackParamList, Screen>;
 
