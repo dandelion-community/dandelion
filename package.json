@@ -48,6 +48,7 @@
     "cookie-parser": "~1.4.4",
     "cors": "^2.8.5",
     "dotenv": "^10.0.0",
+    "emoji-regex": "^10.0.0",
     "expo": "^44.0.0",
     "expo-asset": "~8.4.5",
     "expo-constants": "~13.0.0",
@@ -88,7 +89,8 @@
     "react-native-screens": "~3.8.0",
     "react-native-vector-icons": "^9.0.0",
     "react-native-web": "0.17.1",
-    "tsconfig-paths": "^3.12.0"
+    "tsconfig-paths": "^3.12.0",
+    "unicode-substring": "^1.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",
