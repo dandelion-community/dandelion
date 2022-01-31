@@ -7,6 +7,8 @@ import { RequestExplorerStackScreenProps } from 'src/client/navigation/Navigatio
 import { AidRequestCardFragments } from 'src/client/request_explorer/AidRequestCardFragments';
 import RequireLoggedInScreen from 'src/client/viewer/RequireLoggedInScreen';
 import WhatIsNeeded from './rows/WhatIsNeeded';
+import WhoIsItFor from './rows/WhoIsItFor';
+import WhoRecordedIt from './rows/WhoRecordedIt';
 import {
   AidRequestDetailsQuery,
   AidRequestDetailsQueryVariables,
@@ -56,6 +58,20 @@ function getListItems(data: AidRequestDetailsQuery | undefined): Array<Item> {
       key: `${aidRequest._id}:whatIsNeeded`,
       render: () => {
         return <WhatIsNeeded whatIsNeeded={aidRequest.whatIsNeeded} />;
+      },
+    },
+    {
+      key: `${aidRequest._id}:whoIsItFor`,
+      render: () => {
+        return <WhoIsItFor whoIsItFor={aidRequest.whoIsItFor} />;
+      },
+    },
+    {
+      key: `${aidRequest._id}:whoRecordedIt`,
+      render: () => {
+        return (
+          <WhoRecordedIt displayName={aidRequest.whoRecordedIt?.displayName} />
+        );
       },
     },
   ];

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { StyleSheet, Text } from 'react-native';
 import { useColor } from 'src/client/components/Colors';
-import Row from './Row';
+import Row from '../components/Row';
 
 type Props = {
   whatIsNeeded: string;
