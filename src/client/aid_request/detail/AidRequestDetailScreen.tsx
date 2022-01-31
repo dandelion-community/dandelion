@@ -2,10 +2,13 @@ import { gql, useQuery } from '@apollo/client';
 import * as React from 'react';
 import type { ListRenderItemInfo } from 'react-native';
 import { FlatList, StyleSheet } from 'react-native';
+import LoadingScreen from 'src/client/components/LoadingScreen';
 import View from 'src/client/components/View';
+import client from 'src/client/graphql/client';
 import { RequestExplorerStackScreenProps } from 'src/client/navigation/NavigationTypes';
 import { AidRequestCardFragments } from 'src/client/request_explorer/AidRequestCardFragments';
 import RequireLoggedInScreen from 'src/client/viewer/RequireLoggedInScreen';
+import Status from './rows/Status';
 import WhatIsNeeded from './rows/WhatIsNeeded';
 import WhoIsItFor from './rows/WhoIsItFor';
 import WhoRecordedIt from './rows/WhoRecordedIt';
@@ -31,7 +34,13 @@ export default function AidRequestDetailScreen({
   >(AID_REQUEST_DETAILS_QUERY, {
     variables: { aidRequestID },
   });
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore ts thinks outline: 'none' is invalid but it's not
   const items = getListItems(data);
+
+  if (loading) {
+    return <LoadingScreen />;
+  }
 
   return (
     <RequireLoggedInScreen>
@@ -74,6 +83,12 @@ function getListItems(data: AidRequestDetailsQuery | undefined): Array<Item> {
         );
       },
     },
+    {
+      key: `${aidRequest._id}:status`,
+      render: () => {
+        return <Status status={aidRequest.status} />;
+      },
+    },
   ];
 }
 
@@ -89,10 +104,30 @@ const AID_REQUEST_DETAILS_QUERY = gql`
   query AidRequestDetailsQuery($aidRequestID: String!) {
     aidRequest(aidRequestID: $aidRequestID) {
       ...AidRequestCardFragment
+      status {
+        message
+        people {
+          displayName
+        }
+      }
     }
   }
   ${AidRequestCardFragments.aidRequest}
 `;
+
+export function notifyAidRequestDetailScreenAboutMutation(
+  aidRequestID: string,
+): void {
+  const id = `AidRequest:${aidRequestID}`;
+  // Invalidate all fields that are requested in AID_REQUEST_DETAILS_QUERY
+  // but *not* in AidRequestCardFragment, since the latter will be locally
+  // updated after a mutation but the former will not.
+  client.cache.evict({
+    broadcast: true,
+    fieldName: 'status',
+    id,
+  });
+}
 
 const styles = StyleSheet.create({
   container: {

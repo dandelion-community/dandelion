@@ -38,6 +38,17 @@ export interface AidRequestDetailsQuery_aidRequest_actionsAvailable {
   input: AidRequestDetailsQuery_aidRequest_actionsAvailable_input;
 }
 
+export interface AidRequestDetailsQuery_aidRequest_status_people {
+  __typename: "User";
+  displayName: string;
+}
+
+export interface AidRequestDetailsQuery_aidRequest_status {
+  __typename: "StatusSummary";
+  message: string;
+  people: AidRequestDetailsQuery_aidRequest_status_people[];
+}
+
 export interface AidRequestDetailsQuery_aidRequest {
   __typename: "AidRequest";
   _id: string;
@@ -49,6 +60,7 @@ export interface AidRequestDetailsQuery_aidRequest {
   whoRecordedIt: AidRequestDetailsQuery_aidRequest_whoRecordedIt | null;
   whoIsWorkingOnItUsers: (AidRequestDetailsQuery_aidRequest_whoIsWorkingOnItUsers | null)[] | null;
   actionsAvailable: (AidRequestDetailsQuery_aidRequest_actionsAvailable | null)[] | null;
+  status: AidRequestDetailsQuery_aidRequest_status;
 }
 
 export interface AidRequestDetailsQuery {
