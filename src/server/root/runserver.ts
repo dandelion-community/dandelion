@@ -3,8 +3,12 @@
 Error.stackTraceLimit = Infinity;
 
 import debugModule from 'debug';
+import dotenv from 'dotenv';
 import http from 'http';
+import httpProxy from 'http-proxy';
 import express_app from './express_app';
+
+dotenv.config();
 
 const debug = debugModule('server');
 
@@ -12,6 +16,16 @@ const port = normalizePort(process.env.PORT || '3000');
 express_app.set('port', port);
 
 const server = http.createServer(express_app);
+
+if (process.env.HOT_RELOAD === 'True') {
+  const nodeProxy = new httpProxy({
+    target: 'ws://localhost:19006',
+    ws: true,
+  });
+  server.on('upgrade', (request, socket, head) => {
+    nodeProxy.ws(request, socket, head);
+  });
+}
 
 /**
  * Listen on provided port, on all network interfaces.
