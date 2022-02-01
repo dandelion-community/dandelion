@@ -2,11 +2,11 @@ import { gql, useQuery } from '@apollo/client';
 import * as React from 'react';
 import type { ListRenderItemInfo } from 'react-native';
 import { FlatList, StyleSheet } from 'react-native';
+import { AidRequestCardFragments } from 'src/client/aid_request/fragments/AidRequestCardFragments';
 import LoadingScreen from 'src/client/components/LoadingScreen';
 import View from 'src/client/components/View';
 import client from 'src/client/graphql/client';
 import { RequestExplorerStackScreenProps } from 'src/client/navigation/NavigationTypes';
-import { AidRequestCardFragments } from 'src/client/aid_request/fragments/AidRequestCardFragments';
 import RequireLoggedInScreen from 'src/client/viewer/RequireLoggedInScreen';
 import AddAComment from './add-a-comment/AddAComment';
 import ActivityHeader from './rows/ActivityHeader';
@@ -18,6 +18,7 @@ import WhoRecordedIt from './rows/WhoRecordedIt';
 import {
   AidRequestDetailsQuery,
   AidRequestDetailsQueryVariables,
+  AidRequestDetailsQuery_aidRequest,
   AidRequestDetailsQuery_aidRequest_activity,
 } from './__generated__/AidRequestDetailsQuery';
 
@@ -28,9 +29,16 @@ type Item = {
   key: string;
 };
 
+type Props = RequestExplorerStackScreenProps<'AidRequestDetail'> & {
+  setAidRequest: (
+    aidRequest: AidRequestDetailsQuery_aidRequest | undefined,
+  ) => void;
+};
+
 export default function AidRequestDetailScreen({
   route,
-}: RequestExplorerStackScreenProps<'AidRequestDetail'>): JSX.Element {
+  setAidRequest,
+}: Props): JSX.Element {
   const { id: aidRequestID } = route.params;
   const { data, loading, refetch } = useQuery<
     AidRequestDetailsQuery,
@@ -38,6 +46,9 @@ export default function AidRequestDetailScreen({
   >(AID_REQUEST_DETAILS_QUERY, {
     variables: { aidRequestID },
   });
+  React.useEffect(() => {
+    setAidRequest(data?.aidRequest);
+  }, [data]);
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore ts thinks outline: 'none' is invalid but it's not
   const items = getListItems(data);

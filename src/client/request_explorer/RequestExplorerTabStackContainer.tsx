@@ -9,7 +9,10 @@ import {
   RootTabScreenProps,
 } from 'src/client/navigation/NavigationTypes';
 import StackNavigatorInsideTabNavigator from 'src/client/navigation/StackNavigatorInsideTabNavigator';
+import share from 'src/client/utils/share';
 import AidRequestDetailScreen from '../aid_request/detail/AidRequestDetailScreen';
+import { AidRequestDetailsQuery_aidRequest } from '../aid_request/detail/__generated__/AidRequestDetailsQuery';
+import Icon from '../components/Icon';
 import RequestExplorerHeader from './RequestExplorerHeader';
 import RequestExplorerScreen from './RequestExplorerScreen';
 
@@ -20,8 +23,14 @@ export type ExtraProps = { navigateToProfile: () => void };
 export default function RequestExplorerTabStackContainer({
   navigation,
 }: RootTabScreenProps<'RequestExplorerTabStackContainer'>): JSX.Element {
+  const [aidRequest, setAidRequest] = React.useState<
+    AidRequestDetailsQuery_aidRequest | undefined
+  >(undefined);
   const colorScheme = useColorScheme();
   const headerBackgroundColor = Colors[colorScheme].tabBarBackground;
+  const AidRequestDetailScreenComponent = React.useCallback((props) => {
+    return <AidRequestDetailScreen {...props} setAidRequest={setAidRequest} />;
+  }, []);
   return (
     <StackNavigatorInsideTabNavigator>
       <Stack.Navigator>
@@ -34,7 +43,7 @@ export default function RequestExplorerTabStackContainer({
           })}
         />
         <Stack.Screen
-          component={AidRequestDetailScreen}
+          component={AidRequestDetailScreenComponent}
           name="AidRequestDetail"
           options={() => ({
             header: ({ options }) => (
@@ -47,6 +56,18 @@ export default function RequestExplorerTabStackContainer({
                   }
                 />
                 <Appbar.Content title={options.title} />
+                <Icon
+                  onPress={async () => {
+                    if (aidRequest != null) {
+                      await share(
+                        `${aidRequest.whatIsNeeded} for ${aidRequest.whoIsItFor}`,
+                        `https://dandelion.supplies/r?id=${aidRequest._id}`,
+                      );
+                    }
+                  }}
+                  path="more"
+                  scheme="dark"
+                />
               </Appbar.Header>
             ),
             title: 'Request',
