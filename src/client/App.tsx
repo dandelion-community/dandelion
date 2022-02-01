@@ -3,13 +3,15 @@ import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { AppRegistry } from 'react-native';
 import {
-  DarkTheme,
-  DefaultTheme,
   // prettier expects a comma but "editor.codeActionsOnSave": { "source.organizeImports": true } removes the comma
   // eslint-disable-next-line prettier/prettier
   Provider as PaperProvider,
 } from 'react-native-paper';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import {
+  DARK_THEME,
+  LIGHT_THEME,
+} from 'src/client/components/theme/ReactNativePaperTheme';
 import GlobalProviders from 'src/client/root/GlobalProviders';
 import ViewerProvider from 'src/client/viewer/ViewerProvider';
 import client from './graphql/client';
@@ -17,20 +19,10 @@ import useCachedResources from './hooks/useCachedResources';
 import useColorScheme from './light-or-dark/useColorScheme';
 import Navigation from './navigation/Navigation';
 
-const DARK_THEME = {
-  ...DarkTheme,
-  colors: {
-    ...DarkTheme.colors,
-    accent: '#a577e7',
-    onSurface: '#482d48',
-    surface: '#eee',
-  },
-};
-
 export default function App() {
   const isLoadingComplete = useCachedResources();
   const colorScheme = useColorScheme();
-  const paperTheme = colorScheme === 'dark' ? DARK_THEME : DefaultTheme;
+  const paperTheme = colorScheme === 'dark' ? DARK_THEME : LIGHT_THEME;
 
   if (!isLoadingComplete) {
     return null;

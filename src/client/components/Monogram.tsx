@@ -6,8 +6,6 @@ import chooseArrayElementFromHashOfString from 'src/shared/utils/chooseArrayElem
 // @ts-ignore ts thinks outline: 'none' is invalid but it's not
 import unicodeSubstring from 'unicode-substring';
 
-const emojiRegex = emojiRegexConstructor();
-
 type Props = {
   name: string;
 };
@@ -45,6 +43,7 @@ const styles = StyleSheet.create({
 
 export default function Monogram({ name }: Props): JSX.Element {
   const firstCharacter = unicodeSubstring(name, 0, 1);
+  const emojiRegex = emojiRegexConstructor();
   const isEmoji = emojiRegex.test(firstCharacter);
   const backgroundColor = chooseArrayElementFromHashOfString(
     name,

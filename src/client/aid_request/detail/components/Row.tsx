@@ -9,6 +9,7 @@ type Props = {
   divider?: boolean;
   header?: string;
   headerMonograms?: string[];
+  omitTopMargin?: boolean;
 };
 
 export default function Row({
@@ -16,11 +17,14 @@ export default function Row({
   divider,
   header,
   headerMonograms,
+  omitTopMargin,
 }: Props): JSX.Element {
   const color = useColor('text');
   return (
     <View style={styles.row}>
-      <View style={styles.paddedContents}>
+      <View
+        style={[styles.paddedContents, omitTopMargin ? { paddingTop: 0 } : {}]}
+      >
         {header == null ? null : (
           <View style={styles.header}>
             <Text style={[{ color }, styles.headline]}>{header} </Text>

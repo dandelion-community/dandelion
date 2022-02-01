@@ -1,7 +1,5 @@
 import type { ObjectTypeComposerFieldConfigAsObjectDefinition } from 'graphql-compose';
 import { schemaComposer } from 'graphql-compose';
-import TimeAgo from 'javascript-time-ago';
-import en from 'javascript-time-ago/locale/en.json';
 import type { ObjectId } from 'mongodb';
 import type { AidRequest } from 'src/server/collections/aid_request/AidRequestGraphQLTypes';
 import loadAidRequestForViewer from 'src/server/collections/aid_request/helpers/loadAidRequestForViewer';
@@ -11,8 +9,6 @@ import {
   maybeLoadMany,
   maybeLoadUserForViewer,
 } from '../../user/loader/loadUserForViewer';
-
-TimeAgo.addDefaultLocale(en);
 
 type StatusSummary = {
   message: string;

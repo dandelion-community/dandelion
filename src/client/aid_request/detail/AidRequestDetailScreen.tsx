@@ -6,8 +6,11 @@ import LoadingScreen from 'src/client/components/LoadingScreen';
 import View from 'src/client/components/View';
 import client from 'src/client/graphql/client';
 import { RequestExplorerStackScreenProps } from 'src/client/navigation/NavigationTypes';
-import { AidRequestCardFragments } from 'src/client/request_explorer/AidRequestCardFragments';
+import { AidRequestCardFragments } from 'src/client/aid_request/fragments/AidRequestCardFragments';
 import RequireLoggedInScreen from 'src/client/viewer/RequireLoggedInScreen';
+import AddAComment from './add-a-comment/AddAComment';
+import ActivityHeader from './rows/ActivityHeader';
+import ActivityItem, { ActivityItemFragments } from './rows/ActivityItem';
 import Status from './rows/Status';
 import WhatIsNeeded from './rows/WhatIsNeeded';
 import WhoIsItFor from './rows/WhoIsItFor';
@@ -15,6 +18,7 @@ import WhoRecordedIt from './rows/WhoRecordedIt';
 import {
   AidRequestDetailsQuery,
   AidRequestDetailsQueryVariables,
+  AidRequestDetailsQuery_aidRequest_activity,
 } from './__generated__/AidRequestDetailsQuery';
 
 export type GoToRequestDetailScreen = (aidRequestID: string) => void;
@@ -89,6 +93,34 @@ function getListItems(data: AidRequestDetailsQuery | undefined): Array<Item> {
         return <Status aidRequest={aidRequest} status={aidRequest.status} />;
       },
     },
+    {
+      key: 'activity-header',
+      render: () => {
+        return <ActivityHeader />;
+      },
+    },
+    {
+      key: `${aidRequest._id}:add-a-comment`,
+      render: () => {
+        return <AddAComment aidRequestID={aidRequest._id} />;
+      },
+    },
+    ...aidRequest.activity.map(
+      (activityItem: AidRequestDetailsQuery_aidRequest_activity): Item => {
+        return {
+          key: activityItem._id,
+          render: () => {
+            return <ActivityItem activityItem={activityItem} />;
+          },
+        };
+      },
+    ),
+    {
+      key: 'bottom-spacer',
+      render: () => {
+        return <View style={{ height: 75 }} />;
+      },
+    },
   ];
 }
 
@@ -110,9 +142,13 @@ const AID_REQUEST_DETAILS_QUERY = gql`
           displayName
         }
       }
+      activity {
+        ...ActivityItemFragment
+      }
     }
   }
   ${AidRequestCardFragments.aidRequest}
+  ${ActivityItemFragments.activityItem}
 `;
 
 export function notifyAidRequestDetailScreenAboutMutation(
@@ -125,6 +161,11 @@ export function notifyAidRequestDetailScreenAboutMutation(
   client.cache.evict({
     broadcast: true,
     fieldName: 'status',
+    id,
+  });
+  client.cache.evict({
+    broadcast: true,
+    fieldName: 'activity',
     id,
   });
 }

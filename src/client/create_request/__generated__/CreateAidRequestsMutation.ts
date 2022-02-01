@@ -36,7 +36,7 @@ export interface CreateAidRequestsMutation_createAidRequests_requests_actionsAva
 export interface CreateAidRequestsMutation_createAidRequests_requests {
   __typename: "AidRequest";
   _id: string;
-  crew: string | null;
+  crew: string;
   completed: boolean;
   latestEvent: string;
   whatIsNeeded: string;

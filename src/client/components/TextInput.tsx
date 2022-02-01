@@ -1,12 +1,6 @@
 import * as React from 'react';
 import { StyleSheet, TextInput as NativeTextInput, View } from 'react-native';
-import {
-  DarkTheme,
-  DefaultTheme,
-  TextInput as PaperTextInput,
-} from 'react-native-paper';
-import Colors from 'src/client/components/Colors';
-import useColorScheme from 'src/client/light-or-dark/useColorScheme';
+import { TextInput as PaperTextInput } from 'react-native-paper';
 
 export type TextInputHandles = Pick<NativeTextInput, 'focus'>;
 
@@ -20,22 +14,6 @@ type Props = {
   setFocused?: (value: boolean) => void;
   setValue: (value: string) => void;
   value: string;
-};
-
-const DARK_THEME = {
-  ...DarkTheme,
-  colors: {
-    ...DarkTheme.colors,
-    background: Colors.dark.background,
-  },
-};
-
-const LIGHT_THEME = {
-  ...DefaultTheme,
-  colors: {
-    ...DefaultTheme.colors,
-    background: Colors.light.background,
-  },
 };
 
 const TextInput = React.forwardRef<TextInputHandles, Props>(
@@ -53,7 +31,6 @@ const TextInput = React.forwardRef<TextInputHandles, Props>(
     }: Props,
     ref,
   ) => {
-    const scheme = useColorScheme();
     const isExactInput =
       autoComplete === 'email' || autoComplete === 'password';
 
@@ -82,7 +59,6 @@ const TextInput = React.forwardRef<TextInputHandles, Props>(
           }}
           returnKeyType={returnKeyType}
           secureTextEntry={autoComplete === 'password'}
-          theme={scheme === 'light' ? LIGHT_THEME : DARK_THEME}
           value={value}
         />
       </View>

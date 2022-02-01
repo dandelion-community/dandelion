@@ -4,6 +4,8 @@ export type Person = {
   displayName: string;
 };
 
+export type UnregisteredPerson = Person;
+
 schemaComposer.createInterfaceTC<Person>({
   fields: {
     displayName: 'String!',
@@ -18,15 +20,14 @@ schemaComposer.createInterfaceTC<Person>({
   },
 });
 
-export const UnregisteredPersonGraphQLType = schemaComposer.createObjectTC<{
-  displayName: string;
-}>({
-  fields: {
-    displayName: 'String!',
-  },
-  interfaces: ['Person'],
-  name: 'UnregisteredPerson',
-});
+export const UnregisteredPersonGraphQLType =
+  schemaComposer.createObjectTC<UnregisteredPerson>({
+    fields: {
+      displayName: 'String!',
+    },
+    interfaces: ['Person'],
+    name: 'UnregisteredPerson',
+  });
 
 export const UserGraphQLType = schemaComposer.createObjectTC<Express.User>({
   fields: {

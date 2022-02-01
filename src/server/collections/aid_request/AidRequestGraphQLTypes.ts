@@ -3,6 +3,7 @@ import { composeWithMongoose } from 'graphql-compose-mongoose';
 import { Document } from 'mongoose';
 import { AidRequestModel } from 'src/server/collections/aid_request/AidRequestModel';
 import type { AidRequestType } from 'src/server/collections/aid_request/AidRequestModelTypes';
+import { Person } from '../user/UserGraphQLTypes';
 
 export type AidRequest = Document<unknown, unknown, AidRequestType> &
   AidRequestType;
@@ -12,22 +13,9 @@ export const AidRequestGraphQLType = composeWithMongoose<AidRequest>(
   {
     fields: {
       only: [
-        // Whenever you add a field here make sure to
-        // implement a resolver in the object_fields directory
-        // and register it in AidRequestGraphQLImpl
-        // that checks the user's permission to load the aidRequest
-        '_id',
-        'actionsAvailable',
-        'completed',
-        'createdAt',
-        'crew',
-        'history',
-        'latestEvent',
-        'whatIsNeeded',
-        'whoIsItFor',
-        'whoIsWorkingOnIt',
-        'whoIsWorkingOnItUsers',
-        'whoRecordedIt',
+        // Fields must be explicitly defined with a resolver that
+        // runs a privacy check. See AidRequestGraphQLImpl for a
+        // list of fields.
       ],
     },
   },
@@ -103,6 +91,26 @@ export const AidRequestHistoryEventGraphQLType = schemaComposer.createObjectTC({
   },
   name: 'AidRequestHistoryEvent',
 });
+
+export type AidRequestActivityItem = {
+  _id: string;
+  actor: () => Promise<Person | null>;
+  isComment: boolean;
+  message: string;
+  when: string;
+};
+
+export const AidRequestActivityItemGraphQLType =
+  schemaComposer.createObjectTC<AidRequestActivityItem>({
+    fields: {
+      _id: 'String!',
+      actor: 'Person',
+      isComment: 'Boolean!',
+      message: 'String!',
+      when: 'String!',
+    },
+    name: 'AidRequestActivityItem',
+  });
 
 export const AidRequestActionInputGraphQLType = schemaComposer.createObjectTC({
   fields: {

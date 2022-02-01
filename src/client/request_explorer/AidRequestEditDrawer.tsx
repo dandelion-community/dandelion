@@ -1,8 +1,15 @@
-import { gql, useMutation } from '@apollo/client';
+import { useMutation } from '@apollo/client';
 import * as React from 'react';
 import type { ListRenderItemInfo } from 'react-native';
 import { FlatList } from 'react-native';
 import { List, Paragraph } from 'react-native-paper';
+import { AidRequestHistoryEventType } from 'src/../__generated__/globalTypes';
+import { GoToRequestDetailScreen } from 'src/client/aid_request/detail/AidRequestDetailScreen';
+import { EDIT_AID_REQUEST_MUTATION } from 'src/client/aid_request/edit/EditAidRequestMutation';
+import {
+  EditAidRequestMutation,
+  EditAidRequestMutationVariables,
+} from 'src/client/aid_request/edit/__generated__/editAidRequestMutation';
 import Icon from 'src/client/components/Icon';
 import useDialogContext from 'src/client/dialog/useDialogContext';
 import useDrawerContext from 'src/client/drawer/useDrawerContext';
@@ -10,20 +17,13 @@ import client from 'src/client/graphql/client';
 import useToastContext from 'src/client/toast/useToastContext';
 import DebouncedLoadingIndicator from 'src/client/utils/DebouncedLoadingIndicator';
 import { useLoggedInViewerID } from 'src/client/viewer/ViewerContext';
-import { AidRequestHistoryEventType } from '../../../__generated__/globalTypes';
-import filterNulls from '../../shared/utils/filterNulls';
-import { GoToRequestDetailScreen } from '../aid_request/detail/AidRequestDetailScreen';
-import { AidRequestCardFragments } from './AidRequestCardFragments';
+import filterNulls from 'src/shared/utils/filterNulls';
 import { broadcastAidRequestUpdated } from './AidRequestFilterLocalCacheUpdater';
 import type {
   AidRequestEditDrawerFragment,
   AidRequestEditDrawerFragment_actionsAvailable,
   AidRequestEditDrawerFragment_actionsAvailable_input,
 } from './__generated__/AidRequestEditDrawerFragment';
-import {
-  editAidRequestMutation,
-  editAidRequestMutationVariables,
-} from './__generated__/editAidRequestMutation';
 
 type Props = {
   aidRequest: AidRequestEditDrawerFragment;
@@ -43,8 +43,8 @@ export default function AidRequestEditDrawer({
   const { actionsAvailable, _id: aidRequestID } = aidRequest;
   const actions = filterNulls(actionsAvailable ?? []);
   const [runEditAidRequestMutation, editAidRequestMutationState] = useMutation<
-    editAidRequestMutation,
-    editAidRequestMutationVariables
+    EditAidRequestMutation,
+    EditAidRequestMutationVariables
   >(EDIT_AID_REQUEST_MUTATION);
   const { loading, error } = editAidRequestMutationState;
   const extraActions: Array<Item> =
@@ -145,24 +145,3 @@ function extractKey(item: Item): string {
     return item.message;
   }
 }
-
-const EDIT_AID_REQUEST_MUTATION = gql`
-  mutation editAidRequestMutation(
-    $aidRequestID: String!
-    $input: AidRequestActionInputInput!
-    $undoID: String
-  ) {
-    editAidRequest(
-      aidRequestID: $aidRequestID
-      input: $input
-      undoID: $undoID
-    ) {
-      aidRequest {
-        ...AidRequestCardFragment
-      }
-      undoID
-      postpublishSummary
-    }
-  }
-  ${AidRequestCardFragments.aidRequest}
-`;
