@@ -1,6 +1,6 @@
 import { gql } from '@apollo/client';
 import { Dimensions } from 'react-native';
-import { AidRequestCardFragments } from './AidRequestCardFragments';
+import { AidRequestCardFragments } from '../aid_request/fragments/AidRequestCardFragments';
 
 const windowHeight = Dimensions.get('window').height;
 const APPROX_REQUEST_ITEM_HEIGHT = 86;

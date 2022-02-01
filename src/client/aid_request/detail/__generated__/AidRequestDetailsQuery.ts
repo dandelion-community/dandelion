@@ -44,10 +44,24 @@ export interface AidRequestDetailsQuery_aidRequest_status {
   people: AidRequestDetailsQuery_aidRequest_status_people[];
 }
 
+export interface AidRequestDetailsQuery_aidRequest_activity_actor {
+  __typename: "User";
+  displayName: string;
+}
+
+export interface AidRequestDetailsQuery_aidRequest_activity {
+  __typename: "AidRequestActivityItem";
+  _id: string;
+  actor: AidRequestDetailsQuery_aidRequest_activity_actor | null;
+  isComment: boolean;
+  message: string;
+  when: string;
+}
+
 export interface AidRequestDetailsQuery_aidRequest {
   __typename: "AidRequest";
   _id: string;
-  crew: string | null;
+  crew: string;
   completed: boolean;
   latestEvent: string;
   whatIsNeeded: string;
@@ -56,6 +70,7 @@ export interface AidRequestDetailsQuery_aidRequest {
   whoIsWorkingOnItUsers: (AidRequestDetailsQuery_aidRequest_whoIsWorkingOnItUsers | null)[] | null;
   actionsAvailable: (AidRequestDetailsQuery_aidRequest_actionsAvailable | null)[] | null;
   status: AidRequestDetailsQuery_aidRequest_status;
+  activity: AidRequestDetailsQuery_aidRequest_activity[];
 }
 
 export interface AidRequestDetailsQuery {

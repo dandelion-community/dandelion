@@ -7,7 +7,7 @@ import type {
   CreateAidRequestsMutation,
   CreateAidRequestsMutationVariables,
 } from 'src/client/create_request/__generated__/CreateAidRequestsMutation';
-import { AidRequestCardFragments } from 'src/client/request_explorer/AidRequestCardFragments';
+import { AidRequestCardFragments } from 'src/client/aid_request/fragments/AidRequestCardFragments';
 import { broadcastAidRequestUpdated } from 'src/client/request_explorer/AidRequestFilterLocalCacheUpdater';
 import useToastContext from 'src/client/toast/useToastContext';
 import { useLoggedInViewer } from 'src/client/viewer/ViewerContext';

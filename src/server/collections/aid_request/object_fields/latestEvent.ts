@@ -1,6 +1,4 @@
 import type { ObjectTypeComposerFieldConfigAsObjectDefinition } from 'graphql-compose';
-import TimeAgo from 'javascript-time-ago';
-import en from 'javascript-time-ago/locale/en.json';
 import type { AidRequest } from 'src/server/collections/aid_request/AidRequestGraphQLTypes';
 import type {
   AidRequestHistoryEvent,
@@ -10,9 +8,7 @@ import getWhoRecordedRequest from 'src/server/collections/aid_request/helpers/ge
 import loadAidRequestForViewer from 'src/server/collections/aid_request/helpers/loadAidRequestForViewer';
 import { UserModel } from 'src/server/collections/user/UserModel';
 import assertLoggedIn from 'src/server/graphql/assertLoggedIn';
-
-TimeAgo.addDefaultLocale(en);
-const timeAgo = new TimeAgo('en-US');
+import ago from 'src/shared/utils/ago';
 
 const latestEvent: ObjectTypeComposerFieldConfigAsObjectDefinition<
   AidRequest,
@@ -30,7 +26,7 @@ const latestEvent: ObjectTypeComposerFieldConfigAsObjectDefinition<
     const history = filterRemovals(rawHistory);
     if (history.length === 0) {
       const recorder = await getWhoRecordedRequest(aidRequest);
-      return `${timeAgo.format(aidRequest.createdAt)} - ${
+      return `${ago(aidRequest.createdAt)} - ${
         recorder?.displayName ?? 'Unknown'
       } recorded this`;
     }
@@ -44,7 +40,7 @@ const latestEvent: ObjectTypeComposerFieldConfigAsObjectDefinition<
       throw new Error('Action must have actor');
     }
     const actorIsViewer = actor._id.equals(viewer._id);
-    return `${timeAgo.format(event.timestamp)} - ${
+    return `${ago(event.timestamp)} - ${
       actorIsViewer ? 'You' : actor.displayName
     } ${getActionText(event.event)}`;
   },

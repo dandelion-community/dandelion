@@ -3,7 +3,7 @@
 // @generated
 // This file was automatically generated and should not be edited.
 
-import { AidRequestUpdateActionType, AidRequestHistoryEventType } from "./../../../../__generated__/globalTypes";
+import { AidRequestUpdateActionType, AidRequestHistoryEventType } from "./../../../../../__generated__/globalTypes";
 
 // ====================================================
 // GraphQL fragment: AidRequestCardFragment

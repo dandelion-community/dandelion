@@ -1,15 +1,19 @@
 [
   {
+    "icon": "raised-hand",
+    "text": "Raised Hand by Stephen JB Thomas from NounProject.com"
+  },
+  {
+    "icon": "flower",
+    "text": "Flower by Brand Mania from NounProject.com"
+  },
+  {
     "icon": "check",
     "text": "Google Fonts"
   },
   {
     "icon": "delete",
     "text": "Google Fonts"
-  },
-  {
-    "icon": "raised-hand",
-    "text": "Raised Hand by Stephen JB Thomas from NounProject.com"
   },
   {
     "icon": "uncheck",
@@ -20,15 +24,19 @@
     "text": "Google Fonts"
   },
   {
-    "icon": "flower",
-    "text": "Flower by Brand Mania from NounProject.com"
-  },
-  {
     "icon": "plus",
     "text": "Google Fonts"
   },
   {
     "icon": "more",
+    "text": "Google Fonts"
+  },
+  {
+    "icon": "send",
+    "text": "Google Fonts"
+  },
+  {
+    "icon": "comment",
     "text": "Google Fonts"
   }
 ]

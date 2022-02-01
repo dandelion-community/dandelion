@@ -14,6 +14,7 @@ export default function Row({ children }: Props): JSX.Element {
 const styles = StyleSheet.create({
   rowTitle: {
     fontSize: 14,
+    fontWeight: '500',
     lineHeight: 20,
   },
 });
