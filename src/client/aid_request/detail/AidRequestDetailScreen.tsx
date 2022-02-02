@@ -3,6 +3,7 @@ import * as React from 'react';
 import type { ListRenderItemInfo } from 'react-native';
 import { FlatList, StyleSheet } from 'react-native';
 import { AidRequestCardFragments } from 'src/client/aid_request/fragments/AidRequestCardFragments';
+import ErrorScreen from 'src/client/components/ErrorScreen';
 import LoadingScreen from 'src/client/components/LoadingScreen';
 import View from 'src/client/components/View';
 import client from 'src/client/graphql/client';
@@ -35,12 +36,19 @@ type Props = RequestExplorerStackScreenProps<'AidRequestDetail'> & {
   ) => void;
 };
 
-export default function AidRequestDetailScreen({
-  route,
-  setAidRequest,
-}: Props): JSX.Element {
+export default function AidRequestDetailScreenWrapper(
+  props: Props,
+): JSX.Element {
+  return (
+    <RequireLoggedInScreen>
+      <AidRequestDetailScreen {...props} />
+    </RequireLoggedInScreen>
+  );
+}
+
+function AidRequestDetailScreen({ route, setAidRequest }: Props): JSX.Element {
   const { id: aidRequestID } = route.params;
-  const { data, loading, refetch } = useQuery<
+  const { data, loading, error, refetch } = useQuery<
     AidRequestDetailsQuery,
     AidRequestDetailsQueryVariables
   >(AID_REQUEST_DETAILS_QUERY, {
@@ -58,8 +66,10 @@ export default function AidRequestDetailScreen({
   }
 
   return (
-    <RequireLoggedInScreen>
-      <View style={styles.container}>
+    <View style={styles.container}>
+      {error ? (
+        <ErrorScreen error={error} />
+      ) : (
         <FlatList
           data={items}
           keyExtractor={keyExtractor}
@@ -67,8 +77,8 @@ export default function AidRequestDetailScreen({
           refreshing={loading}
           renderItem={renderItem}
         />
-      </View>
-    </RequireLoggedInScreen>
+      )}
+    </View>
   );
 }
 
