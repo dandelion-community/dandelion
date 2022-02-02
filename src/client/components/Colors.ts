@@ -24,7 +24,7 @@ const Colors = {
     background: '#fff',
     cardBackground: '#f8f8f8',
     divider: 'rgba(0,0,0,0.15)',
-    draftCardColor: '#ffffd0',
+    draftCardColor: '#46461c',
     m3buttonBackground: '#E8DEF8', // M3/sys/dark/secondary-container
     m3buttonText: '#1D192B', // M3/sys/light/on-secondary-container
     placeholderText: 'rgba(0,0,0,0.6)',
