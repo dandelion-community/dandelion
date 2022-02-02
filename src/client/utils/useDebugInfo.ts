@@ -46,7 +46,7 @@ export default function useDebugInfo(error: ApolloError): {
         variables: { data: rawValue },
       })
       .then((res) => {
-        setMinifiedValue(res?.data?.reportError ?? '');
+        setMinifiedValue(res?.data?.reportError ?? undefined);
       });
   }, [rawValue]);
 
