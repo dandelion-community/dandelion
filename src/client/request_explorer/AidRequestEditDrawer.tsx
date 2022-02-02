@@ -5,6 +5,7 @@ import { FlatList } from 'react-native';
 import { List, Paragraph } from 'react-native-paper';
 import { AidRequestHistoryEventType } from 'src/../__generated__/globalTypes';
 import { GoToRequestDetailScreen } from 'src/client/aid_request/detail/AidRequestDetailScreen';
+import editAidRequest from 'src/client/aid_request/edit/editAidRequest';
 import { EDIT_AID_REQUEST_MUTATION } from 'src/client/aid_request/edit/EditAidRequestMutation';
 import {
   EditAidRequestMutation,
@@ -18,6 +19,8 @@ import useToastContext from 'src/client/toast/useToastContext';
 import DebouncedLoadingIndicator from 'src/client/utils/DebouncedLoadingIndicator';
 import { useLoggedInViewerID } from 'src/client/viewer/ViewerContext';
 import filterNulls from 'src/shared/utils/filterNulls';
+import { isDraftID } from '../aid_request/drafts/AidRequestDraftIDs';
+import { publishDraft } from '../aid_request/drafts/AidRequestDrafts';
 import { broadcastAidRequestUpdated } from './AidRequestFilterLocalCacheUpdater';
 import type {
   AidRequestEditDrawerFragment,
@@ -30,13 +33,18 @@ type Props = {
   goToRequestDetailScreen?: GoToRequestDetailScreen;
 };
 
-type Item = AidRequestEditDrawerFragment_actionsAvailable | 'View details';
+type Item =
+  | AidRequestEditDrawerFragment_actionsAvailable
+  | 'View details'
+  | 'Publish';
 
 export default function AidRequestEditDrawer({
   aidRequest,
   goToRequestDetailScreen,
 }: Props): JSX.Element {
   const viewerID = useLoggedInViewerID();
+  const filterContext = { viewerID };
+  const [loadingPublish, setLoadingPublish] = React.useState<boolean>(false);
   const { publishToast } = useToastContext();
   const { closeDrawer } = useDrawerContext();
   const { shouldDelete } = useDialogContext();
@@ -47,10 +55,14 @@ export default function AidRequestEditDrawer({
     EditAidRequestMutationVariables
   >(EDIT_AID_REQUEST_MUTATION);
   const { loading, error } = editAidRequestMutationState;
-  const extraActions: Array<Item> =
-    goToRequestDetailScreen == null ? [] : ['View details'];
+  const extraActions: Array<Item> = [
+    ...(goToRequestDetailScreen == null || isDraftID(aidRequest._id)
+      ? []
+      : (['View details'] as Array<Item>)),
+    ...(isDraftID(aidRequest._id) ? (['Publish'] as Array<Item>) : []),
+  ];
 
-  return loading ? (
+  return loading || loadingPublish ? (
     <DebouncedLoadingIndicator />
   ) : (
     <>
@@ -82,6 +94,21 @@ export default function AidRequestEditDrawer({
         />
       );
     }
+    if (action === 'Publish') {
+      return (
+        <List.Item
+          left={() => <Icon path="publish" />}
+          onPress={async () => {
+            setLoadingPublish(true);
+            const message = await publishDraft(aidRequest._id, filterContext);
+            setLoadingPublish(false);
+            closeDrawer();
+            publishToast({ message });
+          }}
+          title={action}
+        />
+      );
+    }
     const { icon } = action;
     return (
       <List.Item
@@ -109,16 +136,20 @@ export default function AidRequestEditDrawer({
         event: input.event,
       },
     };
-    const { data } = await runEditAidRequestMutation({ variables });
+    const { data } = await editAidRequest(
+      runEditAidRequestMutation,
+      variables,
+      filterContext,
+    );
     broadcastAidRequestUpdated(aidRequestID, data?.editAidRequest?.aidRequest, {
       viewerID,
     });
     closeDrawer();
-    const editAidRequest = data?.editAidRequest;
-    if (editAidRequest != null) {
-      const { undoID } = editAidRequest;
+    const editAidRequestResponse = data?.editAidRequest;
+    if (editAidRequestResponse != null) {
+      const { undoID } = editAidRequestResponse;
       publishToast({
-        message: editAidRequest.postpublishSummary || 'Updated',
+        message: editAidRequestResponse.postpublishSummary || 'Updated',
         undo:
           undoID == null
             ? null
@@ -130,7 +161,7 @@ export default function AidRequestEditDrawer({
                 broadcastAidRequestUpdated(
                   aidRequestID,
                   data?.editAidRequest?.aidRequest,
-                  { viewerID },
+                  filterContext,
                 );
               },
       });
@@ -141,6 +172,8 @@ export default function AidRequestEditDrawer({
 function extractKey(item: Item): string {
   if (item === 'View details') {
     return 'View details';
+  } else if (item === 'Publish') {
+    return 'Publish';
   } else {
     return item.message;
   }

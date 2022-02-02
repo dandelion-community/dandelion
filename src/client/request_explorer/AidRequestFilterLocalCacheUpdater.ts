@@ -3,6 +3,8 @@ import client from 'src/client/graphql/client';
 import { FILTERS } from 'src/client/request_explorer/RequestExplorerFilters';
 import type { FilterType } from 'src/client/request_explorer/RequestExplorerFiltersContext';
 import filterNulls from 'src/shared/utils/filterNulls';
+import { isDraftID } from '../aid_request/drafts/AidRequestDraftIDs';
+import { CreateAidRequestsMutation_createAidRequests_requests } from '../create_request/__generated__/CreateAidRequestsMutation';
 import {
   LIST_OF_AID_REQUESTS_QUERY,
   PAGE_SIZE,
@@ -25,8 +27,21 @@ const SUBSCRIBERS: Map<string, SubscriberEntry> = new Map();
 export function subscribeQueryToAidRequestUpdates(
   filter: FilterType,
   data: ListOfAidRequestsQuery,
+  filterContext: FilterContext,
 ): void {
   SUBSCRIBERS.set(JSON.stringify(filter), { data, filter });
+  (drafts ?? []).forEach(
+    (draft: CreateAidRequestsMutation_createAidRequests_requests): void => {
+      broadcastAidRequestUpdated(draft._id, draft, filterContext);
+    },
+  );
+}
+
+let drafts: null | CreateAidRequestsMutation_createAidRequests_requests[];
+export function setDrafts(
+  aidRequests: CreateAidRequestsMutation_createAidRequests_requests[],
+): void {
+  drafts = aidRequests;
 }
 
 export function broadcastAidRequestUpdated(
@@ -55,9 +70,9 @@ function processAidRequestUpdateForQuery(
   filterContext: FilterContext,
 ): void {
   if (passesFilter(filter, aidRequest, filterContext)) {
-    addAidRequestIfNotPresent(filter, list, aidRequest);
+    addAidRequestIfNotPresent(filter, list, aidRequest, filterContext);
   } else {
-    removeAidRequestIfPresent(filter, list, aidRequestID);
+    removeAidRequestIfPresent(filter, list, aidRequestID, filterContext);
   }
 }
 
@@ -78,6 +93,7 @@ function addAidRequestIfNotPresent(
   filter: FilterType,
   list: ListOfAidRequestsQuery,
   aidRequest: ListOfAidRequestsQuery_allAidRequests_edges_node | null,
+  filterContext: FilterContext,
 ): void {
   if (aidRequest == null) {
     return;
@@ -98,13 +114,14 @@ function addAidRequestIfNotPresent(
     },
     ...oldEdges,
   ];
-  publishNewEdges(filter, newEdges, list);
+  publishNewEdges(filter, newEdges, list, filterContext);
 }
 
 function removeAidRequestIfPresent(
   filter: FilterType,
   list: ListOfAidRequestsQuery,
   aidRequestID: string,
+  filterContext: FilterContext,
 ): void {
   if (
     !list.allAidRequests.edges.some((edge) => edge.node._id === aidRequestID)
@@ -114,14 +131,16 @@ function removeAidRequestIfPresent(
   const oldEdges = list.allAidRequests?.edges ?? [];
   const newEdges: ListOfAidRequestsQuery_allAidRequests_edges[] =
     oldEdges.filter((edge) => edge.node._id !== aidRequestID);
-  publishNewEdges(filter, newEdges, list);
+  publishNewEdges(filter, newEdges, list, filterContext);
 }
 
 function publishNewEdges(
   filter: FilterType,
-  edges: ListOfAidRequestsQuery_allAidRequests_edges[],
+  edges_: ListOfAidRequestsQuery_allAidRequests_edges[],
   list: ListOfAidRequestsQuery,
+  filterContext: FilterContext,
 ): void {
+  const edges = edges_.filter(isNotStaleDraft);
   const data: ListOfAidRequestsQuery = {
     allAidRequests: {
       __typename: 'AidRequestConnection',
@@ -143,5 +162,15 @@ function publishNewEdges(
     query: LIST_OF_AID_REQUESTS_QUERY,
     variables: { after: null, filter, pageSize: PAGE_SIZE },
   });
-  subscribeQueryToAidRequestUpdates(filter, data);
+  subscribeQueryToAidRequestUpdates(filter, data, filterContext);
+}
+
+function isNotStaleDraft(
+  value: ListOfAidRequestsQuery_allAidRequests_edges,
+): boolean {
+  const id = value.node._id;
+  if (!isDraftID(id)) {
+    return true;
+  }
+  return (drafts ?? []).some((draft) => draft._id === id);
 }
