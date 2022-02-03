@@ -5,10 +5,12 @@ import PressableText from 'src/client/components/PressableText';
 import Text from 'src/client/components/Text';
 import useDrawerContext from 'src/client/drawer/useDrawerContext';
 import useColorScheme from 'src/client/light-or-dark/useColorScheme';
-import { useThemeColor } from 'src/client/light-or-dark/useThemeColor';
 import { GoToRequestDetailScreen } from '../aid_request/detail/AidRequestDetailScreen';
-import { useViewerContext } from '../viewer/ViewerContext';
+import { isDraftID } from '../aid_request/drafts/AidRequestDraftIDs';
+import { useColor } from '../components/Colors';
+import { useLoggedInViewer } from '../viewer/ViewerContext';
 import AidRequestEditDrawer from './AidRequestEditDrawer';
+import RetryPublishing, { PublishCallback } from './RetryPublishing';
 import type { AidRequestCardFragment } from './__generated__/AidRequestCardFragment';
 
 type Props = {
@@ -21,10 +23,15 @@ export default function AidRequestCard({
   goToRequestDetailScreen,
 }: Props): JSX.Element {
   const { openDrawer } = useDrawerContext();
-  const viewer = useViewerContext();
+  const viewer = useLoggedInViewer();
   const { whatIsNeeded, whoIsItFor } = aidRequest;
-  const backgroundColor = useThemeColor({}, 'cardBackground');
+  const retryPublishingRef = React.useRef<PublishCallback | null>(null);
+  const nonDraftColor = useColor('cardBackground');
+  const draftColor = useColor('draftCardColor');
   const colorScheme = useColorScheme();
+  const isDraft = isDraftID(aidRequest._id);
+
+  const backgroundColor = isDraft ? draftColor : nonDraftColor;
 
   const suffix =
     Array.isArray(viewer.crews) && viewer.crews.length > 1
@@ -32,7 +39,7 @@ export default function AidRequestCard({
       : null;
 
   return (
-    <Pressable onPress={() => goToRequestDetailScreen(aidRequest._id)}>
+    <Pressable onPress={onPressOnCard}>
       <View style={[styles.card, { backgroundColor }]}>
         <View
           style={{
@@ -52,14 +59,24 @@ export default function AidRequestCard({
           </View>
           <View style={[styles.row, styles.bottomRow]}>
             <PressableText
-              onPress={() =>
-                Linking.openURL(
-                  `mailto:${aidRequest.whoRecordedIt?.username}?subject=RE: ${whatIsNeeded} for ${whoIsItFor}`,
-                )
-              }
+              onPress={() => {
+                if (!isDraft) {
+                  Linking.openURL(
+                    `mailto:${aidRequest.whoRecordedIt?.username}?subject=RE: ${whatIsNeeded} for ${whoIsItFor}`,
+                  );
+                }
+              }}
             >
               {aidRequest.latestEvent}
             </PressableText>
+            {isDraft ? (
+              <RetryPublishing
+                aidRequest={aidRequest}
+                ref={(ref) => {
+                  retryPublishingRef.current = ref;
+                }}
+              />
+            ) : null}
           </View>
         </View>
         <View style={{ flexBasis: '1%', flexGrow: 1 }}>
@@ -74,6 +91,14 @@ export default function AidRequestCard({
       </View>
     </Pressable>
   );
+
+  function onPressOnCard(): void {
+    if (isDraft) {
+      retryPublishingRef.current?.publish();
+    } else {
+      goToRequestDetailScreen(aidRequest._id);
+    }
+  }
 
   function renderEditDrawerContents(): React.ReactElement {
     return (

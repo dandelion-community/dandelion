@@ -1,17 +1,16 @@
-import { gql, useMutation } from '@apollo/client';
 import * as React from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 import { Button } from 'react-native-paper';
 import Text from 'src/client/components/Text';
-import type {
-  CreateAidRequestsMutation,
-  CreateAidRequestsMutationVariables,
-} from 'src/client/create_request/__generated__/CreateAidRequestsMutation';
-import { AidRequestCardFragments } from 'src/client/aid_request/fragments/AidRequestCardFragments';
 import { broadcastAidRequestUpdated } from 'src/client/request_explorer/AidRequestFilterLocalCacheUpdater';
 import useToastContext from 'src/client/toast/useToastContext';
 import { useLoggedInViewer } from 'src/client/viewer/ViewerContext';
 import filterNulls from 'src/shared/utils/filterNulls';
+import createAidRequestSaveToServer from '../aid_request/create/createAidRequestSaveToServer';
+import {
+  saveLocally,
+  SuccessfulSaveData,
+} from '../aid_request/drafts/AidRequestDrafts';
 import CrewSelector from './CrewSelector';
 import WhatIsNeeded from './WhatIsNeeded';
 import { TextInputHandles } from './WhatIsNeededRow';
@@ -29,13 +28,10 @@ export default function RecordAidRequestForm({ pop }: Props): JSX.Element {
   const [whoIsItFor, setWhoIsItFor] = React.useState<string>('');
   const [whatIsNeeded, setWhatIsNeeded] = React.useState<string[]>([]);
   const [crew, setCrew] = React.useState<string>(crews[0] ?? 'None');
+  const [errorMessage, setErrorMessage] = React.useState<string>('');
   const areInputsValid =
     whoIsItFor.length > 0 && whatIsNeeded.filter(Boolean).length > 0;
-  const [runCreateRequestMutation, createRequestMutationState] = useMutation<
-    CreateAidRequestsMutation,
-    CreateAidRequestsMutationVariables
-  >(CREATE_AID_REQUESTS_MUTATION);
-  const { loading, error } = createRequestMutationState;
+  const [isLoading, setIsLoading] = React.useState<boolean>(false);
 
   return (
     <ScrollView
@@ -63,37 +59,42 @@ export default function RecordAidRequestForm({ pop }: Props): JSX.Element {
       <View style={styles.buttonRow}>
         <Button
           disabled={!areInputsValid}
-          loading={loading}
+          loading={isLoading}
           mode="contained"
           onPress={submit}
         >
           Submit
         </Button>
-        <Button disabled={loading} mode="text" onPress={pop}>
+        <Button disabled={isLoading} mode="text" onPress={pop}>
           Cancel
         </Button>
       </View>
-      {error != null ? <Text>{error.message}</Text> : null}
+      <Text>{errorMessage}</Text>
     </ScrollView>
   );
 
   async function submit(): Promise<void> {
     publishToast(undefined);
+    setErrorMessage('');
     const variables = {
       crew,
       whatIsNeeded,
       whoIsItFor,
     };
     setWhatIsNeeded([]);
-    const { data } = await runCreateRequestMutation({
+    setIsLoading(true);
+    let data: null | SuccessfulSaveData = await createAidRequestSaveToServer(
       variables,
-    });
-    const aidRequests = data?.createAidRequests?.requests;
-    const postpublishSummary = data?.createAidRequests?.postpublishSummary;
-    if (aidRequests == null || postpublishSummary == null) {
-      console.error('Failed to create aidRequest');
+    );
+    if (data == null) {
+      data = await saveLocally(variables);
+    }
+    setIsLoading(false);
+    if (data == null) {
+      setErrorMessage('Unable to save. Please try again later');
       return;
     }
+    const { postpublishSummary, aidRequests } = data;
     publishToast({
       message: postpublishSummary,
     });
@@ -107,26 +108,6 @@ export default function RecordAidRequestForm({ pop }: Props): JSX.Element {
     whatIsNeededRef.current?.focus();
   }
 }
-
-const CREATE_AID_REQUESTS_MUTATION = gql`
-  mutation CreateAidRequestsMutation(
-    $crew: String!
-    $whatIsNeeded: [String!]!
-    $whoIsItFor: String!
-  ) {
-    createAidRequests(
-      crew: $crew
-      whatIsNeeded: $whatIsNeeded
-      whoIsItFor: $whoIsItFor
-    ) {
-      postpublishSummary
-      requests {
-        ...AidRequestCardFragment
-      }
-    }
-  }
-  ${AidRequestCardFragments.aidRequest}
-`;
 
 const styles = StyleSheet.create({
   buttonRow: {

@@ -9,6 +9,7 @@ import { useRequestExplorerFilters } from 'src/client/request_explorer/RequestEx
 import DebouncedLoadingIndicator from 'src/client/utils/DebouncedLoadingIndicator';
 import filterNulls from '../../shared/utils/filterNulls';
 import { GoToRequestDetailScreen } from '../aid_request/detail/AidRequestDetailScreen';
+import { useLoggedInViewer } from '../viewer/ViewerContext';
 import AidRequestCard from './AidRequestCard';
 import { subscribeQueryToAidRequestUpdates } from './AidRequestFilterLocalCacheUpdater';
 import {
@@ -29,6 +30,7 @@ export default function ListOfRequests({
   goToRequestDetailScreen,
 }: Props): JSX.Element {
   const { filter } = useRequestExplorerFilters();
+  const { id: viewerID } = useLoggedInViewer();
   const { data, loading, fetchMore, refetch } = useQuery<
     ListOfAidRequestsQuery,
     ListOfAidRequestsQueryVariables
@@ -38,7 +40,7 @@ export default function ListOfRequests({
   });
   React.useEffect(() => {
     if (data != null) {
-      subscribeQueryToAidRequestUpdates(filter, data);
+      subscribeQueryToAidRequestUpdates(filter, data, { viewerID });
     }
   }, [filter, data]);
 
