@@ -9,7 +9,7 @@ type Props = {
   onPress: () => void;
 };
 
-export default function AidButton({ loading, text, onPress }: Props) {
+export default function Button({ loading, text, onPress }: Props) {
   return (
     <View style={styles.container}>
       <PaperButton
