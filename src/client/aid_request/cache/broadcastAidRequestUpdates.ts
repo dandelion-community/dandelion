@@ -4,11 +4,11 @@ import client from 'src/client/graphql/client';
 import { FILTERS } from 'src/client/request_explorer/RequestExplorerFilters';
 import type { FilterType } from 'src/client/request_explorer/RequestExplorerFiltersContext';
 import filterNulls from 'src/shared/utils/filterNulls';
+import { FilterContext } from '../../request_explorer/FilterContext';
 import {
   LIST_OF_AID_REQUESTS_QUERY,
   PAGE_SIZE,
 } from '../../request_explorer/ListOfAidRequestsQuery';
-import { FilterContext } from '../../request_explorer/RequestExplorerFilterButton';
 import {
   ListOfAidRequestsQuery,
   ListOfAidRequestsQueryVariables,

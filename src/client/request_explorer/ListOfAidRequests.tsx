@@ -1,9 +1,7 @@
-import { useQuery } from '@apollo/client';
 import * as React from 'react';
 import type { ListRenderItemInfo } from 'react-native';
 import { FlatList, StyleSheet } from 'react-native';
 import { ActivityIndicator } from 'react-native-paper';
-import useSubscribeToLocalUpdates from 'src/client/aid_request/cache/useSubscribeToLocalUpdates';
 import EndOfListSpacer from 'src/client/components/EndOfListSpacer';
 import View from 'src/client/components/View';
 import { useRequestExplorerFilters } from 'src/client/request_explorer/RequestExplorerFiltersContext';
@@ -11,13 +9,10 @@ import DebouncedLoadingIndicator from 'src/client/utils/DebouncedLoadingIndicato
 import filterNulls from '../../shared/utils/filterNulls';
 import { GoToRequestDetailScreen } from '../aid_request/detail/AidRequestDetailScreen';
 import AidRequestCard from './AidRequestCard';
-import {
-  LIST_OF_AID_REQUESTS_QUERY,
-  PAGE_SIZE,
-} from './ListOfAidRequestsQuery';
+import { PAGE_SIZE } from './ListOfAidRequestsQuery';
+import useListOfAidRequests from './useListOfAidRequests';
 import {
   ListOfAidRequestsQuery,
-  ListOfAidRequestsQueryVariables,
   ListOfAidRequestsQuery_allAidRequests_edges_node,
 } from './__generated__/ListOfAidRequestsQuery';
 
@@ -29,14 +24,7 @@ export default function ListOfRequests({
   goToRequestDetailScreen,
 }: Props): JSX.Element {
   const { filter } = useRequestExplorerFilters();
-  const { data, loading, fetchMore, refetch } = useQuery<
-    ListOfAidRequestsQuery,
-    ListOfAidRequestsQueryVariables
-  >(LIST_OF_AID_REQUESTS_QUERY, {
-    notifyOnNetworkStatusChange: true,
-    variables: { after: null, filter, pageSize: PAGE_SIZE },
-  });
-  useSubscribeToLocalUpdates(filter, data, loading);
+  const { data, loading, fetchMore, refetch } = useListOfAidRequests(filter);
 
   const footer = React.useMemo(() => <ActivityIndicator />, []);
   const edges = data == null ? null : data.allAidRequests?.edges;

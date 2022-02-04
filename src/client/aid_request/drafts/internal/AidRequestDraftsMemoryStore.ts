@@ -8,16 +8,30 @@ import {
   StorageEntry,
 } from './AidRequestDraftsPersistentStorage';
 
-let memoryDrafts: CreateAidRequestsMutation_createAidRequests_requests[] = [];
+type InMemoryData = CreateAidRequestsMutation_createAidRequests_requests[];
+type Subscriber = (values: InMemoryData) => void;
+
+let memoryDrafts: InMemoryData = [];
 let storageDrafts: StorageEntry[] = [];
 
 export function setDrafts(storageEntries: StorageEntry[]): void {
   storageDrafts = storageEntries;
   const inMemoryEntries = storageEntries.map(fakeGraphQLResponse);
   memoryDrafts = inMemoryEntries;
+  subscribers.forEach((subscriber) => subscriber(memoryDrafts));
 }
 
-export function getDraftsAsGraphQL(): CreateAidRequestsMutation_createAidRequests_requests[] {
+const subscribers: Set<Subscriber> = new Set();
+
+export function subscribe(subscriber: Subscriber): void {
+  subscribers.add(subscriber);
+}
+
+export function unsubscribe(subscriber: Subscriber): void {
+  subscribers.delete(subscriber);
+}
+
+export function getDraftsAsGraphQL(): InMemoryData {
   return memoryDrafts;
 }
 

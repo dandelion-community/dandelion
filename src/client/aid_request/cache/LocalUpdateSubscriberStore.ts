@@ -1,5 +1,5 @@
 import type { FilterType } from 'src/client/request_explorer/RequestExplorerFiltersContext';
-import { FilterContext } from '../../request_explorer/RequestExplorerFilterButton';
+import { FilterContext } from '../../request_explorer/FilterContext';
 import { ListOfAidRequestsQuery } from '../../request_explorer/__generated__/ListOfAidRequestsQuery';
 
 export type SubscriberKey = {

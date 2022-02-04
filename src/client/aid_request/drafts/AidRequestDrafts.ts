@@ -1,7 +1,4 @@
-import {
-  broadcastDeletedAidRequest,
-  broadcastManyNewAidRequests,
-} from 'src/client/aid_request/cache/broadcastAidRequestUpdates';
+import { broadcastManyNewAidRequests } from 'src/client/aid_request/cache/broadcastAidRequestUpdates';
 import createAidRequestSaveToServer from 'src/client/aid_request/create/createAidRequestSaveToServer';
 import { createDraftID } from 'src/client/aid_request/drafts/AidRequestDraftIDs';
 import {
@@ -42,7 +39,6 @@ export function deleteAidRequestDraft(aidRequestID: string): void {
     const oldValues = AidRequestDraftStore.getStorageValues();
     const newValues = oldValues.filter(({ tempID }) => tempID !== aidRequestID);
     AidRequestDraftStore.setStorageValues(newValues);
-    broadcastDeletedAidRequest(aidRequestID);
   } catch {
     return;
   }

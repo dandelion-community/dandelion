@@ -85,7 +85,9 @@ export default function RecordAidRequestForm({ pop }: Props): JSX.Element {
     let data: null | SuccessfulSaveData = await createAidRequestSaveToServer(
       variables,
     );
+    let isDraft = false;
     if (data == null) {
+      isDraft = true;
       data = createNewAidRequestDraft(variables);
     }
     setIsLoading(false);
@@ -97,7 +99,9 @@ export default function RecordAidRequestForm({ pop }: Props): JSX.Element {
     publishToast({
       message: postpublishSummary,
     });
-    broadcastManyNewAidRequests(aidRequests);
+    if (!isDraft) {
+      broadcastManyNewAidRequests(aidRequests);
+    }
     pop();
   }
 

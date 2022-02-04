@@ -5,10 +5,8 @@ import Text from 'src/client/components/Text';
 import { ListOfAidRequestsQuery_allAidRequests_edges_node } from 'src/client/request_explorer/__generated__/ListOfAidRequestsQuery';
 import { useLoggedInViewer } from 'src/client/viewer/ViewerContext';
 import filterNulls from 'src/shared/utils/filterNulls';
-import type {
-  FilterButtonProps,
-  FilterContext,
-} from './RequestExplorerFilterButton';
+import type { FilterContext } from './FilterContext';
+import type { FilterButtonProps } from './RequestExplorerFilterButton';
 import RequestExplorerFilterButton from './RequestExplorerFilterButton';
 import type { FilterType } from './RequestExplorerFiltersContext';
 import { useRequestExplorerFilters } from './RequestExplorerFiltersContext';
