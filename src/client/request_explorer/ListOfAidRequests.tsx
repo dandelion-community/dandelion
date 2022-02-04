@@ -1,4 +1,3 @@
-import { useQuery } from '@apollo/client';
 import * as React from 'react';
 import type { ListRenderItemInfo } from 'react-native';
 import { FlatList, StyleSheet } from 'react-native';
@@ -9,16 +8,11 @@ import { useRequestExplorerFilters } from 'src/client/request_explorer/RequestEx
 import DebouncedLoadingIndicator from 'src/client/utils/DebouncedLoadingIndicator';
 import filterNulls from '../../shared/utils/filterNulls';
 import { GoToRequestDetailScreen } from '../aid_request/detail/AidRequestDetailScreen';
-import { useLoggedInViewer } from '../viewer/ViewerContext';
 import AidRequestCard from './AidRequestCard';
-import { subscribeQueryToAidRequestUpdates } from './AidRequestFilterLocalCacheUpdater';
-import {
-  LIST_OF_AID_REQUESTS_QUERY,
-  PAGE_SIZE,
-} from './ListOfAidRequestsQuery';
+import { PAGE_SIZE } from './ListOfAidRequestsQuery';
+import useListOfAidRequests from './useListOfAidRequests';
 import {
   ListOfAidRequestsQuery,
-  ListOfAidRequestsQueryVariables,
   ListOfAidRequestsQuery_allAidRequests_edges_node,
 } from './__generated__/ListOfAidRequestsQuery';
 
@@ -30,19 +24,7 @@ export default function ListOfRequests({
   goToRequestDetailScreen,
 }: Props): JSX.Element {
   const { filter } = useRequestExplorerFilters();
-  const { id: viewerID } = useLoggedInViewer();
-  const { data, loading, fetchMore, refetch } = useQuery<
-    ListOfAidRequestsQuery,
-    ListOfAidRequestsQueryVariables
-  >(LIST_OF_AID_REQUESTS_QUERY, {
-    notifyOnNetworkStatusChange: true,
-    variables: { after: null, filter, pageSize: PAGE_SIZE },
-  });
-  React.useEffect(() => {
-    if (data != null) {
-      subscribeQueryToAidRequestUpdates(filter, data, { viewerID });
-    }
-  }, [filter, data]);
+  const { data, loading, fetchMore, refetch } = useListOfAidRequests(filter);
 
   const footer = React.useMemo(() => <ActivityIndicator />, []);
   const edges = data == null ? null : data.allAidRequests?.edges;

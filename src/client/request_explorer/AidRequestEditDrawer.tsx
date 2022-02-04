@@ -4,6 +4,7 @@ import type { ListRenderItemInfo } from 'react-native';
 import { FlatList } from 'react-native';
 import { List, Paragraph } from 'react-native-paper';
 import { AidRequestHistoryEventType } from 'src/../__generated__/globalTypes';
+import { broadcastUpdatedAidRequest } from 'src/client/aid_request/cache/broadcastAidRequestUpdates';
 import { GoToRequestDetailScreen } from 'src/client/aid_request/detail/AidRequestDetailScreen';
 import editAidRequest from 'src/client/aid_request/edit/editAidRequest';
 import { EDIT_AID_REQUEST_MUTATION } from 'src/client/aid_request/edit/EditAidRequestMutation';
@@ -17,11 +18,9 @@ import useDrawerContext from 'src/client/drawer/useDrawerContext';
 import client from 'src/client/graphql/client';
 import useToastContext from 'src/client/toast/useToastContext';
 import DebouncedLoadingIndicator from 'src/client/utils/DebouncedLoadingIndicator';
-import { useLoggedInViewerID } from 'src/client/viewer/ViewerContext';
 import filterNulls from 'src/shared/utils/filterNulls';
 import { isDraftID } from '../aid_request/drafts/AidRequestDraftIDs';
 import { publishDraft } from '../aid_request/drafts/AidRequestDrafts';
-import { broadcastAidRequestUpdated } from './AidRequestFilterLocalCacheUpdater';
 import type {
   AidRequestEditDrawerFragment,
   AidRequestEditDrawerFragment_actionsAvailable,
@@ -42,8 +41,6 @@ export default function AidRequestEditDrawer({
   aidRequest,
   goToRequestDetailScreen,
 }: Props): JSX.Element {
-  const viewerID = useLoggedInViewerID();
-  const filterContext = { viewerID };
   const [loadingPublish, setLoadingPublish] = React.useState<boolean>(false);
   const { publishToast } = useToastContext();
   const { closeDrawer } = useDrawerContext();
@@ -100,7 +97,7 @@ export default function AidRequestEditDrawer({
           left={() => <Icon path="publish" />}
           onPress={async () => {
             setLoadingPublish(true);
-            const message = await publishDraft(aidRequest._id, filterContext);
+            const message = await publishDraft(aidRequest._id);
             setLoadingPublish(false);
             closeDrawer();
             publishToast({ message });
@@ -136,14 +133,8 @@ export default function AidRequestEditDrawer({
         event: input.event,
       },
     };
-    const { data } = await editAidRequest(
-      runEditAidRequestMutation,
-      variables,
-      filterContext,
-    );
-    broadcastAidRequestUpdated(aidRequestID, data?.editAidRequest?.aidRequest, {
-      viewerID,
-    });
+    const { data } = await editAidRequest(runEditAidRequestMutation, variables);
+    broadcastUpdatedAidRequest(aidRequestID, data?.editAidRequest?.aidRequest);
     closeDrawer();
     const editAidRequestResponse = data?.editAidRequest;
     if (editAidRequestResponse != null) {
@@ -158,10 +149,9 @@ export default function AidRequestEditDrawer({
                   mutation: EDIT_AID_REQUEST_MUTATION,
                   variables: { ...variables, undoID },
                 });
-                broadcastAidRequestUpdated(
+                broadcastUpdatedAidRequest(
                   aidRequestID,
                   data?.editAidRequest?.aidRequest,
-                  filterContext,
                 );
               },
       });

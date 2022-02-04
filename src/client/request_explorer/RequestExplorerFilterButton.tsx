@@ -4,12 +4,9 @@ import Text from 'src/client/components/Text';
 import useColorScheme from 'src/client/light-or-dark/useColorScheme';
 import { ListOfAidRequestsQuery_allAidRequests_edges_node } from 'src/client/request_explorer/__generated__/ListOfAidRequestsQuery';
 import { useLoggedInViewer } from 'src/client/viewer/ViewerContext';
+import { FilterContext } from './FilterContext';
 import type { FilterType } from './RequestExplorerFiltersContext';
 import { useRequestExplorerFilters } from './RequestExplorerFiltersContext';
-
-export type FilterContext = {
-  viewerID: string;
-};
 
 type UpdateFilter = (
   oldFilter: FilterType,

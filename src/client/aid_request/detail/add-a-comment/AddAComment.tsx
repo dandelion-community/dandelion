@@ -15,6 +15,7 @@ import {
   AidRequestHistoryEventType,
   AidRequestUpdateActionType,
 } from 'src/../__generated__/globalTypes';
+import { broadcastUpdatedAidRequest } from 'src/client/aid_request/cache/broadcastAidRequestUpdates';
 import Row from 'src/client/aid_request/detail/components/Row';
 import { EDIT_AID_REQUEST_MUTATION } from 'src/client/aid_request/edit/EditAidRequestMutation';
 import {
@@ -24,7 +25,6 @@ import {
 import Icon from 'src/client/components/Icon';
 import Monogram from 'src/client/components/Monogram';
 import client from 'src/client/graphql/client';
-import { broadcastAidRequestUpdated } from 'src/client/request_explorer/AidRequestFilterLocalCacheUpdater';
 import useToastContext from 'src/client/toast/useToastContext';
 import { useLoggedInViewer } from 'src/client/viewer/ViewerContext';
 
@@ -36,7 +36,7 @@ export default function AddAComment({ aidRequestID }: Props): JSX.Element {
   const textInputRef = React.useRef<NativeTextInput | undefined | null>();
   const [value, setValue] = React.useState<string>('');
   const [contentHeight, setContentHeight] = React.useState<number>(20);
-  const { displayName, id: viewerID } = useLoggedInViewer();
+  const { displayName } = useLoggedInViewer();
   const { publishToast } = useToastContext();
   const [runEditAidRequestMutation, { loading }] = useMutation<
     EditAidRequestMutation,
@@ -100,9 +100,7 @@ export default function AddAComment({ aidRequestID }: Props): JSX.Element {
     };
     const { data } = await runEditAidRequestMutation({ variables });
     setValue('');
-    broadcastAidRequestUpdated(aidRequestID, data?.editAidRequest?.aidRequest, {
-      viewerID,
-    });
+    broadcastUpdatedAidRequest(aidRequestID, data?.editAidRequest?.aidRequest);
     const editAidRequest = data?.editAidRequest;
     if (editAidRequest != null) {
       const { undoID } = editAidRequest;
@@ -116,10 +114,9 @@ export default function AddAComment({ aidRequestID }: Props): JSX.Element {
                   mutation: EDIT_AID_REQUEST_MUTATION,
                   variables: { ...variables, undoID },
                 });
-                broadcastAidRequestUpdated(
+                broadcastUpdatedAidRequest(
                   aidRequestID,
                   data?.editAidRequest?.aidRequest,
-                  { viewerID },
                 );
               },
       });

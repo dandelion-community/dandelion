@@ -3,7 +3,6 @@ import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { useColor } from 'src/client/components/Colors';
 import { publishDraft } from '../aid_request/drafts/AidRequestDrafts';
 import useToastContext from '../toast/useToastContext';
-import { useLoggedInViewer } from '../viewer/ViewerContext';
 import type { AidRequestCardFragment } from './__generated__/AidRequestCardFragment';
 
 type Props = {
@@ -20,7 +19,6 @@ const RetryPublishing = React.forwardRef<PublishCallback, Props>(
     const { publishToast } = useToastContext();
     const borderColor = useColor('accent');
     const color = useColor('text');
-    const viewer = useLoggedInViewer();
     React.useImperativeHandle(ref, () => ({ publish }));
 
     return (
@@ -35,9 +33,7 @@ const RetryPublishing = React.forwardRef<PublishCallback, Props>(
 
     async function publish(): Promise<void> {
       setLoadingPublish(true);
-      const message = await publishDraft(aidRequest._id, {
-        viewerID: viewer.id,
-      });
+      const message = await publishDraft(aidRequest._id);
       setLoadingPublish(false);
       publishToast({ message });
     }
