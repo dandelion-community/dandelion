@@ -4,12 +4,11 @@ import {
   AidRequestUpdateActionType,
 } from 'src/../__generated__/globalTypes';
 import { isDraftID } from 'src/client/aid_request/drafts/AidRequestDraftIDs';
-import { deleteEntry } from 'src/client/aid_request/drafts/AidRequestDrafts';
+import { deleteAidRequestDraft } from 'src/client/aid_request/drafts/AidRequestDrafts';
 import {
   EditAidRequestMutation,
   EditAidRequestMutationVariables,
 } from 'src/client/aid_request/edit/__generated__/editAidRequestMutation';
-import { FilterContext } from 'src/client/request_explorer/RequestExplorerFilterButton';
 
 export default async function editAidRequest(
   runEditAidRequestMutation: MutationTuple<
@@ -17,20 +16,18 @@ export default async function editAidRequest(
     EditAidRequestMutationVariables
   >[0],
   variables: EditAidRequestMutationVariables,
-  filterContext: FilterContext,
 ): Promise<{ data: EditAidRequestMutation | null | undefined }> {
   if (isDraftID(variables.aidRequestID)) {
-    return await editDraftAidRequest(variables, filterContext);
+    return editDraftAidRequest(variables);
   } else {
     const { data } = await runEditAidRequestMutation({ variables });
     return { data };
   }
 }
 
-async function editDraftAidRequest(
-  variables: EditAidRequestMutationVariables,
-  filterContext: FilterContext,
-): Promise<{ data: EditAidRequestMutation | null | undefined }> {
+function editDraftAidRequest(variables: EditAidRequestMutationVariables): {
+  data: EditAidRequestMutation | null | undefined;
+} {
   const { aidRequestID, input, undoID } = variables;
   if (undoID != null) {
     throw new Error('Draft requests do not support undo');
@@ -42,7 +39,7 @@ async function editDraftAidRequest(
   if (event !== AidRequestHistoryEventType.Deleted) {
     throw new Error('Draft request edit only supports Delete event');
   }
-  await deleteEntry(aidRequestID, filterContext);
+  deleteAidRequestDraft(aidRequestID);
 
   return {
     data: {

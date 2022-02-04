@@ -3,15 +3,14 @@ import * as React from 'react';
 import type { ListRenderItemInfo } from 'react-native';
 import { FlatList, StyleSheet } from 'react-native';
 import { ActivityIndicator } from 'react-native-paper';
+import useSubscribeToLocalUpdates from 'src/client/aid_request/cache/useSubscribeToLocalUpdates';
 import EndOfListSpacer from 'src/client/components/EndOfListSpacer';
 import View from 'src/client/components/View';
 import { useRequestExplorerFilters } from 'src/client/request_explorer/RequestExplorerFiltersContext';
 import DebouncedLoadingIndicator from 'src/client/utils/DebouncedLoadingIndicator';
 import filterNulls from '../../shared/utils/filterNulls';
 import { GoToRequestDetailScreen } from '../aid_request/detail/AidRequestDetailScreen';
-import { useLoggedInViewer } from '../viewer/ViewerContext';
 import AidRequestCard from './AidRequestCard';
-import { subscribeQueryToAidRequestUpdates } from './AidRequestFilterLocalCacheUpdater';
 import {
   LIST_OF_AID_REQUESTS_QUERY,
   PAGE_SIZE,
@@ -30,7 +29,6 @@ export default function ListOfRequests({
   goToRequestDetailScreen,
 }: Props): JSX.Element {
   const { filter } = useRequestExplorerFilters();
-  const { id: viewerID } = useLoggedInViewer();
   const { data, loading, fetchMore, refetch } = useQuery<
     ListOfAidRequestsQuery,
     ListOfAidRequestsQueryVariables
@@ -38,11 +36,7 @@ export default function ListOfRequests({
     notifyOnNetworkStatusChange: true,
     variables: { after: null, filter, pageSize: PAGE_SIZE },
   });
-  React.useEffect(() => {
-    if (data != null) {
-      subscribeQueryToAidRequestUpdates(filter, data, { viewerID });
-    }
-  }, [filter, data]);
+  useSubscribeToLocalUpdates(filter, data, loading);
 
   const footer = React.useMemo(() => <ActivityIndicator />, []);
   const edges = data == null ? null : data.allAidRequests?.edges;

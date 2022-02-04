@@ -1,14 +1,13 @@
 import * as React from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 import { Button } from 'react-native-paper';
+import { broadcastManyNewAidRequests } from 'src/client/aid_request/cache/broadcastAidRequestUpdates';
 import Text from 'src/client/components/Text';
-import { broadcastAidRequestUpdated } from 'src/client/request_explorer/AidRequestFilterLocalCacheUpdater';
 import useToastContext from 'src/client/toast/useToastContext';
 import { useLoggedInViewer } from 'src/client/viewer/ViewerContext';
-import filterNulls from 'src/shared/utils/filterNulls';
 import createAidRequestSaveToServer from '../aid_request/create/createAidRequestSaveToServer';
 import {
-  saveLocally,
+  createNewAidRequestDraft,
   SuccessfulSaveData,
 } from '../aid_request/drafts/AidRequestDrafts';
 import CrewSelector from './CrewSelector';
@@ -23,7 +22,7 @@ type Props = {
 export default function RecordAidRequestForm({ pop }: Props): JSX.Element {
   const { publishToast } = useToastContext();
   const whatIsNeededRef = React.useRef<TextInputHandles | null>(null);
-  const { crews, id: viewerID } = useLoggedInViewer();
+  const { crews } = useLoggedInViewer();
   const scrollView = React.useRef<ScrollView | null | undefined>();
   const [whoIsItFor, setWhoIsItFor] = React.useState<string>('');
   const [whatIsNeeded, setWhatIsNeeded] = React.useState<string[]>([]);
@@ -87,7 +86,7 @@ export default function RecordAidRequestForm({ pop }: Props): JSX.Element {
       variables,
     );
     if (data == null) {
-      data = await saveLocally(variables);
+      data = createNewAidRequestDraft(variables);
     }
     setIsLoading(false);
     if (data == null) {
@@ -98,9 +97,7 @@ export default function RecordAidRequestForm({ pop }: Props): JSX.Element {
     publishToast({
       message: postpublishSummary,
     });
-    filterNulls(aidRequests).forEach((aidRequest) => {
-      broadcastAidRequestUpdated(aidRequest._id, aidRequest, { viewerID });
-    });
+    broadcastManyNewAidRequests(aidRequests);
     pop();
   }
 

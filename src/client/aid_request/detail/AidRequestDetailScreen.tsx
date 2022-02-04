@@ -173,21 +173,23 @@ const AID_REQUEST_DETAILS_QUERY = gql`
 `;
 
 export function notifyAidRequestDetailScreenAboutMutation(
-  aidRequestID: string,
+  aidRequestIDs: string[],
 ): void {
-  const id = `AidRequest:${aidRequestID}`;
-  // Invalidate all fields that are requested in AID_REQUEST_DETAILS_QUERY
-  // but *not* in AidRequestCardFragment, since the latter will be locally
-  // updated after a mutation but the former will not.
-  client.cache.evict({
-    broadcast: true,
-    fieldName: 'status',
-    id,
-  });
-  client.cache.evict({
-    broadcast: true,
-    fieldName: 'activity',
-    id,
+  aidRequestIDs.forEach((aidRequestID: string): void => {
+    const id = `AidRequest:${aidRequestID}`;
+    // Invalidate all fields that are requested in AID_REQUEST_DETAILS_QUERY
+    // but *not* in AidRequestCardFragment, since the latter will be locally
+    // updated after a mutation but the former will not.
+    client.cache.evict({
+      broadcast: true,
+      fieldName: 'status',
+      id,
+    });
+    client.cache.evict({
+      broadcast: true,
+      fieldName: 'activity',
+      id,
+    });
   });
 }
 
