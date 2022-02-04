@@ -142,8 +142,6 @@ function publishNewEdges(
     variables: { after: null, filter, pageSize: PAGE_SIZE },
   });
   LocalUpdateSubscriberStore.add({ data, filter, filterContext });
-
-  client.cache.readQuery;
 }
 
 function isNotStaleDraft(
