@@ -6,11 +6,7 @@ import {
   TextInput as NativeTextInput,
   View,
 } from 'react-native';
-import {
-  ActivityIndicator,
-  TextInput,
-  TouchableRipple,
-} from 'react-native-paper';
+import { TextInput } from 'react-native-paper';
 import {
   AidRequestHistoryEventType,
   AidRequestUpdateActionType,
@@ -22,11 +18,11 @@ import {
   EditAidRequestMutation,
   EditAidRequestMutationVariables,
 } from 'src/client/aid_request/edit/__generated__/editAidRequestMutation';
-import Icon from 'src/client/components/Icon';
 import Monogram from 'src/client/components/Monogram';
 import client from 'src/client/graphql/client';
 import useToastContext from 'src/client/toast/useToastContext';
 import { useLoggedInViewer } from 'src/client/viewer/ViewerContext';
+import SendButton from './SendButton';
 
 type Props = {
   aidRequestID: string;
@@ -67,13 +63,12 @@ export default function AddAComment({ aidRequestID }: Props): JSX.Element {
           />
         </View>
         <View style={styles.submitButtonColumn}>
-          {loading ? (
-            <ActivityIndicator />
-          ) : (
-            <TouchableRipple onPress={value ? submit : focusTextInput}>
-              <Icon path={value ? 'send' : 'comment'} size={24} />
-            </TouchableRipple>
-          )}
+          <SendButton
+            hasContents={!!value}
+            isSending={loading}
+            send={submit}
+            startEditing={focusTextInput}
+          />
         </View>
       </View>
     </Row>
