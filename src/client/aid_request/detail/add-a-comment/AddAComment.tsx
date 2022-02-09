@@ -1,4 +1,3 @@
-import { useMutation } from '@apollo/client';
 import * as React from 'react';
 import {
   Platform,
@@ -6,11 +5,7 @@ import {
   TextInput as NativeTextInput,
   View,
 } from 'react-native';
-import {
-  ActivityIndicator,
-  TextInput,
-  TouchableRipple,
-} from 'react-native-paper';
+import { TextInput } from 'react-native-paper';
 import {
   AidRequestHistoryEventType,
   AidRequestUpdateActionType,
@@ -21,12 +16,12 @@ import { EDIT_AID_REQUEST_MUTATION } from 'src/client/aid_request/edit/EditAidRe
 import {
   EditAidRequestMutation,
   EditAidRequestMutationVariables,
+  EditAidRequestMutation_payload_object,
 } from 'src/client/aid_request/edit/__generated__/editAidRequestMutation';
-import Icon from 'src/client/components/Icon';
 import Monogram from 'src/client/components/Monogram';
-import client from 'src/client/graphql/client';
-import useToastContext from 'src/client/toast/useToastContext';
+import useMutateWithUndo from 'src/client/graphql/useMutateWithUndo';
 import { useLoggedInViewer } from 'src/client/viewer/ViewerContext';
+import SendButton from './SendButton';
 
 type Props = {
   aidRequestID: string;
@@ -37,11 +32,27 @@ export default function AddAComment({ aidRequestID }: Props): JSX.Element {
   const [value, setValue] = React.useState<string>('');
   const [contentHeight, setContentHeight] = React.useState<number>(20);
   const { displayName } = useLoggedInViewer();
-  const { publishToast } = useToastContext();
-  const [runEditAidRequestMutation, { loading }] = useMutation<
+  const { mutate, loading } = useMutateWithUndo<
+    EditAidRequestMutation_payload_object,
     EditAidRequestMutation,
     EditAidRequestMutationVariables
-  >(EDIT_AID_REQUEST_MUTATION);
+  >({
+    broadcastResponse: (
+      object: EditAidRequestMutation_payload_object | null,
+    ) => {
+      broadcastUpdatedAidRequest(aidRequestID, object);
+    },
+    clearInputs: () => setValue(''),
+    mutation: EDIT_AID_REQUEST_MUTATION,
+    variables: {
+      aidRequestID,
+      input: {
+        action: AidRequestUpdateActionType.Add,
+        event: AidRequestHistoryEventType.Comment,
+        eventSpecificData: value,
+      },
+    },
+  });
   return (
     <Row omitTopMargin={true}>
       <View style={styles.row}>
@@ -67,13 +78,12 @@ export default function AddAComment({ aidRequestID }: Props): JSX.Element {
           />
         </View>
         <View style={styles.submitButtonColumn}>
-          {loading ? (
-            <ActivityIndicator />
-          ) : (
-            <TouchableRipple onPress={value ? submit : focusTextInput}>
-              <Icon path={value ? 'send' : 'comment'} size={24} />
-            </TouchableRipple>
-          )}
+          <SendButton
+            hasContents={!!value}
+            isSending={loading}
+            send={mutate}
+            startEditing={focusTextInput}
+          />
         </View>
       </View>
     </Row>
@@ -87,40 +97,6 @@ export default function AddAComment({ aidRequestID }: Props): JSX.Element {
 
   function focusTextInput(): void {
     textInputRef.current?.focus();
-  }
-
-  async function submit(): Promise<void> {
-    const variables = {
-      aidRequestID,
-      input: {
-        action: AidRequestUpdateActionType.Add,
-        event: AidRequestHistoryEventType.Comment,
-        eventSpecificData: value,
-      },
-    };
-    const { data } = await runEditAidRequestMutation({ variables });
-    setValue('');
-    broadcastUpdatedAidRequest(aidRequestID, data?.editAidRequest?.aidRequest);
-    const editAidRequest = data?.editAidRequest;
-    if (editAidRequest != null) {
-      const { undoID } = editAidRequest;
-      publishToast({
-        message: editAidRequest.postpublishSummary || 'Updated',
-        undo:
-          undoID == null
-            ? null
-            : async () => {
-                const { data } = await client.mutate({
-                  mutation: EDIT_AID_REQUEST_MUTATION,
-                  variables: { ...variables, undoID },
-                });
-                broadcastUpdatedAidRequest(
-                  aidRequestID,
-                  data?.editAidRequest?.aidRequest,
-                );
-              },
-      });
-    }
   }
 }
 
