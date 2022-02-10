@@ -1,4 +1,3 @@
-import { useMutation } from '@apollo/client';
 import * as React from 'react';
 import type { ListRenderItemInfo } from 'react-native';
 import { FlatList } from 'react-native';
@@ -6,21 +5,21 @@ import { List, Paragraph } from 'react-native-paper';
 import { AidRequestHistoryEventType } from 'src/../__generated__/globalTypes';
 import { broadcastUpdatedAidRequest } from 'src/client/aid_request/cache/broadcastAidRequestUpdates';
 import { GoToRequestDetailScreen } from 'src/client/aid_request/detail/AidRequestDetailScreen';
-import editAidRequest from 'src/client/aid_request/edit/editAidRequest';
 import { EDIT_AID_REQUEST_MUTATION } from 'src/client/aid_request/edit/EditAidRequestMutation';
 import {
   EditAidRequestMutation,
   EditAidRequestMutationVariables,
+  EditAidRequestMutation_payload_object,
 } from 'src/client/aid_request/edit/__generated__/editAidRequestMutation';
 import Icon from 'src/client/components/Icon';
 import useDialogContext from 'src/client/dialog/useDialogContext';
 import useDrawerContext from 'src/client/drawer/useDrawerContext';
-import client from 'src/client/graphql/client';
 import useToastContext from 'src/client/toast/useToastContext';
 import DebouncedLoadingIndicator from 'src/client/utils/DebouncedLoadingIndicator';
 import filterNulls from 'src/shared/utils/filterNulls';
 import { isDraftID } from '../aid_request/drafts/AidRequestDraftIDs';
 import { publishDraft } from '../aid_request/drafts/AidRequestDrafts';
+import useMutateWithUndo from '../graphql/useMutateWithUndo';
 import type {
   AidRequestEditDrawerFragment,
   AidRequestEditDrawerFragment_actionsAvailable,
@@ -47,11 +46,19 @@ export default function AidRequestEditDrawer({
   const { shouldDelete } = useDialogContext();
   const { actionsAvailable, _id: aidRequestID } = aidRequest;
   const actions = filterNulls(actionsAvailable ?? []);
-  const [runEditAidRequestMutation, editAidRequestMutationState] = useMutation<
+  const { mutate, loading, error } = useMutateWithUndo<
+    EditAidRequestMutation_payload_object,
     EditAidRequestMutation,
     EditAidRequestMutationVariables
-  >(EDIT_AID_REQUEST_MUTATION);
-  const { loading, error } = editAidRequestMutationState;
+  >({
+    broadcastResponse: (
+      object: EditAidRequestMutation_payload_object | null,
+    ) => {
+      broadcastUpdatedAidRequest(aidRequestID, object);
+    },
+    clearInputs: closeDrawer,
+    mutation: EDIT_AID_REQUEST_MUTATION,
+  });
   const extraActions: Array<Item> = [
     ...(goToRequestDetailScreen == null || isDraftID(aidRequest._id)
       ? []
@@ -110,13 +117,13 @@ export default function AidRequestEditDrawer({
     return (
       <List.Item
         left={() => <Icon path={icon} />}
-        onPress={() => mutate(action.input)}
+        onPress={() => submit(action.input)}
         title={action.message}
       />
     );
   }
 
-  async function mutate(
+  async function submit(
     input: AidRequestEditDrawerFragment_actionsAvailable_input,
   ): Promise<void> {
     if (input.event === AidRequestHistoryEventType.Deleted) {
@@ -126,36 +133,13 @@ export default function AidRequestEditDrawer({
       }
     }
 
-    const variables = {
+    await mutate({
       aidRequestID,
       input: {
         action: input.action,
         event: input.event,
       },
-    };
-    const { data } = await editAidRequest(runEditAidRequestMutation, variables);
-    broadcastUpdatedAidRequest(aidRequestID, data?.editAidRequest?.aidRequest);
-    closeDrawer();
-    const editAidRequestResponse = data?.editAidRequest;
-    if (editAidRequestResponse != null) {
-      const { undoID } = editAidRequestResponse;
-      publishToast({
-        message: editAidRequestResponse.postpublishSummary || 'Updated',
-        undo:
-          undoID == null
-            ? null
-            : async () => {
-                const { data } = await client.mutate({
-                  mutation: EDIT_AID_REQUEST_MUTATION,
-                  variables: { ...variables, undoID },
-                });
-                broadcastUpdatedAidRequest(
-                  aidRequestID,
-                  data?.editAidRequest?.aidRequest,
-                );
-              },
-      });
-    }
+    });
   }
 }
 

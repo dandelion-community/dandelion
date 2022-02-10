@@ -7,12 +7,12 @@ export const EDIT_AID_REQUEST_MUTATION = gql`
     $input: AidRequestActionInputInput!
     $undoID: String
   ) {
-    editAidRequest(
+    payload: editAidRequest(
       aidRequestID: $aidRequestID
       input: $input
       undoID: $undoID
     ) {
-      aidRequest {
+      object: aidRequest {
         ...AidRequestCardFragment
       }
       undoID

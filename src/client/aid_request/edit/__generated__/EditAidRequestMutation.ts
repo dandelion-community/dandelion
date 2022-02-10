@@ -9,31 +9,31 @@ import { AidRequestActionInputInput, AidRequestUpdateActionType, AidRequestHisto
 // GraphQL mutation operation: EditAidRequestMutation
 // ====================================================
 
-export interface EditAidRequestMutation_editAidRequest_aidRequest_whoRecordedIt {
+export interface EditAidRequestMutation_payload_object_whoRecordedIt {
   __typename: "User";
   displayName: string;
   username: string;
 }
 
-export interface EditAidRequestMutation_editAidRequest_aidRequest_whoIsWorkingOnItUsers {
+export interface EditAidRequestMutation_payload_object_whoIsWorkingOnItUsers {
   __typename: "User";
   _id: string;
 }
 
-export interface EditAidRequestMutation_editAidRequest_aidRequest_actionsAvailable_input {
+export interface EditAidRequestMutation_payload_object_actionsAvailable_input {
   __typename: "AidRequestActionInput";
   action: AidRequestUpdateActionType;
   event: AidRequestHistoryEventType;
 }
 
-export interface EditAidRequestMutation_editAidRequest_aidRequest_actionsAvailable {
+export interface EditAidRequestMutation_payload_object_actionsAvailable {
   __typename: "AidRequestActionOption";
   icon: string | null;
   message: string;
-  input: EditAidRequestMutation_editAidRequest_aidRequest_actionsAvailable_input;
+  input: EditAidRequestMutation_payload_object_actionsAvailable_input;
 }
 
-export interface EditAidRequestMutation_editAidRequest_aidRequest {
+export interface EditAidRequestMutation_payload_object {
   __typename: "AidRequest";
   _id: string;
   crew: string;
@@ -41,20 +41,20 @@ export interface EditAidRequestMutation_editAidRequest_aidRequest {
   latestEvent: string;
   whatIsNeeded: string;
   whoIsItFor: string;
-  whoRecordedIt: EditAidRequestMutation_editAidRequest_aidRequest_whoRecordedIt | null;
-  whoIsWorkingOnItUsers: (EditAidRequestMutation_editAidRequest_aidRequest_whoIsWorkingOnItUsers | null)[] | null;
-  actionsAvailable: (EditAidRequestMutation_editAidRequest_aidRequest_actionsAvailable | null)[] | null;
+  whoRecordedIt: EditAidRequestMutation_payload_object_whoRecordedIt | null;
+  whoIsWorkingOnItUsers: (EditAidRequestMutation_payload_object_whoIsWorkingOnItUsers | null)[] | null;
+  actionsAvailable: (EditAidRequestMutation_payload_object_actionsAvailable | null)[] | null;
 }
 
-export interface EditAidRequestMutation_editAidRequest {
+export interface EditAidRequestMutation_payload {
   __typename: "AidRequestHistoryEvent";
-  aidRequest: EditAidRequestMutation_editAidRequest_aidRequest | null;
+  object: EditAidRequestMutation_payload_object | null;
   undoID: string | null;
   postpublishSummary: string | null;
 }
 
 export interface EditAidRequestMutation {
-  editAidRequest: EditAidRequestMutation_editAidRequest | null;
+  payload: EditAidRequestMutation_payload | null;
 }
 
 export interface EditAidRequestMutationVariables {

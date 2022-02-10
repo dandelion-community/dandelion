@@ -43,9 +43,9 @@ function editDraftAidRequest(variables: EditAidRequestMutationVariables): {
 
   return {
     data: {
-      editAidRequest: {
+      payload: {
         __typename: 'AidRequestHistoryEvent',
-        aidRequest: null,
+        object: null,
         postpublishSummary: 'Deleted draft',
         undoID: null,
       },
