@@ -1,9 +1,9 @@
 import type { ObjectId } from 'mongodb';
-import { Schema } from 'mongoose';
+import { PassportLocalDocument, Schema } from 'mongoose';
 
 declare global {
   namespace Express {
-    interface User {
+    interface User extends PassportLocalDocument {
       _id: ObjectId;
       aidRequestsIAmWorkingOn: Array<ObjectId>;
       username: string;
@@ -13,7 +13,7 @@ declare global {
   }
 }
 
-export interface UserDocType {
+export interface UserDocType extends PassportLocalDocument {
   password: string;
   username: string;
   aidRequestsIAmWorkingOn: Array<ObjectId>;

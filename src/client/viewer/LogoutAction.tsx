@@ -1,42 +1,31 @@
-import { gql, useMutation } from '@apollo/client';
+import { gql } from '@apollo/client';
+import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import * as React from 'react';
 import CardButtonRow from 'src/client/components/CardButtonRow';
-import Text from 'src/client/components/Text';
 import client from 'src/client/graphql/client';
-import DebouncedLoadingIndicator from 'src/client/utils/DebouncedLoadingIndicator';
+import { RootStackParamList } from 'src/client/navigation/NavigationTypes';
 import reloadViewer from 'src/client/viewer/reloadViewer';
-import type { LogoutActionMutation } from './__generated__/LogoutActionMutation';
 
 export default function LogoutOrRegisterActionsRow(): JSX.Element {
-  const [runLogoutMutation, logoutMutationState] =
-    useMutation<LogoutActionMutation>(LOGOUT_MUTATION);
-  const { loading, error } = logoutMutationState;
-  const buttons = (
+  const navigation =
+    useNavigation<NativeStackNavigationProp<RootStackParamList, 'Main'>>();
+  return (
     <CardButtonRow
       buttons={[
         {
-          loading,
           onPress: logout,
           text: 'Sign out',
         },
       ]}
     />
   );
-  return loading ? (
-    <DebouncedLoadingIndicator />
-  ) : error ? (
-    <>
-      {buttons}
-      {error ? <Text>{error}</Text> : null}
-    </>
-  ) : (
-    buttons
-  );
   async function logout(): Promise<void> {
-    await runLogoutMutation({ variables: {} });
-    await client.cache.reset();
-    await client.resetStore();
-    reloadViewer();
+    navigation.replace('NotLoggedIn');
+    client.getObservableQueries().clear();
+    await client.mutate({ mutation: LOGOUT_MUTATION, variables: {} });
+    await client.clearStore();
+    await reloadViewer();
   }
 }
 

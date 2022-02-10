@@ -68,4 +68,17 @@ export function initUserModels(app: Express): void {
   app.use(sessionConfig);
   app.use(passport.initialize());
   app.use(passport.session());
+  // app.set('view engine', 'pug');
+
+  app.get('/reset_password/:username/:token', async (req, res) => {
+    const { username, token } = req.params;
+    const user = await UserModel.findOne({ username });
+    if (!user) {
+      return res.send('User not found');
+    }
+
+    res.setHeader('Content-type', 'text/html');
+    res.render('reset_password.pug', { token, username });
+    // res.render('reset_password', { token, username });
+  });
 }

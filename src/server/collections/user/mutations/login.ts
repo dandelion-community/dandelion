@@ -30,7 +30,6 @@ async function loginResolver(
           user,
         });
       });
-
       analytics.track({
         event: 'Logged In',
         user,

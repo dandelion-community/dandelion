@@ -15,6 +15,7 @@ dotenv.config();
 const rootDirectory = path.normalize(path.join(__dirname, '../../..'));
 
 const app = express();
+app.set('views', path.normalize(path.join(rootDirectory, 'src/server/views')));
 
 app.use(cors());
 app.use(logger('dev'));

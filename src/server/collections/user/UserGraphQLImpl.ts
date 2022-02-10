@@ -1,3 +1,4 @@
+import forgotPassword from 'src/server/collections/user/mutations/forgotPassword';
 import login from 'src/server/collections/user/mutations/login';
 import logout from 'src/server/collections/user/mutations/logout';
 import register from 'src/server/collections/user/mutations/register';
@@ -13,6 +14,7 @@ UserGraphQLType.addFields({
 
 const User = {
   MutationFields: {
+    forgotPassword,
     login,
     logout,
     register,

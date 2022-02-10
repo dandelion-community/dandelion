@@ -23,6 +23,9 @@ export default function useListOfAidRequests(
     ListOfAidRequestsQueryVariables
   >(LIST_OF_AID_REQUESTS_QUERY, {
     notifyOnNetworkStatusChange: true,
+    onError: (error) => {
+      console.log('got an error', error);
+    },
     variables: { after: null, filter, pageSize: PAGE_SIZE },
   });
   const drafts = AidRequestDraftsStore.useGraphQLValues();
