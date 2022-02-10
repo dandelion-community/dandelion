@@ -12,12 +12,16 @@ import {
   DARK_THEME,
   LIGHT_THEME,
 } from 'src/client/components/theme/ReactNativePaperTheme';
+import ErrorBoundary from 'src/client/error/ErrorBoundary';
+import initErrorLogging from 'src/client/error/initErrorLogging';
 import GlobalProviders from 'src/client/root/GlobalProviders';
 import ViewerProvider from 'src/client/viewer/ViewerProvider';
 import client from './graphql/client';
 import useCachedResources from './hooks/useCachedResources';
 import useColorScheme from './light-or-dark/useColorScheme';
 import Navigation from './navigation/Navigation';
+
+initErrorLogging();
 
 export default function App() {
   const isLoadingComplete = useCachedResources();
@@ -28,18 +32,20 @@ export default function App() {
     return null;
   } else {
     return (
-      <SafeAreaProvider>
-        <PaperProvider theme={paperTheme}>
-          <ApolloProvider client={client}>
-            <ViewerProvider>
-              <GlobalProviders>
-                <Navigation colorScheme={colorScheme} />
-                <StatusBar />
-              </GlobalProviders>
-            </ViewerProvider>
-          </ApolloProvider>
-        </PaperProvider>
-      </SafeAreaProvider>
+      <ErrorBoundary>
+        <SafeAreaProvider>
+          <PaperProvider theme={paperTheme}>
+            <ApolloProvider client={client}>
+              <ViewerProvider>
+                <GlobalProviders>
+                  <Navigation colorScheme={colorScheme} />
+                  <StatusBar />
+                </GlobalProviders>
+              </ViewerProvider>
+            </ApolloProvider>
+          </PaperProvider>
+        </SafeAreaProvider>
+      </ErrorBoundary>
     );
   }
 }

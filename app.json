@@ -15,7 +15,9 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.dandelion-aid-app.dandelion",
@@ -33,6 +35,14 @@
       "favicon": "./assets/images/favicon.png"
     },
     "description": "",
-    "githubUrl": "https://github.com/dandelion-community/aid-app-monorepo"
+    "githubUrl": "https://github.com/dandelion-community/aid-app-monorepo",
+    "hooks": {
+      "postPublish": [
+        {
+          "file": "@bugsnag/expo/hooks/post-publish.js",
+          "config": {}
+        }
+      ]
+    }
   }
 }
