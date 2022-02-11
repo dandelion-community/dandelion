@@ -42,8 +42,15 @@ export async function maybeLoadUserForViewer(
   if (otherUser == null) {
     return null;
   }
-  if (!viewer.crews.some((crew) => otherUser.crews.includes(crew))) {
+  if (!viewerCanSeeUser(viewer, otherUser)) {
     return null;
   }
   return otherUser;
+}
+
+export function viewerCanSeeUser(
+  viewer: Express.User,
+  otherUser: Express.User,
+): boolean {
+  return viewer.crews.some((crew) => otherUser.crews.includes(crew));
 }
