@@ -1,14 +1,14 @@
 import { ApolloError, gql } from '@apollo/client';
 import { Buffer } from 'buffer';
 import * as React from 'react';
-import SearchContext from 'src/client/context/search/SearchContext';
 import client from 'src/client/graphql/client';
 import RootNavigationContext from 'src/client/navigation/RootNavigationContext';
-import ViewerContext from 'src/client/viewer/ViewerContext';
+import SearchContext from 'src/client/search/SearchContext';
 import type {
   CreateErrorReportMutation,
   CreateErrorReportMutationVariables,
-} from './__generated__/CreateErrorReportMutation';
+} from 'src/client/utils/__generated__/CreateErrorReportMutation';
+import ViewerContext from 'src/client/viewer/ViewerContext';
 
 export default function useDebugInfo(error: ApolloError): {
   errorMessage: string;

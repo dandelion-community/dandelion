@@ -1,4 +1,4 @@
-import getURL from './host';
+import getURL from 'src/client/host/host';
 
 const URI = getURL('graphql');
 

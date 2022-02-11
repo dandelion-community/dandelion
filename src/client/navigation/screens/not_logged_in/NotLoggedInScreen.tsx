@@ -5,7 +5,7 @@ import StyledCard from 'src/client/components/Card';
 import CardButtonRow from 'src/client/components/CardButtonRow';
 import Text from 'src/client/components/Text';
 import View from 'src/client/components/View';
-import getURL from 'src/client/graphql/host';
+import getURL from 'src/client/host/host';
 import FeedbackCard from 'src/client/menu/FeedbackCard';
 import SupportAppCard from 'src/client/menu/SupportAppCard';
 import { RootStackScreenProps } from 'src/client/navigation/NavigationTypes';

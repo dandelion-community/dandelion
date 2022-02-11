@@ -1,6 +1,6 @@
-import type { FilterType } from 'src/client/request_explorer/RequestExplorerFiltersContext';
-import { FilterContext } from '../../request_explorer/FilterContext';
-import { ListOfAidRequestsQuery } from '../../request_explorer/__generated__/ListOfAidRequestsQuery';
+import { FilterContext } from 'src/client/aid_request/filter/FilterContext';
+import type { FilterType } from 'src/client/aid_request/filter/RequestExplorerFiltersContext';
+import { ListOfAidRequestsQuery } from 'src/client/aid_request/list/__generated__/ListOfAidRequestsQuery';
 
 export type SubscriberKey = {
   filter: FilterType;

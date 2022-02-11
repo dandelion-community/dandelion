@@ -1,6 +1,6 @@
 import * as React from 'react';
-import type { LoadingType } from './loading';
-import Loading from './loading';
+import type { LoadingType } from 'src/client/utils/Loading';
+import Loading from 'src/client/utils/Loading';
 
 type UsedPromise<T> = LoadingType | Error | T;
 

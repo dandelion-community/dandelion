@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
-import RecordAidRequestForm from 'src/client/create_request/RecordAidRequestForm';
+import RecordAidRequestForm from 'src/client/aid_request/create/RecordAidRequestForm';
+import useRootNavigation from 'src/client/navigation/useRootNavigation';
 import RequireLoggedInScreen from 'src/client/viewer/RequireLoggedInScreen';
-import useRootNavigation from '../../useRootNavigation';
 
 export default function RecordAidRequestScreen(): React.ReactElement {
   const rootNavigation = useRootNavigation();

@@ -1,4 +1,5 @@
 import * as React from 'react';
+import reportError from 'src/client/error/reportError';
 
 export type ToastConfig = {
   message: string;
@@ -11,7 +12,7 @@ export type ToastContextType = {
 
 const ToastContext = React.createContext<ToastContextType>({
   publishToast: () => {
-    console.error('Attempted to publish toast outside of a ToastContext');
+    reportError('Attempted to publish toast outside of a ToastContext');
   },
 });
 

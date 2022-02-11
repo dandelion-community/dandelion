@@ -5,7 +5,7 @@ import RowTitle from 'src/client/aid_request/detail/components/RowTitle';
 import { AidRequestDetailsQuery_aidRequest_status } from 'src/client/aid_request/detail/__generated__/AidRequestDetailsQuery';
 import FullWidthButton from 'src/client/components/m3/FullWidthButton';
 import useDrawerContext from 'src/client/drawer/useDrawerContext';
-import AidRequestEditDrawer from 'src/client/request_explorer/AidRequestEditDrawer';
+import AidRequestEditDrawer from 'src/client/aid_request/edit/AidRequestEditDrawer';
 
 type Props = {
   aidRequest: Parameters<typeof AidRequestEditDrawer>[0]['aidRequest'];
