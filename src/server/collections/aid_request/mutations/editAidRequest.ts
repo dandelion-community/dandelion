@@ -1,6 +1,7 @@
 import type { UpdateQuery } from 'mongoose';
 import { nanoid } from 'nanoid';
 import analytics from 'src/server/analytics';
+import type { AidRequest } from 'src/server/collections/aid_request/AidRequestGraphQLTypes';
 import {
   AidRequestActionInputInputType,
   AidRequestHistoryEventGraphQLType,
@@ -16,6 +17,7 @@ import loadAidRequestForViewer from 'src/server/collections/aid_request/helpers/
 import deleteAidRequest from 'src/server/collections/aid_request/mutations/deleteAidRequest';
 import workingOn from 'src/server/collections/aid_request/mutations/workingOn';
 import assertLoggedIn from 'src/server/graphql/assertLoggedIn';
+import notifyListenersAboutAidRequestUpdate from 'src/server/notifications/notifyListenersAboutAidRequestUpdate';
 
 async function editAidRequestResolver(
   _: unknown,
@@ -35,13 +37,9 @@ async function editAidRequestResolver(
   const whatIsNeeded = originalAidRequest?.whatIsNeeded ?? '';
   const whoIsItFor = originalAidRequest?.whoIsItFor ?? '';
   const requestCrew = originalAidRequest?.crew ?? '';
-  const { postpublishSummary, updater, historyEvent } = await getUpdateInfo(
-    user,
-    aidRequestID,
-    input,
-    undoID,
-  );
-  let aidRequest: null | AidRequestType = null;
+  const { postpublishSummary, updater, onSuccess, historyEvent } =
+    await getUpdateInfo(user, aidRequestID, input, undoID);
+  let aidRequest: null | AidRequest = null;
   if (updater != null) {
     aidRequest = await AidRequestModel.findByIdAndUpdate(
       aidRequestID,
@@ -51,6 +49,7 @@ async function editAidRequestResolver(
       },
     );
   }
+  onSuccess?.(aidRequest);
   analytics.track({
     event: 'Edited Aid Request',
     properties: {
@@ -90,6 +89,7 @@ type UpdateInfo = {
   updater: null | UpdateQuery<AidRequestType>;
   postpublishSummary: string;
   historyEvent: AidRequestHistoryEvent;
+  onSuccess?: (aidRequest: AidRequest | null) => void;
 };
 
 async function getUpdateInfo(
@@ -156,7 +156,22 @@ async function getUpdateInfo(
             ? { $push: { history: historyEvent } }
             : { $pull: { history: { undoID } } };
         const postpublishSummary = 'Added comment';
-        return { historyEvent, postpublishSummary, updater };
+        return {
+          historyEvent,
+          onSuccess: (aidRequest: AidRequest | null) => {
+            const content = historyEvent.eventSpecificData;
+            if (aidRequest != null && !!content) {
+              notifyListenersAboutAidRequestUpdate({
+                actor: user,
+                aidRequest,
+                content,
+                verb: 'commented',
+              });
+            }
+          },
+          postpublishSummary,
+          updater,
+        };
       })();
   }
 }

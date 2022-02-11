@@ -1,9 +1,7 @@
 import type { ObjectTypeComposerFieldConfigAsObjectDefinition } from 'graphql-compose';
 import type { AidRequest } from 'src/server/collections/aid_request/AidRequestGraphQLTypes';
-import type {
-  AidRequestHistoryEvent,
-  AidRequestHistoryEventType,
-} from 'src/server/collections/aid_request/AidRequestModelTypes';
+import type { AidRequestHistoryEventType } from 'src/server/collections/aid_request/AidRequestModelTypes';
+import getHistoryWithoutRemovals from 'src/server/collections/aid_request/helpers/getHistoryWithoutRemovals';
 import getWhoRecordedRequest from 'src/server/collections/aid_request/helpers/getWhoRecordedRequest';
 import loadAidRequestForViewer from 'src/server/collections/aid_request/helpers/loadAidRequestForViewer';
 import { UserModel } from 'src/server/collections/user/UserModel';
@@ -22,8 +20,7 @@ const latestEvent: ObjectTypeComposerFieldConfigAsObjectDefinition<
   ): Promise<string> => {
     const viewer = assertLoggedIn(req, 'AidRequest.latestEvent');
     const aidRequest = await loadAidRequestForViewer(viewer, aidRequestID);
-    const { history: rawHistory } = aidRequest;
-    const history = filterRemovals(rawHistory);
+    const history = getHistoryWithoutRemovals(aidRequest);
     if (history.length === 0) {
       const recorder = await getWhoRecordedRequest(aidRequest);
       return `${ago(aidRequest.createdAt)} - ${
@@ -63,42 +60,3 @@ function getActionText(event: AidRequestHistoryEventType): string {
 }
 
 export default latestEvent;
-
-function filterRemovals(
-  history: Array<AidRequestHistoryEvent>,
-): Array<AidRequestHistoryEvent> {
-  const toRemove = new Set<AidRequestHistoryEvent>();
-  const unpairedAdds: Map<string, AidRequestHistoryEvent> = new Map();
-  [...history]
-    .sort((a, b) => a.timestamp.getTime() - b.timestamp.getTime())
-    .forEach((historyEvent) => {
-      const { action, actor, event, eventSpecificData } = historyEvent;
-      const key = `${actor}.${encodeDetails(event, eventSpecificData)}`;
-      if (action === 'Add') {
-        unpairedAdds.set(key, historyEvent);
-      } else {
-        const unpairedEvent = unpairedAdds.get(key);
-        if (unpairedEvent != null) {
-          unpairedAdds.delete(key);
-          toRemove.add(historyEvent);
-          toRemove.add(unpairedEvent);
-        }
-      }
-    });
-  return history.filter((event) => !toRemove.has(event));
-}
-
-function encodeDetails(
-  event: AidRequestHistoryEventType,
-  eventSpecificData: string | undefined,
-): string {
-  switch (event) {
-    case 'Completed':
-    case 'Created':
-    case 'WorkingOn':
-    case 'Deleted':
-      return event;
-    case 'Comment':
-      return `Comment:${eventSpecificData ?? ''}`;
-  }
-}
