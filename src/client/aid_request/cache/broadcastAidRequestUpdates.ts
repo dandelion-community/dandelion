@@ -1,20 +1,20 @@
 import { notifyAidRequestDetailScreenAboutMutation } from 'src/client/aid_request/detail/AidRequestDetailScreen';
-import * as AidRequestDraftsStore from 'src/client/aid_request/drafts/AidRequestDraftsStore';
-import client from 'src/client/graphql/client';
-import { FILTERS } from 'src/client/request_explorer/RequestExplorerFilters';
-import type { FilterType } from 'src/client/request_explorer/RequestExplorerFiltersContext';
-import filterNulls from 'src/shared/utils/filterNulls';
-import { FilterContext } from '../../request_explorer/FilterContext';
+import { graphqlNodeDraftStore } from 'src/client/aid_request/drafts/AidRequestDraftsMemoryStore';
+import { FilterContext } from 'src/client/aid_request/filter/FilterContext';
+import { FILTERS } from 'src/client/aid_request/filter/RequestExplorerFilters';
+import type { FilterType } from 'src/client/aid_request/filter/RequestExplorerFiltersContext';
 import {
   LIST_OF_AID_REQUESTS_QUERY,
   PAGE_SIZE,
-} from '../../request_explorer/ListOfAidRequestsQuery';
+} from 'src/client/aid_request/list/ListOfAidRequestsQuery';
 import {
   ListOfAidRequestsQuery,
   ListOfAidRequestsQueryVariables,
   ListOfAidRequestsQuery_allAidRequests_edges,
   ListOfAidRequestsQuery_allAidRequests_edges_node,
-} from '../../request_explorer/__generated__/ListOfAidRequestsQuery';
+} from 'src/client/aid_request/list/__generated__/ListOfAidRequestsQuery';
+import client from 'src/client/graphql/client';
+import filterNulls from 'src/shared/utils/filterNulls';
 import { isDraftID } from '../drafts/AidRequestDraftIDs';
 import LocalUpdateSubscriberStore, {
   SubscriberValue,
@@ -151,7 +151,5 @@ function isNotStaleDraft(
   if (!isDraftID(id)) {
     return true;
   }
-  return AidRequestDraftsStore.getGraphQLValues().some(
-    (draft) => draft._id === id,
-  );
+  return graphqlNodeDraftStore.getValue().some((draft) => draft._id === id);
 }

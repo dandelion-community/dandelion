@@ -1,7 +1,7 @@
 import { gql } from '@apollo/client';
+import type { CreateAidRequestsMutationVariables } from 'src/client/aid_request/create/__generated__/CreateAidRequestsMutation';
 import { SuccessfulSaveData } from 'src/client/aid_request/drafts/AidRequestDrafts';
 import { AidRequestCardFragments } from 'src/client/aid_request/fragments/AidRequestCardFragments';
-import type { CreateAidRequestsMutationVariables } from 'src/client/create_request/__generated__/CreateAidRequestsMutation';
 import { tryOrYieldNullOnError } from 'src/client/error/tryCatch';
 import client from 'src/client/graphql/client';
 import filterNulls from 'src/shared/utils/filterNulls';

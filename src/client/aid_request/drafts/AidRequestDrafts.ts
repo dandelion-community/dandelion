@@ -1,15 +1,19 @@
 import { broadcastManyNewAidRequests } from 'src/client/aid_request/cache/broadcastAidRequestUpdates';
 import createAidRequestSaveToServer from 'src/client/aid_request/create/createAidRequestSaveToServer';
-import { createDraftID } from 'src/client/aid_request/drafts/AidRequestDraftIDs';
-import {
-  getSavedValuesFromStorage,
-  StorageEntry,
-} from 'src/client/aid_request/drafts/internal/AidRequestDraftsPersistentStorage';
 import {
   CreateAidRequestsMutationVariables,
   CreateAidRequestsMutation_createAidRequests_requests,
-} from 'src/client/create_request/__generated__/CreateAidRequestsMutation';
-import * as AidRequestDraftStore from './AidRequestDraftsStore';
+} from 'src/client/aid_request/create/__generated__/CreateAidRequestsMutation';
+import { createDraftID } from 'src/client/aid_request/drafts/AidRequestDraftIDs';
+import {
+  graphqlNodeDraftStore,
+  setDrafts,
+  storageDraftStore,
+} from 'src/client/aid_request/drafts/AidRequestDraftsMemoryStore';
+import {
+  getSavedValuesFromStorage,
+  StorageEntry,
+} from 'src/client/aid_request/drafts/AidRequestDraftsPersistentStorage';
 
 export type SuccessfulSaveData = {
   postpublishSummary: string;
@@ -20,11 +24,11 @@ export function createNewAidRequestDraft(
   variables: CreateAidRequestsMutationVariables,
 ): null | SuccessfulSaveData {
   try {
-    const oldValues = AidRequestDraftStore.getStorageValues();
+    const oldValues = storageDraftStore.getValue();
     const newValues = createNewStorageValues(variables);
-    AidRequestDraftStore.setStorageValues(oldValues.concat(newValues));
+    setDrafts(oldValues.concat(newValues));
     return {
-      aidRequests: AidRequestDraftStore.getGraphQLValues(),
+      aidRequests: graphqlNodeDraftStore.getValue(),
       postpublishSummary: `Network unavailable. Saved draft${
         newValues.length === 1 ? '' : 's'
       } to device`,
@@ -36,9 +40,9 @@ export function createNewAidRequestDraft(
 
 export function deleteAidRequestDraft(aidRequestID: string): void {
   try {
-    const oldValues = AidRequestDraftStore.getStorageValues();
+    const oldValues = storageDraftStore.getValue();
     const newValues = oldValues.filter(({ tempID }) => tempID !== aidRequestID);
-    AidRequestDraftStore.setStorageValues(newValues);
+    setDrafts(newValues);
   } catch {
     return;
   }

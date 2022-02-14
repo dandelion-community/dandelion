@@ -3,7 +3,7 @@ import { View } from 'react-native';
 import GraphQLErrorSummary from 'src/client/menu/debug/GraphQLErrorSummary';
 import GraphQLResponseSummary from 'src/client/menu/debug/GraphQLResponseSummary';
 import SmallText from 'src/client/menu/debug/SmallText';
-import Loading from 'src/client/utils/loading';
+import Loading from 'src/client/utils/Loading';
 import usePromise from 'src/client/utils/usePromise';
 
 type Props = { host: string };

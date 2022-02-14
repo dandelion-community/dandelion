@@ -1053,7 +1053,7 @@ const BottomNavigation = ({
         icon="plus"
         onPress={onFABPress}
         style={{
-          bottom: 0,
+          bottom: keyboardVisible ? -100 : 0,
           left: '50%',
           marginBottom: 25 + insets.bottom,
           marginLeft: -28,

@@ -15,13 +15,38 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
  */
 
 import * as React from 'react';
-import { Keyboard, NativeEventSubscription, Platform } from 'react-native';
+import {
+  Keyboard,
+  NativeEventSubscription,
+  Platform,
+  useWindowDimensions,
+} from 'react-native';
 
 type Props = {
   onShow: () => void;
   onHide: () => void;
 };
 export default function useIsKeyboardShown({ onShow, onHide }: Props) {
+  /* // {MODIFIED} */
+  const { height, width } = useWindowDimensions();
+  const prevHeight = React.useRef<number>(height);
+  const prevWidth = React.useRef<number>(width);
+
+  React.useEffect(() => {
+    const heightDiff = height - prevHeight.current;
+    const widthDiff = width - prevWidth.current;
+    if (widthDiff === 0) {
+      if (heightDiff < 0) {
+        onShow();
+      } else if (heightDiff > 0) {
+        onHide();
+      }
+    }
+    prevHeight.current = height;
+    prevWidth.current = width;
+  }, [height, width]);
+  /* // {END MODIFIED} */
+
   React.useEffect(() => {
     let willShowSubscription: NativeEventSubscription | undefined;
     let willHideSubscription: NativeEventSubscription | undefined;

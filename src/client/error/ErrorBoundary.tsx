@@ -1,4 +1,4 @@
-import Bugsnag from '@bugsnag/js';
+import Bugsnag from '@bugsnag/expo';
 import React from 'react';
 
 const BugsnagErrorBoundary =
