@@ -43,6 +43,11 @@
           "config": {}
         }
       ]
+    },
+    "extra": {
+      "bugsnag": {
+        "apiKey": "10aad92a8ec0e1998f3f466ae42fdfc9"
+      }
     }
   }
 }

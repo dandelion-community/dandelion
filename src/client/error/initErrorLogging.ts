@@ -1,5 +1,6 @@
-import Bugsnag from '@bugsnag/js';
+import Bugsnag from '@bugsnag/expo';
 import BugsnagPluginReact from '@bugsnag/plugin-react';
+Bugsnag.start();
 
 export default function initErrorLogging(): void {
   Bugsnag.start({

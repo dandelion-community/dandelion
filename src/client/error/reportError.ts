@@ -1,4 +1,4 @@
-import Bugsnag from '@bugsnag/js';
+import Bugsnag from '@bugsnag/expo';
 import getTypedError from 'src/client/error/getTypedError';
 
 export default function reportError(e: unknown): void {

@@ -1,6 +1,6 @@
 import * as React from 'react';
-import type { LoadingType } from 'src/client/utils/loading';
-import Loading from 'src/client/utils/loading';
+import type { LoadingType } from 'src/client/utils/Loading';
+import Loading from 'src/client/utils/Loading';
 
 export type LoggedInViewer = Readonly<{
   crews: string[];

@@ -53,6 +53,7 @@ export default function AddAComment({ aidRequestID }: Props): JSX.Element {
       },
     },
   });
+  const style = { height: contentHeight + (Platform.OS === 'ios' ? 16 : 0) };
   return (
     <Row omitTopMargin={true}>
       <View style={styles.row}>
@@ -73,7 +74,7 @@ export default function AddAComment({ aidRequestID }: Props): JSX.Element {
             ref={(ref) => {
               textInputRef.current = ref;
             }}
-            style={{ height: contentHeight + Platform.OS === 'ios' ? 16 : 0 }}
+            style={style}
             value={value}
           />
         </View>

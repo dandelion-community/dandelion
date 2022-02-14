@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { Image, View } from 'react-native';
 import { TouchableRipple } from 'react-native-paper';
+import getURL from 'src/client/host/host';
 import useColorScheme from 'src/client/light-or-dark/useColorScheme';
-import getURL from '../graphql/host';
 
 type Props = {
   scheme?: 'light' | 'dark';
