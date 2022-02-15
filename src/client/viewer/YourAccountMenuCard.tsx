@@ -3,7 +3,7 @@ import { View } from 'react-native';
 import { Card, Paragraph } from 'react-native-paper';
 import StyledCard from 'src/client/components/Card';
 import DebouncedLoadingIndicator from 'src/client/utils/DebouncedLoadingIndicator';
-import Loading from 'src/client/utils/Loading';
+import Loading from 'src/client/utils/loading/Loading';
 import LoginOrRegisterActionsRow from 'src/client/viewer/LoginOrRegisterActionsRow';
 import LogoutAction from 'src/client/viewer/LogoutAction';
 import { useViewerContext } from 'src/client/viewer/ViewerContext';
