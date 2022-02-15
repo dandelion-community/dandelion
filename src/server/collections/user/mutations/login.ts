@@ -9,7 +9,7 @@ async function loginResolver(
   req: Express.Request,
 ): Promise<CurrentUserPayload> {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  (req as any).body.username = username;
+  (req as any).body.username = username.toLowerCase();
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   (req as any).body.password = password;
   return new Promise((resolve, reject) => {
