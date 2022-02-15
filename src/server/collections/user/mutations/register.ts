@@ -16,6 +16,13 @@ async function registerResolver(
     .collection('email-allowlist')
     .findOne({ email: matchStringCaseInsensitive(username) });
   if (allowlistEntry == null) {
+    analytics.track({
+      event: 'no allowlist entry',
+      properties: {
+        email: username,
+      },
+      user: null,
+    });
     throw new Error(
       "To protect the privacy of our users' data, you cannot create an account without first being added to the list of allowed users. Please email new.user@dandelion.supplies if you'd like to be added!",
     );
