@@ -1,4 +1,8 @@
-import { notifyAidRequestDetailScreenAboutMutation } from 'src/client/aid_request/detail/AidRequestDetailScreen';
+import AidRequestUpdatedIDsEventStream from 'src/client/aid_request/cache/AidRequestUpdatedIDsEventStream';
+import LocalUpdateSubscriberStore, {
+  SubscriberValue,
+} from 'src/client/aid_request/cache/LocalUpdateSubscriberStore';
+import { isDraftID } from 'src/client/aid_request/drafts/AidRequestDraftIDs';
 import { graphqlNodeDraftStore } from 'src/client/aid_request/drafts/AidRequestDraftsMemoryStore';
 import { FilterContext } from 'src/client/aid_request/filter/FilterContext';
 import { FILTERS } from 'src/client/aid_request/filter/RequestExplorerFilters';
@@ -15,10 +19,6 @@ import {
 } from 'src/client/aid_request/list/__generated__/ListOfAidRequestsQuery';
 import client from 'src/client/graphql/client';
 import filterNulls from 'src/shared/utils/filterNulls';
-import { isDraftID } from '../drafts/AidRequestDraftIDs';
-import LocalUpdateSubscriberStore, {
-  SubscriberValue,
-} from './LocalUpdateSubscriberStore';
 
 export function broadcastUpdatedAidRequest(
   aidRequestID: string,
@@ -50,7 +50,7 @@ type Update = {
 };
 
 function broadcastAidRequestUpdates(updates: Update[]): void {
-  notifyAidRequestDetailScreenAboutMutation(updates.map(({ id }) => id));
+  AidRequestUpdatedIDsEventStream.publish(updates.map(({ id }) => id));
   LocalUpdateSubscriberStore.forEach((subscriber: SubscriberValue): void => {
     processAidRequestUpdatesForSubscriber(subscriber, updates);
   });

@@ -1,8 +1,7 @@
-import { FontAwesome } from '@expo/vector-icons';
-import * as Font from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 import * as React from 'react';
 import { initializeAidRequestDrafts } from 'src/client/aid_request/drafts/AidRequestDraftsMemoryStore';
+import reportError from 'src/client/error/reportError';
 
 export default function useCachedResources() {
   const [isLoadingComplete, setLoadingComplete] = React.useState(false);
@@ -13,15 +12,9 @@ export default function useCachedResources() {
       try {
         SplashScreen.preventAutoHideAsync();
 
-        await Promise.all([
-          Font.loadAsync({
-            ...FontAwesome.font,
-          }),
-          initializeAidRequestDrafts(),
-        ]);
+        await Promise.all([initializeAidRequestDrafts()]);
       } catch (e) {
-        // We might want to provide this error information to an error reporting service
-        console.warn(e);
+        reportError(e);
       } finally {
         setLoadingComplete(true);
         SplashScreen.hideAsync();
