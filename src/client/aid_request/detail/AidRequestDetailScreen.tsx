@@ -2,6 +2,22 @@ import { gql, useQuery } from '@apollo/client';
 import * as React from 'react';
 import type { ListRenderItemInfo } from 'react-native';
 import { FlatList, StyleSheet } from 'react-native';
+import AidRequestUpdatedIDsEventStream from 'src/client/aid_request/cache/AidRequestUpdatedIDsEventStream';
+import AddAComment from 'src/client/aid_request/detail/add-a-comment/AddAComment';
+import ActivityHeader from 'src/client/aid_request/detail/rows/ActivityHeader';
+import ActivityItem, {
+  ActivityItemFragments,
+} from 'src/client/aid_request/detail/rows/ActivityItem';
+import Status from 'src/client/aid_request/detail/rows/Status';
+import WhatIsNeeded from 'src/client/aid_request/detail/rows/WhatIsNeeded';
+import WhoIsItFor from 'src/client/aid_request/detail/rows/WhoIsItFor';
+import WhoRecordedIt from 'src/client/aid_request/detail/rows/WhoRecordedIt';
+import {
+  AidRequestDetailsQuery,
+  AidRequestDetailsQueryVariables,
+  AidRequestDetailsQuery_aidRequest,
+  AidRequestDetailsQuery_aidRequest_activity,
+} from 'src/client/aid_request/detail/__generated__/AidRequestDetailsQuery';
 import { AidRequestCardFragments } from 'src/client/aid_request/fragments/AidRequestCardFragments';
 import ErrorScreen from 'src/client/components/ErrorScreen';
 import LoadingScreen from 'src/client/components/LoadingScreen';
@@ -9,19 +25,6 @@ import View from 'src/client/components/View';
 import client from 'src/client/graphql/client';
 import { RequestExplorerStackScreenProps } from 'src/client/navigation/NavigationTypes';
 import RequireLoggedInScreen from 'src/client/viewer/RequireLoggedInScreen';
-import AddAComment from './add-a-comment/AddAComment';
-import ActivityHeader from './rows/ActivityHeader';
-import ActivityItem, { ActivityItemFragments } from './rows/ActivityItem';
-import Status from './rows/Status';
-import WhatIsNeeded from './rows/WhatIsNeeded';
-import WhoIsItFor from './rows/WhoIsItFor';
-import WhoRecordedIt from './rows/WhoRecordedIt';
-import {
-  AidRequestDetailsQuery,
-  AidRequestDetailsQueryVariables,
-  AidRequestDetailsQuery_aidRequest,
-  AidRequestDetailsQuery_aidRequest_activity,
-} from './__generated__/AidRequestDetailsQuery';
 
 export type GoToRequestDetailScreen = (aidRequestID: string) => void;
 
@@ -172,9 +175,7 @@ const AID_REQUEST_DETAILS_QUERY = gql`
   ${ActivityItemFragments.activityItem}
 `;
 
-export function notifyAidRequestDetailScreenAboutMutation(
-  aidRequestIDs: string[],
-): void {
+AidRequestUpdatedIDsEventStream.subscribe((aidRequestIDs: string[]): void => {
   aidRequestIDs.forEach((aidRequestID: string): void => {
     const id = `AidRequest:${aidRequestID}`;
     // Invalidate all fields that are requested in AID_REQUEST_DETAILS_QUERY
@@ -191,7 +192,7 @@ export function notifyAidRequestDetailScreenAboutMutation(
       id,
     });
   });
-}
+});
 
 const styles = StyleSheet.create({
   container: {

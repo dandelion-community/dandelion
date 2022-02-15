@@ -3,6 +3,7 @@ import * as Font from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 import * as React from 'react';
 import { initializeAidRequestDrafts } from 'src/client/aid_request/drafts/AidRequestDraftsMemoryStore';
+import reportError from 'src/client/error/reportError';
 
 export default function useCachedResources() {
   const [isLoadingComplete, setLoadingComplete] = React.useState(false);
@@ -20,8 +21,7 @@ export default function useCachedResources() {
           initializeAidRequestDrafts(),
         ]);
       } catch (e) {
-        // We might want to provide this error information to an error reporting service
-        console.warn(e);
+        reportError(e);
       } finally {
         setLoadingComplete(true);
         SplashScreen.hideAsync();
