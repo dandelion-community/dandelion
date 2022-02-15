@@ -1,4 +1,4 @@
-import getTypedError from 'src/client/error/getTypedError';
+import getTypedError from 'src/shared/utils/error/getTypedError';
 import reportError from 'src/client/error/reportError';
 
 type Args<T> =

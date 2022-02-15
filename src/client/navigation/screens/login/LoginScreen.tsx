@@ -1,10 +1,9 @@
 import { gql, useMutation } from '@apollo/client';
 import * as WebBrowser from 'expo-web-browser';
 import * as React from 'react';
-import { Linking, StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { Button, Paragraph } from 'react-native-paper';
-import { useColor } from 'src/client/components/Colors';
-import Text from 'src/client/components/Text';
+import EmailLink from 'src/client/components/EmailLink';
 import TextInput, { TextInputHandles } from 'src/client/components/TextInput';
 import View from 'src/client/components/View';
 import { RootStackScreenProps } from 'src/client/navigation/NavigationTypes';
@@ -12,13 +11,13 @@ import useCreateCrumbtrailsToLandingScreenIfNeeded from 'src/client/navigation/u
 import useSetRootNavigation from 'src/client/navigation/useSetRootNavigation';
 import reloadViewer from 'src/client/viewer/reloadViewer';
 import useHandleViewer from 'src/client/viewer/useHandleViewer';
+import getErrorMessage from 'src/shared/utils/error/getErrorMessage';
 import type { Login } from './__generated__/Login';
 
 WebBrowser.maybeCompleteAuthSession();
 
 export default function LoginScreen(props: RootStackScreenProps<'Login'>) {
   const { navigation } = props;
-  const linkColor = useColor('accent');
   useSetRootNavigation(navigation);
   useCreateCrumbtrailsToLandingScreenIfNeeded(
     props,
@@ -30,7 +29,7 @@ export default function LoginScreen(props: RootStackScreenProps<'Login'>) {
   const [password, setPassword] = React.useState('');
   const [runLoginMutation, loginMutationState] =
     useMutation<Login>(LOGIN_MUTATION);
-  const { data, loading, error } = loginMutationState;
+  const { loading, error } = loginMutationState;
   useHandleViewer(navigation, 'Login', {
     loggedIn: async (_, goToMain) => {
       goToMain();
@@ -73,21 +72,16 @@ export default function LoginScreen(props: RootStackScreenProps<'Login'>) {
           Login
         </Button>
       </View>
-      {error != null ? <Text>{error.message}</Text> : null}
-      {data != null && data?.login?.user == null ? (
+      {error != null ? (
         <Paragraph>
-          User not found or password incorrect. Please email{' '}
-          <Text
-            onPress={() =>
-              Linking.openURL(
-                `mailto:password.reset@dandelion.supplies?subject=Dandelion Password Reset (${email})`,
-              )
-            }
-            style={{ color: linkColor }}
-          >
-            lowell.organizing@gmail.com
-          </Text>{' '}
-          if you need to reset your password
+          {getErrorMessage(error)}. Please email{' '}
+          <EmailLink
+            slug="password.reset"
+            subject={`Dandelion Password Reset (${email})`}
+          />{' '}
+          if you need to reset your password. Email{' '}
+          <EmailLink slug="support" subject={`Login Support (${email})`} /> if
+          you need help with anything else.
         </Paragraph>
       ) : null}
     </View>

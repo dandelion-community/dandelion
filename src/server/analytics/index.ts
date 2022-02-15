@@ -13,16 +13,16 @@ const mongoAnalytics = {
       event,
       ...(properties ?? {}),
       timestamp: new Date(),
-      userCrews: user.crews.join(', '),
-      userDisplayName: user.displayName,
-      userId: user._id.toString(),
-      username: user.username,
+      userCrews: user == null ? '' : user.crews.join(', '),
+      userDisplayName: user?.displayName ?? '',
+      userId: user == null ? '' : user._id.toString(),
+      username: user?.username ?? '',
     });
   },
 };
 
 type Message = {
-  user: Express.User;
+  user: Express.User | null;
   event: string;
   properties?: Record<string, string>;
 };
@@ -36,9 +36,9 @@ const analytics = {
       event,
       properties: {
         ...properties,
-        usernameProp: user.username,
+        usernameProp: user?.username ?? '',
       },
-      userId: user._id.toString(),
+      userId: user == null ? 'none' : user._id.toString(),
     });
     mongoAnalytics.track(message);
   },
