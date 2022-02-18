@@ -2,12 +2,12 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import * as React from 'react';
 import { RootStackParamList } from 'src/client/navigation/NavigationTypes';
 import Loading from 'src/client/utils/loading/Loading';
+import { useViewerContext } from 'src/client/viewer/ViewerContext';
 import type {
   LoggedInViewer,
   LoggedOutViewer,
   Viewer,
-} from 'src/client/viewer/ViewerContext';
-import { useViewerContext } from 'src/client/viewer/ViewerContext';
+} from 'src/client/viewer/ViewerTypes';
 
 type Handler<TContext extends Viewer> = (
   viewer: TContext,
@@ -39,11 +39,11 @@ export default function useHandleViewer<
           // This screen is not focused
           return;
         }
-        if (viewer.username === Loading) {
+        if (viewer === Loading) {
           // Don't do anything if context is still loading
           return;
         }
-        if (viewer.username != null) {
+        if (viewer !== undefined) {
           handlers.loggedIn?.(viewer, goToMain);
         } else {
           handlers.loggedOut?.(viewer, goToMain);

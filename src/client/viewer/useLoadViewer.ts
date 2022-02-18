@@ -1,7 +1,7 @@
 import { gql, useQuery } from '@apollo/client';
 import * as React from 'react';
 import Loading from 'src/client/utils/loading/Loading';
-import type { Viewer } from './ViewerContext';
+import type { Viewer } from './ViewerTypes';
 import type { ViewerQuery } from './__generated__/ViewerQuery';
 
 const VIEWER_QUERY = gql`
@@ -23,19 +23,9 @@ export default function useLoadViewer(): Viewer {
   const crews = data?.me?.crews ?? [];
   return React.useMemo((): Viewer => {
     if (loading) {
-      return {
-        crews: Loading,
-        displayName: Loading,
-        id: Loading,
-        username: Loading,
-      };
+      return Loading;
     } else if (username == null || id == null || displayName == null) {
-      return {
-        crews: undefined,
-        displayName: undefined,
-        id: undefined,
-        username: undefined,
-      };
+      return undefined;
     } else {
       return {
         crews,

@@ -9,17 +9,17 @@ import LogoutAction from 'src/client/viewer/LogoutAction';
 import { useViewerContext } from 'src/client/viewer/ViewerContext';
 
 export default function YourAccountMenuCard(): JSX.Element {
-  const { username } = useViewerContext();
+  const viewer = useViewerContext();
   return (
     <StyledCard>
       <Card.Title title="Your Account" />
-      {username === Loading ? (
+      {viewer === Loading ? (
         <Card.Content>
           <View style={{ minHeight: 95 }}>
             <DebouncedLoadingIndicator />
           </View>
         </Card.Content>
-      ) : username == null ? (
+      ) : viewer === undefined ? (
         <>
           <Card.Content>
             <Paragraph>You are not signed in.</Paragraph>
@@ -31,7 +31,7 @@ export default function YourAccountMenuCard(): JSX.Element {
       ) : (
         <>
           <Card.Content>
-            <Paragraph>You are logged in as {username}.</Paragraph>
+            <Paragraph>You are logged in as {viewer.username}.</Paragraph>
           </Card.Content>
           <Card.Actions>
             <LogoutAction />
