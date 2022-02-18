@@ -12,15 +12,14 @@ import {
   SuccessfulSaveData,
 } from 'src/client/aid_request/drafts/AidRequestDrafts';
 import Text from 'src/client/components/Text';
-import useToastContext from 'src/client/toast/useToastContext';
-import { useLoggedInViewer } from 'src/client/viewer/ViewerContext';
+import ToastStore from 'src/client/toast/ToastStore';
+import { useLoggedInViewer } from 'src/client/viewer/Viewer';
 
 type Props = {
   pop: () => void;
 };
 
 export default function RecordAidRequestForm({ pop }: Props): JSX.Element {
-  const { publishToast } = useToastContext();
   const whatIsNeededRef = React.useRef<TextInputHandles | null>(null);
   const { crews } = useLoggedInViewer();
   const scrollView = React.useRef<ScrollView | null | undefined>();
@@ -68,7 +67,7 @@ export default function RecordAidRequestForm({ pop }: Props): JSX.Element {
   );
 
   async function submit(): Promise<void> {
-    publishToast(undefined);
+    ToastStore.update(undefined);
     setErrorMessage('');
     const variables = {
       crew,
@@ -90,10 +89,8 @@ export default function RecordAidRequestForm({ pop }: Props): JSX.Element {
       setErrorMessage('Unable to save. Please try again later');
       return;
     }
-    const { postpublishSummary, aidRequests } = data;
-    publishToast({
-      message: postpublishSummary,
-    });
+    const { postpublishSummary: message, aidRequests } = data;
+    ToastStore.update({ message });
     if (!isDraft) {
       broadcastManyNewAidRequests(aidRequests);
     }

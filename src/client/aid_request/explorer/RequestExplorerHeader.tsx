@@ -3,16 +3,17 @@ import { StyleSheet, View } from 'react-native';
 import { Appbar, Searchbar } from 'react-native-paper';
 import { useColor } from 'src/client/components/Colors';
 import useViewWidth from 'src/client/components/useViewWidth';
-import useSearchContext from 'src/client/search/useSearchContext';
+import GlobalSearchStringStore from 'src/client/global_search_string/GlobalSearchStringStore';
+import useStore from 'src/client/store/useStore';
 
 export default function RequestExplorerHeader(): JSX.Element {
   const viewWidth = useViewWidth();
   const headerBackgroundColor = useColor('background');
-  const { searchString, setSearchString } = useSearchContext();
+  const searchString = useStore(GlobalSearchStringStore);
   const [val, setVal] = React.useState<string>(searchString);
   React.useEffect(() => {
     const timeoutId = setTimeout(() => {
-      setSearchString(val);
+      GlobalSearchStringStore.update(val);
     }, 300);
     return () => clearTimeout(timeoutId);
   }, [val]);

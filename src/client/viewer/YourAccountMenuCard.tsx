@@ -6,20 +6,20 @@ import DebouncedLoadingIndicator from 'src/client/utils/DebouncedLoadingIndicato
 import Loading from 'src/client/utils/loading/Loading';
 import LoginOrRegisterActionsRow from 'src/client/viewer/LoginOrRegisterActionsRow';
 import LogoutAction from 'src/client/viewer/LogoutAction';
-import { useViewerContext } from 'src/client/viewer/ViewerContext';
+import { useViewer } from 'src/client/viewer/Viewer';
 
 export default function YourAccountMenuCard(): JSX.Element {
-  const { username } = useViewerContext();
+  const viewer = useViewer();
   return (
     <StyledCard>
       <Card.Title title="Your Account" />
-      {username === Loading ? (
+      {viewer === Loading ? (
         <Card.Content>
           <View style={{ minHeight: 95 }}>
             <DebouncedLoadingIndicator />
           </View>
         </Card.Content>
-      ) : username == null ? (
+      ) : viewer === undefined ? (
         <>
           <Card.Content>
             <Paragraph>You are not signed in.</Paragraph>
@@ -31,7 +31,7 @@ export default function YourAccountMenuCard(): JSX.Element {
       ) : (
         <>
           <Card.Content>
-            <Paragraph>You are logged in as {username}.</Paragraph>
+            <Paragraph>You are logged in as {viewer.username}.</Paragraph>
           </Card.Content>
           <Card.Actions>
             <LogoutAction />

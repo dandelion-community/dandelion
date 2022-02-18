@@ -22,7 +22,7 @@ import Icon from 'src/client/components/Icon';
 import useDialogContext from 'src/client/dialog/useDialogContext';
 import useDrawerContext from 'src/client/drawer/useDrawerContext';
 import useMutateWithUndo from 'src/client/graphql/useMutateWithUndo';
-import useToastContext from 'src/client/toast/useToastContext';
+import ToastStore from 'src/client/toast/ToastStore';
 import DebouncedLoadingIndicator from 'src/client/utils/DebouncedLoadingIndicator';
 import filterNulls from 'src/shared/utils/filterNulls';
 
@@ -41,7 +41,6 @@ export default function AidRequestEditDrawer({
   goToRequestDetailScreen,
 }: Props): JSX.Element {
   const [loadingPublish, setLoadingPublish] = React.useState<boolean>(false);
-  const { publishToast } = useToastContext();
   const { closeDrawer } = useDrawerContext();
   const { shouldDelete } = useDialogContext();
   const { actionsAvailable, _id: aidRequestID } = aidRequest;
@@ -107,7 +106,7 @@ export default function AidRequestEditDrawer({
             const message = await publishDraft(aidRequest._id);
             setLoadingPublish(false);
             closeDrawer();
-            publishToast({ message });
+            ToastStore.update({ message });
           }}
           title={action}
         />

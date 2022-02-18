@@ -8,7 +8,7 @@ import useHandleViewer from 'src/client/viewer/useHandleViewer';
 import {
   useIsLoadingLoggedInStatus,
   useIsLoggedOut,
-} from 'src/client/viewer/ViewerContext';
+} from 'src/client/viewer/Viewer';
 
 type Props = {
   children: React.ReactElement;
