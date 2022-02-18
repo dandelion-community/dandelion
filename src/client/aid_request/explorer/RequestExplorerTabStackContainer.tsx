@@ -5,9 +5,8 @@ import AidRequestDetailScreen from 'src/client/aid_request/detail/AidRequestDeta
 import { AidRequestDetailsQuery_aidRequest } from 'src/client/aid_request/detail/__generated__/AidRequestDetailsQuery';
 import RequestExplorerHeader from 'src/client/aid_request/explorer/RequestExplorerHeader';
 import RequestExplorerScreen from 'src/client/aid_request/explorer/RequestExplorerScreen';
-import Colors from 'src/client/components/Colors';
+import Header from 'src/client/components/Header';
 import Icon from 'src/client/components/Icon';
-import useColorScheme from 'src/client/light-or-dark/useColorScheme';
 import {
   RequestExplorerStackParamList,
   // prettier expects a comma but "editor.codeActionsOnSave": { "source.organizeImports": true } removes the comma
@@ -26,8 +25,6 @@ export default function RequestExplorerTabStackContainer({
   const [aidRequest, setAidRequest] = React.useState<
     AidRequestDetailsQuery_aidRequest | undefined
   >(undefined);
-  const colorScheme = useColorScheme();
-  const headerBackgroundColor = Colors[colorScheme].tabBarBackground;
   const AidRequestDetailScreenComponent = React.useCallback((props) => {
     return <AidRequestDetailScreen {...props} setAidRequest={setAidRequest} />;
   }, []);
@@ -47,7 +44,7 @@ export default function RequestExplorerTabStackContainer({
           name="AidRequestDetail"
           options={() => ({
             header: ({ options }) => (
-              <Appbar.Header style={{ backgroundColor: headerBackgroundColor }}>
+              <Header>
                 <Appbar.BackAction
                   onPress={() =>
                     navigation?.canGoBack()
@@ -68,7 +65,7 @@ export default function RequestExplorerTabStackContainer({
                   path="share"
                   scheme="dark"
                 />
-              </Appbar.Header>
+              </Header>
             ),
             title: 'Request',
           })}

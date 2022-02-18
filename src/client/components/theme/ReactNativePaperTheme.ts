@@ -5,7 +5,7 @@ export const DARK_THEME = {
   ...DarkTheme,
   colors: {
     ...DarkTheme.colors,
-    accent: '#a577e7',
+    accent: '#633B48',
     background: Colors.dark.background,
     onSurface: '#482d48',
     surface: '#eee',
@@ -16,6 +16,7 @@ export const LIGHT_THEME = {
   ...DefaultTheme,
   colors: {
     ...DefaultTheme.colors,
+    accent: '#FFD8E4',
     background: Colors.light.background,
   },
 };

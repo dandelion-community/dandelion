@@ -15,7 +15,7 @@ import * as React from 'react';
 import { ColorSchemeName } from 'react-native';
 import { Appbar } from 'react-native-paper';
 import Colors from 'src/client/components/Colors';
-import useColorScheme from 'src/client/light-or-dark/useColorScheme';
+import Header from 'src/client/components/Header';
 import LinkingConfiguration from './LinkingConfiguration';
 import type {
   RootNavigationAllTypes,
@@ -61,8 +61,6 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 function RootNavigator() {
   const [rootNavigation, setRootNavigation] =
     React.useState<RootNavigationAllTypes>(null);
-  const colorScheme = useColorScheme();
-  const headerBackgroundColor = Colors[colorScheme].tabBarBackground;
   return (
     <RootNavigationContext.Provider
       value={{ rootNavigation, setRootNavigation }}
@@ -83,9 +81,9 @@ function RootNavigator() {
           name="NotLoggedIn"
           options={() => ({
             header: ({ options }) => (
-              <Appbar.Header style={{ backgroundColor: headerBackgroundColor }}>
+              <Header>
                 <Appbar.Content title={options.title} />
-              </Appbar.Header>
+              </Header>
             ),
             title: 'Welcome!',
           })}
@@ -95,7 +93,7 @@ function RootNavigator() {
           name="Create Account"
           options={() => ({
             header: ({ options }) => (
-              <Appbar.Header style={{ backgroundColor: headerBackgroundColor }}>
+              <Header>
                 <Appbar.BackAction
                   onPress={() =>
                     rootNavigation?.canGoBack()
@@ -104,7 +102,7 @@ function RootNavigator() {
                   }
                 />
                 <Appbar.Content title={options.title} />
-              </Appbar.Header>
+              </Header>
             ),
             title: 'Sign Up',
           })}
@@ -114,7 +112,7 @@ function RootNavigator() {
           name="Login"
           options={() => ({
             header: ({ options }) => (
-              <Appbar.Header style={{ backgroundColor: headerBackgroundColor }}>
+              <Header>
                 <Appbar.BackAction
                   onPress={() =>
                     rootNavigation?.canGoBack()
@@ -123,7 +121,7 @@ function RootNavigator() {
                   }
                 />
                 <Appbar.Content title={options.title} />
-              </Appbar.Header>
+              </Header>
             ),
             title: 'Log In',
           })}
@@ -133,7 +131,7 @@ function RootNavigator() {
           name="Record Request"
           options={() => ({
             header: ({ options }) => (
-              <Appbar.Header style={{ backgroundColor: headerBackgroundColor }}>
+              <Header>
                 <Appbar.BackAction
                   onPress={() =>
                     rootNavigation?.canGoBack()
@@ -142,7 +140,7 @@ function RootNavigator() {
                   }
                 />
                 <Appbar.Content title={options.title} />
-              </Appbar.Header>
+              </Header>
             ),
             title: 'Record Request',
           })}

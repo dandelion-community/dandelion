@@ -1,8 +1,12 @@
-import type { AidRequestType } from 'src/server/collections/aid_request/AidRequestModelTypes';
+import type {
+  AidRequestHistoryEvent,
+  AidRequestType,
+} from 'src/server/collections/aid_request/AidRequestModelTypes';
 import searchPrefixes from 'src/server/collections/aid_request/helpers/searchPrefixes';
 import { UserModel } from 'src/server/collections/user/UserModel';
 
-type ComputedKey =
+export type ComputedKey =
+  | 'lastUpdated'
   | 'whoIsItForSearch'
   | 'whatIsNeededSearch'
   | 'whoIsWorkingOnItSearch'
@@ -12,8 +16,19 @@ type ComputedKey =
 export default async function getComputedFields(
   fields: Omit<Omit<AidRequestType, ComputedKey>, '_id'>,
 ): Promise<Omit<Pick<AidRequestType, ComputedKey>, '_id'>> {
-  const { whatIsNeeded, whoIsItFor, whoIsWorkingOnIt, whoRecordedIt } = fields;
+  const { history, whatIsNeeded, whoIsItFor, whoIsWorkingOnIt, whoRecordedIt } =
+    fields;
 
+  const lastUpdated =
+    history.reduce(
+      (a: Date | null, { timestamp: b }: AidRequestHistoryEvent): Date => {
+        if (a == null) {
+          return b;
+        }
+        return a.valueOf() > b.valueOf() ? a : b;
+      },
+      null,
+    ) ?? new Date();
   const whoIsWorkingOnItUsers = await Promise.all(
     whoIsWorkingOnIt.map((id) => UserModel.findById(id)),
   );
@@ -30,6 +45,7 @@ export default async function getComputedFields(
     whoRecordedItUser?.displayName ?? '',
   );
   return {
+    lastUpdated,
     whatIsNeededSearch,
     whoIsItForSearch,
     whoIsWorkingOnItSearch,

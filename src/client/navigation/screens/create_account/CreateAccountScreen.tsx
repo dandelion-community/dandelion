@@ -3,6 +3,7 @@ import * as WebBrowser from 'expo-web-browser';
 import * as React from 'react';
 import { StyleSheet } from 'react-native';
 import { Button, Paragraph } from 'react-native-paper';
+import ScrollableScreen from 'src/client/components/ScrollableScreen';
 import Text from 'src/client/components/Text';
 import TextInput, { TextInputHandles } from 'src/client/components/TextInput';
 import View from 'src/client/components/View';
@@ -51,7 +52,7 @@ export default function CreateAccountScreen(
   } ${isConfirmPasswordValid ? '' : 'Passwords do not match.'}`;
 
   return (
-    <View style={styles.container}>
+    <ScrollableScreen>
       <TextInput
         autoComplete="email"
         autoFocus={true}
@@ -108,7 +109,7 @@ export default function CreateAccountScreen(
         <Paragraph>{hints}</Paragraph>
       </View>
       {error != null ? <Text>{error.message}</Text> : null}
-    </View>
+    </ScrollableScreen>
   );
 
   function createAccount(): void {

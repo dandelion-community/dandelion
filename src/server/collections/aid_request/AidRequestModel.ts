@@ -22,6 +22,7 @@ const AidRequestSchema = new Schema<AidRequestType>({
   createdAt: Date,
   crew: String,
   history: [AidRequestHistoryEventSchema],
+  lastUpdated: Date,
   whatIsNeeded: String,
   whatIsNeededSearch: String,
   whoIsItFor: String,

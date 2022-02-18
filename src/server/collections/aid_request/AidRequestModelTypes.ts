@@ -48,6 +48,7 @@ export type AidRequestType = {
   createdAt: Date;
   crew: string;
   history: AidRequestHistoryEvent[];
+  lastUpdated: Date;
   whatIsNeeded: string;
   whatIsNeededSearch: string;
   whoIsItFor: string;

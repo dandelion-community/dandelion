@@ -1,7 +1,7 @@
 import { gql, useQuery } from '@apollo/client';
 import * as React from 'react';
 import type { ListRenderItemInfo } from 'react-native';
-import { FlatList, StyleSheet } from 'react-native';
+import { FlatList } from 'react-native';
 import AidRequestUpdatedIDsEventStream from 'src/client/aid_request/cache/AidRequestUpdatedIDsEventStream';
 import AddAComment from 'src/client/aid_request/detail/add-a-comment/AddAComment';
 import ActivityHeader from 'src/client/aid_request/detail/rows/ActivityHeader';
@@ -21,6 +21,7 @@ import {
 import { AidRequestCardFragments } from 'src/client/aid_request/fragments/AidRequestCardFragments';
 import ErrorScreen from 'src/client/components/ErrorScreen';
 import LoadingScreen from 'src/client/components/LoadingScreen';
+import ScrollableScreen from 'src/client/components/ScrollableScreen';
 import View from 'src/client/components/View';
 import client from 'src/client/graphql/client';
 import { RequestExplorerStackScreenProps } from 'src/client/navigation/NavigationTypes';
@@ -69,7 +70,7 @@ function AidRequestDetailScreen({ route, setAidRequest }: Props): JSX.Element {
   }
 
   return (
-    <View style={styles.container}>
+    <ScrollableScreen>
       {error ? (
         <ErrorScreen error={error} />
       ) : (
@@ -81,7 +82,7 @@ function AidRequestDetailScreen({ route, setAidRequest }: Props): JSX.Element {
           renderItem={renderItem}
         />
       )}
-    </View>
+    </ScrollableScreen>
   );
 }
 
@@ -192,12 +193,4 @@ AidRequestUpdatedIDsEventStream.subscribe((aidRequestIDs: string[]): void => {
       id,
     });
   });
-});
-
-const styles = StyleSheet.create({
-  container: {
-    alignItems: 'stretch',
-    flex: 1,
-    justifyContent: 'center',
-  },
 });
