@@ -2,7 +2,7 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import * as React from 'react';
 import { RootStackParamList } from 'src/client/navigation/NavigationTypes';
 import Loading from 'src/client/utils/loading/Loading';
-import { useViewerContext } from 'src/client/viewer/ViewerContext';
+import { useViewer } from 'src/client/viewer/Viewer';
 import type {
   LoggedInViewer,
   LoggedOutViewer,
@@ -27,7 +27,7 @@ export default function useHandleViewer<
   handlers: Handlers,
   dependencies?: ReadonlyArray<unknown>,
 ): void {
-  const viewer = useViewerContext();
+  const viewer = useViewer();
   React.useEffect(() => {
     handleUpdate();
     navigation.addListener('focus', handleUpdate);

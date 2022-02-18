@@ -65,10 +65,3 @@ export type RootNavigationAllTypes =
   // Idk how else to do this
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   null | RootNavigationTypeParameterized<any>;
-
-export type RootNavigationContextType = {
-  rootNavigation: RootNavigationAllTypes;
-  setRootNavigation: <T extends keyof RootStackParamList>(
-    navigation: RootNavigationTypeParameterized<T>,
-  ) => void;
-};

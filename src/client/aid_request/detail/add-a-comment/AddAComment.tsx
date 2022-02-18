@@ -20,7 +20,7 @@ import {
 } from 'src/client/aid_request/edit/__generated__/editAidRequestMutation';
 import Monogram from 'src/client/components/Monogram';
 import useMutateWithUndo from 'src/client/graphql/useMutateWithUndo';
-import { useLoggedInViewer } from 'src/client/viewer/ViewerContext';
+import { useLoggedInViewer } from 'src/client/viewer/Viewer';
 import SendButton from './SendButton';
 
 type Props = {

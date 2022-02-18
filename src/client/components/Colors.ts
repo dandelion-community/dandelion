@@ -1,8 +1,5 @@
 import useColorScheme from 'src/client/light-or-dark/useColorScheme';
 
-const tintColorLight = '#2f95dc';
-const tintColorDark = '#fff';
-
 const Colors = {
   dark: {
     accent: '#633B48',
@@ -15,9 +12,9 @@ const Colors = {
     placeholderText: 'rgba(255,255,255,0.6)',
     tabBarBackground: '#1C1B1F',
     tabIconDefault: '#ccc',
-    tabIconSelected: tintColorDark,
+    tabIconSelected: '#fff',
     text: '#fff',
-    tint: tintColorDark,
+    tint: '#fff',
   },
   light: {
     accent: '#FFD8E4',
@@ -32,7 +29,7 @@ const Colors = {
     tabIconDefault: '#1D192B',
     tabIconSelected: '#1D192B',
     text: '#000',
-    tint: tintColorLight,
+    tint: '#2f95dc',
   },
 };
 

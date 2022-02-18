@@ -1,26 +1,18 @@
 import * as React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Snackbar } from 'react-native-paper';
-import type { ToastConfig } from './ToastContext';
-import ToastContext from './ToastContext';
+import useStore from '../store/useStore';
+import ToastStore from './ToastStore';
 
 type Props = {
   children: React.ReactChild;
 };
 
 export default function ToastProvider({ children }: Props): React.ReactElement {
-  const [toastContext, setToastContext] = React.useState<
-    ToastConfig | undefined
-  >(undefined);
-  const value = React.useMemo(
-    () => ({
-      publishToast: setToastContext,
-    }),
-    [],
-  );
+  const toastContext = useStore(ToastStore);
 
   return (
-    <ToastContext.Provider value={value}>
+    <>
       {children}
       <View style={styles.snackbar}>
         <Snackbar
@@ -33,14 +25,14 @@ export default function ToastProvider({ children }: Props): React.ReactElement {
                 }
           }
           onDismiss={() => {
-            setToastContext(undefined);
+            ToastStore.update(undefined);
           }}
           visible={toastContext != null}
         >
           {toastContext?.message ?? ''}
         </Snackbar>
       </View>
-    </ToastContext.Provider>
+    </>
   );
 }
 

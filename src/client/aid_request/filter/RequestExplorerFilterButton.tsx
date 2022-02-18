@@ -6,7 +6,7 @@ import { useRequestExplorerFilters } from 'src/client/aid_request/filter/Request
 import { ListOfAidRequestsQuery_allAidRequests_edges_node } from 'src/client/aid_request/list/__generated__/ListOfAidRequestsQuery';
 import Text from 'src/client/components/Text';
 import useColorScheme from 'src/client/light-or-dark/useColorScheme';
-import { useLoggedInViewer } from 'src/client/viewer/ViewerContext';
+import { useLoggedInViewer } from 'src/client/viewer/Viewer';
 
 type UpdateFilter = (
   oldFilter: FilterType,

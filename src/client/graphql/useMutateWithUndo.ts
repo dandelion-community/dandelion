@@ -1,6 +1,6 @@
 import { ApolloError, TypedDocumentNode, useMutation } from '@apollo/client';
 import client from 'src/client/graphql/client';
-import useToastContext from 'src/client/toast/useToastContext';
+import ToastStore from 'src/client/toast/ToastStore';
 
 type PayloadWithUndo<TObject> = {
   object: TObject | null;
@@ -46,7 +46,6 @@ export default function useMutateWithUndo<
   const [runMutation, { error, loading }] = useMutation<TData, TVariables>(
     mutation,
   );
-  const { publishToast } = useToastContext();
   return {
     error,
     loading,
@@ -64,7 +63,7 @@ export default function useMutateWithUndo<
     broadcastResponse(object ?? null);
     if (payload != null) {
       const { undoID, postpublishSummary } = payload;
-      publishToast({
+      ToastStore.update({
         message: postpublishSummary || 'Updated',
         undo:
           undoID == null || variables == null

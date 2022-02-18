@@ -6,10 +6,10 @@ import DebouncedLoadingIndicator from 'src/client/utils/DebouncedLoadingIndicato
 import Loading from 'src/client/utils/loading/Loading';
 import LoginOrRegisterActionsRow from 'src/client/viewer/LoginOrRegisterActionsRow';
 import LogoutAction from 'src/client/viewer/LogoutAction';
-import { useViewerContext } from 'src/client/viewer/ViewerContext';
+import { useViewer } from 'src/client/viewer/Viewer';
 
 export default function YourAccountMenuCard(): JSX.Element {
-  const viewer = useViewerContext();
+  const viewer = useViewer();
   return (
     <StyledCard>
       <Card.Title title="Your Account" />

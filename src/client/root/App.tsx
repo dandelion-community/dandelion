@@ -14,17 +14,18 @@ import {
 } from 'src/client/components/theme/ReactNativePaperTheme';
 import ErrorBoundary from 'src/client/error/ErrorBoundary';
 import initErrorLogging from 'src/client/error/initErrorLogging';
-import GlobalProviders from 'src/client/root/GlobalProviders';
-import ViewerProvider from 'src/client/viewer/ViewerProvider';
-import client from './graphql/client';
-import useCachedResources from './hooks/useCachedResources';
-import useColorScheme from './light-or-dark/useColorScheme';
-import Navigation from './navigation/Navigation';
+import client from 'src/client/graphql/client';
+import useCachedResources from 'src/client/hooks/useCachedResources';
+import useColorScheme from 'src/client/light-or-dark/useColorScheme';
+import Navigation from 'src/client/navigation/Navigation';
+import RootLevelComponents from 'src/client/root/RootLevelComponents';
+import useLoadViewer from 'src/client/viewer/useLoadViewer';
 
 initErrorLogging();
 
 export default function App() {
   const isLoadingComplete = useCachedResources();
+  useLoadViewer();
   const colorScheme = useColorScheme();
   const paperTheme = colorScheme === 'dark' ? DARK_THEME : LIGHT_THEME;
 
@@ -36,12 +37,10 @@ export default function App() {
         <SafeAreaProvider>
           <PaperProvider theme={paperTheme}>
             <ApolloProvider client={client}>
-              <ViewerProvider>
-                <GlobalProviders>
-                  <Navigation colorScheme={colorScheme} />
-                  <StatusBar />
-                </GlobalProviders>
-              </ViewerProvider>
+              <RootLevelComponents>
+                <Navigation colorScheme={colorScheme} />
+                <StatusBar />
+              </RootLevelComponents>
             </ApolloProvider>
           </PaperProvider>
         </SafeAreaProvider>

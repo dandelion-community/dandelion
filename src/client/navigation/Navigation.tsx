@@ -10,24 +10,25 @@ import {
   // eslint-disable-next-line prettier/prettier
   NavigationContainer,
 } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import {
+  createNativeStackNavigator,
+  NativeStackHeaderProps,
+  NativeStackNavigationOptions,
+} from '@react-navigation/native-stack';
 import * as React from 'react';
 import { ColorSchemeName } from 'react-native';
 import { Appbar } from 'react-native-paper';
 import Colors from 'src/client/components/Colors';
 import Header from 'src/client/components/Header';
 import LinkingConfiguration from './LinkingConfiguration';
-import type {
-  RootNavigationAllTypes,
-  RootStackParamList,
-} from './NavigationTypes';
-import RootNavigationContext from './RootNavigationContext';
+import type { RootStackParamList } from './NavigationTypes';
 import CreateAccountScreen from './screens/create_account/CreateAccountScreen';
 import LoginScreen from './screens/login/LoginScreen';
 import MainScreen from './screens/main/MainScreen';
 import NotFoundScreen from './screens/not_found/NotFoundScreen';
 import NotLoggedInScreen from './screens/not_logged_in/NotLoggedInScreen';
 import RecordAidRequestScreen from './screens/record_aid_request/RecordAidRequestScreen';
+import useRootNavigation from './useRootNavigation';
 
 const LIGHT_THEME = {
   ...DefaultTheme,
@@ -59,93 +60,66 @@ export default function Navigation({
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 function RootNavigator() {
-  const [rootNavigation, setRootNavigation] =
-    React.useState<RootNavigationAllTypes>(null);
+  const rootNavigation = useRootNavigation();
   return (
-    <RootNavigationContext.Provider
-      value={{ rootNavigation, setRootNavigation }}
-    >
-      <Stack.Navigator>
-        <Stack.Screen
-          component={MainScreen}
-          name="Main"
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          component={NotFoundScreen}
-          name="NotFound"
-          options={{ headerShown: false, title: 'Not Found' }}
-        />
-        <Stack.Screen
-          component={NotLoggedInScreen}
-          name="NotLoggedIn"
-          options={() => ({
-            header: ({ options }) => (
-              <Header>
-                <Appbar.Content title={options.title} />
-              </Header>
-            ),
-            title: 'Welcome!',
-          })}
-        />
-        <Stack.Screen
-          component={CreateAccountScreen}
-          name="Create Account"
-          options={() => ({
-            header: ({ options }) => (
-              <Header>
-                <Appbar.BackAction
-                  onPress={() =>
-                    rootNavigation?.canGoBack()
-                      ? rootNavigation.goBack()
-                      : rootNavigation?.replace('NotLoggedIn')
-                  }
-                />
-                <Appbar.Content title={options.title} />
-              </Header>
-            ),
-            title: 'Sign Up',
-          })}
-        />
-        <Stack.Screen
-          component={LoginScreen}
-          name="Login"
-          options={() => ({
-            header: ({ options }) => (
-              <Header>
-                <Appbar.BackAction
-                  onPress={() =>
-                    rootNavigation?.canGoBack()
-                      ? rootNavigation.goBack()
-                      : rootNavigation?.replace('NotLoggedIn')
-                  }
-                />
-                <Appbar.Content title={options.title} />
-              </Header>
-            ),
-            title: 'Log In',
-          })}
-        />
-        <Stack.Screen
-          component={RecordAidRequestScreen}
-          name="Record Request"
-          options={() => ({
-            header: ({ options }) => (
-              <Header>
-                <Appbar.BackAction
-                  onPress={() =>
-                    rootNavigation?.canGoBack()
-                      ? rootNavigation.goBack()
-                      : rootNavigation?.replace('Main')
-                  }
-                />
-                <Appbar.Content title={options.title} />
-              </Header>
-            ),
-            title: 'Record Request',
-          })}
-        />
-      </Stack.Navigator>
-    </RootNavigationContext.Provider>
+    <Stack.Navigator>
+      <Stack.Screen
+        component={MainScreen}
+        name="Main"
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        component={NotFoundScreen}
+        name="NotFound"
+        options={{ headerShown: false, title: 'Not Found' }}
+      />
+      <Stack.Screen
+        component={NotLoggedInScreen}
+        name="NotLoggedIn"
+        options={() => ({
+          header: ({ options }) => (
+            <Header>
+              <Appbar.Content title={options.title} />
+            </Header>
+          ),
+          title: 'Welcome!',
+        })}
+      />
+      <Stack.Screen
+        component={CreateAccountScreen}
+        name="Create Account"
+        options={optionsForHeaderWithBackToMainButton('Sign Up')}
+      />
+      <Stack.Screen
+        component={LoginScreen}
+        name="Login"
+        options={optionsForHeaderWithBackToMainButton('Log In')}
+      />
+      <Stack.Screen
+        component={RecordAidRequestScreen}
+        name="Record Request"
+        options={optionsForHeaderWithBackToMainButton('Record Request')}
+      />
+    </Stack.Navigator>
   );
+
+  function optionsForHeaderWithBackToMainButton(
+    title: string,
+  ): () => NativeStackNavigationOptions {
+    return () => ({
+      header: ({ options }: NativeStackHeaderProps) => (
+        <Header>
+          <Appbar.BackAction onPress={goToMain} />
+          <Appbar.Content title={options.title} />
+        </Header>
+      ),
+      title,
+    });
+  }
+
+  function goToMain(): void {
+    rootNavigation?.canGoBack()
+      ? rootNavigation.goBack()
+      : rootNavigation?.replace('Main');
+  }
 }

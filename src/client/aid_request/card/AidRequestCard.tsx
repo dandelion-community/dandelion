@@ -2,7 +2,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import * as React from 'react';
 import { Linking, Pressable, StyleSheet, View } from 'react-native';
 import { useColor } from 'src/client/aid_request/../components/Colors';
-import { useLoggedInViewer } from 'src/client/aid_request/../viewer/ViewerContext';
+import { useLoggedInViewer } from 'src/client/viewer/Viewer';
 import { GoToRequestDetailScreen } from 'src/client/aid_request/detail/AidRequestDetailScreen';
 import { isDraftID } from 'src/client/aid_request/drafts/AidRequestDraftIDs';
 import RetryPublishing, {

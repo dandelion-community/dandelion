@@ -1,17 +1,16 @@
-import * as React from 'react';
+import createStore from 'src/client/store/createStore';
+import useStore from 'src/client/store/useStore';
 import Loading from 'src/client/utils/loading/Loading';
-import type { LoggedInViewer, Viewer } from './ViewerTypes';
+import type { LoggedInViewer, Viewer } from 'src/client/viewer/ViewerTypes';
 
-const ViewerContext = React.createContext<Viewer>(Loading);
+export const ViewerStore = createStore<Viewer>(Loading);
 
-export default ViewerContext;
-
-export function useViewerContext(): Viewer {
-  return React.useContext(ViewerContext);
+export function useViewer(): Viewer {
+  return useStore(ViewerStore);
 }
 
 export function useLoggedInViewer(): LoggedInViewer {
-  const viewer = useViewerContext();
+  const viewer = useViewer();
   if (viewer === undefined || viewer === Loading) {
     throw new Error('Only call useLoggedInViewer when the viewer is logged in');
   }
@@ -29,11 +28,11 @@ export function useViewerUsername(): string {
 }
 
 export function useIsLoadingLoggedInStatus(): boolean {
-  const viewer = useViewerContext();
+  const viewer = useViewer();
   return viewer === Loading;
 }
 
 export function useIsLoggedOut(): boolean {
-  const viewer = useViewerContext();
+  const viewer = useViewer();
   return viewer === undefined;
 }

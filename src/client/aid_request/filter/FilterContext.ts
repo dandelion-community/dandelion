@@ -1,4 +1,4 @@
-import { useLoggedInViewerID } from 'src/client/viewer/ViewerContext';
+import { useLoggedInViewerID } from 'src/client/viewer/Viewer';
 
 export type FilterContext = {
   viewerID: string;

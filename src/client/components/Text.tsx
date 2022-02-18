@@ -5,14 +5,13 @@
 
 import * as React from 'react';
 import { Text as ReactNativeText } from 'react-native';
-import type { ThemeProps } from 'src/client/light-or-dark/ThemePropsType';
 import { useThemeColor } from 'src/client/light-or-dark/useThemeColor';
 
-export type TextProps = ThemeProps & ReactNativeText['props'];
+export type TextProps = ReactNativeText['props'];
 
 export default function Text(props: TextProps) {
-  const { style, lightColor, darkColor, ...otherProps } = props;
-  const color = useThemeColor({ dark: darkColor, light: lightColor }, 'text');
+  const { style, ...otherProps } = props;
+  const color = useThemeColor({ dark: undefined, light: undefined }, 'text');
 
   return <ReactNativeText style={[{ color }, style]} {...otherProps} />;
 }

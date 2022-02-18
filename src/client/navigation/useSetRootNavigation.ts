@@ -1,12 +1,14 @@
 import * as React from 'react';
-import { RootNavigationAllTypes } from './NavigationTypes';
-import useRootNavigatorContext from './useRootNavigatorContext';
+import RootNavigationStore from 'src/client/navigation/RootNavigationStore';
+import {
+  RootNavigationTypeParameterized,
+  RootStackParamList,
+} from './NavigationTypes';
 
-export default function useSetRootNavigation(
-  navigation: NonNullable<RootNavigationAllTypes>,
-): void {
-  const { setRootNavigation } = useRootNavigatorContext();
+export default function useSetRootNavigation<
+  T extends keyof RootStackParamList,
+>(navigation: RootNavigationTypeParameterized<T>): void {
   React.useEffect(() => {
-    setRootNavigation(navigation);
-  }, [setRootNavigation, navigation]);
+    RootNavigationStore.update(navigation);
+  }, [navigation]);
 }

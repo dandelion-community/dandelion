@@ -1,6 +1,7 @@
 import * as React from 'react';
-import useSearchContext from 'src/client/search/useSearchContext';
 import type { ListOfAidRequestsQueryVariables } from 'src/client/aid_request/list/__generated__/ListOfAidRequestsQuery';
+import GlobalSearchStringStore from 'src/client/global_search_string/GlobalSearchStringStore';
+import useStore from 'src/client/store/useStore';
 
 export type FilterType = NonNullable<ListOfAidRequestsQueryVariables['filter']>;
 
@@ -20,7 +21,7 @@ export function useRequestExplorerFilters(): Filters {
   const { filter, setFilters } = React.useContext<Filters>(
     RequestExplorerFiltersContext,
   );
-  const { searchString } = useSearchContext();
+  const searchString = useStore(GlobalSearchStringStore);
   const filterWithSearchString: FilterType =
     searchString === ''
       ? filter
