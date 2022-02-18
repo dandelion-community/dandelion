@@ -19,18 +19,17 @@ import useCachedResources from 'src/client/hooks/useCachedResources';
 import useColorScheme from 'src/client/light-or-dark/useColorScheme';
 import Navigation from 'src/client/navigation/Navigation';
 import RootLevelComponents from 'src/client/root/RootLevelComponents';
-import useLoadViewer from 'src/client/viewer/useLoadViewer';
+import LoadingScreen from '../components/LoadingScreen';
 
 initErrorLogging();
 
 export default function App() {
   const isLoadingComplete = useCachedResources();
-  useLoadViewer();
   const colorScheme = useColorScheme();
   const paperTheme = colorScheme === 'dark' ? DARK_THEME : LIGHT_THEME;
 
   if (!isLoadingComplete) {
-    return null;
+    return <LoadingScreen />;
   } else {
     return (
       <ErrorBoundary>

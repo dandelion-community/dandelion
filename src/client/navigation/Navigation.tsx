@@ -22,13 +22,13 @@ import Colors from 'src/client/components/Colors';
 import Header from 'src/client/components/Header';
 import LinkingConfiguration from './LinkingConfiguration';
 import type { RootStackParamList } from './NavigationTypes';
+import RootNavigationStore from './RootNavigationStore';
 import CreateAccountScreen from './screens/create_account/CreateAccountScreen';
 import LoginScreen from './screens/login/LoginScreen';
 import MainScreen from './screens/main/MainScreen';
 import NotFoundScreen from './screens/not_found/NotFoundScreen';
 import NotLoggedInScreen from './screens/not_logged_in/NotLoggedInScreen';
 import RecordAidRequestScreen from './screens/record_aid_request/RecordAidRequestScreen';
-import useRootNavigation from './useRootNavigation';
 
 const LIGHT_THEME = {
   ...DefaultTheme,
@@ -60,7 +60,6 @@ export default function Navigation({
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 function RootNavigator() {
-  const rootNavigation = useRootNavigation();
   return (
     <Stack.Navigator>
       <Stack.Screen
@@ -118,8 +117,9 @@ function RootNavigator() {
   }
 
   function goToMain(): void {
-    rootNavigation?.canGoBack()
-      ? rootNavigation.goBack()
-      : rootNavigation?.replace('Main');
+    const navigation = RootNavigationStore.getValue();
+    navigation?.canGoBack()
+      ? navigation?.goBack()
+      : navigation?.replace('Main');
   }
 }
