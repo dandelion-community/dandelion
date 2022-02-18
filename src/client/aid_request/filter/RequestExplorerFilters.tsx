@@ -8,6 +8,7 @@ import type { FilterType } from 'src/client/aid_request/filter/RequestExplorerFi
 import { useRequestExplorerFilters } from 'src/client/aid_request/filter/RequestExplorerFiltersContext';
 import { ListOfAidRequestsQuery_allAidRequests_edges_node } from 'src/client/aid_request/list/__generated__/ListOfAidRequestsQuery';
 import Text from 'src/client/components/Text';
+import useViewWidth from 'src/client/components/useViewWidth';
 import { useLoggedInViewer } from 'src/client/viewer/ViewerContext';
 import filterNulls from 'src/shared/utils/filterNulls';
 
@@ -78,11 +79,12 @@ export const FILTERS: FilterButtonProps[] = [
 ];
 
 export default function RequestExplorerFilters(): JSX.Element {
+  const viewWidth = useViewWidth();
   const { filter } = useRequestExplorerFilters();
   const { id: viewerID } = useLoggedInViewer();
   const context = { viewerID };
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { width: viewWidth }]}>
       <FlatList
         data={FILTERS}
         horizontal={true}

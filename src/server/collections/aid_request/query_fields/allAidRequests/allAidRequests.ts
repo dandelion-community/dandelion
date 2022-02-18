@@ -68,7 +68,7 @@ const aidRequests = AidRequestGraphQLType.schemaComposer.createResolver<
       ...filters,
       {
         $sort: {
-          createdAt: -1,
+          lastUpdated: -1,
         },
       },
       {

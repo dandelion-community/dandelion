@@ -4,6 +4,7 @@ import * as React from 'react';
 import { StyleSheet } from 'react-native';
 import { Button, Paragraph } from 'react-native-paper';
 import EmailLink from 'src/client/components/EmailLink';
+import ScrollableScreen from 'src/client/components/ScrollableScreen';
 import TextInput, { TextInputHandles } from 'src/client/components/TextInput';
 import View from 'src/client/components/View';
 import { RootStackScreenProps } from 'src/client/navigation/NavigationTypes';
@@ -40,7 +41,7 @@ export default function LoginScreen(props: RootStackScreenProps<'Login'>) {
   const passwordRef = React.useRef<TextInputHandles | null>(null);
 
   return (
-    <View style={styles.container}>
+    <ScrollableScreen>
       <TextInput
         autoComplete="email"
         autoFocus={true}
@@ -84,7 +85,7 @@ export default function LoginScreen(props: RootStackScreenProps<'Login'>) {
           you need help with anything else.
         </Paragraph>
       ) : null}
-    </View>
+    </ScrollableScreen>
   );
 
   async function login(): Promise<void> {
@@ -108,8 +109,5 @@ export const LOGIN_MUTATION = gql`
 const styles = StyleSheet.create({
   button: {
     marginTop: 15,
-  },
-  container: {
-    marginHorizontal: 20,
   },
 });

@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { StyleSheet } from 'react-native';
 import RequestExplorerFilters from 'src/client/aid_request/filter/RequestExplorerFilters';
 import type { FilterType } from 'src/client/aid_request/filter/RequestExplorerFiltersContext';
 import {
@@ -7,7 +6,7 @@ import {
   RequestExplorerFiltersContext,
 } from 'src/client/aid_request/filter/RequestExplorerFiltersContext';
 import ListOfRequests from 'src/client/aid_request/list/ListOfAidRequests';
-import View from 'src/client/components/View';
+import ScrollableScreen from 'src/client/components/ScrollableScreen';
 import { RequestExplorerStackScreenProps } from 'src/client/navigation/NavigationTypes';
 import RequireLoggedInScreen from 'src/client/viewer/RequireLoggedInScreen';
 
@@ -19,10 +18,10 @@ export default function RequestExplorerScreen({
   return (
     <RequireLoggedInScreen>
       <RequestExplorerFiltersContext.Provider value={{ filter, setFilters }}>
-        <View style={styles.container}>
+        <ScrollableScreen>
           <RequestExplorerFilters />
           <ListOfRequests goToRequestDetailScreen={goToRequestDetailScreen} />
-        </View>
+        </ScrollableScreen>
       </RequestExplorerFiltersContext.Provider>
     </RequireLoggedInScreen>
   );
@@ -31,17 +30,3 @@ export default function RequestExplorerScreen({
     navigation.push('AidRequestDetail', { id: aidRequestID });
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    alignItems: 'stretch',
-    flex: 1,
-    justifyContent: 'center',
-  },
-  fab: {
-    bottom: 0,
-    margin: 16,
-    position: 'absolute',
-    right: 0,
-  },
-});

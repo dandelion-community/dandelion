@@ -33,12 +33,7 @@ export default function RecordAidRequestForm({ pop }: Props): JSX.Element {
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
 
   return (
-    <ScrollView
-      ref={(ref) => {
-        scrollView.current = ref;
-      }}
-      style={{ flex: 1 }}
-    >
+    <View style={{ marginHorizontal: 8 }}>
       <CrewSelector crew={crew} crews={crews} setCrew={setCrew} />
       <WhoIsItFor
         next={focusWhatIsNeeded}
@@ -69,7 +64,7 @@ export default function RecordAidRequestForm({ pop }: Props): JSX.Element {
         </Button>
       </View>
       <Text>{errorMessage}</Text>
-    </ScrollView>
+    </View>
   );
 
   async function submit(): Promise<void> {

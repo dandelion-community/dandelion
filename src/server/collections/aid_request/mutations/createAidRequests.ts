@@ -2,8 +2,9 @@ import analytics from 'src/server/analytics';
 import type { CreateAidRequestsPayloadType } from 'src/server/collections/aid_request/AidRequestGraphQLTypes';
 import { CreateAidRequestsPayloadGraphQLType } from 'src/server/collections/aid_request/AidRequestGraphQLTypes';
 import { AidRequestModel } from 'src/server/collections/aid_request/AidRequestModel';
-import searchPrefixes from 'src/server/collections/aid_request/helpers/searchPrefixes';
 import assertLoggedIn from 'src/server/graphql/assertLoggedIn';
+import { AidRequestHistoryEvent } from '../AidRequestModelTypes';
+import getComputedFields from '../computed_fields/getComputedFields';
 
 async function createAidRequestsResolver(
   _: unknown,
@@ -24,31 +25,30 @@ async function createAidRequestsResolver(
       "You don't have permission to create a request for this crew",
     );
   }
-  const whoRecordedItUsername = user.username;
   const whoRecordedIt = user._id;
   const timestamp = new Date();
-  const creationEvent = {
+  const creationEvent: AidRequestHistoryEvent = {
     action: 'Add',
     actor: user._id,
     event: 'Created',
     timestamp,
   };
-  const aidRequests = whatAllIsNeeded.map(
-    (whatIsNeeded: string) =>
-      new AidRequestModel({
-        completed: false,
-        createdAt: Date.now(),
-        crew,
-        history: [creationEvent],
-        whatIsNeeded,
-        whatIsNeededSearch: searchPrefixes(whatIsNeeded),
-        whoIsItFor,
-        whoIsItForSearch: searchPrefixes(whoIsItFor),
-        whoIsWorkingOnIt: [],
-        whoRecordedIt,
-        whoRecordedItUsername,
-      }),
-  );
+  const aidRequests = whatAllIsNeeded.map((whatIsNeeded: string) => {
+    const fields = {
+      completed: false,
+      createdAt: new Date(),
+      crew,
+      history: [creationEvent],
+      whatIsNeeded,
+      whoIsItFor,
+      whoIsWorkingOnIt: [],
+      whoRecordedIt,
+    };
+    return new AidRequestModel({
+      ...fields,
+      ...getComputedFields(fields),
+    });
+  });
   const savedRequests = await Promise.all(
     aidRequests.map((aidRequest) => aidRequest.save()),
   );

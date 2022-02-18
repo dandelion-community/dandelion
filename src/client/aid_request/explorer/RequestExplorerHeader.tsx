@@ -1,13 +1,13 @@
 import * as React from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { Appbar, Searchbar } from 'react-native-paper';
-import Colors from 'src/client/components/Colors';
-import useColorScheme from 'src/client/light-or-dark/useColorScheme';
+import { useColor } from 'src/client/components/Colors';
+import useViewWidth from 'src/client/components/useViewWidth';
 import useSearchContext from 'src/client/search/useSearchContext';
 
 export default function RequestExplorerHeader(): JSX.Element {
-  const colorScheme = useColorScheme();
-  const headerBackgroundColor = Colors[colorScheme].tabBarBackground;
+  const viewWidth = useViewWidth();
+  const headerBackgroundColor = useColor('background');
   const { searchString, setSearchString } = useSearchContext();
   const [val, setVal] = React.useState<string>(searchString);
   React.useEffect(() => {
@@ -18,22 +18,30 @@ export default function RequestExplorerHeader(): JSX.Element {
   }, [val]);
 
   return (
-    <Appbar.Header style={{ backgroundColor: headerBackgroundColor }}>
-      <Searchbar
-        autoComplete="off"
-        autoFocus={false}
-        onChangeText={setVal}
-        placeholder="Search (who or what)"
-        style={styles.searchbar}
-        value={val}
-      />
+    <Appbar.Header
+      style={{
+        backgroundColor: headerBackgroundColor,
+        elevation: 0,
+        justifyContent: 'center',
+      }}
+    >
+      <View style={{ width: viewWidth }}>
+        <Searchbar
+          autoComplete="off"
+          autoFocus={false}
+          onChangeText={setVal}
+          placeholder="Search (who or what)"
+          style={[styles.searchbar]}
+          value={val}
+        />
+      </View>
     </Appbar.Header>
   );
 }
 
 const styles = StyleSheet.create({
   searchbar: {
-    backgroundColor: 'rgba(0,0,0,0)',
-    width: '100%',
+    backgroundColor: 'transparent',
+    elevation: 2,
   },
 });

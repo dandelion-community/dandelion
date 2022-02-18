@@ -18,6 +18,7 @@ import deleteAidRequest from 'src/server/collections/aid_request/mutations/delet
 import workingOn from 'src/server/collections/aid_request/mutations/workingOn';
 import assertLoggedIn from 'src/server/graphql/assertLoggedIn';
 import notifyListenersAboutAidRequestUpdate from 'src/server/notifications/notifyListenersAboutAidRequestUpdate';
+import getComputedFields from '../computed_fields/getComputedFields';
 
 async function editAidRequestResolver(
   _: unknown,
@@ -44,6 +45,16 @@ async function editAidRequestResolver(
     aidRequest = await AidRequestModel.findByIdAndUpdate(
       aidRequestID,
       updater,
+      {
+        new: true,
+      },
+    );
+  }
+  if (aidRequest != null) {
+    const computedFields = await getComputedFields(aidRequest);
+    aidRequest = await AidRequestModel.findByIdAndUpdate(
+      aidRequestID,
+      computedFields,
       {
         new: true,
       },
