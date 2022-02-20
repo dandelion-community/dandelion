@@ -3,7 +3,7 @@ import { Linking } from 'react-native';
 import { Button, Card, Paragraph } from 'react-native-paper';
 import StyledCard from 'src/client/components/Card';
 
-export default function FeedbackCard(): JSX.Element {
+export default function FeedbackCard(): React.ReactElement {
   return (
     <StyledCard>
       <Card.Title title="Got Feedback? 🗣️" />

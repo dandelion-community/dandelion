@@ -1,8 +1,8 @@
-import { FontAwesome } from '@expo/vector-icons';
 import * as React from 'react';
 import CreateRequestTabStackContainer from 'src/client/aid_request/create/CreateRequestTabStackContainer';
 import RequestExplorerTabStackContainer from 'src/client/aid_request/explorer/RequestExplorerTabStackContainer';
 import Colors from 'src/client/components/Colors';
+import Icon from 'src/client/components/Icon';
 import useColorScheme from 'src/client/light-or-dark/useColorScheme';
 import ThreeLinesMenuTabStackContainer from 'src/client/menu/ThreeLinesMenuTabStackContainer';
 import createMaterialBottomTabNavigator from 'src/client/navigation/bottom-navigator/createMaterialBottomTabNavigator';
@@ -43,7 +43,7 @@ export default function MainScreen({
         }: RootTabScreenProps<'RequestExplorerTabStackContainer'>) => {
           return {
             tabBarIcon: ({ color, focused }) => (
-              <TabBarIcon color={color} focused={focused} name="handshake-o" />
+              <TabBarIcon color={color} focused={focused} name="handshake" />
             ),
             title: 'All Requests',
           };
@@ -70,7 +70,7 @@ export default function MainScreen({
         }: RootTabScreenProps<'ThreeLinesMenuTabStackContainer'>) => ({
           headerShown: true,
           tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon color={color} focused={focused} name="bars" />
+            <TabBarIcon color={color} focused={focused} name="menu" />
           ),
           title: 'Menu',
         })}
@@ -82,16 +82,6 @@ export default function MainScreen({
 /**
  * You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
  */
-function TabBarIcon(props: {
-  name: React.ComponentProps<typeof FontAwesome>['name'];
-  color: string;
-  focused: boolean;
-}) {
-  return (
-    <FontAwesome
-      size={props.focused ? 23 : 19}
-      style={{ marginBottom: -3 }}
-      {...props}
-    />
-  );
+function TabBarIcon(props: { name: string; color: string; focused: boolean }) {
+  return <Icon path={props.name} size={props.focused ? 23 : 19} />;
 }

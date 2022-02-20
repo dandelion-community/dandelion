@@ -78,7 +78,7 @@ export const FILTERS: FilterButtonProps[] = [
   },
 ];
 
-export default function RequestExplorerFilters(): JSX.Element {
+export default function RequestExplorerFilters(): React.ReactElement {
   const viewWidth = useViewWidth();
   const { filter } = useRequestExplorerFilters();
   const { id: viewerID } = useLoggedInViewer();

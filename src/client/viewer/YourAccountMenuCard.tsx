@@ -8,7 +8,7 @@ import LoginOrRegisterActionsRow from 'src/client/viewer/LoginOrRegisterActionsR
 import LogoutAction from 'src/client/viewer/LogoutAction';
 import { useViewer } from 'src/client/viewer/Viewer';
 
-export default function YourAccountMenuCard(): JSX.Element {
+export default function YourAccountMenuCard(): React.ReactElement {
   const viewer = useViewer();
   return (
     <StyledCard>

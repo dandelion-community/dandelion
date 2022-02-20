@@ -1,7 +1,5 @@
 import { gql, useQuery } from '@apollo/client';
 import * as React from 'react';
-import type { ListRenderItemInfo } from 'react-native';
-import { FlatList } from 'react-native';
 import AidRequestUpdatedIDsEventStream from 'src/client/aid_request/cache/AidRequestUpdatedIDsEventStream';
 import AddAComment from 'src/client/aid_request/detail/add-a-comment/AddAComment';
 import ActivityHeader from 'src/client/aid_request/detail/rows/ActivityHeader';
@@ -21,10 +19,11 @@ import {
 import { AidRequestCardFragments } from 'src/client/aid_request/fragments/AidRequestCardFragments';
 import ErrorScreen from 'src/client/components/ErrorScreen';
 import LoadingScreen from 'src/client/components/LoadingScreen';
-import ScrollableScreen from 'src/client/components/ScrollableScreen';
 import View from 'src/client/components/View';
 import client from 'src/client/graphql/client';
 import { RequestExplorerStackScreenProps } from 'src/client/navigation/NavigationTypes';
+import ScrollableScreen from 'src/client/scrollable_screen/ScrollableScreen';
+import singleElement from 'src/client/scrollable_screen/singleElement';
 import RequireLoggedInScreen from 'src/client/viewer/RequireLoggedInScreen';
 
 export type GoToRequestDetailScreen = (aidRequestID: string) => void;
@@ -70,19 +69,27 @@ function AidRequestDetailScreen({ route, setAidRequest }: Props): JSX.Element {
   }
 
   return (
-    <ScrollableScreen>
-      {error ? (
-        <ErrorScreen error={error} />
-      ) : (
-        <FlatList
-          data={items}
-          keyExtractor={keyExtractor}
-          onRefresh={refetch}
-          refreshing={loading}
-          renderItem={renderItem}
-        />
-      )}
-    </ScrollableScreen>
+    <ScrollableScreen
+      configs={
+        error
+          ? [
+              singleElement({
+                key: 'error',
+                render: () => <ErrorScreen error={error} />,
+              }),
+            ]
+          : [
+              {
+                onRefresh: refetch,
+                refreshing: loading,
+                section: {
+                  data: items,
+                  key: 'list-items',
+                },
+              },
+            ]
+      }
+    />
   );
 }
 
@@ -147,14 +154,6 @@ function getListItems(data: AidRequestDetailsQuery | undefined): Array<Item> {
       },
     },
   ];
-}
-
-function keyExtractor({ key }: Item): string {
-  return key;
-}
-
-function renderItem({ item }: ListRenderItemInfo<Item>): React.ReactElement {
-  return item.render();
 }
 
 const AID_REQUEST_DETAILS_QUERY = gql`
