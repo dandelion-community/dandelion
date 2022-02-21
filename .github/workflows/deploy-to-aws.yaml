@@ -37,6 +37,9 @@ jobs:
           envkey_SESSION_SECRET: ${{ secrets.SESSION_SECRET }}
           envkey_MONGO_AID_REQUEST_INDEX_NAME:
             ${{ secrets.MONGO_AID_REQUEST_INDEX_NAME }}
+          envkey_SENDGRID_API_KEY: ${{ secrets.SENDGRID_API_KEY }}
+          envkey_NEW_COMMENT_NOTIFICATION_TEMPLATE_ID:
+            ${{ secrets.NEW_COMMENT_NOTIFICATION_TEMPLATE_ID }}
 
       - name: Build Client JavaScript
         run: npm run build:client

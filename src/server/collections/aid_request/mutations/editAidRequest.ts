@@ -17,7 +17,7 @@ import loadAidRequestForViewer from 'src/server/collections/aid_request/helpers/
 import deleteAidRequest from 'src/server/collections/aid_request/mutations/deleteAidRequest';
 import workingOn from 'src/server/collections/aid_request/mutations/workingOn';
 import assertLoggedIn from 'src/server/graphql/assertLoggedIn';
-import notifyListenersAboutAidRequestUpdate from 'src/server/notifications/notifyListenersAboutAidRequestUpdate';
+import notifyListenersAboutAidRequestUpdate from 'src/server/notifications/new_comment/sendNotificationsAboutNewCommentOnAidRequest';
 import getComputedFields from '../computed_fields/getComputedFields';
 
 async function editAidRequestResolver(
@@ -170,13 +170,12 @@ async function getUpdateInfo(
         return {
           historyEvent,
           onSuccess: (aidRequest: AidRequest | null) => {
-            const content = historyEvent.eventSpecificData;
-            if (aidRequest != null && !!content) {
+            if (aidRequest != null) {
               notifyListenersAboutAidRequestUpdate({
-                actor: user,
                 aidRequest,
-                content,
-                verb: 'commented',
+                comment: historyEvent,
+                commenter: user,
+                type: 'NEW_COMMENT',
               });
             }
           },

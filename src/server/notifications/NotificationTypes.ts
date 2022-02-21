@@ -1,5 +1,12 @@
-export type NotificationArgs = {
+import type { AidRequest } from 'src/server/collections/aid_request/AidRequestGraphQLTypes';
+import type { AidRequestHistoryEvent } from '../collections/aid_request/AidRequestModelTypes';
+
+export type NewCommentNotification = {
+  aidRequest: AidRequest;
+  comment: AidRequestHistoryEvent;
+  commenter: Express.User;
   recipient: Express.User;
-  subject: string;
-  body: string;
+  type: 'NEW_COMMENT';
 };
+
+export type Notification = NewCommentNotification;
