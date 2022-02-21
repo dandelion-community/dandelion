@@ -3,6 +3,7 @@ import getHistoryWithoutRemovals from 'src/server/collections/aid_request/helper
 import { viewerCanSeeUser } from 'src/server/collections/user/loader/loadUserForViewer';
 import { UserModel } from 'src/server/collections/user/UserModel';
 import filterNulls from 'src/shared/utils/filterNulls';
+import uniques from 'src/shared/utils/uniques';
 
 export default async function getAllNotificationRecipients({
   actor,
@@ -29,8 +30,9 @@ async function getAllPotentialRecipients(
   aidRequest: AidRequest,
 ): Promise<Array<Express.User>> {
   const history = getHistoryWithoutRemovals(aidRequest);
+  const userIDs = uniques(history.map(({ actor }) => actor.toString()));
   const users = await Promise.all(
-    history.map(({ actor }) => UserModel.findById(actor)),
+    userIDs.map((userID: string) => UserModel.findById(userID)),
   );
   return filterNulls(users);
 }

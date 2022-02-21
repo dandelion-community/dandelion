@@ -12,8 +12,8 @@ export default function RecordAidRequestScreen(): React.ReactElement {
       <ScrollableScreen
         configs={[
           singleElement({
-            render: () => <RecordAidRequestForm pop={pop} />,
             key: 'RecordAidRequestForm',
+            render: () => <RecordAidRequestForm pop={pop} />,
           }),
         ]}
       />
