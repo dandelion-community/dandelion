@@ -1,83 +1,11 @@
 #!/usr/bin/env node
 
+import * as web_request_listener from 'src/server/root/web_request_listener';
+
 Error.stackTraceLimit = Infinity;
 
-import debugModule from 'debug';
-import dotenv from 'dotenv';
-import http from 'http';
-import httpProxy from 'http-proxy';
-import express_app from './express_app';
+web_request_listener.init();
 
-dotenv.config();
-
-const debug = debugModule('server');
-
-const port = normalizePort(process.env.PORT || '3000');
-express_app.set('port', port);
-
-const server = http.createServer(express_app);
-
-if (process.env.HOT_RELOAD === 'True') {
-  const nodeProxy = new httpProxy({
-    target: 'ws://localhost:19006',
-    ws: true,
-  });
-  server.on('upgrade', (request, socket, head) => {
-    nodeProxy.ws(request, socket, head);
-  });
-}
-
-/**
- * Listen on provided port, on all network interfaces.
- */
-server.listen(port);
-server.on('error', onError);
-server.on('listening', onListening);
-
-function normalizePort(val: string): number | string | false {
-  const port = parseInt(val, 10);
-
-  if (isNaN(port)) {
-    // named pipe
-    return val;
-  }
-
-  if (port >= 0) {
-    // port number
-    return port;
-  }
-
-  return false;
-}
-
-function onError(error_: Error): void {
-  const error = error_ as unknown as Error & {
-    syscall: undefined | string;
-    code: undefined | string;
-  };
-  if (error.syscall !== 'listen') {
-    throw error;
-  }
-
-  const bind = typeof port === 'string' ? 'Pipe ' + port : 'Port ' + port;
-
-  // handle specific listen errors with friendly messages
-  switch (error.code) {
-    case 'EACCES':
-      console.error(bind + ' requires elevated privileges');
-      process.exit(1);
-      break;
-    case 'EADDRINUSE':
-      console.error(bind + ' is already in use');
-      process.exit(1);
-      break;
-    default:
-      throw error;
-  }
-}
-
-function onListening() {
-  const addr = server.address();
-  const bind = typeof addr === 'string' ? 'pipe ' + addr : 'port ' + addr?.port;
-  debug('Listening on ' + bind);
-}
+setTimeout(() => {
+  console.log('hello world');
+}, 5000);
