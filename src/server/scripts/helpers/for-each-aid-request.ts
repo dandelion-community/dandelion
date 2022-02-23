@@ -1,8 +1,8 @@
 import type { AidRequest } from 'src/server/collections/aid_request/AidRequestGraphQLTypes';
 import { AidRequestModel } from 'src/server/collections/aid_request/AidRequestModel';
-import express_app from 'src/server/root/express_app';
+import { createExpressApp } from 'src/server/root/web_request_listener/express_app';
 
-express_app; /* initialize */
+createExpressApp();
 
 type Handler = (aidRequest: AidRequest) => Promise<void>;
 
