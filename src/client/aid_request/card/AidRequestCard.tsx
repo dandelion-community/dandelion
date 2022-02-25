@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Linking, Pressable, StyleSheet, View } from 'react-native';
+import { Pressable, StyleSheet, View } from 'react-native';
 import { useColor } from 'src/client/aid_request/../components/Colors';
 import { GoToRequestDetailScreen } from 'src/client/aid_request/detail/AidRequestDetailScreen';
 import { isDraftID } from 'src/client/aid_request/drafts/AidRequestDraftIDs';
@@ -58,17 +58,7 @@ export default function AidRequestCard({
             </Text>
           </View>
           <View style={[styles.row, styles.bottomRow]}>
-            <PressableText
-              onPress={() => {
-                if (!isDraft) {
-                  Linking.openURL(
-                    `mailto:${aidRequest.whoRecordedIt?.username}?subject=RE: ${whatIsNeeded} for ${whoIsItFor}`,
-                  );
-                }
-              }}
-            >
-              {aidRequest.latestEvent}
-            </PressableText>
+            <PressableText>{aidRequest.latestEvent}</PressableText>
             {isDraft ? (
               <RetryPublishing
                 aidRequest={aidRequest}

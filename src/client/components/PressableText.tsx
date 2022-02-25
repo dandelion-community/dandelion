@@ -4,7 +4,7 @@ import { useThemeColor } from 'src/client/light-or-dark/useThemeColor';
 
 type Props = {
   children: string;
-  onPress: () => void;
+  onPress?: () => void;
 };
 
 export default function PressableText({
@@ -16,10 +16,14 @@ export default function PressableText({
     'text',
   );
 
-  return (
-    <Pressable onPress={onPress}>
-      <Text style={[{ color: linkColor }, styles.text]}>{children}</Text>
-    </Pressable>
+  const text = (
+    <Text style={[{ color: linkColor }, styles.text]}>{children}</Text>
+  );
+
+  return onPress == null ? (
+    text
+  ) : (
+    <Pressable onPress={onPress}>{text}</Pressable>
   );
 }
 
