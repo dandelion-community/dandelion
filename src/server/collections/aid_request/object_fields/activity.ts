@@ -3,11 +3,12 @@ import type {
   AidRequest,
   AidRequestActivityItem,
 } from 'src/server/collections/aid_request/AidRequestGraphQLTypes';
+import { AidRequestHistoryEvent } from 'src/server/collections/aid_request/AidRequestModelTypes';
+import getHistoryEventSummary from 'src/server/collections/aid_request/helpers/getHistoryEventSummary';
 import loadAidRequestForViewer from 'src/server/collections/aid_request/helpers/loadAidRequestForViewer';
+import loadUserForViewer from 'src/server/collections/user/loader/loadUserForViewer';
 import assertLoggedIn from 'src/server/graphql/assertLoggedIn';
 import ago from 'src/shared/utils/ago';
-import loadUserForViewer from '../../user/loader/loadUserForViewer';
-import { AidRequestHistoryEvent } from '../AidRequestModelTypes';
 
 type ReturnType = AidRequestActivityItem[];
 const GraphQLType = '[AidRequestActivityItem!]!';
@@ -33,48 +34,12 @@ const history: ObjectTypeComposerFieldConfigAsObjectDefinition<
             return await loadUserForViewer(viewer, event.actor.toString());
           },
           isComment: event.event === 'Comment',
-          message: getMessage(event),
+          message: getHistoryEventSummary(event),
           when: ago(event.timestamp),
         }),
       );
   },
   type: GraphQLType,
 };
-
-function getMessage(event: AidRequestHistoryEvent): string {
-  switch (event.event) {
-    case 'Comment':
-      return event.eventSpecificData ?? '';
-    case 'Completed':
-      return (() => {
-        switch (event.action) {
-          case 'Add':
-            return 'Marked this as complete';
-          case 'Remove':
-            return 'Marked this as incomplete';
-        }
-      })();
-    case 'Created':
-      return 'Recorded this';
-    case 'Deleted':
-      return (() => {
-        switch (event.action) {
-          case 'Add':
-            return 'Deleted this';
-          case 'Remove':
-            return 'Restored this from deletion';
-        }
-      })();
-    case 'WorkingOn':
-      return (() => {
-        switch (event.action) {
-          case 'Add':
-            return 'Started working on this';
-          case 'Remove':
-            return 'Stopped working on this';
-        }
-      })();
-  }
-}
 
 export default history;

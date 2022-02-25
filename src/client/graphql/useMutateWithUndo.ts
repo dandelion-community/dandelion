@@ -22,13 +22,13 @@ type Args<
   TVariables extends VariablesWithUndo,
 > = {
   broadcastResponse: (object: TObject | null) => void;
-  clearInputs: () => void;
+  clearInputs?: () => void;
   mutation: TypedDocumentNode<TData, TVariables>;
   variables?: TVariables;
 };
 
-type ReturnValues<TVariables> = {
-  mutate: (variables_?: undefined | TVariables) => unknown;
+export type ReturnValues<TVariables> = {
+  mutate: (variables_?: undefined | TVariables) => Promise<unknown>;
   loading: boolean;
   error: ApolloError | undefined;
 };
@@ -59,7 +59,7 @@ export default function useMutateWithUndo<
     const { data } = await runMutation({ variables });
     const payload = data?.payload;
     const object = payload?.object;
-    clearInputs();
+    clearInputs?.();
     broadcastResponse(object ?? null);
     if (payload != null) {
       const { undoID, postpublishSummary } = payload;

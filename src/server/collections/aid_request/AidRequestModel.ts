@@ -9,10 +9,20 @@ const AidRequestHistoryEventSchema = new Schema<AidRequestHistoryEvent>({
   action: { enum: ['Add', 'Remove'], type: String },
   actor: UserReference,
   event: {
-    enum: ['Completed', 'Created', 'WorkingOn', 'Deleted', 'Comment'],
+    enum: [
+      'ChangedWhatIsNeeded',
+      'ChangedWhoIsItFor',
+      'Comment',
+      'Completed',
+      'Created',
+      'Deleted',
+      'WorkingOn',
+    ],
     type: String,
   },
   eventSpecificData: String,
+  newValue: String,
+  oldValue: String,
   timestamp: Date,
   undoID: String,
 });

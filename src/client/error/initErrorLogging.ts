@@ -10,10 +10,7 @@ export default function initErrorLogging(): void {
       apiKey: '10aad92a8ec0e1998f3f466ae42fdfc9',
       enabledReleaseStages: ['production'],
       plugins: [new BugsnagPluginReact()],
-      releaseStage:
-        Constants.manifest?.packagerOpts?.dev === true
-          ? 'development'
-          : 'production',
+      releaseStage: Constants.debugMode ? 'development' : 'production',
     });
   }
   initialized = true;

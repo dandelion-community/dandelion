@@ -1,8 +1,5 @@
 import type { AidRequest } from 'src/server/collections/aid_request/AidRequestGraphQLTypes';
-import type {
-  AidRequestHistoryEvent,
-  AidRequestHistoryEventType,
-} from 'src/server/collections/aid_request/AidRequestModelTypes';
+import type { AidRequestHistoryEvent } from 'src/server/collections/aid_request/AidRequestModelTypes';
 
 export default function getHistoryWithoutRemovals(
   aidRequest: AidRequest,
@@ -13,8 +10,8 @@ export default function getHistoryWithoutRemovals(
   [...history]
     .sort((a, b) => a.timestamp.getTime() - b.timestamp.getTime())
     .forEach((historyEvent) => {
-      const { action, actor, event, eventSpecificData } = historyEvent;
-      const key = `${actor}.${encodeDetails(event, eventSpecificData)}`;
+      const { action, actor } = historyEvent;
+      const key = `${actor.toString()}.${encodeDetails(historyEvent)}`;
       if (action === 'Add') {
         unpairedAdds.set(key, historyEvent);
       } else {
@@ -29,10 +26,8 @@ export default function getHistoryWithoutRemovals(
   return history.filter((event) => !toRemove.has(event));
 }
 
-function encodeDetails(
-  event: AidRequestHistoryEventType,
-  eventSpecificData: string | undefined,
-): string {
+function encodeDetails(historyEvent: AidRequestHistoryEvent): string {
+  const { event, eventSpecificData, oldValue, newValue } = historyEvent;
   switch (event) {
     case 'Completed':
     case 'Created':
@@ -41,5 +36,12 @@ function encodeDetails(
       return event;
     case 'Comment':
       return `Comment:${eventSpecificData ?? ''}`;
+    case 'ChangedWhatIsNeeded':
+    case 'ChangedWhoIsItFor':
+      return JSON.stringify({
+        event,
+        newValue,
+        oldValue,
+      });
   }
 }

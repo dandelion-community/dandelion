@@ -102,13 +102,23 @@ function getListItems(data: AidRequestDetailsQuery | undefined): Array<Item> {
     {
       key: `${aidRequest._id}:whatIsNeeded`,
       render: () => {
-        return <WhatIsNeeded whatIsNeeded={aidRequest.whatIsNeeded} />;
+        return (
+          <WhatIsNeeded
+            aidRequestID={aidRequest._id}
+            whatIsNeeded={aidRequest.whatIsNeeded}
+          />
+        );
       },
     },
     {
       key: `${aidRequest._id}:whoIsItFor`,
       render: () => {
-        return <WhoIsItFor whoIsItFor={aidRequest.whoIsItFor} />;
+        return (
+          <WhoIsItFor
+            aidRequestID={aidRequest._id}
+            whoIsItFor={aidRequest.whoIsItFor}
+          />
+        );
       },
     },
     {

@@ -62,11 +62,13 @@ export const AidRequestConnectionGraphQLType =
 export const AidRequestHistoryEventTypeGraphQLType =
   schemaComposer.createEnumTC(
     `enum AidRequestHistoryEventType { 
+      ChangedWhatIsNeeded
+      ChangedWhoIsItFor
+      Comment
       Completed 
-      WorkingOn 
       Created
       Deleted
-      Comment
+      WorkingOn 
     }`,
   );
 
