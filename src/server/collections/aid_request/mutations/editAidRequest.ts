@@ -10,6 +10,8 @@ import type {
 } from 'src/server/collections/aid_request/AidRequestModelTypes';
 import getComputedFields from 'src/server/collections/aid_request/computed_fields/getComputedFields';
 import loadAidRequestForViewer from 'src/server/collections/aid_request/helpers/loadAidRequestForViewer';
+import changeWhatIsNeeded from 'src/server/collections/aid_request/mutations/edit/executors/changeWhatIsNeeded';
+import changeWhoIsItFor from 'src/server/collections/aid_request/mutations/edit/executors/changeWhoIsItFor';
 import comment from 'src/server/collections/aid_request/mutations/edit/executors/comment';
 import complete from 'src/server/collections/aid_request/mutations/edit/executors/complete';
 import delete_ from 'src/server/collections/aid_request/mutations/edit/executors/delete';
@@ -46,6 +48,7 @@ async function editAidRequestResolver(
   } = await executeUpdate({
     aidRequestID,
     input,
+    originalAidRequest,
     undoID,
     user,
   });
@@ -101,5 +104,9 @@ async function executeUpdate(args: UpdateArgs): Promise<UpdateResult> {
       return await delete_(args);
     case 'Comment':
       return await comment(args);
+    case 'ChangedWhatIsNeeded':
+      return await changeWhatIsNeeded(args);
+    case 'ChangedWhoIsItFor':
+      return await changeWhoIsItFor(args);
   }
 }

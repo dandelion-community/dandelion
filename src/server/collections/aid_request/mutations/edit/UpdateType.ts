@@ -11,8 +11,9 @@ export type UpdateResult = {
 };
 
 export type UpdateArgs = {
-  user: Express.User;
   aidRequestID: string;
   input: AidRequestActionInput;
+  originalAidRequest: AidRequest;
   undoID: string | null;
+  user: Express.User;
 };

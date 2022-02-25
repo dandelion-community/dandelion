@@ -56,6 +56,9 @@ function getActionText(event: AidRequestHistoryEventType): string {
       return 'deleted this';
     case 'Comment':
       return 'commented';
+    case 'ChangedWhatIsNeeded':
+    case 'ChangedWhoIsItFor':
+      return 'edited';
   }
 }
 

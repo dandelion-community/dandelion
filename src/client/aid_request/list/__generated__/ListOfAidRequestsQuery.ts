@@ -3,7 +3,7 @@
 // @generated
 // This file was automatically generated and should not be edited.
 
-import { AidRequestFilterInput, AidRequestUpdateActionType, AidRequestHistoryEventType } from "../../../../../__generated__/globalTypes";
+import { AidRequestFilterInput, AidRequestUpdateActionType, AidRequestHistoryEventType } from "./../../../../../__generated__/globalTypes";
 
 // ====================================================
 // GraphQL query operation: ListOfAidRequestsQuery
