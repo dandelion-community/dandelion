@@ -10,17 +10,10 @@ import {
   AidRequestHistoryEventType,
   AidRequestUpdateActionType,
 } from 'src/../__generated__/globalTypes';
-import { broadcastUpdatedAidRequest } from 'src/client/aid_request/cache/broadcastAidRequestUpdates';
 import Row from 'src/client/aid_request/detail/components/Row';
-import { EDIT_AID_REQUEST_MUTATION } from 'src/client/aid_request/edit/EditAidRequestMutation';
-import {
-  EditAidRequestMutation,
-  EditAidRequestMutationVariables,
-  EditAidRequestMutation_payload_object,
-} from 'src/client/aid_request/edit/__generated__/editAidRequestMutation';
+import useEditAidRequestWithUndo from 'src/client/aid_request/edit/useEditAidRequestWithUndo';
 import Monogram from 'src/client/components/Monogram';
-import useMutateWithUndo from 'src/client/graphql/useMutateWithUndo';
-import { useLoggedInViewer } from 'src/client/viewer/ViewerContext';
+import { useLoggedInViewer } from 'src/client/viewer/Viewer';
 import SendButton from './SendButton';
 
 type Props = {
@@ -32,25 +25,13 @@ export default function AddAComment({ aidRequestID }: Props): JSX.Element {
   const [value, setValue] = React.useState<string>('');
   const [contentHeight, setContentHeight] = React.useState<number>(20);
   const { displayName } = useLoggedInViewer();
-  const { mutate, loading } = useMutateWithUndo<
-    EditAidRequestMutation_payload_object,
-    EditAidRequestMutation,
-    EditAidRequestMutationVariables
-  >({
-    broadcastResponse: (
-      object: EditAidRequestMutation_payload_object | null,
-    ) => {
-      broadcastUpdatedAidRequest(aidRequestID, object);
-    },
+  const { mutate, loading } = useEditAidRequestWithUndo({
+    aidRequestID,
     clearInputs: () => setValue(''),
-    mutation: EDIT_AID_REQUEST_MUTATION,
-    variables: {
-      aidRequestID,
-      input: {
-        action: AidRequestUpdateActionType.Add,
-        event: AidRequestHistoryEventType.Comment,
-        eventSpecificData: value,
-      },
+    input: {
+      action: AidRequestUpdateActionType.Add,
+      event: AidRequestHistoryEventType.Comment,
+      eventSpecificData: value,
     },
   });
   const style = { height: contentHeight + (Platform.OS === 'ios' ? 16 : 0) };

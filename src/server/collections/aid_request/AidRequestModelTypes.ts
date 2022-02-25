@@ -2,11 +2,13 @@ import type { ObjectId } from 'mongodb';
 import { Schema } from 'mongoose';
 
 export type AidRequestHistoryEventType =
+  | 'ChangedWhoIsItFor'
+  | 'ChangedWhatIsNeeded'
+  | 'Comment'
   | 'Completed'
-  | 'WorkingOn'
   | 'Created'
   | 'Deleted'
-  | 'Comment';
+  | 'WorkingOn';
 
 export type AidRequestActionType = 'Add' | 'Remove';
 
@@ -15,6 +17,8 @@ export type AidRequestHistoryEvent = {
   actor: ObjectId;
   event: AidRequestHistoryEventType;
   eventSpecificData?: string | undefined;
+  newValue?: string | undefined;
+  oldValue?: string | undefined;
   timestamp: Date;
   undoID?: string | null | undefined;
 };

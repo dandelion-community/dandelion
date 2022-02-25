@@ -1,8 +1,9 @@
 import { gql, useQuery } from '@apollo/client';
 import * as React from 'react';
 import Loading from 'src/client/utils/loading/Loading';
-import type { Viewer } from './ViewerContext';
-import type { ViewerQuery } from './__generated__/ViewerQuery';
+import { ViewerStore } from 'src/client/viewer/Viewer';
+import type { Viewer } from 'src/client/viewer/ViewerTypes';
+import type { ViewerQuery } from 'src/client/viewer/__generated__/ViewerQuery';
 
 const VIEWER_QUERY = gql`
   query ViewerQuery {
@@ -15,27 +16,17 @@ const VIEWER_QUERY = gql`
   }
 `;
 
-export default function useLoadViewer(): Viewer {
+export default function useLoadViewer(): void {
   const { data, loading } = useQuery<ViewerQuery>(VIEWER_QUERY);
   const username = data?.me?.username;
   const id = data?.me?._id;
   const displayName = data?.me?.displayName || username;
   const crews = data?.me?.crews ?? [];
-  return React.useMemo((): Viewer => {
+  const viewer = React.useMemo((): Viewer => {
     if (loading) {
-      return {
-        crews: Loading,
-        displayName: Loading,
-        id: Loading,
-        username: Loading,
-      };
+      return Loading;
     } else if (username == null || id == null || displayName == null) {
-      return {
-        crews: undefined,
-        displayName: undefined,
-        id: undefined,
-        username: undefined,
-      };
+      return undefined;
     } else {
       return {
         crews,
@@ -45,4 +36,7 @@ export default function useLoadViewer(): Viewer {
       };
     }
   }, [username, loading, id, crews]);
+  React.useEffect(() => {
+    ViewerStore.update(viewer);
+  }, [viewer]);
 }

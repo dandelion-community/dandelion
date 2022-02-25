@@ -5,15 +5,14 @@
 
 import * as React from 'react';
 import { View as ReactNativeView } from 'react-native';
-import type { ThemeProps } from 'src/client/light-or-dark/ThemePropsType';
 import { useThemeColor } from 'src/client/light-or-dark/useThemeColor';
 
-export type ViewProps = ThemeProps & ReactNativeView['props'];
+export type ViewProps = ReactNativeView['props'];
 
 export default function View(props: ViewProps) {
-  const { style, lightColor, darkColor, ...otherProps } = props;
+  const { style, ...otherProps } = props;
   const backgroundColor = useThemeColor(
-    { dark: darkColor, light: lightColor },
+    { dark: undefined, light: undefined },
     'background',
   );
 

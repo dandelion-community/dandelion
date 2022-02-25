@@ -1,24 +1,27 @@
-import type { UpdateQuery } from 'mongoose';
-import { nanoid } from 'nanoid';
 import analytics from 'src/server/analytics';
-import type { AidRequest } from 'src/server/collections/aid_request/AidRequestGraphQLTypes';
 import {
+  AidRequest,
   AidRequestActionInputInputType,
   AidRequestHistoryEventGraphQLType,
 } from 'src/server/collections/aid_request/AidRequestGraphQLTypes';
-import { AidRequestModel } from 'src/server/collections/aid_request/AidRequestModel';
 import type {
   AidRequestActionInput,
-  AidRequestHistoryEvent,
   AidRequestHistoryEventForGraphQL,
-  AidRequestType,
 } from 'src/server/collections/aid_request/AidRequestModelTypes';
+import getComputedFields from 'src/server/collections/aid_request/computed_fields/getComputedFields';
 import loadAidRequestForViewer from 'src/server/collections/aid_request/helpers/loadAidRequestForViewer';
-import deleteAidRequest from 'src/server/collections/aid_request/mutations/deleteAidRequest';
-import workingOn from 'src/server/collections/aid_request/mutations/workingOn';
+import changeWhatIsNeeded from 'src/server/collections/aid_request/mutations/edit/executors/changeWhatIsNeeded';
+import changeWhoIsItFor from 'src/server/collections/aid_request/mutations/edit/executors/changeWhoIsItFor';
+import comment from 'src/server/collections/aid_request/mutations/edit/executors/comment';
+import complete from 'src/server/collections/aid_request/mutations/edit/executors/complete';
+import delete_ from 'src/server/collections/aid_request/mutations/edit/executors/delete';
+import workingOn from 'src/server/collections/aid_request/mutations/edit/executors/workingOn';
+import updateAidRequest from 'src/server/collections/aid_request/mutations/edit/helpers/updateAidRequest';
+import {
+  UpdateArgs,
+  UpdateResult,
+} from 'src/server/collections/aid_request/mutations/edit/UpdateType';
 import assertLoggedIn from 'src/server/graphql/assertLoggedIn';
-import notifyListenersAboutAidRequestUpdate from 'src/server/notifications/notifyListenersAboutAidRequestUpdate';
-import getComputedFields from '../computed_fields/getComputedFields';
 
 async function editAidRequestResolver(
   _: unknown,
@@ -38,29 +41,22 @@ async function editAidRequestResolver(
   const whatIsNeeded = originalAidRequest?.whatIsNeeded ?? '';
   const whoIsItFor = originalAidRequest?.whoIsItFor ?? '';
   const requestCrew = originalAidRequest?.crew ?? '';
-  const { postpublishSummary, updater, onSuccess, historyEvent } =
-    await getUpdateInfo(user, aidRequestID, input, undoID);
-  let aidRequest: null | AidRequest = null;
-  if (updater != null) {
-    aidRequest = await AidRequestModel.findByIdAndUpdate(
-      aidRequestID,
-      updater,
-      {
-        new: true,
-      },
-    );
-  }
+  const {
+    postpublishSummary,
+    aidRequest: updatedAidRequest,
+    historyEvent,
+  } = await executeUpdate({
+    aidRequestID,
+    input,
+    originalAidRequest,
+    undoID,
+    user,
+  });
+  let aidRequest: AidRequest | null = updatedAidRequest;
   if (aidRequest != null) {
     const computedFields = await getComputedFields(aidRequest);
-    aidRequest = await AidRequestModel.findByIdAndUpdate(
-      aidRequestID,
-      computedFields,
-      {
-        new: true,
-      },
-    );
+    aidRequest = await updateAidRequest(aidRequestID, computedFields);
   }
-  onSuccess?.(aidRequest);
   analytics.track({
     event: 'Edited Aid Request',
     properties: {
@@ -96,93 +92,21 @@ const editAidRequest = {
 
 export default editAidRequest;
 
-type UpdateInfo = {
-  updater: null | UpdateQuery<AidRequestType>;
-  postpublishSummary: string;
-  historyEvent: AidRequestHistoryEvent;
-  onSuccess?: (aidRequest: AidRequest | null) => void;
-};
-
-async function getUpdateInfo(
-  user: Express.User,
-  aidRequestID: string,
-  input: AidRequestActionInput,
-  undoID: string | null,
-): Promise<UpdateInfo> {
-  const { action, event, eventSpecificData } = input;
-  const historyEvent = {
-    action,
-    actor: user._id,
-    event,
-    eventSpecificData,
-    timestamp: new Date(),
-    undoID: nanoid(),
-  };
-  switch (event) {
+async function executeUpdate(args: UpdateArgs): Promise<UpdateResult> {
+  switch (args.input.event) {
     case 'Created':
       throw new Error('Cannot create an aid request through editAidRequest');
     case 'WorkingOn':
-      return await (async (): Promise<UpdateInfo> => {
-        const updater = await workingOn(
-          user,
-          aidRequestID,
-          action,
-          undoID,
-          historyEvent,
-        );
-        const postpublishSummary =
-          action === 'Add'
-            ? "You're working on this"
-            : "You're not working on this";
-        return { historyEvent, postpublishSummary, updater };
-      })();
+      return await workingOn(args);
     case 'Completed':
-      return (() => {
-        const historyUpdate =
-          undoID == null
-            ? { $push: { history: historyEvent } }
-            : { $pull: { history: { undoID } } };
-        const updater = {
-          ...historyUpdate,
-          completed: (action === 'Add') === (undoID == null),
-        };
-        const postpublishSummary =
-          action === 'Add' ? 'Marked as complete' : 'Marked as incomplete';
-        return { historyEvent, postpublishSummary, updater };
-      })();
+      return await complete(args);
     case 'Deleted':
-      await deleteAidRequest(user, aidRequestID, historyEvent, action, undoID);
-      return {
-        historyEvent: { ...historyEvent, undoID: null },
-        postpublishSummary: 'Deleted',
-        updater: null,
-      };
+      return await delete_(args);
     case 'Comment':
-      if (action !== 'Add') {
-        throw new Error('editAidRequest only supports Add action for Comments');
-      }
-      return (() => {
-        const updater =
-          undoID == null
-            ? { $push: { history: historyEvent } }
-            : { $pull: { history: { undoID } } };
-        const postpublishSummary = 'Added comment';
-        return {
-          historyEvent,
-          onSuccess: (aidRequest: AidRequest | null) => {
-            const content = historyEvent.eventSpecificData;
-            if (aidRequest != null && !!content) {
-              notifyListenersAboutAidRequestUpdate({
-                actor: user,
-                aidRequest,
-                content,
-                verb: 'commented',
-              });
-            }
-          },
-          postpublishSummary,
-          updater,
-        };
-      })();
+      return await comment(args);
+    case 'ChangedWhatIsNeeded':
+      return await changeWhatIsNeeded(args);
+    case 'ChangedWhoIsItFor':
+      return await changeWhoIsItFor(args);
   }
 }

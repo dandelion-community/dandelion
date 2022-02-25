@@ -3,7 +3,7 @@ import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { publishDraft } from 'src/client/aid_request/drafts/AidRequestDrafts';
 import type { AidRequestCardFragment } from 'src/client/aid_request/fragments/__generated__/AidRequestCardFragment';
 import { useColor } from 'src/client/components/Colors';
-import useToastContext from 'src/client/toast/useToastContext';
+import ToastStore from 'src/client/toast/ToastStore';
 
 type Props = {
   aidRequest: AidRequestCardFragment;
@@ -16,7 +16,6 @@ export type PublishCallback = {
 const RetryPublishing = React.forwardRef<PublishCallback, Props>(
   ({ aidRequest }: Props, ref): JSX.Element => {
     const [loadingPublish, setLoadingPublish] = React.useState<boolean>(false);
-    const { publishToast } = useToastContext();
     const borderColor = useColor('accent');
     const color = useColor('text');
     React.useImperativeHandle(ref, () => ({ publish }));
@@ -35,7 +34,7 @@ const RetryPublishing = React.forwardRef<PublishCallback, Props>(
       setLoadingPublish(true);
       const message = await publishDraft(aidRequest._id);
       setLoadingPublish(false);
-      publishToast({ message });
+      ToastStore.update({ message });
     }
   },
 );

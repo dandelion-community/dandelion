@@ -1,8 +1,6 @@
-import { MaterialCommunityIcons } from '@expo/vector-icons';
 import * as React from 'react';
 import { Linking, Pressable, StyleSheet, View } from 'react-native';
 import { useColor } from 'src/client/aid_request/../components/Colors';
-import { useLoggedInViewer } from 'src/client/aid_request/../viewer/ViewerContext';
 import { GoToRequestDetailScreen } from 'src/client/aid_request/detail/AidRequestDetailScreen';
 import { isDraftID } from 'src/client/aid_request/drafts/AidRequestDraftIDs';
 import RetryPublishing, {
@@ -10,10 +8,11 @@ import RetryPublishing, {
 } from 'src/client/aid_request/drafts/RetryPublishing';
 import AidRequestEditDrawer from 'src/client/aid_request/edit/AidRequestEditDrawer';
 import type { AidRequestCardFragment } from 'src/client/aid_request/fragments/__generated__/AidRequestCardFragment';
+import Icon from 'src/client/components/Icon';
 import PressableText from 'src/client/components/PressableText';
 import Text from 'src/client/components/Text';
 import useDrawerContext from 'src/client/drawer/useDrawerContext';
-import useColorScheme from 'src/client/light-or-dark/useColorScheme';
+import { useLoggedInViewer } from 'src/client/viewer/Viewer';
 
 type Props = {
   aidRequest: AidRequestCardFragment;
@@ -30,7 +29,6 @@ export default function AidRequestCard({
   const retryPublishingRef = React.useRef<PublishCallback | null>(null);
   const nonDraftColor = useColor('cardBackground');
   const draftColor = useColor('draftCardColor');
-  const colorScheme = useColorScheme();
   const isDraft = isDraftID(aidRequest._id);
 
   const backgroundColor = isDraft ? draftColor : nonDraftColor;
@@ -83,11 +81,7 @@ export default function AidRequestCard({
         </View>
         <View style={{ flexBasis: '1%', flexGrow: 1 }}>
           <Pressable onPress={() => openDrawer(renderEditDrawerContents)}>
-            <MaterialCommunityIcons
-              color={colorScheme === 'light' ? 'black' : 'white'}
-              name="dots-vertical"
-              size={24}
-            />
+            <Icon path="kebab" size={24} />
           </Pressable>
         </View>
       </View>

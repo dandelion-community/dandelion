@@ -1,14 +1,15 @@
 import { ApolloError, gql } from '@apollo/client';
 import { Buffer } from 'buffer';
 import * as React from 'react';
+import GlobalSearchStringStore from 'src/client/global_search_string/GlobalSearchStringStore';
 import client from 'src/client/graphql/client';
-import RootNavigationContext from 'src/client/navigation/RootNavigationContext';
-import SearchContext from 'src/client/search/SearchContext';
+import RootNavigationStore from 'src/client/navigation/RootNavigationStore';
+import useStore from 'src/client/store/useStore';
 import type {
   CreateErrorReportMutation,
   CreateErrorReportMutationVariables,
 } from 'src/client/utils/__generated__/CreateErrorReportMutation';
-import ViewerContext from 'src/client/viewer/ViewerContext';
+import { useViewer } from 'src/client/viewer/Viewer';
 
 export default function useDebugInfo(error: ApolloError): {
   errorMessage: string;
@@ -17,10 +18,9 @@ export default function useDebugInfo(error: ApolloError): {
   const errorMessage =
     (error.networkError as { result?: { errors: Error[] } }).result?.errors[0]
       .message ?? error.message;
-  const navState =
-    React.useContext(RootNavigationContext)?.rootNavigation?.getState() ?? {};
-  const viewer = React.useContext(ViewerContext);
-  const search = React.useContext(SearchContext)?.searchString ?? '';
+  const navState = useStore(RootNavigationStore)?.getState() ?? {};
+  const viewer = useViewer();
+  const search = useStore(GlobalSearchStringStore);
   const url = window?.location?.toString();
   const value = {
     errorMessage,

@@ -8,6 +8,8 @@
 //==============================================================
 
 export enum AidRequestHistoryEventType {
+  ChangedWhatIsNeeded = "ChangedWhatIsNeeded",
+  ChangedWhoIsItFor = "ChangedWhoIsItFor",
   Comment = "Comment",
   Completed = "Completed",
   Created = "Created",

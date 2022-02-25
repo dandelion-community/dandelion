@@ -46,5 +46,17 @@
   {
     "icon": "publish",
     "text": "Google Fonts"
+  },
+  {
+    "icon": "handshake",
+    "text": "Google Fonts"
+  },
+  {
+    "icon": "kebab",
+    "text": "Google Fonts"
+  },
+  {
+    "icon": "menu",
+    "text": "Google Fonts"
   }
 ]

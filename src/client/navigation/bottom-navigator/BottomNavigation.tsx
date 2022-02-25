@@ -39,6 +39,7 @@ import {
   withTheme,
 } from 'react-native-paper';
 import { IconSource } from 'react-native-paper/lib/typescript/components/Icon';
+import getURL from 'src/client/host/host';
 import BottomNavigationRouteScreen from './BottomNavigationRouteScreen';
 import Icon from './Icon';
 import useIsKeyboardShown from './useIsKeyboardShown';
@@ -1050,7 +1051,7 @@ const BottomNavigation = ({
       {/* // {MODIFIED} */}
       {/* eslint-disable-next-line react/jsx-pascal-case */}
       <FAB
-        icon="plus"
+        icon={{ uri: getURL('icons/light/plus.png') }}
         onPress={onFABPress}
         style={{
           bottom: keyboardVisible ? -100 : 0,

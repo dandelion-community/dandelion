@@ -4,14 +4,11 @@ import { BottomSheet } from 'react-native-btr';
 import Colors from 'src/client/components/Colors';
 import DrawerContext from 'src/client/drawer/DrawerContext';
 import useColorScheme from 'src/client/light-or-dark/useColorScheme';
-
-type Props = {
-  children: React.ReactChild;
-};
+import { ChildrenPropsType } from 'src/client/utils/ChildrenPropsType';
 
 export default function DrawerProvider({
   children,
-}: Props): React.ReactElement {
+}: ChildrenPropsType): React.ReactElement {
   const [{ renderer }, setRenderer] = React.useState<{
     renderer: undefined | (() => React.ReactElement);
   }>({ renderer: undefined });

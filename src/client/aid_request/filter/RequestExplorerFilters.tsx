@@ -9,7 +9,7 @@ import { useRequestExplorerFilters } from 'src/client/aid_request/filter/Request
 import { ListOfAidRequestsQuery_allAidRequests_edges_node } from 'src/client/aid_request/list/__generated__/ListOfAidRequestsQuery';
 import Text from 'src/client/components/Text';
 import useViewWidth from 'src/client/components/useViewWidth';
-import { useLoggedInViewer } from 'src/client/viewer/ViewerContext';
+import { useLoggedInViewer } from 'src/client/viewer/Viewer';
 import filterNulls from 'src/shared/utils/filterNulls';
 
 export const FILTERS: FilterButtonProps[] = [
@@ -78,7 +78,7 @@ export const FILTERS: FilterButtonProps[] = [
   },
 ];
 
-export default function RequestExplorerFilters(): JSX.Element {
+export default function RequestExplorerFilters(): React.ReactElement {
   const viewWidth = useViewWidth();
   const { filter } = useRequestExplorerFilters();
   const { id: viewerID } = useLoggedInViewer();
