@@ -1,6 +1,7 @@
 import { gql } from '@apollo/client';
 import * as React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
+import Autolink from 'react-native-autolink';
 import { useColor } from 'src/client/components/Colors';
 import Monogram from 'src/client/components/Monogram';
 import { ActivityItemFragment } from './__generated__/ActivityItemFragment';
@@ -39,7 +40,12 @@ export default function ActivityItem({ activityItem }: Props): JSX.Element {
                 : styles.contentTextNonComment,
             ]}
           >
-            {activityItem.message}
+            <Autolink
+              email={true}
+              phone="sms"
+              text={activityItem.message}
+              url={true}
+            />
           </Text>
         </View>
       </View>
