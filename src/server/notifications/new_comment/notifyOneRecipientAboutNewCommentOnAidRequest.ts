@@ -1,8 +1,14 @@
 import email from 'src/server/email';
-import type { NewCommentNotification } from 'src/server/notifications/NotificationTypes';
+import { NotifySpecificRecipientArgs } from 'src/server/notifications/NotifyArgs';
+import checkNotificationSettingsAndMaybeNotify from '../helpers/checkNotificationSettingsAndMaybeNotify';
 
 export default async function notifyOneRecipientAboutNewCommentOnAidRequest(
-  notification: NewCommentNotification,
+  args: NotifySpecificRecipientArgs,
 ): Promise<void> {
-  await email.sendNewCommentEmail(notification);
+  await checkNotificationSettingsAndMaybeNotify({
+    args,
+    notifiableEvent: 'NewComment',
+    notificationMethod: 'Email',
+    notify: async () => await email.sendNewCommentEmail(args),
+  });
 }

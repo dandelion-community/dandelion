@@ -1,11 +1,14 @@
 import sendNotificationsAboutNewCommentOnAidRequest from 'src/server/notifications/new_comment/sendNotificationsAboutNewCommentOnAidRequest';
-import type { Notification } from 'src/server/notifications/NotificationTypes';
+import type { NotifyArgs } from 'src/server/notifications/NotifyArgs';
+import afterRequestIsComplete from 'src/server/utils/afterRequestIsComplete';
 
-export default async function notify(
-  notification: Notification,
-): Promise<void> {
-  switch (notification.type) {
-    case 'NEW_COMMENT':
-      return await sendNotificationsAboutNewCommentOnAidRequest(notification);
+export default function notify(args: NotifyArgs): void {
+  afterRequestIsComplete(args.req, () => notifyImpl(args));
+}
+
+function notifyImpl(args: NotifyArgs): void {
+  switch (args.type) {
+    case 'NewComment':
+      sendNotificationsAboutNewCommentOnAidRequest(args);
   }
 }

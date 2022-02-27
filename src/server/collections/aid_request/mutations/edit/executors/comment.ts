@@ -6,7 +6,7 @@ import type {
   UpdateArgs,
   UpdateResult,
 } from 'src/server/collections/aid_request/mutations/edit/UpdateType';
-import notifyListenersAboutAidRequestUpdate from 'src/server/notifications/new_comment/sendNotificationsAboutNewCommentOnAidRequest';
+import notify from 'src/server/notifications/notify';
 
 export default async function comment(args: UpdateArgs): Promise<UpdateResult> {
   const isAdd = args.input.action === 'Add';
@@ -22,11 +22,12 @@ export default async function comment(args: UpdateArgs): Promise<UpdateResult> {
   const aidRequest = await updateAidRequest(args.aidRequestID, historyUpdate);
 
   if (!isUndo) {
-    notifyListenersAboutAidRequestUpdate({
+    notify({
       aidRequest,
       comment: historyEvent,
       commenter: args.user,
-      type: 'NEW_COMMENT',
+      req: args.req,
+      type: 'NewComment',
     });
   }
 
