@@ -1,32 +1,39 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import deepEqual from 'deep-equal';
 import * as React from 'react';
 import { Appbar } from 'react-native-paper';
 import AidRequestDetailScreen from 'src/client/aid_request/detail/AidRequestDetailScreen';
+import AidRequestDetailHeaderButtons from 'src/client/aid_request/detail/header/AidRequestDetailHeaderButtons';
 import { AidRequestDetailsQuery_aidRequest } from 'src/client/aid_request/detail/__generated__/AidRequestDetailsQuery';
 import RequestExplorerHeader from 'src/client/aid_request/explorer/RequestExplorerHeader';
 import RequestExplorerScreen from 'src/client/aid_request/explorer/RequestExplorerScreen';
+import AidRequestNotificationSettingsScreen from 'src/client/aid_request/notification_settings/AidRequestNotificationSettingsScreen';
 import Header from 'src/client/components/Header';
-import Icon from 'src/client/components/Icon';
-import {
-  RequestExplorerStackParamList,
-  // prettier expects a comma but "editor.codeActionsOnSave": { "source.organizeImports": true } removes the comma
-  RootTabScreenProps,
-} from 'src/client/navigation/NavigationTypes';
+import { RequestExplorerStackParamList } from 'src/client/navigation/NavigationTypes';
 import StackNavigatorInsideTabNavigator from 'src/client/navigation/StackNavigatorInsideTabNavigator';
-import share from 'src/client/utils/share';
+import RequestExplorerNavigationStore from './navigation/RequestExplorerNavigationStore';
 
 const Stack = createNativeStackNavigator<RequestExplorerStackParamList>();
 
 export type ExtraProps = { navigateToProfile: () => void };
 
-export default function RequestExplorerTabStackContainer({
-  navigation,
-}: RootTabScreenProps<'RequestExplorerTabStackContainer'>): JSX.Element {
+export default function RequestExplorerTabStackContainer(): JSX.Element {
   const [aidRequest, setAidRequest] = React.useState<
     AidRequestDetailsQuery_aidRequest | undefined
   >(undefined);
   const AidRequestDetailScreenComponent = React.useCallback((props) => {
-    return <AidRequestDetailScreen {...props} setAidRequest={setAidRequest} />;
+    return (
+      <AidRequestDetailScreen
+        {...props}
+        setAidRequest={(
+          newAidRequest: AidRequestDetailsQuery_aidRequest,
+        ): void => {
+          if (!deepEqual(aidRequest, newAidRequest)) {
+            setAidRequest(newAidRequest);
+          }
+        }}
+      />
+    );
   }, []);
   return (
     <StackNavigatorInsideTabNavigator>
@@ -45,32 +52,36 @@ export default function RequestExplorerTabStackContainer({
           options={() => ({
             header: ({ options }) => (
               <Header>
-                <Appbar.BackAction
-                  onPress={() =>
-                    navigation?.canGoBack()
-                      ? navigation.goBack()
-                      : navigation?.replace('Main')
-                  }
-                />
+                <Appbar.BackAction onPress={goBack} />
                 <Appbar.Content title={options.title} />
-                <Icon
-                  onPress={async () => {
-                    if (aidRequest != null) {
-                      await share(
-                        `${aidRequest.whatIsNeeded} for ${aidRequest.whoIsItFor}`,
-                        `https://dandelion.supplies/r?id=${aidRequest._id}`,
-                      );
-                    }
-                  }}
-                  path="share"
-                  scheme="dark"
-                />
+                <AidRequestDetailHeaderButtons aidRequest={aidRequest} />
               </Header>
             ),
             title: 'Request',
           })}
         />
+        <Stack.Screen
+          component={AidRequestNotificationSettingsScreen}
+          name="AidRequestNotificationSettings"
+          options={() => ({
+            header: ({ options }) => (
+              <Header>
+                <Appbar.BackAction onPress={goBack} />
+                <Appbar.Content title={options.title} />
+                <AidRequestDetailHeaderButtons aidRequest={aidRequest} />
+              </Header>
+            ),
+            title: 'Notification Settings',
+          })}
+        />
       </Stack.Navigator>
     </StackNavigatorInsideTabNavigator>
   );
+}
+
+function goBack(): void {
+  const navigation = RequestExplorerNavigationStore.getValue();
+  navigation?.canGoBack()
+    ? navigation?.goBack()
+    : navigation?.replace('RequestExplorer');
 }

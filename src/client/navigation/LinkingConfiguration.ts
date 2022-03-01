@@ -23,6 +23,7 @@ const linking: LinkingOptions<RootStackParamList> = {
           RequestExplorerTabStackContainer: {
             screens: {
               AidRequestDetail: 'r',
+              AidRequestNotificationSettings: 'r/notification_settings',
               RequestExplorer: '',
             },
           },
@@ -37,7 +38,7 @@ const linking: LinkingOptions<RootStackParamList> = {
       NotLoggedIn: 'loggedout',
     },
   },
-  prefixes: [Linking.makeUrl('/')],
+  prefixes: [Linking.createURL('/')],
 };
 
 export default linking;

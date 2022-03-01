@@ -1,6 +1,6 @@
 import sendgridMail from '@sendgrid/mail';
 import dotenv from 'dotenv';
-import type { NewCommentNotification } from 'src/server/notifications/NotificationTypes';
+import { NotifySpecificRecipientArgs } from 'src/server/notifications/NotifyArgs';
 
 dotenv.config();
 
@@ -23,7 +23,7 @@ async function sendNewCommentEmail({
   comment,
   commenter,
   recipient,
-}: NewCommentNotification): Promise<void> {
+}: NotifySpecificRecipientArgs): Promise<void> {
   const msg = {
     dynamicTemplateData: {
       comment_value: comment.eventSpecificData ?? 'Unknown',

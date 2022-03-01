@@ -20,15 +20,15 @@ import { ColorSchemeName } from 'react-native';
 import { Appbar } from 'react-native-paper';
 import Colors from 'src/client/components/Colors';
 import Header from 'src/client/components/Header';
-import LinkingConfiguration from './LinkingConfiguration';
-import type { RootStackParamList } from './NavigationTypes';
-import RootNavigationStore from './RootNavigationStore';
-import CreateAccountScreen from './screens/create_account/CreateAccountScreen';
-import LoginScreen from './screens/login/LoginScreen';
-import MainScreen from './screens/main/MainScreen';
-import NotFoundScreen from './screens/not_found/NotFoundScreen';
-import NotLoggedInScreen from './screens/not_logged_in/NotLoggedInScreen';
-import RecordAidRequestScreen from './screens/record_aid_request/RecordAidRequestScreen';
+import LinkingConfiguration from 'src/client/navigation/LinkingConfiguration';
+import navigateToMain from 'src/client/navigation/navigateToMain';
+import type { RootStackParamList } from 'src/client/navigation/NavigationTypes';
+import CreateAccountScreen from 'src/client/navigation/screens/create_account/CreateAccountScreen';
+import LoginScreen from 'src/client/navigation/screens/login/LoginScreen';
+import MainScreen from 'src/client/navigation/screens/main/MainScreen';
+import NotFoundScreen from 'src/client/navigation/screens/not_found/NotFoundScreen';
+import NotLoggedInScreen from 'src/client/navigation/screens/not_logged_in/NotLoggedInScreen';
+import RecordAidRequestScreen from 'src/client/navigation/screens/record_aid_request/RecordAidRequestScreen';
 
 const LIGHT_THEME = {
   ...DefaultTheme,
@@ -108,18 +108,11 @@ function RootNavigator() {
     return () => ({
       header: ({ options }: NativeStackHeaderProps) => (
         <Header>
-          <Appbar.BackAction onPress={goToMain} />
+          <Appbar.BackAction onPress={navigateToMain} />
           <Appbar.Content title={options.title} />
         </Header>
       ),
       title,
     });
-  }
-
-  function goToMain(): void {
-    const navigation = RootNavigationStore.getValue();
-    navigation?.canGoBack()
-      ? navigation?.goBack()
-      : navigation?.replace('Main');
   }
 }

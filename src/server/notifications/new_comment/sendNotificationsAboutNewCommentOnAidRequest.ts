@@ -1,13 +1,12 @@
-import getAllNotificationRecipients from 'src/server/notifications/getAllNotificationRecipients';
+import getAllNotificationRecipients from 'src/server/notifications/helpers/getAllNotificationRecipients';
 import notifyOneRecipientAboutNewCommentOnAidRequest from 'src/server/notifications/new_comment/notifyOneRecipientAboutNewCommentOnAidRequest';
-import { NewCommentNotification } from 'src/server/notifications/NotificationTypes';
+import { NotifyArgs } from 'src/server/notifications/NotifyArgs';
 
 export default async function sendNotificationsAboutNewCommentOnAidRequest({
   aidRequest,
-  comment,
   commenter,
-  type,
-}: Omit<NewCommentNotification, 'recipient'>): Promise<void> {
+  ...rest
+}: NotifyArgs): Promise<void> {
   const recipients = await getAllNotificationRecipients({
     actor: commenter,
     aidRequest,
@@ -16,10 +15,9 @@ export default async function sendNotificationsAboutNewCommentOnAidRequest({
     recipients.map(async (recipient) => {
       await notifyOneRecipientAboutNewCommentOnAidRequest({
         aidRequest,
-        comment,
         commenter,
         recipient,
-        type,
+        ...rest,
       });
     }),
   );

@@ -22,6 +22,19 @@ export enum AidRequestUpdateActionType {
   Remove = "Remove",
 }
 
+export enum NotifiableEventOnAidRequest {
+  NewComment = "NewComment",
+}
+
+export enum NotificationMethod {
+  Email = "Email",
+}
+
+export enum SubscribeOrUnsubscribe {
+  Subscribe = "Subscribe",
+  Unsubscribe = "Unsubscribe",
+}
+
 export interface AidRequestActionInputInput {
   action: AidRequestUpdateActionType;
   event: AidRequestHistoryEventType;

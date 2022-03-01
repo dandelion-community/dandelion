@@ -49,6 +49,7 @@ async function editAidRequestResolver(
     aidRequestID,
     input,
     originalAidRequest,
+    req,
     undoID,
     user,
   });

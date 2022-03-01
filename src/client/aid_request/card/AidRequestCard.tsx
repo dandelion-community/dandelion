@@ -8,22 +8,20 @@ import RetryPublishing, {
 } from 'src/client/aid_request/drafts/RetryPublishing';
 import AidRequestEditDrawer from 'src/client/aid_request/edit/AidRequestEditDrawer';
 import type { AidRequestCardFragment } from 'src/client/aid_request/fragments/__generated__/AidRequestCardFragment';
-import Icon from 'src/client/components/Icon';
+import DrawerButton from 'src/client/components/DrawerButton';
 import PressableText from 'src/client/components/PressableText';
 import Text from 'src/client/components/Text';
-import useDrawerContext from 'src/client/drawer/useDrawerContext';
 import { useLoggedInViewer } from 'src/client/viewer/Viewer';
 
 type Props = {
   aidRequest: AidRequestCardFragment;
-  goToRequestDetailScreen: GoToRequestDetailScreen;
+  goToRequestDetailScreen?: GoToRequestDetailScreen;
 };
 
 export default function AidRequestCard({
   aidRequest,
   goToRequestDetailScreen,
 }: Props): JSX.Element {
-  const { openDrawer } = useDrawerContext();
   const viewer = useLoggedInViewer();
   const { whatIsNeeded, whoIsItFor } = aidRequest;
   const retryPublishingRef = React.useRef<PublishCallback | null>(null);
@@ -70,9 +68,10 @@ export default function AidRequestCard({
           </View>
         </View>
         <View style={{ flexBasis: '1%', flexGrow: 1 }}>
-          <Pressable onPress={() => openDrawer(renderEditDrawerContents)}>
-            <Icon path="kebab" size={24} />
-          </Pressable>
+          <DrawerButton
+            iconSize={24}
+            renderDrawerContents={renderEditDrawerContents}
+          />
         </View>
       </View>
     </Pressable>
@@ -82,7 +81,7 @@ export default function AidRequestCard({
     if (isDraft) {
       retryPublishingRef.current?.publish();
     } else {
-      goToRequestDetailScreen(aidRequest._id);
+      goToRequestDetailScreen?.(aidRequest._id);
     }
   }
 
