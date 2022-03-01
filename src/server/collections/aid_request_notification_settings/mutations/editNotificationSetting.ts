@@ -1,5 +1,8 @@
 import getAidRequestNotificationSettings from 'src/server/collections/aid_request_notification_settings//helpers/getAidRequestNotificationSettings';
-import { AidRequestChangeNotificationSettingsEventGraphQLType } from 'src/server/collections/aid_request_notification_settings/AidRequestNotificationSettingsGraphQLTypes';
+import {
+  AidRequestChangeNotificationSettingsEventGraphQLType,
+  AidRequestEditNotificationSettingsInputType,
+} from 'src/server/collections/aid_request_notification_settings/AidRequestNotificationSettingsGraphQLTypes';
 import {
   ChangeNotificationSettingEvent,
   ChangeNotificationSettingEventForGraphQL,
@@ -14,14 +17,14 @@ async function editNotificationSettingResolver(
   _: unknown,
   {
     aidRequestID,
-    notificationMethod,
-    notifiableEvent,
-    subscribeOrUnsubscribe,
+    input,
   }: {
     aidRequestID: string;
-    notificationMethod: NotificationMethod;
-    notifiableEvent: NotifiableEventOnAidRequest;
-    subscribeOrUnsubscribe: SubscribeOrUnsubscribe;
+    input: {
+      notificationMethod: NotificationMethod;
+      notifiableEvent: NotifiableEventOnAidRequest;
+      subscribeOrUnsubscribe: SubscribeOrUnsubscribe;
+    };
   },
   req: Express.Request,
 ): Promise<ChangeNotificationSettingEventForGraphQL> {
@@ -32,9 +35,7 @@ async function editNotificationSettingResolver(
   );
 
   const event: ChangeNotificationSettingEvent = {
-    notifiableEvent,
-    notificationMethod,
-    subscribeOrUnsubscribe,
+    ...input,
     timestamp: new Date(),
   };
 
@@ -59,9 +60,7 @@ async function editNotificationSettingResolver(
 const editNotificationSetting = {
   args: {
     aidRequestID: 'String!',
-    notifiableEvent: 'NotifiableEventOnAidRequest!',
-    notificationMethod: 'NotificationMethod!',
-    subscribeOrUnsubscribe: 'SubscribeOrUnsubscribe!',
+    input: AidRequestEditNotificationSettingsInputType,
   },
   resolve: editNotificationSettingResolver,
   type: AidRequestChangeNotificationSettingsEventGraphQLType,

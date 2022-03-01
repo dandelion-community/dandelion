@@ -25,6 +25,7 @@ import { RequestExplorerStackScreenProps } from 'src/client/navigation/Navigatio
 import ScrollableScreen from 'src/client/scrollable_screen/ScrollableScreen';
 import singleElement from 'src/client/scrollable_screen/singleElement';
 import RequireLoggedInScreen from 'src/client/viewer/RequireLoggedInScreen';
+import useSetRequestExplorerNavigation from '../explorer/navigation/useSetRequestExplorerNavigation';
 
 export type GoToRequestDetailScreen = (aidRequestID: string) => void;
 
@@ -42,6 +43,7 @@ type Props = RequestExplorerStackScreenProps<'AidRequestDetail'> & {
 export default function AidRequestDetailScreenWrapper(
   props: Props,
 ): JSX.Element {
+  useSetRequestExplorerNavigation(props.navigation);
   return (
     <RequireLoggedInScreen>
       <AidRequestDetailScreen {...props} />

@@ -1,4 +1,5 @@
 import * as React from 'react';
+import useSetRequestExplorerNavigation from 'src/client/aid_request/explorer/navigation/useSetRequestExplorerNavigation';
 import RequestExplorerFilters from 'src/client/aid_request/filter/RequestExplorerFilters';
 import type { FilterType } from 'src/client/aid_request/filter/RequestExplorerFiltersContext';
 import {
@@ -14,6 +15,7 @@ import RequireLoggedInScreen from 'src/client/viewer/RequireLoggedInScreen';
 export default function RequestExplorerScreen({
   navigation,
 }: RequestExplorerStackScreenProps<'RequestExplorer'>): JSX.Element {
+  useSetRequestExplorerNavigation(navigation);
   const [filter, setFilters] = React.useState<FilterType>(DEFAULT_FILTER);
 
   return (

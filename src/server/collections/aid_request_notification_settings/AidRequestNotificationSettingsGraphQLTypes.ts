@@ -18,7 +18,8 @@ export const AidRequestNotificationSettingsGraphQLType =
   schemaComposer.createObjectTC<AidRequestNotificationSettingsTypeForGraphQL>({
     fields: {
       aidRequest: 'AidRequest!',
-      history: '[AidRequestChangeNotificationSettingEvent!]!',
+      history: '[AidRequestChangeNotificationSettingsEvent!]!',
+      settings: '[AidRequestNotificationCurrentSetting!]!',
       user: 'User!',
     },
     name: 'AidRequestNotificationSettings',
@@ -46,6 +47,12 @@ export const AidRequestNotificationCurrentSettingGraphQLType =
         ...NotificationSettingDescriptorFields,
         reason: 'String!',
       },
-      name: 'AidRequestChangeNotificationSettingsEvent',
+      name: 'AidRequestNotificationCurrentSetting',
     },
   );
+
+export const AidRequestEditNotificationSettingsInputType =
+  schemaComposer.createInputTC({
+    fields: NotificationSettingDescriptorFields,
+    name: 'AidRequestEditNotificationSettingsInput',
+  });
