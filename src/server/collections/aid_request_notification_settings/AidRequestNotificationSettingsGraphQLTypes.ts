@@ -46,6 +46,7 @@ export const AidRequestNotificationCurrentSettingGraphQLType =
       fields: {
         ...NotificationSettingDescriptorFields,
         reason: 'String!',
+        title: 'String!',
       },
       name: 'AidRequestNotificationCurrentSetting',
     },

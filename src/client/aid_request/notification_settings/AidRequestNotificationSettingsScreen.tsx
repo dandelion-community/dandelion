@@ -128,6 +128,7 @@ const AID_REQUEST_NOTIFICATION_SETTINGS_QUERY = gql`
         notificationMethod
         subscribeOrUnsubscribe
         reason
+        title
       }
     }
   }

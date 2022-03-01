@@ -18,15 +18,30 @@ type Config = Record<
         defaultValue: SubscribeOrUnsubscribe;
       }
     >;
+    // The header in AidRequestNotificationSettingsScreen for this event.
+    // This is not shown for the "Any" event.
+    settingsTitle: string;
+    // You are subscribed to ____ on this requests
+    shortNoun: string;
   }
 >;
 
 const CONFIG: Config = {
+  Any: {
+    description: "You're subscribed to this request",
+    notificationMethods: {
+      Email: { defaultValue: 'Subscribe' },
+    },
+    settingsTitle: 'Updates',
+    shortNoun: 'updates',
+  },
   NewComment: {
     description: "Someone commented on a request you're subscribed to",
     notificationMethods: {
       Email: { defaultValue: 'Subscribe' },
     },
+    settingsTitle: 'New Comments',
+    shortNoun: 'new comments',
   },
 };
 

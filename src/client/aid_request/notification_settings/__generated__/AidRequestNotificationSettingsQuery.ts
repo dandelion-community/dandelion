@@ -52,6 +52,7 @@ export interface AidRequestNotificationSettingsQuery_aidRequestNotificationSetti
   notificationMethod: NotificationMethod;
   subscribeOrUnsubscribe: SubscribeOrUnsubscribe;
   reason: string;
+  title: string;
 }
 
 export interface AidRequestNotificationSettingsQuery_aidRequestNotificationSettings {

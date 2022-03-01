@@ -29,6 +29,7 @@ export type AidRequestNotificationSettingsType = {
 export type AidRequestNotificationCurrentSettingForGraphQL =
   NotificationSettingDescriptor & {
     reason: string;
+    title: string;
   };
 
 export type AidRequestNotificationSettingsTypeForGraphQL = {
