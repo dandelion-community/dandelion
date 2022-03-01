@@ -3,6 +3,7 @@ import {
   AidRequestChangeNotificationSettingsEventGraphQLType,
   AidRequestEditNotificationSettingsInputType,
 } from 'src/server/collections/aid_request_notification_settings/AidRequestNotificationSettingsGraphQLTypes';
+import { AidRequestNotificationSettingsModel } from 'src/server/collections/aid_request_notification_settings/AidRequestNotificationSettingsModel';
 import {
   ChangeNotificationSettingEvent,
   ChangeNotificationSettingEventForGraphQL,
@@ -29,7 +30,7 @@ async function editNotificationSettingResolver(
   req: Express.Request,
 ): Promise<ChangeNotificationSettingEventForGraphQL> {
   const user = assertLoggedIn(req, 'Create aid request');
-  let notificationSettings = await getAidRequestNotificationSettings(
+  const notificationSettings = await getAidRequestNotificationSettings(
     user,
     aidRequestID,
   );
@@ -39,20 +40,22 @@ async function editNotificationSettingResolver(
     timestamp: new Date(),
   };
 
-  notificationSettings = await notificationSettings.update(
-    {
-      $push: { history: event },
-    },
-    { new: true },
-  );
+  const updatedNotificationSettings =
+    await AidRequestNotificationSettingsModel.findByIdAndUpdate(
+      notificationSettings._id,
+      {
+        $push: { history: event },
+      },
+      { new: true },
+    );
 
-  if (notificationSettings == null) {
+  if (updatedNotificationSettings == null) {
     throw new Error('Unable to udpate notification settings');
   }
 
   return graphqlifyAidRequestChangeNotificationSettingHistoryEvent({
     event,
-    notificationSettings,
+    notificationSettings: updatedNotificationSettings,
     user,
   });
 }

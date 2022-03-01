@@ -5,7 +5,7 @@ import {
 } from '../AidRequestNotificationSettingsModelTypes';
 import graphqlifyAidRequestNotificationSettings from './graphqlifyAidRequestNotificationSettings';
 
-export default function graphqlifyHistoryEvent({
+export default function graphqlifyAidRequestChangeNotificationSettingHistoryEvent({
   user,
   event,
   notificationSettings,

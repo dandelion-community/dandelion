@@ -111,9 +111,7 @@ async function getCurrentSettingForNotificationOnAidRequestImpl(
           isSubscribed,
           reason: getRequestStatusReason(
             isSubscribed,
-            `you explicitly ${isSubscribed ? '' : 'un'}subscribed ${ago(
-              timestamp,
-            )}`,
+            `you changed this setting ${ago(timestamp)}`,
           ),
         };
       } else {
@@ -121,7 +119,7 @@ async function getCurrentSettingForNotificationOnAidRequestImpl(
           isSubscribed,
           reason: getEventStatusReason(
             isSubscribed,
-            `you explicitly changed this setting ${ago(timestamp)}`,
+            `you changed this setting ${ago(timestamp)}`,
             { isDefault: false },
           ),
         };
@@ -132,10 +130,7 @@ async function getCurrentSettingForNotificationOnAidRequestImpl(
   if (!requestStatus.isSubscribed || notifiableEvent === 'Any') {
     return createResult(requestStatus.isSubscribed, requestStatus.reason);
   } else {
-    return createResult(
-      eventStatus.isSubscribed,
-      `${requestStatus.reason}. ${eventStatus.reason}`,
-    );
+    return createResult(eventStatus.isSubscribed, eventStatus.reason);
   }
 
   function getInitialRequestStatus(): {
@@ -194,7 +189,7 @@ async function getCurrentSettingForNotificationOnAidRequestImpl(
   function getRequestStatusReason(isSubscribed: boolean, why: string): string {
     return `You are ${
       isSubscribed ? '' : 'not '
-    } subscribed to updates on this request because ${why}`;
+    }subscribed to updates on this request because ${why}`;
   }
 
   function getEventStatusReason(
@@ -202,7 +197,7 @@ async function getCurrentSettingForNotificationOnAidRequestImpl(
     why: string,
     { isDefault }: { isDefault: boolean },
   ): string {
-    return `You are ${isSubscribed ? '' : 'not '} subscribed to ${
+    return `You are ${isSubscribed ? '' : 'not '}subscribed to ${
       AidRequestNotificationsConfig[notifiableEvent].shortNoun
     } on ${
       isDefault ? "requests you're subscribed to" : 'this request'

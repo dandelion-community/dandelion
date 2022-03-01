@@ -4,17 +4,34 @@ import { useColor } from 'src/client/components/Colors';
 
 type Props = {
   children: string;
+  extraBig?: boolean;
 };
 
-export default function Row({ children }: Props): JSX.Element {
+export default function Row({ children, extraBig }: Props): JSX.Element {
   const color = useColor('text');
-  return <Text style={[{ color }, styles.rowTitle]}>{children}</Text>;
+  return (
+    <Text
+      style={[
+        { color },
+        styles.rowTitle,
+        extraBig ? styles.extraBig : styles.regularSize,
+      ]}
+    >
+      {children}
+    </Text>
+  );
 }
 
 const styles = StyleSheet.create({
-  rowTitle: {
+  extraBig: {
+    fontSize: 20,
+    lineHeight: 24,
+  },
+  regularSize: {
     fontSize: 14,
-    fontWeight: '500',
     lineHeight: 20,
+  },
+  rowTitle: {
+    fontWeight: '500',
   },
 });

@@ -42,6 +42,12 @@ export interface AidRequestActionInputInput {
   eventSpecificData?: string | null;
 }
 
+export interface AidRequestEditNotificationSettingsInput {
+  notifiableEvent: NotifiableEventOnAidRequest;
+  notificationMethod: NotificationMethod;
+  subscribeOrUnsubscribe: SubscribeOrUnsubscribe;
+}
+
 export interface AidRequestFilterInput {
   completed?: boolean | null;
   iAmWorkingOnIt?: boolean | null;

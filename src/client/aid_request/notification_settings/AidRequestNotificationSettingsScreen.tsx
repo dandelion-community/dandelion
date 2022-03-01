@@ -16,7 +16,9 @@ import { RequestExplorerStackScreenProps } from 'src/client/navigation/Navigatio
 import ScrollableScreen from 'src/client/scrollable_screen/ScrollableScreen';
 import singleElement from 'src/client/scrollable_screen/singleElement';
 import RequireLoggedInScreen from 'src/client/viewer/RequireLoggedInScreen';
+import { AidRequestNotificationSettingsFragment } from './helpers/AidRequestNotificationSettingsFragment';
 import Header from './rows/Header';
+import SubscribeToggle from './rows/SubscribeToggle';
 
 export type GoToRequestDetailScreen = (aidRequestID: string) => void;
 
@@ -85,29 +87,52 @@ function getListItems(
     return [];
   }
   const { aidRequest, settings } = notificationSettings;
+  const aidRequestID = aidRequest._id;
+  const anySetting = settings.filter(
+    (setting) => setting.notifiableEvent === 'Any',
+  )[0];
+  const isSubscribed = anySetting.subscribeOrUnsubscribe === 'Subscribe';
   return [
     {
-      key: 'activity-header',
+      key: `${aidRequestID}-header`,
       render: () => {
         return <Header aidRequest={aidRequest} />;
       },
     },
-    ...settings.map(
-      (
-        currentSetting: AidRequestNotificationSettingsQuery_aidRequestNotificationSettings_settings,
-      ): Item => {
-        return {
-          key: 'current-setting',
-          render: () => {
-            return (
-              <Row>
-                <RowTitle>{JSON.stringify(currentSetting)}</RowTitle>
-              </Row>
-            );
-          },
-        };
+    {
+      key: `${aidRequestID}-subscribe-toggle`,
+      render: () => {
+        return (
+          <SubscribeToggle
+            aidRequestID={aidRequestID}
+            isSubscribed={isSubscribed}
+            reason={anySetting.reason}
+          />
+        );
       },
-    ),
+    },
+    ...settings
+      .filter((s) => isSubscribed && s !== anySetting)
+      .map(
+        (
+          currentSetting: AidRequestNotificationSettingsQuery_aidRequestNotificationSettings_settings,
+        ): Item => {
+          return {
+            key:
+              'current-setting-' +
+              currentSetting.notifiableEvent +
+              '.' +
+              currentSetting.notificationMethod,
+            render: () => {
+              return (
+                <Row>
+                  <RowTitle>{currentSetting.reason}</RowTitle>
+                </Row>
+              );
+            },
+          };
+        },
+      ),
     {
       key: 'bottom-spacer',
       render: () => {
@@ -123,14 +148,9 @@ const AID_REQUEST_NOTIFICATION_SETTINGS_QUERY = gql`
       aidRequest {
         ...AidRequestCardFragment
       }
-      settings {
-        notifiableEvent
-        notificationMethod
-        subscribeOrUnsubscribe
-        reason
-        title
-      }
+      ...AidRequestNotificationSettingsFragment
     }
   }
   ${AidRequestCardFragments.aidRequest}
+  ${AidRequestNotificationSettingsFragment}
 `;
