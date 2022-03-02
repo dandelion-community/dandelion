@@ -24,11 +24,13 @@ async function sendNewCommentEmail({
   commenter,
   recipient,
 }: NotifySpecificRecipientArgs): Promise<void> {
+  const aidRequestID = aidRequest._id.toString();
   const msg = {
     dynamicTemplateData: {
       comment_value: comment.eventSpecificData ?? 'Unknown',
       commenter_name: commenter.displayName,
-      request_url: `https://dandelion.supplies/r?id=${aidRequest._id.toString()}`,
+      notification_settings_url: `https://dandelion.supplies/r/notification_settings?id=${aidRequestID}`,
+      request_url: `https://dandelion.supplies/r?id=${aidRequestID}`,
       what_is_needed: aidRequest.whatIsNeeded,
       who_is_it_for: aidRequest.whoIsItFor,
     },
