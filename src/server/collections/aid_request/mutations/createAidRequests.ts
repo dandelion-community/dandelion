@@ -33,8 +33,8 @@ async function createAidRequestsResolver(
     event: 'Created',
     timestamp,
   };
-  const aidRequests = whatAllIsNeeded.map((whatIsNeeded: string) => {
-    const fields = {
+  const aidRequests = whatAllIsNeeded.map(async (whatIsNeeded: string) => {
+    const manualFields = {
       completed: false,
       createdAt: new Date(),
       crew,
@@ -44,13 +44,15 @@ async function createAidRequestsResolver(
       whoIsWorkingOnIt: [],
       whoRecordedIt,
     };
-    return new AidRequestModel({
-      ...fields,
-      ...getComputedFields(fields),
-    });
+    const computedFields = await getComputedFields(manualFields);
+    const fields = { ...manualFields, ...computedFields };
+    return new AidRequestModel(fields);
   });
   const savedRequests = await Promise.all(
-    aidRequests.map((aidRequest) => aidRequest.save()),
+    aidRequests.map(async (aidRequestPromise) => {
+      const aidRequest = await aidRequestPromise;
+      return await aidRequest.save();
+    }),
   );
   savedRequests.forEach((aidRequest) => {
     analytics.track({

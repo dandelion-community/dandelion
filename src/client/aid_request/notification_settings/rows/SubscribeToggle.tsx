@@ -1,7 +1,7 @@
 import { useMutation } from '@apollo/client';
 import * as React from 'react';
 import { View } from 'react-native';
-import { Switch } from 'react-native-paper';
+import { ProgressBar, Switch } from 'react-native-paper';
 import {
   NotifiableEventOnAidRequest,
   NotificationMethod,
@@ -14,7 +14,9 @@ import type {
   AidRequestEditNotificationSettings,
   AidRequestEditNotificationSettingsVariables,
 } from 'src/client/aid_request/notification_settings/helpers/__generated__/AidRequestEditNotificationSettings';
+import ErrorNotice from 'src/client/components/ErrorNotice';
 import Text from 'src/client/components/Text';
+import { useLoggedInViewerID } from 'src/client/viewer/Viewer';
 
 type Props = {
   aidRequestID: string;
@@ -31,8 +33,10 @@ export default function SubscribeToggle({
     AidRequestEditNotificationSettings,
     AidRequestEditNotificationSettingsVariables
   >(CHANGE_NOTIFICATION_SETTINGS_MUTATION);
+  const viewerID = useLoggedInViewerID();
   return (
     <Row divider={true}>
+      <ProgressBar indeterminate={true} visible={loading} />
       <View
         style={{
           flex: 1,
@@ -47,8 +51,18 @@ export default function SubscribeToggle({
           value={isSubscribed}
         />
       </View>
-      <Text>{reason}</Text>
-      <Text>{error}</Text>
+      <Text>{reason}.</Text>
+      <View>
+        {error == null ? null : (
+          <ErrorNotice
+            error={error}
+            manualChange={`${
+              isSubscribed ? 'Unsubscribe from' : 'Subscribe to'
+            } request (${viewerID} : ${aidRequestID})`}
+            whenTryingToDoWhat="change this setting"
+          />
+        )}
+      </View>
     </Row>
   );
 

@@ -20,6 +20,7 @@ export interface AidRequestEditNotificationSettings_payload_settings_settings {
 
 export interface AidRequestEditNotificationSettings_payload_settings {
   __typename: "AidRequestNotificationSettings";
+  _id: string;
   settings: AidRequestEditNotificationSettings_payload_settings_settings[];
 }
 

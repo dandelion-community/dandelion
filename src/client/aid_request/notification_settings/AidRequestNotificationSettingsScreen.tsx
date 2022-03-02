@@ -92,6 +92,9 @@ function getListItems(
     (setting) => setting.notifiableEvent === 'Any',
   )[0];
   const isSubscribed = anySetting.subscribeOrUnsubscribe === 'Subscribe';
+  const otherSettings = settings.filter(
+    (s) => isSubscribed && s !== anySetting,
+  );
   return [
     {
       key: `${aidRequestID}-header`,
@@ -111,28 +114,28 @@ function getListItems(
         );
       },
     },
-    ...settings
-      .filter((s) => isSubscribed && s !== anySetting)
-      .map(
-        (
-          currentSetting: AidRequestNotificationSettingsQuery_aidRequestNotificationSettings_settings,
-        ): Item => {
-          return {
-            key:
-              'current-setting-' +
-              currentSetting.notifiableEvent +
-              '.' +
-              currentSetting.notificationMethod,
-            render: () => {
-              return (
-                <Row>
-                  <RowTitle>{currentSetting.reason}</RowTitle>
-                </Row>
-              );
-            },
-          };
-        },
-      ),
+    ...(otherSettings.length <= 1
+      ? []
+      : otherSettings.map(
+          (
+            currentSetting: AidRequestNotificationSettingsQuery_aidRequestNotificationSettings_settings,
+          ): Item => {
+            return {
+              key:
+                'current-setting-' +
+                currentSetting.notifiableEvent +
+                '.' +
+                currentSetting.notificationMethod,
+              render: () => {
+                return (
+                  <Row>
+                    <RowTitle>{currentSetting.reason}</RowTitle>
+                  </Row>
+                );
+              },
+            };
+          },
+        )),
     {
       key: 'bottom-spacer',
       render: () => {

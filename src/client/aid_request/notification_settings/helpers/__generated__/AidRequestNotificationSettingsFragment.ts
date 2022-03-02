@@ -20,5 +20,6 @@ export interface AidRequestNotificationSettingsFragment_settings {
 
 export interface AidRequestNotificationSettingsFragment {
   __typename: "AidRequestNotificationSettings";
+  _id: string;
   settings: AidRequestNotificationSettingsFragment_settings[];
 }

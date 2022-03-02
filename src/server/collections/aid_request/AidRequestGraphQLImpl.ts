@@ -6,6 +6,7 @@ import activity from 'src/server/collections/aid_request/object_fields/activity'
 import completed from 'src/server/collections/aid_request/object_fields/completed';
 import createdAt from 'src/server/collections/aid_request/object_fields/createdAt';
 import crew from 'src/server/collections/aid_request/object_fields/crew';
+import lastUpdated from 'src/server/collections/aid_request/object_fields/lastUpdated';
 import latestEvent from 'src/server/collections/aid_request/object_fields/latestEvent';
 import status from 'src/server/collections/aid_request/object_fields/status';
 import whatIsNeeded from 'src/server/collections/aid_request/object_fields/whatIsNeeded';
@@ -23,6 +24,7 @@ AidRequestGraphQLType.addFields({
   completed,
   createdAt,
   crew,
+  lastUpdated,
   latestEvent,
   status,
   whatIsNeeded,

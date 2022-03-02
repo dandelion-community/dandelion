@@ -68,7 +68,6 @@ export default function RequestExplorerTabStackContainer(): JSX.Element {
               <Header>
                 <Appbar.BackAction onPress={goBack} />
                 <Appbar.Content title={options.title} />
-                <AidRequestDetailHeaderButtons aidRequest={aidRequest} />
               </Header>
             ),
             title: 'Notification Settings',
