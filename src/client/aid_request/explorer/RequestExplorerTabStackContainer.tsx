@@ -21,6 +21,8 @@ export default function RequestExplorerTabStackContainer(): JSX.Element {
   const [aidRequest, setAidRequest] = React.useState<
     AidRequestDetailsQuery_aidRequest | undefined
   >(undefined);
+  const [notifSettingsAidRequestID, setNotifSettingsAidRequestID] =
+    React.useState<string | undefined>(undefined);
   const AidRequestDetailScreenComponent = React.useCallback((props) => {
     return (
       <AidRequestDetailScreen
@@ -35,6 +37,23 @@ export default function RequestExplorerTabStackContainer(): JSX.Element {
       />
     );
   }, []);
+  const AidRequestNotificationSettingsScreenComponent = React.useCallback(
+    (props) => {
+      return (
+        <AidRequestNotificationSettingsScreen
+          {...props}
+          setNotifSettingsAidRequestID={(
+            newNotifSettingsAidRequestID: string,
+          ): void => {
+            if (notifSettingsAidRequestID !== newNotifSettingsAidRequestID) {
+              setNotifSettingsAidRequestID(newNotifSettingsAidRequestID);
+            }
+          }}
+        />
+      );
+    },
+    [],
+  );
   return (
     <StackNavigatorInsideTabNavigator>
       <Stack.Navigator>
@@ -61,12 +80,24 @@ export default function RequestExplorerTabStackContainer(): JSX.Element {
           })}
         />
         <Stack.Screen
-          component={AidRequestNotificationSettingsScreen}
+          component={AidRequestNotificationSettingsScreenComponent}
           name="AidRequestNotificationSettings"
           options={() => ({
             header: ({ options }) => (
               <Header>
-                <Appbar.BackAction onPress={goBack} />
+                <Appbar.BackAction
+                  onPress={() => {
+                    const navigation =
+                      RequestExplorerNavigationStore.getValue();
+                    navigation?.canGoBack()
+                      ? navigation?.goBack()
+                      : notifSettingsAidRequestID == null
+                      ? navigation?.replace('RequestExplorer')
+                      : navigation?.replace('AidRequestDetail', {
+                          id: notifSettingsAidRequestID,
+                        });
+                  }}
+                />
                 <Appbar.Content title={options.title} />
               </Header>
             ),
