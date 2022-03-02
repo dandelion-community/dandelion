@@ -10,7 +10,7 @@ type Props = {
 
 export default function ActivityHeader({ aidRequest }: Props): JSX.Element {
   return (
-    <Row>
+    <Row divider={true}>
       <RowTitle>
         {`Notification Settings for "${getAidRequestTitle(aidRequest)}"`}
       </RowTitle>

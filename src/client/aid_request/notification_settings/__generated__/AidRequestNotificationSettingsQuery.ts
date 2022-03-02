@@ -36,8 +36,10 @@ export interface AidRequestNotificationSettingsQuery_aidRequestNotificationSetti
 export interface AidRequestNotificationSettingsQuery_aidRequestNotificationSettings_aidRequest {
   __typename: "AidRequest";
   _id: string;
+  createdAt: any;
   crew: string;
   completed: boolean;
+  lastUpdated: any;
   latestEvent: string;
   whatIsNeeded: string;
   whoIsItFor: string;
@@ -52,11 +54,13 @@ export interface AidRequestNotificationSettingsQuery_aidRequestNotificationSetti
   notificationMethod: NotificationMethod;
   subscribeOrUnsubscribe: SubscribeOrUnsubscribe;
   reason: string;
+  title: string;
 }
 
 export interface AidRequestNotificationSettingsQuery_aidRequestNotificationSettings {
   __typename: "AidRequestNotificationSettings";
   aidRequest: AidRequestNotificationSettingsQuery_aidRequestNotificationSettings_aidRequest;
+  _id: string;
   settings: AidRequestNotificationSettingsQuery_aidRequestNotificationSettings_settings[];
 }
 

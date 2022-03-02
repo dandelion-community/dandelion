@@ -10,6 +10,7 @@ export default function graphqlifyAidRequestNotificationSettings(
 ): AidRequestNotificationSettingsTypeForGraphQL {
   const aidRequestID = notificationSettings.aidRequestID.toString();
   return {
+    _id: notificationSettings._id.toString(),
     aidRequest: async () => await loadAidRequestForViewer(user, aidRequestID),
     history: notificationSettings.history.map((event) =>
       graphqlifyAidRequestChangeNotificationSettingHistoryEvent({

@@ -29,9 +29,11 @@ export type AidRequestNotificationSettingsType = {
 export type AidRequestNotificationCurrentSettingForGraphQL =
   NotificationSettingDescriptor & {
     reason: string;
+    title: string;
   };
 
 export type AidRequestNotificationSettingsTypeForGraphQL = {
+  _id: string;
   aidRequest: () => Promise<AidRequestType | null>;
   history: ChangeNotificationSettingEventForGraphQL[];
   settings: () => Promise<AidRequestNotificationCurrentSettingForGraphQL[]>;

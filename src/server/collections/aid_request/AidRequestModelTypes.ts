@@ -10,6 +10,19 @@ export type AidRequestHistoryEventType =
   | 'Deleted'
   | 'WorkingOn';
 
+// If someone is subscribed to an aid request,
+// the reason we'll tell them is the first
+// thing in this list that applies to them
+export const PRIORITY_HISTORY_EVENTS = [
+  'Created',
+  'WorkingOn',
+  'Completed',
+  'Comment',
+  'ChangedWhoIsItFor',
+  'ChangedWhatIsNeeded',
+  'Deleted',
+];
+
 export type AidRequestActionType = 'Add' | 'Remove';
 
 export type AidRequestHistoryEvent = {

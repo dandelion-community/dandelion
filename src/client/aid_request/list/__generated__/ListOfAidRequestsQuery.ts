@@ -42,8 +42,10 @@ export interface ListOfAidRequestsQuery_allAidRequests_edges_node_actionsAvailab
 export interface ListOfAidRequestsQuery_allAidRequests_edges_node {
   __typename: "AidRequest";
   _id: string;
+  createdAt: any;
   crew: string;
   completed: boolean;
+  lastUpdated: any;
   latestEvent: string;
   whatIsNeeded: string;
   whoIsItFor: string;

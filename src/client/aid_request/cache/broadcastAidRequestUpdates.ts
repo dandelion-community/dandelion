@@ -75,9 +75,6 @@ function processAidRequestUpdatesForSubscriber(
       }
     }
   });
-  if (toAdd.length === 0 && toRemove.length === 0) {
-    return;
-  }
   const oldEdges = filterNulls(subscriber.data.allAidRequests?.edges ?? []);
   const filteredEdges: ListOfAidRequestsQuery_allAidRequests_edges[] =
     oldEdges.filter((edge) => !toRemove.includes(edge.node._id));
@@ -119,7 +116,12 @@ function publishNewEdges(
   list: ListOfAidRequestsQuery,
   filterContext: FilterContext,
 ): void {
-  const edges = edges_.filter(isNotStaleDraft);
+  const edges = edges_.filter(isNotStaleDraft).sort((a, b) => {
+    return (
+      new Date(b.node.lastUpdated).valueOf() -
+      new Date(a.node.lastUpdated).valueOf()
+    );
+  });
   const data: ListOfAidRequestsQuery = {
     allAidRequests: {
       __typename: 'AidRequestConnection',

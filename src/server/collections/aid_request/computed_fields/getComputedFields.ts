@@ -28,7 +28,7 @@ export default async function getComputedFields(
         return a.valueOf() > b.valueOf() ? a : b;
       },
       null,
-    ) ?? new Date();
+    ) ?? fields.createdAt;
   const whoIsWorkingOnItUsers = await Promise.all(
     whoIsWorkingOnIt.map((id) => UserModel.findById(id)),
   );

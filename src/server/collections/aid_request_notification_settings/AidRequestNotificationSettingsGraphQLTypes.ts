@@ -17,6 +17,7 @@ export const SubscribeOrUnsubscribeGraphQLType =
 export const AidRequestNotificationSettingsGraphQLType =
   schemaComposer.createObjectTC<AidRequestNotificationSettingsTypeForGraphQL>({
     fields: {
+      _id: 'String!',
       aidRequest: 'AidRequest!',
       history: '[AidRequestChangeNotificationSettingsEvent!]!',
       settings: '[AidRequestNotificationCurrentSetting!]!',
@@ -35,6 +36,7 @@ export const AidRequestChangeNotificationSettingsEventGraphQLType =
   schemaComposer.createObjectTC<ChangeNotificationSettingEventForGraphQL>({
     fields: {
       ...NotificationSettingDescriptorFields,
+      settings: 'AidRequestNotificationSettings!',
       timestamp: 'Date!',
     },
     name: 'AidRequestChangeNotificationSettingsEvent',
@@ -46,6 +48,7 @@ export const AidRequestNotificationCurrentSettingGraphQLType =
       fields: {
         ...NotificationSettingDescriptorFields,
         reason: 'String!',
+        title: 'String!',
       },
       name: 'AidRequestNotificationCurrentSetting',
     },

@@ -23,6 +23,7 @@ export enum AidRequestUpdateActionType {
 }
 
 export enum NotifiableEventOnAidRequest {
+  Any = "Any",
   NewComment = "NewComment",
 }
 
@@ -39,6 +40,12 @@ export interface AidRequestActionInputInput {
   action: AidRequestUpdateActionType;
   event: AidRequestHistoryEventType;
   eventSpecificData?: string | null;
+}
+
+export interface AidRequestEditNotificationSettingsInput {
+  notifiableEvent: NotifiableEventOnAidRequest;
+  notificationMethod: NotificationMethod;
+  subscribeOrUnsubscribe: SubscribeOrUnsubscribe;
 }
 
 export interface AidRequestFilterInput {

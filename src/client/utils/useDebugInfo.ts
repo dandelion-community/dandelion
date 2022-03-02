@@ -1,4 +1,4 @@
-import { ApolloError, gql } from '@apollo/client';
+import { ApolloError, gql, ServerError } from '@apollo/client';
 import { Buffer } from 'buffer';
 import * as React from 'react';
 import GlobalSearchStringStore from 'src/client/global_search_string/GlobalSearchStringStore';
@@ -15,9 +15,7 @@ export default function useDebugInfo(error: ApolloError): {
   errorMessage: string;
   debugInfo: string;
 } {
-  const errorMessage =
-    (error.networkError as { result?: { errors: Error[] } }).result?.errors[0]
-      .message ?? error.message;
+  const errorMessage = getErrorMessage(error);
   const navState = useStore(RootNavigationStore)?.getState() ?? {};
   const viewer = useViewer();
   const search = useStore(GlobalSearchStringStore);
@@ -61,3 +59,18 @@ const CREATE_ERROR_REPORT_MUTATION = gql`
     reportError(data: $data)
   }
 `;
+
+function getErrorMessage(error: ApolloError): string {
+  try {
+    const { networkError, graphQLErrors } = error;
+    if (networkError != null) {
+      return Object.values(networkError as ServerError)[0].errors.message;
+    }
+    if (graphQLErrors != null) {
+      return 'Server Error';
+    }
+    return error.message;
+  } catch (e) {
+    return JSON.stringify(error);
+  }
+}

@@ -11,7 +11,7 @@ async function processOneAidRequest(aidRequest: AidRequest): Promise<void> {
   for (const key in computedFields) {
     const newValue = computedFields[key as ComputedKey];
     const oldValue = aidRequest[key as ComputedKey];
-    if (newValue.valueOf() !== oldValue.valueOf()) {
+    if (newValue?.valueOf() !== oldValue?.valueOf()) {
       console.log(`  ${key}: ${oldValue} -> ${newValue}`);
     }
   }
