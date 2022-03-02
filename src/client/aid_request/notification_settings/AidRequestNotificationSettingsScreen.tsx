@@ -27,7 +27,9 @@ type Item = {
   key: string;
 };
 
-type Props = RequestExplorerStackScreenProps<'AidRequestDetail'>;
+type Props = RequestExplorerStackScreenProps<'AidRequestDetail'> & {
+  setNotifSettingsAidRequestID: (aidRequestID: string) => void;
+};
 
 export default function AidRequestNotificationSettingsScreenWrapper(
   props: Props,
@@ -40,8 +42,14 @@ export default function AidRequestNotificationSettingsScreenWrapper(
   );
 }
 
-function AidRequestNotificationSettingsScreen({ route }: Props): JSX.Element {
+function AidRequestNotificationSettingsScreen({
+  route,
+  setNotifSettingsAidRequestID,
+}: Props): JSX.Element {
   const { id: aidRequestID } = route.params;
+  React.useEffect(() => {
+    setNotifSettingsAidRequestID(aidRequestID);
+  }, [aidRequestID]);
   const { data, loading, error, refetch } = useQuery<
     AidRequestNotificationSettingsQuery,
     AidRequestNotificationSettingsQueryVariables
