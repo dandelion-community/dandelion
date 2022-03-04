@@ -1,11 +1,7 @@
-/**
- * Learn more about deep linking with React Navigation
- * https://reactnavigation.org/docs/deep-linking
- * https://reactnavigation.org/docs/configuring-links
- */
-
 import { LinkingOptions } from '@react-navigation/native';
 import * as Linking from 'expo-linking';
+import AID_REQUEST_DETAIL_PATH from 'src/shared/urls/AID_REQUEST_DETAIL_PATH';
+import AID_REQUEST_NOTIFICATION_SETTINGS_PATH from 'src/shared/urls/AID_REQUEST_NOTIFICATION_SETTINGS_PATH';
 import { RootStackParamList } from './NavigationTypes';
 
 const linking: LinkingOptions<RootStackParamList> = {
@@ -15,27 +11,24 @@ const linking: LinkingOptions<RootStackParamList> = {
       Login: 'login',
       Main: {
         screens: {
-          CreateRequestTabStackContainer: {
+          MenuTabStackContainer: {
             screens: {
-              CreateRequest: 'create',
+              ThreeLinesMenu: 'menu',
             },
           },
           RequestExplorerTabStackContainer: {
             screens: {
-              AidRequestDetail: 'r',
-              AidRequestNotificationSettings: 'r/notification_settings',
+              AidRequestDetail: AID_REQUEST_DETAIL_PATH,
+              AidRequestNotificationSettings:
+                AID_REQUEST_NOTIFICATION_SETTINGS_PATH,
               RequestExplorer: '',
-            },
-          },
-          ThreeLinesMenuTabStackContainer: {
-            screens: {
-              ThreeLinesMenu: 'menu',
             },
           },
         },
       },
       NotFound: '*',
       NotLoggedIn: 'loggedout',
+      ['Record Request']: 'new',
     },
   },
   prefixes: [Linking.createURL('/')],

@@ -9,8 +9,12 @@ import RequestExplorerHeader from 'src/client/aid_request/explorer/RequestExplor
 import RequestExplorerScreen from 'src/client/aid_request/explorer/RequestExplorerScreen';
 import AidRequestNotificationSettingsScreen from 'src/client/aid_request/notification_settings/AidRequestNotificationSettingsScreen';
 import Header from 'src/client/components/Header';
-import { RequestExplorerStackParamList } from 'src/client/navigation/NavigationTypes';
-import StackNavigatorInsideTabNavigator from 'src/client/navigation/StackNavigatorInsideTabNavigator';
+import StackNavigatorInsideTabNavigator from 'src/client/navigation/helpers/StackNavigatorInsideTabNavigator';
+import {
+  RequestExplorerStackParamList,
+  RequestExplorerStackScreenProps,
+} from 'src/client/navigation/NavigationTypes';
+import RequireLoggedInScreen from 'src/client/viewer/RequireLoggedInScreen';
 import RequestExplorerNavigationStore from './navigation/RequestExplorerNavigationStore';
 
 const Stack = createNativeStackNavigator<RequestExplorerStackParamList>();
@@ -58,7 +62,7 @@ export default function RequestExplorerTabStackContainer(): JSX.Element {
     <StackNavigatorInsideTabNavigator>
       <Stack.Navigator>
         <Stack.Screen
-          component={RequestExplorerScreen}
+          component={wrapComponent(RequestExplorerScreen)}
           name="RequestExplorer"
           options={() => ({
             header: () => <RequestExplorerHeader />,
@@ -66,7 +70,7 @@ export default function RequestExplorerTabStackContainer(): JSX.Element {
           })}
         />
         <Stack.Screen
-          component={AidRequestDetailScreenComponent}
+          component={wrapComponent(AidRequestDetailScreenComponent)}
           name="AidRequestDetail"
           options={() => ({
             header: ({ options }) => (
@@ -80,7 +84,9 @@ export default function RequestExplorerTabStackContainer(): JSX.Element {
           })}
         />
         <Stack.Screen
-          component={AidRequestNotificationSettingsScreenComponent}
+          component={wrapComponent(
+            AidRequestNotificationSettingsScreenComponent,
+          )}
           name="AidRequestNotificationSettings"
           options={() => ({
             header: ({ options }) => (
@@ -107,6 +113,22 @@ export default function RequestExplorerTabStackContainer(): JSX.Element {
       </Stack.Navigator>
     </StackNavigatorInsideTabNavigator>
   );
+
+  function wrapComponent<T extends keyof RequestExplorerStackParamList>(
+    Component: (props: RequestExplorerStackScreenProps<T>) => JSX.Element,
+  ): (props: RequestExplorerStackScreenProps<T>) => JSX.Element {
+    return React.useCallback((props: RequestExplorerStackScreenProps<T>) => {
+      const { navigation } = props;
+      React.useEffect(() => {
+        RequestExplorerNavigationStore.update(navigation);
+      }, [navigation]);
+      return (
+        <RequireLoggedInScreen>
+          <Component {...props} />
+        </RequireLoggedInScreen>
+      );
+    }, []);
+  }
 }
 
 function goBack(): void {

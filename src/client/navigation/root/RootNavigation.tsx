@@ -1,13 +1,6 @@
-/**
- * If you are not familiar with React Navigation, refer to the "Fundamentals" guide:
- * https://reactnavigation.org/docs/getting-started
- *
- */
 import {
   DarkTheme,
   DefaultTheme,
-  // prettier expects a comma but "editor.codeActionsOnSave": { "source.organizeImports": true } removes the comma
-  // eslint-disable-next-line prettier/prettier
   NavigationContainer,
 } from '@react-navigation/native';
 import {
@@ -20,15 +13,19 @@ import { ColorSchemeName } from 'react-native';
 import { Appbar } from 'react-native-paper';
 import Colors from 'src/client/components/Colors';
 import Header from 'src/client/components/Header';
+import navigateToMain from 'src/client/navigation/helpers/navigateToMain';
 import LinkingConfiguration from 'src/client/navigation/LinkingConfiguration';
-import navigateToMain from 'src/client/navigation/navigateToMain';
-import type { RootStackParamList } from 'src/client/navigation/NavigationTypes';
+import type {
+  RootStackParamList,
+  RootStackScreenProps,
+} from 'src/client/navigation/NavigationTypes';
 import CreateAccountScreen from 'src/client/navigation/screens/create_account/CreateAccountScreen';
 import LoginScreen from 'src/client/navigation/screens/login/LoginScreen';
 import MainScreen from 'src/client/navigation/screens/main/MainScreen';
 import NotFoundScreen from 'src/client/navigation/screens/not_found/NotFoundScreen';
 import NotLoggedInScreen from 'src/client/navigation/screens/not_logged_in/NotLoggedInScreen';
 import RecordAidRequestScreen from 'src/client/navigation/screens/record_aid_request/RecordAidRequestScreen';
+import RootNavigationStore from './RootNavigationStore';
 
 const LIGHT_THEME = {
   ...DefaultTheme,
@@ -53,27 +50,23 @@ export default function Navigation({
   );
 }
 
-/**
- * A root stack navigator is often used for displaying modals on top of all other content.
- * https://reactnavigation.org/docs/modal
- */
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 function RootNavigator() {
   return (
     <Stack.Navigator>
       <Stack.Screen
-        component={MainScreen}
+        component={wrapComponent(MainScreen)}
         name="Main"
         options={{ headerShown: false }}
       />
       <Stack.Screen
-        component={NotFoundScreen}
+        component={wrapComponent(NotFoundScreen)}
         name="NotFound"
         options={{ headerShown: false, title: 'Not Found' }}
       />
       <Stack.Screen
-        component={NotLoggedInScreen}
+        component={wrapComponent(NotLoggedInScreen)}
         name="NotLoggedIn"
         options={() => ({
           header: ({ options }) => (
@@ -85,17 +78,17 @@ function RootNavigator() {
         })}
       />
       <Stack.Screen
-        component={CreateAccountScreen}
+        component={wrapComponent(CreateAccountScreen)}
         name="Create Account"
         options={optionsForHeaderWithBackToMainButton('Sign Up')}
       />
       <Stack.Screen
-        component={LoginScreen}
+        component={wrapComponent(LoginScreen)}
         name="Login"
         options={optionsForHeaderWithBackToMainButton('Log In')}
       />
       <Stack.Screen
-        component={RecordAidRequestScreen}
+        component={wrapComponent(RecordAidRequestScreen)}
         name="Record Request"
         options={optionsForHeaderWithBackToMainButton('Record Request')}
       />
@@ -114,5 +107,17 @@ function RootNavigator() {
       ),
       title,
     });
+  }
+
+  function wrapComponent<T extends keyof RootStackParamList>(
+    Component: (props: RootStackScreenProps<T>) => JSX.Element,
+  ): (props: RootStackScreenProps<T>) => JSX.Element {
+    return React.useCallback((props: RootStackScreenProps<T>) => {
+      const { navigation } = props;
+      React.useEffect(() => {
+        RootNavigationStore.update(navigation);
+      }, [navigation]);
+      return <Component {...props} />;
+    }, []);
   }
 }

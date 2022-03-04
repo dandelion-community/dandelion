@@ -2,6 +2,7 @@ import * as React from 'react';
 import { Linking } from 'react-native';
 import { Button, Card, Paragraph } from 'react-native-paper';
 import StyledCard from 'src/client/components/Card';
+import createEmailLink from 'src/client/email_link/createEmailLink';
 
 export default function FeedbackCard(): React.ReactElement {
   return (
@@ -14,7 +15,10 @@ export default function FeedbackCard(): React.ReactElement {
         <Button
           onPress={() =>
             Linking.openURL(
-              'mailto:feedback@dandelion.supplies?subject=Dandy Feedback',
+              createEmailLink({
+                emailUser: 'feedback',
+                subject: 'Dandelion Feedback',
+              }),
             )
           }
         >

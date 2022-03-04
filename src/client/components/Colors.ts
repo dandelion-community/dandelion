@@ -11,6 +11,7 @@ const Colors = {
     m3buttonBackground: '#4A4458', // M3/sys/dark/secondary-container
     m3buttonText: '#E8DEF8', // M3/sys/dark/on-secondary-container
     placeholderText: 'rgba(255,255,255,0.6)',
+    pressableText: '#a577e7',
     tabBarBackground: '#1C1B1F',
     tabIconDefault: '#ccc',
     tabIconSelected: '#fff',
@@ -27,6 +28,7 @@ const Colors = {
     m3buttonBackground: '#E8DEF8', // M3/sys/dark/secondary-container
     m3buttonText: '#1D192B', // M3/sys/light/on-secondary-container
     placeholderText: 'rgba(0,0,0,0.6)',
+    pressableText: '#6200EE',
     tabBarBackground: '#E8DEF8',
     tabIconDefault: '#1D192B',
     tabIconSelected: '#1D192B',

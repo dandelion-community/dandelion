@@ -5,7 +5,7 @@ import CreateRequestRootScreen from 'src/client/aid_request/create/CreateRequest
 import Header from 'src/client/components/Header';
 import type { RootTabScreenProps } from 'src/client/navigation/NavigationTypes';
 import { CreateRequestStackParamList } from 'src/client/navigation/NavigationTypes';
-import StackNavigatorInsideTabNavigator from 'src/client/navigation/StackNavigatorInsideTabNavigator';
+import StackNavigatorInsideTabNavigator from 'src/client/navigation/helpers/StackNavigatorInsideTabNavigator';
 
 const Stack = createNativeStackNavigator<CreateRequestStackParamList>();
 

@@ -1,5 +1,4 @@
 import * as React from 'react';
-import useSetRequestExplorerNavigation from 'src/client/aid_request/explorer/navigation/useSetRequestExplorerNavigation';
 import RequestExplorerFilters from 'src/client/aid_request/filter/RequestExplorerFilters';
 import type { FilterType } from 'src/client/aid_request/filter/RequestExplorerFiltersContext';
 import {
@@ -10,48 +9,34 @@ import useListOfAidRequestItems from 'src/client/aid_request/list/useListOfAidRe
 import { RequestExplorerStackScreenProps } from 'src/client/navigation/NavigationTypes';
 import ScrollableScreen from 'src/client/scrollable_screen/ScrollableScreen';
 import singleElement from 'src/client/scrollable_screen/singleElement';
-import RequireLoggedInScreen from 'src/client/viewer/RequireLoggedInScreen';
+import AID_REQUEST_DETAIL_ID_URL_PARAM from 'src/shared/urls/AID_REQUEST_DETAIL_ID_URL_PARAM';
 
 export default function RequestExplorerScreen({
   navigation,
 }: RequestExplorerStackScreenProps<'RequestExplorer'>): JSX.Element {
-  useSetRequestExplorerNavigation(navigation);
   const [filter, setFilters] = React.useState<FilterType>(DEFAULT_FILTER);
+  const listOfAidRequests = useListOfAidRequestItems({
+    filter,
+    goToRequestDetailScreen,
+  });
 
   return (
-    <RequireLoggedInScreen>
-      <RequestExplorerFiltersContext.Provider value={{ filter, setFilters }}>
-        <RequestExplorerScreenLoggedInImpl
-          goToRequestDetailScreen={goToRequestDetailScreen}
-        />
-      </RequestExplorerFiltersContext.Provider>
-    </RequireLoggedInScreen>
+    <RequestExplorerFiltersContext.Provider value={{ filter, setFilters }}>
+      <ScrollableScreen
+        configs={[
+          singleElement({
+            key: 'RequestExplorerFilters',
+            render: () => <RequestExplorerFilters />,
+          }),
+          listOfAidRequests,
+        ]}
+      />
+    </RequestExplorerFiltersContext.Provider>
   );
 
   function goToRequestDetailScreen(aidRequestID: string): void {
-    navigation.push('AidRequestDetail', { id: aidRequestID });
+    navigation.push('AidRequestDetail', {
+      [AID_REQUEST_DETAIL_ID_URL_PARAM]: aidRequestID,
+    });
   }
-}
-
-type InnerProps = {
-  goToRequestDetailScreen: (aidRequestID: string) => void;
-};
-
-function RequestExplorerScreenLoggedInImpl({
-  goToRequestDetailScreen,
-}: InnerProps): React.ReactElement {
-  const listOfAidRequests = useListOfAidRequestItems({
-    goToRequestDetailScreen,
-  });
-  return (
-    <ScrollableScreen
-      configs={[
-        singleElement({
-          key: 'RequestExplorerFilters',
-          render: () => <RequestExplorerFilters />,
-        }),
-        listOfAidRequests,
-      ]}
-    />
-  );
 }

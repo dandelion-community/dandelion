@@ -1,0 +1,2 @@
+const AID_REQUEST_NOTIFICATION_SETTINGS_PATH = 'r/notification_settings';
+export default AID_REQUEST_NOTIFICATION_SETTINGS_PATH;

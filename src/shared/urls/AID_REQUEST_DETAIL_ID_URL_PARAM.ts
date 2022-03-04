@@ -1,0 +1,2 @@
+const AID_REQUEST_DETAIL_ID_URL_PARAM = 'id';
+export default AID_REQUEST_DETAIL_ID_URL_PARAM;

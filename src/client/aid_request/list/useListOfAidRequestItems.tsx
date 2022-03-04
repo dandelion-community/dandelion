@@ -2,7 +2,7 @@ import * as React from 'react';
 import { ProgressBar } from 'react-native-paper';
 import AidRequestCard from 'src/client/aid_request/card/AidRequestCard';
 import { GoToRequestDetailScreen } from 'src/client/aid_request/detail/AidRequestDetailScreen';
-import { useRequestExplorerFilters } from 'src/client/aid_request/filter/RequestExplorerFiltersContext';
+import { FilterType } from 'src/client/aid_request/filter/RequestExplorerFiltersContext';
 import { PAGE_SIZE } from 'src/client/aid_request/list/ListOfAidRequestsQuery';
 import useListOfAidRequests from 'src/client/aid_request/list/useListOfAidRequests';
 import {
@@ -18,6 +18,7 @@ import filterNulls from 'src/shared/utils/filterNulls';
 
 type Props = {
   goToRequestDetailScreen: GoToRequestDetailScreen;
+  filter: FilterType;
 };
 
 type Node =
@@ -27,8 +28,8 @@ type Node =
 
 export default function useListOfAidRequestItems({
   goToRequestDetailScreen,
+  filter,
 }: Props): SectionRendererData {
-  const { filter } = useRequestExplorerFilters();
   const { data, loading, fetchMore, refetch } = useListOfAidRequests(filter);
   const edges = data == null ? null : data.allAidRequests?.edges;
 

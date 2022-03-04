@@ -3,7 +3,7 @@ import { Buffer } from 'buffer';
 import * as React from 'react';
 import GlobalSearchStringStore from 'src/client/global_search_string/GlobalSearchStringStore';
 import client from 'src/client/graphql/client';
-import RootNavigationStore from 'src/client/navigation/RootNavigationStore';
+import RootNavigationStore from 'src/client/navigation/root/RootNavigationStore';
 import useStore from 'src/client/store/useStore';
 import type {
   CreateErrorReportMutation,

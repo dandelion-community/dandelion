@@ -3,7 +3,8 @@ import * as React from 'react';
 import { Linking, StyleSheet } from 'react-native';
 import { Button } from 'react-native-paper';
 import Text from 'src/client/components/Text';
-import View from 'src/client/components/View';
+import View from 'src/client/components/ViewWithBackground';
+import createEmailLink from '../email_link/createEmailLink';
 import useDebugInfo from '../utils/useDebugInfo';
 
 type Props = {
@@ -20,7 +21,14 @@ export default function ErrorScreen({ error }: Props) {
           mode="contained"
           onPress={() => {
             Linking.openURL(
-              `mailto:report.an.error@dandelion.supplies?subject=Dandelion Error&body=%0D%0AError Message: ${errorMessage}%0D%0AReference: ${debugInfo}`,
+              createEmailLink({
+                body: [
+                  `Error Message: ${errorMessage}`,
+                  `Reference: ${debugInfo}`,
+                ],
+                emailUser: 'report.an.error',
+                subject: 'Dandelion Error',
+              }),
             );
           }}
         >

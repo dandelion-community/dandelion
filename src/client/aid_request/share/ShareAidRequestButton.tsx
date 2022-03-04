@@ -4,6 +4,7 @@ import Icon from 'src/client/components/Icon';
 import canUseOperatingSystemShareAPI from 'src/client/utils/sharing/canUseOperatingSystemShareAPI';
 import share from 'src/client/utils/sharing/share';
 import getAidRequestTitle from 'src/shared/aid_request/getAidRequestTitle';
+import aidRequestDetailUrl from 'src/shared/urls/aidRequestDetailUrl';
 
 type Props = {
   aidRequest: AidRequestDetailsQuery_aidRequest;
@@ -21,7 +22,7 @@ export default function ShareAidRequestButton({
         if (aidRequest != null) {
           await share(
             getAidRequestTitle(aidRequest),
-            `https://dandelion.supplies/r?id=${aidRequest._id}`,
+            aidRequestDetailUrl(aidRequest._id),
           );
         }
       }}

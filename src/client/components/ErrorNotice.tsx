@@ -2,7 +2,8 @@ import { ApolloError } from '@apollo/client';
 import * as React from 'react';
 import { Linking, StyleSheet } from 'react-native';
 import Text from 'src/client/components/Text';
-import View from 'src/client/components/View';
+import View from 'src/client/components/ViewWithBackground';
+import createEmailLink from '../email_link/createEmailLink';
 import useDebugInfo from '../utils/useDebugInfo';
 import { useColor } from './Colors';
 
@@ -31,13 +32,21 @@ export default function ErrorScreen({
         <Text
           onPress={() => {
             Linking.openURL(
-              `mailto:report.an.error@dandelion.supplies?subject=Dandelion Error${
-                manualChange ? ' and Manual Change Request' : ''
-              }&body=%0D%0A${
-                manualChange
-                  ? `Please make the following manual change: ${manualChange}%0D%0A`
-                  : ''
-              }Error Message: ${errorMessage}%0D%0AReference: ${debugInfo}`,
+              createEmailLink({
+                body: [
+                  `${
+                    manualChange
+                      ? `Please make the following manual change: ${manualChange}`
+                      : ''
+                  }`,
+                  `Error Message: ${errorMessage}`,
+                  `Reference: ${debugInfo}`,
+                ],
+                emailUser: 'report.an.error',
+                subject: `Dandelion Error${
+                  manualChange ? ' and Manual Change Request' : ''
+                }`,
+              }),
             );
           }}
         >
