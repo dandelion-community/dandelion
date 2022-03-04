@@ -1,3 +1,4 @@
+// From https://stackoverflow.com/questions/7616461/generate-a-hash-from-string-in-javascript
 export default function hash(str: string): number {
   let hash = 0,
     i: number,
