@@ -1,6 +1,9 @@
 import sendgridMail from '@sendgrid/mail';
 import dotenv from 'dotenv';
 import { NotifySpecificRecipientArgs } from 'src/server/notifications/NotifyArgs';
+import aidRequestDetailUrl from 'src/shared/urls/aidRequestDetailUrl';
+import aidRequestNotificationSettingsUrl from 'src/shared/urls/aidRequestNotificationSettingsUrl';
+import getEmailAddress from 'src/shared/urls/getEmailAddress';
 
 dotenv.config();
 
@@ -16,7 +19,7 @@ if (!NEW_COMMENT_NOTIFICATION_TEMPLATE_ID) {
 }
 
 sendgridMail.setApiKey(sendgridApiKey);
-const FROM_EMAIL = 'notifications@dandelion.supplies';
+const FROM_EMAIL = getEmailAddress({ emailUser: 'notifications' });
 
 async function sendNewCommentEmail({
   aidRequest,
@@ -29,8 +32,9 @@ async function sendNewCommentEmail({
     dynamicTemplateData: {
       comment_value: comment.eventSpecificData ?? 'Unknown',
       commenter_name: commenter.displayName,
-      notification_settings_url: `https://dandelion.supplies/r/notification_settings?id=${aidRequestID}`,
-      request_url: `https://dandelion.supplies/r?id=${aidRequestID}`,
+      notification_settings_url:
+        aidRequestNotificationSettingsUrl(aidRequestID),
+      request_url: aidRequestDetailUrl(aidRequestID),
       what_is_needed: aidRequest.whatIsNeeded,
       who_is_it_for: aidRequest.whoIsItFor,
     },

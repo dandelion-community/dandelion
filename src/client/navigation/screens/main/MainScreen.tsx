@@ -4,26 +4,20 @@ import RequestExplorerTabStackContainer from 'src/client/aid_request/explorer/Re
 import Colors from 'src/client/components/Colors';
 import Icon from 'src/client/components/Icon';
 import useColorScheme from 'src/client/light-or-dark/useColorScheme';
-import ThreeLinesMenuTabStackContainer from 'src/client/menu/ThreeLinesMenuTabStackContainer';
+import MenuTabStackContainer from 'src/client/menu/MenuTabStackContainer';
 import createMaterialBottomTabNavigator from 'src/client/navigation/bottom-navigator/createMaterialBottomTabNavigator';
 import {
   RootStackScreenProps,
   RootTabParamList,
   RootTabScreenProps,
 } from 'src/client/navigation/NavigationTypes';
-import useSetRootNavigation from 'src/client/navigation/useSetRootNavigation';
 
-/**
- * A bottom tab navigator displays tab buttons on the bottom of the display to switch screens.
- * https://reactnavigation.org/docs/bottom-tab-navigator
- */
 const BottomTab = createMaterialBottomTabNavigator<RootTabParamList>();
 
 export default function MainScreen({
   navigation,
 }: RootStackScreenProps<'Main'>): React.ReactElement {
   const colorScheme = useColorScheme();
-  useSetRootNavigation(navigation);
   return (
     <BottomTab.Navigator
       activeColor={Colors[colorScheme].tabIconSelected}
@@ -63,11 +57,11 @@ export default function MainScreen({
         })}
       />
       <BottomTab.Screen
-        component={ThreeLinesMenuTabStackContainer}
-        name="ThreeLinesMenuTabStackContainer"
+        component={MenuTabStackContainer}
+        name="MenuTabStackContainer"
         options={({
           navigation: _navigation,
-        }: RootTabScreenProps<'ThreeLinesMenuTabStackContainer'>) => ({
+        }: RootTabScreenProps<'MenuTabStackContainer'>) => ({
           headerShown: true,
           tabBarIcon: ({ color, focused }) => (
             <TabBarIcon color={color} focused={focused} name="menu" />
@@ -79,9 +73,6 @@ export default function MainScreen({
   );
 }
 
-/**
- * You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
- */
 function TabBarIcon(props: { name: string; color: string; focused: boolean }) {
   return <Icon path={props.name} size={props.focused ? 23 : 19} />;
 }

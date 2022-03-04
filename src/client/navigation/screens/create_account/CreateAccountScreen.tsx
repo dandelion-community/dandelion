@@ -5,10 +5,9 @@ import { StyleSheet } from 'react-native';
 import { Button, Paragraph } from 'react-native-paper';
 import Text from 'src/client/components/Text';
 import TextInput, { TextInputHandles } from 'src/client/components/TextInput';
-import View from 'src/client/components/View';
+import View from 'src/client/components/ViewWithBackground';
 import { RootStackScreenProps } from 'src/client/navigation/NavigationTypes';
-import useCreateCrumbtrailsToLandingScreenIfNeeded from 'src/client/navigation/useCreateCrumbtrailsToLandingScreenIfNeeded';
-import useSetRootNavigation from 'src/client/navigation/useSetRootNavigation';
+import useCreateCrumbtrailsToLandingScreenIfNeeded from 'src/client/navigation/helpers/useCreateCrumbtrailsToLandingScreenIfNeeded';
 import ScrollableScreen from 'src/client/scrollable_screen/ScrollableScreen';
 import singleElement from 'src/client/scrollable_screen/singleElement';
 import reloadViewer from 'src/client/viewer/reloadViewer';
@@ -21,12 +20,7 @@ export default function CreateAccountScreen(
   props: RootStackScreenProps<'Create Account'>,
 ) {
   const { navigation } = props;
-  useSetRootNavigation(navigation);
-  useCreateCrumbtrailsToLandingScreenIfNeeded(
-    props,
-    'ThreeLinesMenuTabStackContainer',
-    undefined,
-  );
+  useCreateCrumbtrailsToLandingScreenIfNeeded(props);
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
   const [confirmPassword, setConfirmPassword] = React.useState('');

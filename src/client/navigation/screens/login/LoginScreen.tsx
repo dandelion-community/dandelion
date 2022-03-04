@@ -5,10 +5,9 @@ import { StyleSheet } from 'react-native';
 import { Button, Paragraph } from 'react-native-paper';
 import EmailLink from 'src/client/components/EmailLink';
 import TextInput, { TextInputHandles } from 'src/client/components/TextInput';
-import View from 'src/client/components/View';
+import View from 'src/client/components/ViewWithBackground';
+import useCreateCrumbtrailsToLandingScreenIfNeeded from 'src/client/navigation/helpers/useCreateCrumbtrailsToLandingScreenIfNeeded';
 import { RootStackScreenProps } from 'src/client/navigation/NavigationTypes';
-import useCreateCrumbtrailsToLandingScreenIfNeeded from 'src/client/navigation/useCreateCrumbtrailsToLandingScreenIfNeeded';
-import useSetRootNavigation from 'src/client/navigation/useSetRootNavigation';
 import ScrollableScreen from 'src/client/scrollable_screen/ScrollableScreen';
 import singleElement from 'src/client/scrollable_screen/singleElement';
 import reloadViewer from 'src/client/viewer/reloadViewer';
@@ -20,12 +19,7 @@ WebBrowser.maybeCompleteAuthSession();
 
 export default function LoginScreen(props: RootStackScreenProps<'Login'>) {
   const { navigation } = props;
-  useSetRootNavigation(navigation);
-  useCreateCrumbtrailsToLandingScreenIfNeeded(
-    props,
-    'ThreeLinesMenuTabStackContainer',
-    undefined,
-  );
+  useCreateCrumbtrailsToLandingScreenIfNeeded(props);
 
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
@@ -99,12 +93,12 @@ export default function LoginScreen(props: RootStackScreenProps<'Login'>) {
                   <Paragraph>
                     {getErrorMessage(error)}. Please email{' '}
                     <EmailLink
-                      slug="password.reset"
+                      emailUser="password.reset"
                       subject={`Dandelion Password Reset (${email})`}
                     />{' '}
                     if you need to reset your password. Email{' '}
                     <EmailLink
-                      slug="support"
+                      emailUser="support"
                       subject={`Login Support (${email})`}
                     />{' '}
                     if you need help with anything else.

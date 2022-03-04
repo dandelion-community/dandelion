@@ -2,17 +2,13 @@ import * as React from 'react';
 import type {
   RootStackParamList,
   RootStackScreenProps,
-  RootTabParamList,
-} from './NavigationTypes';
-
-type TabName = keyof RootTabParamList;
+} from '../NavigationTypes';
 
 export default function useCreateCrumbtrailsToLandingScreenIfNeeded<
   Screen extends keyof RootStackParamList,
 >(
   { navigation, route }: RootStackScreenProps<Screen>,
-  landing: TabName,
-  rePushParams: RootStackParamList[Screen],
+  rePushParams?: RootStackParamList[Screen],
 ): void {
   React.useEffect(() => {
     if (!navigation.canGoBack()) {

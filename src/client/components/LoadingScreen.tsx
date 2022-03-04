@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Dimensions, StyleSheet } from 'react-native';
 import { ProgressBar } from 'react-native-paper';
 import Text from 'src/client/components/Text';
-import View from 'src/client/components/View';
+import View from 'src/client/components/ViewWithBackground';
 import DebouncedLoadingIndicator from 'src/client/utils/DebouncedLoadingIndicator';
 
 type Props = {

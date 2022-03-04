@@ -6,10 +6,10 @@ import RequireLoggedInScreen from 'src/client/viewer/RequireLoggedInScreen';
 import YourAccountMenuCard from 'src/client/viewer/YourAccountMenuCard';
 import ScrollableScreen from '../scrollable_screen/ScrollableScreen';
 import singleElement from '../scrollable_screen/singleElement';
-import FeedbackCard from './FeedbackCard';
-import SupportAppCard from './SupportAppCard';
+import FeedbackCard from './cards/FeedbackCard';
+import SupportAppCard from './cards/SupportAppCard';
 
-export default function ThreeLinesMenuScreen(): JSX.Element {
+export default function MenuScreen(): JSX.Element {
   return (
     <RequireLoggedInScreen>
       <ScrollableScreen
@@ -27,12 +27,12 @@ export default function ThreeLinesMenuScreen(): JSX.Element {
             render: () => <SupportAppCard />,
           }),
           singleElement({
-            key: 'DebugInfoCard',
-            render: () => <DebugInfoCard />,
-          }),
-          singleElement({
             key: 'AttributionCard',
             render: () => <AttributionCard />,
+          }),
+          singleElement({
+            key: 'DebugInfoCard',
+            render: () => <DebugInfoCard />,
           }),
           singleElement({
             key: 'EndOfListSpacer',

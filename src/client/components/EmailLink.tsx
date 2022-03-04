@@ -1,23 +1,18 @@
 import * as React from 'react';
 import { Linking, Text } from 'react-native';
 import { useColor } from 'src/client/components/Colors';
+import type { Props } from 'src/client/email_link/createEmailLink';
+import createEmailLink from 'src/client/email_link/createEmailLink';
+import getEmailAddress from 'src/shared/urls/getEmailAddress';
 
-type Props = {
-  slug: string;
-  subject: string;
-};
-
-const DOMAIN = 'dandelion.supplies';
-
-export default function EmailLink({ slug, subject }: Props): JSX.Element {
+export default function EmailLink(props: Props): JSX.Element {
   const linkColor = useColor('accent');
-  const address = `${slug}@${DOMAIN}`;
   return (
     <Text
-      onPress={() => Linking.openURL(`mailto:${address}?subject=${subject}`)}
+      onPress={() => Linking.openURL(createEmailLink(props))}
       style={{ color: linkColor }}
     >
-      {address}
+      {getEmailAddress(props)}
     </Text>
   );
 }

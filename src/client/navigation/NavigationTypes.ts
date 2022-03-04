@@ -1,8 +1,3 @@
-/**
- * Learn more about using TypeScript with React Navigation:
- * https://reactnavigation.org/docs/typescript/
- */
-
 import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
 import {
   CompositeScreenProps,
@@ -38,8 +33,8 @@ export type RequestExplorerStackScreenProps<
   Screen extends keyof RequestExplorerStackParamList,
 > = NativeStackScreenProps<RequestExplorerStackParamList, Screen>;
 
-export type ThreeLinesMenuStackParamList = {
-  ThreeLinesMenu: NavigatorScreenParams<RootTabParamList> | undefined;
+export type MenuStackParamList = {
+  Menu: NavigatorScreenParams<RootTabParamList> | undefined;
 };
 
 export type CreateRequestStackParamList = {
@@ -49,7 +44,7 @@ export type CreateRequestStackParamList = {
 export type RootTabParamList = {
   RequestExplorerTabStackContainer: undefined;
   CreateRequestTabStackContainer: undefined;
-  ThreeLinesMenuTabStackContainer: undefined;
+  MenuTabStackContainer: undefined;
 };
 
 export type RootTabScreenProps<Screen extends keyof RootTabParamList> =

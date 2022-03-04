@@ -4,6 +4,7 @@ import analytics from 'src/server/analytics';
 import type { CurrentUserPayload } from 'src/server/collections/user/UserGraphQLTypes';
 import { CurrentUserGraphQLType } from 'src/server/collections/user/UserGraphQLTypes';
 import { UserModel } from 'src/server/collections/user/UserModel';
+import getEmailAddress from 'src/shared/urls/getEmailAddress';
 import matchStringCaseInsensitive from 'src/shared/utils/regexp/matchStringCaseInsensitive';
 
 async function registerResolver(
@@ -24,7 +25,9 @@ async function registerResolver(
       user: null,
     });
     throw new Error(
-      "To protect the privacy of our users' data, you cannot create an account without first being added to the list of allowed users. Please email new.user@dandelion.supplies if you'd like to be added!",
+      `To protect the privacy of our users' data, you cannot create an account without first being added to the list of allowed users. Please email ${getEmailAddress(
+        { emailUser: 'new.user' },
+      )} if you'd like to be added!`,
     );
   }
 

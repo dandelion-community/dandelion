@@ -17,7 +17,7 @@ import initErrorLogging from 'src/client/error/initErrorLogging';
 import client from 'src/client/graphql/client';
 import useCachedResources from 'src/client/hooks/useCachedResources';
 import useColorScheme from 'src/client/light-or-dark/useColorScheme';
-import Navigation from 'src/client/navigation/Navigation';
+import Navigation from 'src/client/navigation/root/RootNavigation';
 import RootLevelComponents from 'src/client/root/RootLevelComponents';
 import LoadingScreen from '../components/LoadingScreen';
 

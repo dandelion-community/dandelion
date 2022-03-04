@@ -4,12 +4,11 @@ import { Card, Paragraph } from 'react-native-paper';
 import StyledCard from 'src/client/components/Card';
 import CardButtonRow from 'src/client/components/CardButtonRow';
 import Text from 'src/client/components/Text';
-import View from 'src/client/components/View';
+import View from 'src/client/components/ViewWithBackground';
 import getURL from 'src/client/host/host';
-import FeedbackCard from 'src/client/menu/FeedbackCard';
-import SupportAppCard from 'src/client/menu/SupportAppCard';
+import FeedbackCard from 'src/client/menu/cards/FeedbackCard';
+import SupportAppCard from 'src/client/menu/cards/SupportAppCard';
 import { RootStackScreenProps } from 'src/client/navigation/NavigationTypes';
-import useSetRootNavigation from 'src/client/navigation/useSetRootNavigation';
 import ScrollableScreen from 'src/client/scrollable_screen/ScrollableScreen';
 import singleElement from 'src/client/scrollable_screen/singleElement';
 import useHandleViewer from 'src/client/viewer/useHandleViewer';
@@ -17,7 +16,6 @@ import useHandleViewer from 'src/client/viewer/useHandleViewer';
 export default function NotLoggedInScreen({
   navigation,
 }: RootStackScreenProps<'NotLoggedIn'>): JSX.Element {
-  useSetRootNavigation(navigation);
   useHandleViewer(navigation, 'NotLoggedIn', {
     loggedIn: async (_, goToMain) => goToMain(),
   });

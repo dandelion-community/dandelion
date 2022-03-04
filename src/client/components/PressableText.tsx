@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Pressable, StyleSheet, Text } from 'react-native';
-import { useThemeColor } from 'src/client/light-or-dark/useThemeColor';
+import { useColor } from 'src/client/components/Colors';
 
 type Props = {
   children: string;
@@ -11,10 +11,7 @@ export default function PressableText({
   children,
   onPress,
 }: Props): JSX.Element {
-  const linkColor = useThemeColor(
-    { dark: '#a577e7', light: '#6200EE' },
-    'text',
-  );
+  const linkColor = useColor('pressableText');
 
   const text = (
     <Text style={[{ color: linkColor }, styles.text]}>{children}</Text>

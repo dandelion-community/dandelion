@@ -1,0 +1,2 @@
+const AID_REQUEST_DETAIL_PATH = 'r';
+export default AID_REQUEST_DETAIL_PATH;

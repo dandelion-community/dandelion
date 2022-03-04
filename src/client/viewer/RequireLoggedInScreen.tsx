@@ -2,7 +2,7 @@ import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import * as React from 'react';
 import LoadingScreen from 'src/client/components/LoadingScreen';
-import View from 'src/client/components/View';
+import View from 'src/client/components/ViewWithBackground';
 import { RootStackParamList } from 'src/client/navigation/NavigationTypes';
 import useHandleViewer from 'src/client/viewer/useHandleViewer';
 import {

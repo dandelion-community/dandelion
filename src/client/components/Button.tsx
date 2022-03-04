@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { StyleSheet } from 'react-native';
 import { Button as PaperButton } from 'react-native-paper';
-import View from 'src/client/components/View';
+import View from 'src/client/components/ViewWithBackground';
 
 type Props = {
   loading?: boolean;

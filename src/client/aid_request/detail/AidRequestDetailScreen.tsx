@@ -19,13 +19,11 @@ import {
 import { AidRequestCardFragments } from 'src/client/aid_request/fragments/AidRequestCardFragments';
 import ErrorScreen from 'src/client/components/ErrorScreen';
 import LoadingScreen from 'src/client/components/LoadingScreen';
-import View from 'src/client/components/View';
+import View from 'src/client/components/ViewWithBackground';
 import client from 'src/client/graphql/client';
 import { RequestExplorerStackScreenProps } from 'src/client/navigation/NavigationTypes';
 import ScrollableScreen from 'src/client/scrollable_screen/ScrollableScreen';
 import singleElement from 'src/client/scrollable_screen/singleElement';
-import RequireLoggedInScreen from 'src/client/viewer/RequireLoggedInScreen';
-import useSetRequestExplorerNavigation from '../explorer/navigation/useSetRequestExplorerNavigation';
 
 export type GoToRequestDetailScreen = (aidRequestID: string) => void;
 
@@ -40,18 +38,10 @@ type Props = RequestExplorerStackScreenProps<'AidRequestDetail'> & {
   ) => void;
 };
 
-export default function AidRequestDetailScreenWrapper(
-  props: Props,
-): JSX.Element {
-  useSetRequestExplorerNavigation(props.navigation);
-  return (
-    <RequireLoggedInScreen>
-      <AidRequestDetailScreen {...props} />
-    </RequireLoggedInScreen>
-  );
-}
-
-function AidRequestDetailScreen({ route, setAidRequest }: Props): JSX.Element {
+export default function AidRequestDetailScreen({
+  route,
+  setAidRequest,
+}: Props): JSX.Element {
   const { id: aidRequestID } = route.params;
   const { data, loading, error, refetch } = useQuery<
     AidRequestDetailsQuery,
@@ -62,8 +52,6 @@ function AidRequestDetailScreen({ route, setAidRequest }: Props): JSX.Element {
   React.useEffect(() => {
     setAidRequest(data?.aidRequest);
   }, [data]);
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore ts thinks outline: 'none' is invalid but it's not
   const items = getListItems(data);
 
   if (loading) {
