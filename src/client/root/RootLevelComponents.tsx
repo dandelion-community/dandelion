@@ -1,4 +1,5 @@
 import React from 'react';
+import PinnedInputProvider from 'src/client/global/pinned_input/PinnedInputProvider';
 import DialogProvider from 'src/client/dialog/DialogProvider';
 import DrawerProvider from 'src/client/drawer/DrawerProvider';
 import ToastProvider from 'src/client/toast/ToastProvider';
@@ -10,10 +11,12 @@ export default function RootLevelComponents({
 }: ChildrenPropsType): React.ReactElement {
   useLoadViewer();
   return (
-    <DialogProvider>
-      <ToastProvider>
-        <DrawerProvider>{children}</DrawerProvider>
-      </ToastProvider>
-    </DialogProvider>
+    <PinnedInputProvider>
+      <DialogProvider>
+        <ToastProvider>
+          <DrawerProvider>{children}</DrawerProvider>
+        </ToastProvider>
+      </DialogProvider>
+    </PinnedInputProvider>
   );
 }
