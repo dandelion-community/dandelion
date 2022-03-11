@@ -7,8 +7,9 @@ import {
   TextInputSelectionChangeEventData,
   View,
 } from 'react-native';
-import { TextInput } from 'react-native-paper';
 import { TextInputHandles } from 'src/client/components/TextInput';
+import TextInput from 'src/client/components/text_input/TextInput';
+import type { RenderProps } from '../../text_input/types';
 import { MentionInputProps, MentionPartType, Suggestion } from '../types';
 import {
   defaultMentionTextStyle,
@@ -27,7 +28,7 @@ const MentionInput = React.forwardRef<TextInputHandles, MentionInputProps>(
       partTypes = [],
       containerStyle,
       onSelectionChange,
-      textStyle,
+      // textStyle,
       ...textInputProps
     }: MentionInputProps,
     ref,
@@ -38,12 +39,14 @@ const MentionInput = React.forwardRef<TextInputHandles, MentionInputProps>(
     }));
 
     const [selection, setSelection] = useState({ end: 0, start: 0 });
-    const [height, setHeight] = useState<number>(19);
+    const [scrollTop, setScrollTop] = useState<number>(0);
+    const [height, setHeight] = useState<number>(0);
 
     const { plainText, parts } = useMemo(
       () => parseValue(value, partTypes),
       [value, partTypes],
     );
+    const joinedParts = parts.map(({ text }) => text).join('');
 
     const handleSelectionChange = (
       event: NativeSyntheticEvent<TextInputSelectionChangeEventData>,
@@ -121,6 +124,8 @@ const MentionInput = React.forwardRef<TextInputHandles, MentionInputProps>(
       </React.Fragment>
     );
 
+    console.log('parts', parts);
+
     return (
       <ScrollView style={[containerStyle, { maxHeight: 100 }]}>
         {(
@@ -131,36 +136,87 @@ const MentionInput = React.forwardRef<TextInputHandles, MentionInputProps>(
               !one.isBottomMentionSuggestionsRender,
           ) as MentionPartType[]
         ).map(renderMentionSuggestions)}
-        <View
-          collapsable={false}
-          onLayout={(event) => {
-            const height = event.nativeEvent.layout.height;
-            // console.log('height', height);
-            // setHeight(height);
-          }}
-        >
-          {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
-          {/* @ts-ignore */}
+        <View collapsable={false}>
           <TextInput
+            label="Add a comment"
+            mode="outlined"
             multiline={true}
             {...textInputProps}
             onChangeText={onChangeInput}
-            onContentSizeChange={(event: {
-              nativeEvent: { contentSize: { width: number; height: number } };
-            }): void => {
-              const newHeight = event.nativeEvent.contentSize.height;
-              console.log('newHeight', newHeight);
-              setHeight(newHeight);
-            }}
             onSelectionChange={handleSelectionChange}
+            /* eslint-disable-next-line @typescript-eslint/ban-ts-comment */
+            /* @ts-ignore */
             ref={(ref) => {
               textInputRef.current = ref;
             }}
+            render={(props: RenderProps) => {
+              return (
+                <View style={{ position: 'relative' }}>
+                  <NativeTextInput
+                    {...props}
+                    onLayout={(e) => {
+                      const { nativeEvent } = e;
+                      const { layout } = nativeEvent;
+                      const { height } = layout;
+                      setHeight(height);
+                    }}
+                    onScroll={(e) => {
+                      const top = (e.target as unknown as { scrollTop: number })
+                        .scrollTop;
+                      setScrollTop(top);
+                    }}
+                    style={[props.style, { color: 'transparent' }]}
+                  />
+                  <View
+                    style={{
+                      height,
+                      overflow: 'hidden',
+                      position: 'absolute',
+                      width: '100%',
+                    }}
+                  >
+                    <View style={{ position: 'relative' }}>
+                      <View
+                        style={{
+                          position: 'absolute',
+                          top: -1 * scrollTop,
+                        }}
+                      >
+                        <Text style={[props.style]}>
+                          {parts.map(({ text, partType, data }, index) =>
+                            partType ? (
+                              <Text
+                                // eslint-disable-next-line react/no-array-index-key
+                                key={`${text}-${index}-${
+                                  data?.trigger ?? 'pattern'
+                                }`}
+                                style={
+                                  partType.textStyle ?? defaultMentionTextStyle
+                                }
+                              >
+                                {text}
+                              </Text>
+                            ) : (
+                              <Text
+                                // eslint-disable-next-line react/no-array-index-key
+                                key={`${text}-${index}`}
+                              >
+                                {text}
+                              </Text>
+                            ),
+                          )}
+                        </Text>
+                      </View>
+                    </View>
+                  </View>
+                </View>
+              );
+            }}
             style={{ minHeight: 64 }}
-            value={value}
+            value={joinedParts}
           />
         </View>
-        <View
+        {/* <View
           style={{
             bottom: 0,
             flex: 1,
@@ -195,7 +251,7 @@ const MentionInput = React.forwardRef<TextInputHandles, MentionInputProps>(
               ),
             )}
           </Text>
-        </View>
+        </View> */}
         {(
           partTypes.filter(
             (one) =>

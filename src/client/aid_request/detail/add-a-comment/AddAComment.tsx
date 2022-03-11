@@ -62,7 +62,7 @@ export default function AddAComment({ aidRequestID }: Props): JSX.Element {
                 {
                   renderSuggestions,
                   // The mention style in the input
-                  textStyle: { color: 'blue', fontWeight: 'bold' },
+                  textStyle: { color: '#8888ff' },
                   // Should be a single character like '@' or '#'
                   trigger: '@',
                 },

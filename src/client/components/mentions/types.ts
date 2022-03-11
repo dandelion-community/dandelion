@@ -99,11 +99,12 @@ type Part = {
 
 type MentionInputProps = Omit<TextInputProps, 'onChange'> & {
   value: string;
-  onChange: (value: string) => any;
+  onChange: (value: string) => void;
   partTypes?: PartType[];
   inputRef?: Ref<typeof TextInput>;
   containerStyle?: StyleProp<ViewStyle>;
   textStyle: StyleProp<TextStyle>;
+  selectionColor?: string | undefined;
 };
 
 export type {
