@@ -55,6 +55,7 @@
     "cookie-parser": ">=1.4.4",
     "cors": ">=2.8.5",
     "deep-equal": "^2.0.5",
+    "diff": "^5.0.0",
     "dotenv": ">=10.0.0",
     "emoji-regex": ">=10.0.0",
     "expo": ">=44.0.0",
