@@ -9,17 +9,14 @@ import Row from 'src/client/aid_request/detail/components/Row';
 import useEditAidRequestWithUndo from 'src/client/aid_request/edit/useEditAidRequestWithUndo';
 import { useColor } from 'src/client/components/Colors';
 import MentionInput from 'src/client/components/mentions/components/MentionInput';
-import {
-  MentionSuggestionsProps,
-  Position,
-} from 'src/shared/utils/types';
 import Monogram from 'src/client/components/Monogram';
 import { TextInputHandles } from 'src/client/components/TextInput';
-import MentionPartType from 'src/shared/utils/MentionPartType';
 import ViewWithBackground from 'src/client/components/ViewWithBackground';
 import PinToBottomWhenFocused from 'src/client/global/pinned_input/PinToBottomWhenFocused';
 import useIsLargeScreen from 'src/client/screen_size/useIsLargeScreen';
 import { useLoggedInViewer } from 'src/client/viewer/Viewer';
+import MentionPartType from 'src/shared/utils/MentionPartType';
+import { MentionSuggestionsProps, Position } from 'src/shared/utils/types';
 import SendButton from './SendButton';
 
 type Props = {
@@ -183,7 +180,7 @@ const styles = StyleSheet.create({
     alignItems: 'flex-end',
     flexDirection: 'column-reverse',
     flexGrow: 0,
-    marginBottom: 8,
+    marginBottom: 26,
     marginLeft: 4,
     marginTop: 14,
   },
