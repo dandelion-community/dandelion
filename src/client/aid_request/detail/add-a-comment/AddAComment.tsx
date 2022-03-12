@@ -41,9 +41,8 @@ export default function AddAComment({ aidRequestID }: Props): JSX.Element {
       eventSpecificData: value,
     },
   });
-  // const style = { height: contentHeight + (Platform.OS === 'ios' ? 16 : -3) };
   return (
-    <PinToBottomWhenFocused focus={focus} isFocused={focused}>
+    <PinToBottomWhenFocused isFocused={focused}>
       <Row omitTopMargin={true}>
         <View style={styles.row}>
           <View style={styles.monogramColumn}>
@@ -51,6 +50,7 @@ export default function AddAComment({ aidRequestID }: Props): JSX.Element {
           </View>
           <View style={styles.textInput}>
             <MentionInput
+              autoFocus={focused}
               onBlur={() => {
                 setFocused(false);
               }}
@@ -91,22 +91,6 @@ export default function AddAComment({ aidRequestID }: Props): JSX.Element {
       </Row>
     </PinToBottomWhenFocused>
   );
-
-  function focus(): void {
-    textInputRef.current?.focus();
-  }
-
-  // function onContentSizeChange(event: {
-  //   nativeEvent: { contentSize: { width: number; height: number } };
-  // }): void {
-  //   const newHeight = event.nativeEvent.contentSize.height;
-  //   if (newHeight !== contentHeight) {
-  //     console.log(
-  //       `Changing content height from ${contentHeight} to ${newHeight}`,
-  //     );
-  //     // setContentHeight(newHeight);
-  //   }
-  // }
 
   function focusTextInput(): void {
     textInputRef.current?.focus();

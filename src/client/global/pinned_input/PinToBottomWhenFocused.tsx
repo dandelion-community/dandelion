@@ -4,27 +4,17 @@ import PinnedInputStore from './PinnedInputStore';
 
 type Props = {
   children: React.ReactElement;
-  focus: () => void;
   isFocused: boolean;
 };
 
 export default function PinToBottomWhenFocused({
   children,
-  focus,
   isFocused,
 }: Props): JSX.Element {
   React.useEffect(() => {
-    console.log('setState - ', isFocused);
     PinnedInputStore.update({
-      render: isFocused || [1].includes(1) ? () => children : undefined,
+      render: isFocused ? () => children : undefined,
     });
-    if (isFocused) {
-      console.log('gonna focus');
-      setTimeout(() => {
-        console.log('focusing');
-        focus();
-      }, 100);
-    }
-  }, [isFocused, focus]);
+  }, [children, isFocused]);
   return isFocused ? <View /> : children;
 }

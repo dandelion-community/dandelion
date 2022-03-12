@@ -1,4 +1,3 @@
-import color from 'color';
 import * as React from 'react';
 import {
   ColorValue,
@@ -9,6 +8,7 @@ import {
   TextStyle,
   View,
 } from 'react-native';
+import color from 'src/client/utils/color';
 import { AdornmentSide, AdornmentType } from './Adornment/enums';
 import TextInputAdornment, {
   getAdornmentConfig,
@@ -89,8 +89,10 @@ const TextInputOutlined = ({
   let inputTextColor, activeColor, outlineColor, placeholderColor, errorColor;
 
   if (disabled) {
-    const isTransparent = color(customOutlineColor).alpha() === 0;
-    inputTextColor = activeColor = color(colors.text)
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const isTransparent = (color(customOutlineColor) as any).alpha() === 0;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    inputTextColor = activeColor = (color(colors.text) as any)
       .alpha(0.54)
       .rgb()
       .string();

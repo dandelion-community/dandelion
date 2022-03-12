@@ -21,18 +21,16 @@ import {
 } from '../utils';
 
 const MentionInput = React.forwardRef<TextInputHandles, MentionInputProps>(
-  (
-    {
+  (props: MentionInputProps, ref): JSX.Element => {
+    const {
+      autoFocus,
       value,
       onChange,
       partTypes = [],
       containerStyle,
       onSelectionChange,
-      // textStyle,
       ...textInputProps
-    }: MentionInputProps,
-    ref,
-  ): JSX.Element => {
+    } = props;
     const textInputRef = useRef<NativeTextInput | null>(null);
     React.useImperativeHandle(ref, () => ({
       focus: () => textInputRef.current?.focus(),
@@ -124,8 +122,6 @@ const MentionInput = React.forwardRef<TextInputHandles, MentionInputProps>(
       </React.Fragment>
     );
 
-    console.log('parts', parts);
-
     return (
       <ScrollView style={[containerStyle, { maxHeight: 100 }]}>
         {(
@@ -142,6 +138,7 @@ const MentionInput = React.forwardRef<TextInputHandles, MentionInputProps>(
             mode="outlined"
             multiline={true}
             {...textInputProps}
+            autoFocus={autoFocus}
             onChangeText={onChangeInput}
             onSelectionChange={handleSelectionChange}
             /* eslint-disable-next-line @typescript-eslint/ban-ts-comment */
@@ -155,15 +152,13 @@ const MentionInput = React.forwardRef<TextInputHandles, MentionInputProps>(
                   <NativeTextInput
                     {...props}
                     onLayout={(e) => {
-                      const { nativeEvent } = e;
-                      const { layout } = nativeEvent;
-                      const { height } = layout;
-                      setHeight(height);
+                      setHeight(e.nativeEvent.layout.height);
                     }}
                     onScroll={(e) => {
-                      const top = (e.target as unknown as { scrollTop: number })
-                        .scrollTop;
-                      setScrollTop(top);
+                      setScrollTop(
+                        (e.target as unknown as { scrollTop: number })
+                          .scrollTop,
+                      );
                     }}
                     style={[props.style, { color: 'transparent' }]}
                   />
@@ -216,42 +211,6 @@ const MentionInput = React.forwardRef<TextInputHandles, MentionInputProps>(
             value={joinedParts}
           />
         </View>
-        {/* <View
-          style={{
-            bottom: 0,
-            flex: 1,
-            flexDirection: 'column-reverse',
-            height,
-            left: 0,
-            maxHeight: height,
-            minHeight: height,
-            paddingHorizontal: 12,
-            paddingVertical: 21,
-            position: 'absolute',
-          }}
-        >
-          <Text>
-            {parts.map(({ text, partType, data }, index) =>
-              partType ? (
-                <Text
-                  // eslint-disable-next-line react/no-array-index-key
-                  key={`${text}-${index}-${data?.trigger ?? 'pattern'}`}
-                  style={partType.textStyle ?? defaultMentionTextStyle}
-                >
-                  {text}
-                </Text>
-              ) : (
-                <Text
-                  // eslint-disable-next-line react/no-array-index-key
-                  key={`${text}-${index}`}
-                  style={[textStyle, { color: 'green' }]}
-                >
-                  {text}
-                </Text>
-              ),
-            )}
-          </Text>
-        </View> */}
         {(
           partTypes.filter(
             (one) =>

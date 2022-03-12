@@ -1,6 +1,5 @@
 /* From https://github.com/callstack/react-native-paper/blob/main/src/components/TextInput/Adornment/TextInputAffix.tsx */
 
-import color from 'color';
 import React from 'react';
 import {
   Animated,
@@ -12,6 +11,7 @@ import {
   ViewStyle,
 } from 'react-native';
 import { withTheme } from 'react-native-paper';
+import color from 'src/client/utils/color';
 import { AdornmentSide } from './enums';
 
 const AFFIX_OFFSET = 12;
@@ -111,7 +111,8 @@ const AffixAdornment: React.FunctionComponent<
 const TextInputAffix = ({ text, textStyle: labelStyle, theme }: Props) => {
   const { textStyle, onLayout, topPosition, side, visible, paddingHorizontal } =
     React.useContext(AffixContext);
-  const textColor = color(theme.colors.text)
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const textColor = (color(theme.colors.text) as any)
     .alpha(theme.dark ? 0.7 : 0.54)
     .rgb()
     .string();

@@ -20,7 +20,7 @@ export default function PinnedInputProvider({
     <>
       {children}
       <View style={[styles.pinnedInput, { width: screenWidth }]}>
-        <ViewWithBackground style={[styles.wrapper, { width: viewWidth }]}>
+        <ViewWithBackground style={{ width: viewWidth }}>
           {render?.()}
         </ViewWithBackground>
       </View>
@@ -34,10 +34,5 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     bottom: 0,
     position: 'absolute',
-  },
-  wrapper: {
-    alignItems: 'stretch',
-    flex: 1,
-    flexDirection: 'column',
   },
 });
