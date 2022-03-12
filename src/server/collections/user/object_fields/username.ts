@@ -2,7 +2,7 @@ import type { ObjectTypeComposerFieldConfigAsObjectDefinition } from 'graphql-co
 import { UserModel } from 'src/server/collections/user/UserModel';
 import assertLoggedIn from 'src/server/graphql/assertLoggedIn';
 
-const crews: ObjectTypeComposerFieldConfigAsObjectDefinition<
+const username: ObjectTypeComposerFieldConfigAsObjectDefinition<
   Express.User,
   Express.Request,
   Record<string, never>
@@ -11,18 +11,18 @@ const crews: ObjectTypeComposerFieldConfigAsObjectDefinition<
     { _id: userID }: Express.User,
     _args: Record<string, never>,
     req: Express.Request,
-  ): Promise<Array<string>> => {
-    const viewer = assertLoggedIn(req, 'crews');
+  ): Promise<string> => {
+    const viewer = assertLoggedIn(req, 'username');
     const user = await UserModel.findById(userID);
     if (user == null) {
-      return [];
+      throw new Error('User not found');
     }
     if (!viewer._id.equals(user._id)) {
-      throw new Error("You cannot load another user's crews");
+      throw new Error("You cannot load another user's username");
     }
-    return user.crews;
+    return user.username;
   },
-  type: '[String!]!',
+  type: 'String!',
 };
 
-export default crews;
+export default username;

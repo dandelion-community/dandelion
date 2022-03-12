@@ -12,6 +12,10 @@ const VIEWER_QUERY = gql`
       username
       displayName
       crews
+      taggableUsers {
+        id: _id
+        displayName
+      }
     }
   }
 `;
@@ -32,6 +36,7 @@ export default function useLoadViewer(): void {
         crews,
         displayName,
         id,
+        taggableUsers: data?.me?.taggableUsers ?? [],
         username,
       };
     }

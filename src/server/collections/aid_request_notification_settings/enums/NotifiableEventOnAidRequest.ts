@@ -1,9 +1,12 @@
 import { schemaComposer } from 'graphql-compose';
 
-export type NotifiableEventOnAidRequest = 'NewComment' | 'Any';
+export type NotifiableEventOnAidRequest =
+  | 'NewComment'
+  | 'Any'
+  | 'YouWereMentionedInAComment';
 
 export const ALL_NOTIFIABLE_EVENTS_ON_AID_REQUESTS: NotifiableEventOnAidRequest[] =
-  ['NewComment', 'Any'];
+  ['NewComment', 'Any', 'YouWereMentionedInAComment'];
 
 export const NOTIFIABLE_EVENTS_ON_AID_REQUESTS_MONGOOSE_ENUM = {
   enum: ALL_NOTIFIABLE_EVENTS_ON_AID_REQUESTS,
@@ -15,5 +18,6 @@ export const NotifiableEventOnAidRequestGraphQLType =
     `enum NotifiableEventOnAidRequest { 
       NewComment
       Any
+      YouWereMentionedInAComment
     }`,
   );

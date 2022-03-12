@@ -5,7 +5,13 @@ export type LoggedInViewer = Readonly<{
   displayName: string;
   id: string;
   username: string;
+  taggableUsers: OtherUser[];
 }>;
+
+export type OtherUser = {
+  id: string;
+  displayName: string;
+};
 
 export type LoggedOutViewer = undefined;
 

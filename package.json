@@ -4,7 +4,7 @@
   "scripts": {
     "start": "node server-build/server/root/runserver.js",
     "dev:client": "yarn install && npm run web",
-    "dev:server": "yarn install && MONGODB_DB_NAME=\"AidApp-Test\" MONGO_AID_REQUEST_INDEX_NAME=\"aid-request-test\" HOT_RELOAD=True DEBUG=server nodemon --config nodemon.json src/server/root/runserver.ts",
+    "dev:server": "yarn install && MONGODB_DB_NAME=\"AidApp\" MONGO_AID_REQUEST_INDEX_NAME=\"aid-requests\" HOT_RELOAD=True DEBUG=server nodemon --config nodemon.json src/server/root/runserver.ts",
     "android": "expo run:android",
     "ios": "expo run:ios",
     "web": "expo start --web",

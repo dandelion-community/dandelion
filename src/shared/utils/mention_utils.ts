@@ -281,6 +281,11 @@ const generateValueFromPartsAndChangedText = (
   return getValueFromParts(newParts);
 };
 
+type ReturnValue = {
+  newValue: string | undefined;
+  newCursorPosition: number;
+};
+
 /**
  * Method for adding suggestion to the parts and generating value. We should:
  * - Find part with plain text where we were tracking mention typing using selection state
@@ -302,15 +307,17 @@ const generateValueWithAddedSuggestion = (
   plainText: string,
   selection: Position,
   suggestion: Suggestion,
-): string | undefined => {
+): ReturnValue => {
+  console.log({ parts, selection });
   const currentPartIndex = parts.findIndex(
-    (one) =>
-      selection.end >= one.position.start && selection.end <= one.position.end,
+    (elem) =>
+      selection.end >= elem.position.start &&
+      selection.end <= elem.position.end,
   );
   const currentPart = parts[currentPartIndex];
 
   if (!currentPart) {
-    return;
+    return { newCursorPosition: selection.end, newValue: undefined };
   }
 
   const triggerPartIndex = currentPart.text.lastIndexOf(
@@ -332,7 +339,7 @@ const generateValueWithAddedSuggestion = (
         newMentionPartPosition.end,
       ));
 
-  return getValueFromParts([
+  const newValue = getValueFromParts([
     ...parts.slice(0, currentPartIndex),
 
     // Create part with string before mention
@@ -354,6 +361,18 @@ const generateValueWithAddedSuggestion = (
 
     ...parts.slice(currentPartIndex + 1),
   ]);
+
+  const newCursorPosition =
+    currentPart.position.start +
+    triggerPartIndex +
+    mentionType.trigger.length +
+    suggestion.name.length +
+    1;
+
+  return {
+    newCursorPosition,
+    newValue,
+  };
 };
 
 /**

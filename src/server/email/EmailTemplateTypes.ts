@@ -16,6 +16,7 @@ interface NewComment extends EmailTemplateTypeBase {
     request_url: string;
     what_is_needed: string;
     who_is_it_for: string;
+    subject: string;
   };
 }
 

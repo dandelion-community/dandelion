@@ -12,7 +12,6 @@ import { AidRequestActionInputInput, AidRequestUpdateActionType, AidRequestHisto
 export interface EditAidRequestMutation_payload_object_whoRecordedIt {
   __typename: "User";
   displayName: string;
-  username: string;
 }
 
 export interface EditAidRequestMutation_payload_object_whoIsWorkingOnItUsers {

@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { View } from 'react-native';
+import useIsLargeScreen from 'src/client/screen_size/useIsLargeScreen';
 import PinnedInputStore from './PinnedInputStore';
 
 type Props = {
@@ -11,10 +12,12 @@ export default function PinToBottomWhenFocused({
   children,
   isFocused,
 }: Props): JSX.Element {
+  const isLargeScreen = useIsLargeScreen();
+  const shouldPinToBottom = isFocused && !isLargeScreen;
   React.useEffect(() => {
     PinnedInputStore.update({
-      render: isFocused ? () => children : undefined,
+      render: shouldPinToBottom ? () => children : undefined,
     });
-  }, [children, isFocused]);
-  return isFocused ? <View /> : children;
+  }, [children, isFocused, isLargeScreen]);
+  return shouldPinToBottom ? <View /> : children;
 }

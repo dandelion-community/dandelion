@@ -12,7 +12,6 @@ import { AidRequestUpdateActionType, AidRequestHistoryEventType, NotifiableEvent
 export interface AidRequestNotificationSettingsQuery_aidRequestNotificationSettings_aidRequest_whoRecordedIt {
   __typename: "User";
   displayName: string;
-  username: string;
 }
 
 export interface AidRequestNotificationSettingsQuery_aidRequestNotificationSettings_aidRequest_whoIsWorkingOnItUsers {

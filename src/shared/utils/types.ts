@@ -73,7 +73,7 @@ type MentionPartType = {
   isBottomMentionSuggestionsRender?: boolean;
 
   // Custom mention styles in text input
-  textStyle?: StyleProp<TextStyle>;
+  textStyle: StyleProp<TextStyle>;
 
   // Plain string generator for mention
   getPlainString?: (mention: MentionData) => string;
@@ -83,7 +83,7 @@ type PatternPartType = {
   // RexExp with global flag
   pattern: RegExp;
 
-  textStyle?: StyleProp<TextStyle>;
+  textStyle: StyleProp<TextStyle>;
 };
 
 type PartType = MentionPartType | PatternPartType;
@@ -97,15 +97,18 @@ type Part = {
   data?: MentionData;
 };
 
-type MentionInputProps = Omit<TextInputProps, 'onChange'> & {
+type MentionInputProps = Omit<
+  TextInputProps,
+  'onChange' | 'onSelectionChange'
+> & {
   autoFocus?: boolean;
   value: string;
-  onChange: (value: string) => void;
-  partTypes?: PartType[];
+  onChangeText: (value: string) => void;
+  partTypes: PartType[];
   inputRef?: Ref<typeof TextInput>;
   containerStyle?: StyleProp<ViewStyle>;
-  textStyle: StyleProp<TextStyle>;
   selectionColor?: string | undefined;
+  onSelectionChange: (position: Position) => void;
 };
 
 export type {

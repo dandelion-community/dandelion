@@ -12,7 +12,6 @@ import { AidRequestUpdateActionType, AidRequestHistoryEventType } from "./../../
 export interface AidRequestCardFragment_whoRecordedIt {
   __typename: "User";
   displayName: string;
-  username: string;
 }
 
 export interface AidRequestCardFragment_whoIsWorkingOnItUsers {
