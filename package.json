@@ -4,7 +4,7 @@
   "scripts": {
     "start": "node server-build/server/root/runserver.js",
     "dev:client": "yarn install && npm run web",
-    "dev:server": "yarn install && MONGODB_DB_NAME=\"AidApp\" MONGO_AID_REQUEST_INDEX_NAME=\"aid-requests\" HOT_RELOAD=True DEBUG=server nodemon --config nodemon.json src/server/root/runserver.ts",
+    "dev:server": "yarn install && MONGODB_DB_NAME=\"AidApp-Test\" MONGO_AID_REQUEST_INDEX_NAME=\"aid-request-test\" HOT_RELOAD=True DEBUG=server nodemon --config nodemon.json src/server/root/runserver.ts",
     "android": "expo run:android",
     "ios": "expo run:ios",
     "web": "expo start --web",
@@ -50,8 +50,6 @@
     "analytics-node": ">=6.0.0",
     "babel-plugin-inline-dotenv": ">=1.6.0",
     "body-parser": ">=1.19.1",
-    "color-convert": "^2.0.1",
-    "color-string": "^1.9.0",
     "connect-ensure-login": ">=0.1.1",
     "connect-mongo": ">=4.6.0",
     "cookie-parser": ">=1.4.4",
@@ -105,7 +103,6 @@
   },
   "devDependencies": {
     "@babel/core": ">=7.12.9",
-    "@babel/plugin-proposal-numeric-separator": "^7.16.7",
     "@babel/preset-typescript": ">=7.16.7",
     "@types/analytics-node": ">=3.1.7",
     "@types/connect-ensure-login": ">=0.1.7",
