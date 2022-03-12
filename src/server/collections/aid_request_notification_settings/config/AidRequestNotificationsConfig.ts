@@ -43,6 +43,14 @@ const CONFIG: Config = {
     settingsTitle: 'New Comments',
     shortNoun: 'new comments',
   },
+  YouWereMentionedInAComment: {
+    description: 'You were mentioned in a comment',
+    notificationMethods: {
+      Email: { defaultValue: 'Subscribe' },
+    },
+    settingsTitle: 'Comment Mentions',
+    shortNoun: 'comment mentions',
+  },
 };
 
 export function validate(): void {

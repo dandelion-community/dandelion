@@ -3,6 +3,7 @@ module.exports = function (api) {
   return {
     plugins: [
       'inline-dotenv',
+      '@babel/proposal-numeric-separator',
       [
         'module-resolver',
         {

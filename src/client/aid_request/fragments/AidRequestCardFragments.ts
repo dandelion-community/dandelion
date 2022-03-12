@@ -29,7 +29,6 @@ export const AidRequestCardFragments = {
       whoIsItFor
       whoRecordedIt {
         displayName
-        username
       }
       whoIsWorkingOnItUsers {
         _id

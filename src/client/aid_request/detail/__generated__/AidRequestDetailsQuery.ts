@@ -12,7 +12,6 @@ import { AidRequestUpdateActionType, AidRequestHistoryEventType } from "./../../
 export interface AidRequestDetailsQuery_aidRequest_whoRecordedIt {
   __typename: "User";
   displayName: string;
-  username: string;
 }
 
 export interface AidRequestDetailsQuery_aidRequest_whoIsWorkingOnItUsers {

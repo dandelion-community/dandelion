@@ -18,7 +18,6 @@ export interface ListOfAidRequestsQuery_allAidRequests_pageInfo {
 export interface ListOfAidRequestsQuery_allAidRequests_edges_node_whoRecordedIt {
   __typename: "User";
   displayName: string;
-  username: string;
 }
 
 export interface ListOfAidRequestsQuery_allAidRequests_edges_node_whoIsWorkingOnItUsers {

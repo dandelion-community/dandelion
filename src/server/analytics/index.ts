@@ -28,8 +28,9 @@ type Message = {
 };
 
 const analytics = {
-  identify: (...args: Parameters<typeof segmentAnalytics['identify']>) =>
-    segmentAnalytics.identify(...args),
+  identify: (...args: Parameters<typeof segmentAnalytics['identify']>) => {
+    segmentAnalytics.identify(...args);
+  },
   track: (message: Message): void => {
     const { event, properties, user } = message;
     segmentAnalytics.track({

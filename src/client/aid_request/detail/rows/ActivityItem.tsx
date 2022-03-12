@@ -1,9 +1,9 @@
 import { gql } from '@apollo/client';
 import * as React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import Autolink from 'react-native-autolink';
 import { useColor } from 'src/client/components/Colors';
 import Monogram from 'src/client/components/Monogram';
+import TextWithMentions from '../../../components/text_input_with_styles/TextWithMentions';
 import { ActivityItemFragment } from './__generated__/ActivityItemFragment';
 
 type Props = {
@@ -31,7 +31,7 @@ export default function ActivityItem({ activityItem }: Props): JSX.Element {
           </View>
         </View>
         <View>
-          <Text
+          <TextWithMentions
             style={[
               styles.contentText,
               { color },
@@ -39,14 +39,8 @@ export default function ActivityItem({ activityItem }: Props): JSX.Element {
                 ? styles.contentTextComment
                 : styles.contentTextNonComment,
             ]}
-          >
-            <Autolink
-              email={true}
-              phone="sms"
-              text={activityItem.message}
-              url={true}
-            />
-          </Text>
+            value={activityItem.message}
+          />
         </View>
       </View>
     </View>
