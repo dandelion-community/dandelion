@@ -3,7 +3,7 @@ import * as React from 'react';
 import LocalUpdateSubscriberStore from 'src/client/aid_request/cache/LocalUpdateSubscriberStore';
 import { graphqlEdgeDraftStore } from 'src/client/aid_request/drafts/AidRequestDraftsMemoryStore';
 import { useFilterContext } from 'src/client/aid_request/filter/FilterContext';
-import type { FilterType } from 'src/client/aid_request/filter/RequestExplorerFiltersContext';
+import type { FilterType } from 'src/client/aid_request/filter/RequestExplorerFiltersStore';
 import {
   LIST_OF_AID_REQUESTS_QUERY,
   PAGE_SIZE,

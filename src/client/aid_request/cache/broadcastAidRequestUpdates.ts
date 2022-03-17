@@ -6,7 +6,7 @@ import { isDraftID } from 'src/client/aid_request/drafts/AidRequestDraftIDs';
 import { graphqlNodeDraftStore } from 'src/client/aid_request/drafts/AidRequestDraftsMemoryStore';
 import { FilterContext } from 'src/client/aid_request/filter/FilterContext';
 import { FILTERS } from 'src/client/aid_request/filter/RequestExplorerFilters';
-import type { FilterType } from 'src/client/aid_request/filter/RequestExplorerFiltersContext';
+import { FilterType } from 'src/client/aid_request/filter/RequestExplorerFiltersStore';
 import {
   LIST_OF_AID_REQUESTS_QUERY,
   PAGE_SIZE,

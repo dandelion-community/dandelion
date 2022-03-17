@@ -2,7 +2,7 @@ import * as React from 'react';
 import { ProgressBar } from 'react-native-paper';
 import AidRequestCard from 'src/client/aid_request/card/AidRequestCard';
 import { GoToRequestDetailScreen } from 'src/client/aid_request/detail/AidRequestDetailScreen';
-import { FilterType } from 'src/client/aid_request/filter/RequestExplorerFiltersContext';
+import { FilterType } from 'src/client/aid_request/filter/RequestExplorerFiltersStore';
 import { PAGE_SIZE } from 'src/client/aid_request/list/ListOfAidRequestsQuery';
 import useListOfAidRequests from 'src/client/aid_request/list/useListOfAidRequests';
 import {
