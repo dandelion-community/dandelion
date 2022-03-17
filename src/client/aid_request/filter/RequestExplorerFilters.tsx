@@ -2,18 +2,31 @@ import * as React from 'react';
 import type { ListRenderItemInfo } from 'react-native';
 import { FlatList, StyleSheet, View } from 'react-native';
 import type { FilterContext } from 'src/client/aid_request/filter/FilterContext';
-import type { FilterButtonProps } from 'src/client/aid_request/filter/RequestExplorerFilterButton';
+import type { FilterSettingType } from 'src/client/aid_request/filter/FilterSettingType';
 import RequestExplorerFilterButton from 'src/client/aid_request/filter/RequestExplorerFilterButton';
-import type { FilterType } from 'src/client/aid_request/filter/RequestExplorerFiltersContext';
-import { useRequestExplorerFilters } from 'src/client/aid_request/filter/RequestExplorerFiltersContext';
+import { FilterType } from 'src/client/aid_request/filter/RequestExplorerFiltersStore';
+import { useRequestExplorerFilters } from 'src/client/aid_request/filter/useRequestExplorerFilters';
 import { ListOfAidRequestsQuery_allAidRequests_edges_node } from 'src/client/aid_request/list/__generated__/ListOfAidRequestsQuery';
 import Text from 'src/client/components/Text';
 import useViewWidth from 'src/client/components/useViewWidth';
 import { useLoggedInViewer } from 'src/client/viewer/Viewer';
 import filterNulls from 'src/shared/utils/filterNulls';
 
-export const FILTERS: FilterButtonProps[] = [
+export const FILTERS: FilterSettingType[] = [
   {
+    decode: ({ filter, encoded }) => {
+      if (encoded.startsWith('i')) {
+        return {
+          encoded: encoded.slice(1),
+          filter: { ...filter, iAmWorkingOnIt: true },
+        };
+      } else {
+        return { encoded, filter };
+      }
+    },
+    encode(filter: FilterType): string {
+      return 'iAmWorkingOnIt' in filter ? 'i' : '';
+    },
     getCurrentToggleState: (filter: FilterType): boolean => {
       return filter?.iAmWorkingOnIt === true;
     },
@@ -49,6 +62,19 @@ export const FILTERS: FilterButtonProps[] = [
     },
   },
   {
+    decode: ({ filter, encoded }) => {
+      if (encoded.startsWith('c')) {
+        return {
+          encoded: encoded.slice(1),
+          filter: { ...filter, completed: true },
+        };
+      } else {
+        return { encoded, filter };
+      }
+    },
+    encode: (filter: FilterType): string => {
+      return filter.completed ? 'c' : '';
+    },
     getCurrentToggleState: (filter: FilterType): boolean => {
       return filter?.completed === true;
     },
@@ -80,7 +106,7 @@ export const FILTERS: FilterButtonProps[] = [
 
 export default function RequestExplorerFilters(): React.ReactElement {
   const viewWidth = useViewWidth();
-  const { filter } = useRequestExplorerFilters();
+  const filter = useRequestExplorerFilters();
   const { id: viewerID } = useLoggedInViewer();
   const context = { viewerID };
   return (
@@ -104,7 +130,7 @@ export default function RequestExplorerFilters(): React.ReactElement {
     item,
     index: _index,
     separators: _separators,
-  }: ListRenderItemInfo<FilterButtonProps>): React.ReactElement | null {
+  }: ListRenderItemInfo<FilterSettingType>): React.ReactElement | null {
     return <RequestExplorerFilterButton {...item} />;
   }
 }

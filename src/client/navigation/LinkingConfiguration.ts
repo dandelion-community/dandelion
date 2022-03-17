@@ -13,7 +13,7 @@ const linking: LinkingOptions<RootStackParamList> = {
         screens: {
           MenuTabStackContainer: {
             screens: {
-              ThreeLinesMenu: 'menu',
+              Menu: 'menu',
             },
           },
           RequestExplorerTabStackContainer: {

@@ -24,7 +24,7 @@ export type WhoIsThisFor = 'me' | 'someone_else' | undefined;
 export type CreateRequestArgs = Partial<{ for_: WhoIsThisFor }>;
 
 export type RequestExplorerStackParamList = {
-  RequestExplorer: NavigatorScreenParams<RootTabParamList> | undefined;
+  RequestExplorer: { f?: string };
   AidRequestDetail: { id: string };
   AidRequestNotificationSettings: { id: string };
 };

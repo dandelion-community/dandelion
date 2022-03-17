@@ -1,40 +1,19 @@
 import * as React from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
-import { FilterContext } from 'src/client/aid_request/filter/FilterContext';
-import type { FilterType } from 'src/client/aid_request/filter/RequestExplorerFiltersContext';
-import { useRequestExplorerFilters } from 'src/client/aid_request/filter/RequestExplorerFiltersContext';
-import { ListOfAidRequestsQuery_allAidRequests_edges_node } from 'src/client/aid_request/list/__generated__/ListOfAidRequestsQuery';
+import type { FilterSettingType } from 'src/client/aid_request/filter/FilterSettingType';
+import RequestExplorerFiltersStore from 'src/client/aid_request/filter/RequestExplorerFiltersStore';
+import { useRequestExplorerFilters } from 'src/client/aid_request/filter/useRequestExplorerFilters';
 import Text from 'src/client/components/Text';
 import useColorScheme from 'src/client/light-or-dark/useColorScheme';
 import { useLoggedInViewer } from 'src/client/viewer/Viewer';
-
-type UpdateFilter = (
-  oldFilter: FilterType,
-  context: FilterContext,
-) => FilterType;
-
-export type FilterButtonProps = {
-  getCurrentToggleState: (
-    filter: FilterType,
-    context: FilterContext,
-  ) => boolean;
-  label: string;
-  passes: (
-    filter: FilterType,
-    aidRequest: ListOfAidRequestsQuery_allAidRequests_edges_node,
-    context: FilterContext,
-  ) => boolean;
-  toggleOff: UpdateFilter;
-  toggleOn: UpdateFilter;
-};
 
 export default function RequestExplorerFilterButton({
   getCurrentToggleState,
   label,
   toggleOff,
   toggleOn,
-}: FilterButtonProps): React.ReactElement {
-  const { filter, setFilters } = useRequestExplorerFilters();
+}: FilterSettingType): React.ReactElement {
+  const filter = useRequestExplorerFilters();
   const { id: viewerID } = useLoggedInViewer();
   const context = { viewerID };
   const enabled = getCurrentToggleState(filter, context);
@@ -54,9 +33,9 @@ export default function RequestExplorerFilterButton({
 
   function onPress(): void {
     if (enabled) {
-      setFilters(toggleOff(filter, context));
+      RequestExplorerFiltersStore.update(toggleOff(filter, context));
     } else {
-      setFilters(toggleOn(filter, context));
+      RequestExplorerFiltersStore.update(toggleOn(filter, context));
     }
   }
 }

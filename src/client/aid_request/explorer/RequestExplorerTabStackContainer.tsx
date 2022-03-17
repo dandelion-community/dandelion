@@ -7,6 +7,7 @@ import AidRequestDetailHeaderButtons from 'src/client/aid_request/detail/header/
 import { AidRequestDetailsQuery_aidRequest } from 'src/client/aid_request/detail/__generated__/AidRequestDetailsQuery';
 import RequestExplorerHeader from 'src/client/aid_request/explorer/RequestExplorerHeader';
 import RequestExplorerScreen from 'src/client/aid_request/explorer/RequestExplorerScreen';
+import { getArg as getRequestExplorerArg } from 'src/client/aid_request/filter/RequestExplorerFiltersStore';
 import AidRequestNotificationSettingsScreen from 'src/client/aid_request/notification_settings/AidRequestNotificationSettingsScreen';
 import Header from 'src/client/components/Header';
 import StackNavigatorInsideTabNavigator from 'src/client/navigation/helpers/StackNavigatorInsideTabNavigator';
@@ -98,7 +99,10 @@ export default function RequestExplorerTabStackContainer(): JSX.Element {
                     navigation?.canGoBack()
                       ? navigation?.goBack()
                       : notifSettingsAidRequestID == null
-                      ? navigation?.replace('RequestExplorer')
+                      ? navigation?.replace(
+                          'RequestExplorer',
+                          getRequestExplorerArg(),
+                        )
                       : navigation?.replace('AidRequestDetail', {
                           id: notifSettingsAidRequestID,
                         });
@@ -135,5 +139,5 @@ function goBack(): void {
   const navigation = RequestExplorerNavigationStore.getValue();
   navigation?.canGoBack()
     ? navigation?.goBack()
-    : navigation?.replace('RequestExplorer');
+    : navigation?.replace('RequestExplorer', getRequestExplorerArg());
 }

@@ -5,6 +5,7 @@ import Colors from 'src/client/components/Colors';
 import DrawerContext from 'src/client/drawer/DrawerContext';
 import useColorScheme from 'src/client/light-or-dark/useColorScheme';
 import { ChildrenPropsType } from 'src/client/utils/ChildrenPropsType';
+import CenteredOnScreen from '../screen_size/CenteredOnScreen';
 
 export default function DrawerProvider({
   children,
@@ -32,14 +33,16 @@ export default function DrawerProvider({
         onBackdropPress={() => setRenderer({ renderer: undefined })}
         visible={renderer != null}
       >
-        <View
-          style={[
-            styles.common,
-            scheme === 'light' ? styles.light : styles.dark,
-          ]}
-        >
-          {renderer == null ? null : renderer()}
-        </View>
+        <CenteredOnScreen>
+          <View
+            style={[
+              styles.common,
+              scheme === 'light' ? styles.light : styles.dark,
+            ]}
+          >
+            {renderer == null ? null : renderer()}
+          </View>
+        </CenteredOnScreen>
       </BottomSheet>
     </DrawerContext.Provider>
   );
