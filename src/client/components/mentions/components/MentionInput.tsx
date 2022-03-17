@@ -2,13 +2,17 @@ import React, { useMemo, useRef } from 'react';
 import { TextInput as NativeTextInput, View } from 'react-native';
 import { TextInputHandles } from 'src/client/components/TextInput';
 import MaterialTextInputWithStyles from 'src/client/components/text_input_with_styles/MaterialTextInputWithStyles';
-import { MentionInputProps, MentionPartType, Suggestion } from '../../../../shared/utils/types';
 import {
   generateValueWithAddedSuggestion,
   getMentionPartSuggestionKeywords,
   isMentionPartType,
   parseValue,
-} from '../../../../shared/utils/mention_utils';
+} from 'src/shared/utils/mention_utils';
+import {
+  MentionInputProps,
+  MentionPartType,
+  Suggestion,
+} from 'src/shared/utils/types';
 
 const MentionInput = React.forwardRef<TextInputHandles, MentionInputProps>(
   (props: MentionInputProps, ref): JSX.Element => {
@@ -26,6 +30,9 @@ const MentionInput = React.forwardRef<TextInputHandles, MentionInputProps>(
     React.useImperativeHandle(ref, () => ({
       focus: () => {
         textInputRef.current?.focus();
+      },
+      setValue: (value: string): void => {
+        textInputRef.current?.setNativeProps({ value });
       },
     }));
 

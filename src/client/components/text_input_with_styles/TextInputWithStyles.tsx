@@ -10,11 +10,11 @@ import {
   TextInputSelectionChangeEventData,
   View,
 } from 'react-native';
-import { PartType } from 'src/shared/utils/types';
 import {
   generateValueFromPartsAndChangedText,
   parseValue,
 } from 'src/shared/utils/mention_utils';
+import { PartType } from 'src/shared/utils/types';
 import { useColor } from '../Colors';
 import TextWithStyles from './TextWithStyles';
 

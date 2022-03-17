@@ -3,7 +3,6 @@ import { Dimensions, StyleSheet } from 'react-native';
 import { ProgressBar } from 'react-native-paper';
 import Text from 'src/client/components/Text';
 import View from 'src/client/components/ViewWithBackground';
-import DebouncedLoadingIndicator from 'src/client/utils/DebouncedLoadingIndicator';
 
 type Props = {
   message?: string;
@@ -14,9 +13,10 @@ export default function LoadingScreen({ message, progress }: Props) {
   const windowWidth = Dimensions.get('window').width;
   return (
     <View style={styles.container}>
-      <DebouncedLoadingIndicator />
       {message ? <Text>{message}</Text> : null}
-      {progress == null ? null : (
+      {progress == null ? (
+        <ProgressBar indeterminate={true} />
+      ) : (
         <View style={{ marginVertical: 20, minWidth: windowWidth * 0.5 }}>
           <ProgressBar progress={progress} />
         </View>

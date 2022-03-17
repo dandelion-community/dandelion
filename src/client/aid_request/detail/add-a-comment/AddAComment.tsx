@@ -5,6 +5,9 @@ import {
   AidRequestHistoryEventType,
   AidRequestUpdateActionType,
 } from 'src/../__generated__/globalTypes';
+import CommentDraftEventStream from 'src/client/aid_request/detail/add-a-comment/draft/CommentDraftEventStream';
+import { getDraftComment } from 'src/client/aid_request/detail/add-a-comment/draft/DraftComment';
+import SendButton from 'src/client/aid_request/detail/add-a-comment/SendButton';
 import Row from 'src/client/aid_request/detail/components/Row';
 import useEditAidRequestWithUndo from 'src/client/aid_request/edit/useEditAidRequestWithUndo';
 import { useColor } from 'src/client/components/Colors';
@@ -17,7 +20,6 @@ import useIsLargeScreen from 'src/client/screen_size/useIsLargeScreen';
 import { useLoggedInViewer } from 'src/client/viewer/Viewer';
 import MentionPartType from 'src/shared/utils/MentionPartType';
 import { MentionSuggestionsProps, Position } from 'src/shared/utils/types';
-import SendButton from './SendButton';
 
 type Props = {
   aidRequestID: string;
@@ -33,7 +35,31 @@ export default function AddAComment({ aidRequestID }: Props): JSX.Element {
     color: textColor,
     ...theme.fonts.regular,
   };
-  const [value, setValue] = React.useState<string>('');
+  const [value, setValue_] = React.useState<string>('');
+  const setValue = React.useCallback(
+    (val: string): void => {
+      CommentDraftEventStream.publish({
+        aidRequestID,
+        commentContents: val,
+        viewerID: viewer.id,
+      });
+      setValue_(val);
+    },
+    [aidRequestID, viewer],
+  );
+  React.useEffect(() => {
+    getDraftComment({
+      aidRequestID,
+      viewerID: viewer.id,
+    }).then((draftVal: string | null): void => {
+      if (draftVal) {
+        setValue_(draftVal);
+        setSelection({ end: draftVal.length, start: draftVal.length });
+        textInputRef.current?.focus();
+        textInputRef.current?.setValue(draftVal);
+      }
+    });
+  }, [aidRequestID, viewer]);
   const [focused, setFocused] = React.useState<boolean>(false);
   const [selection, setSelection] = React.useState<TextInputProps['selection']>(
     { end: 0, start: 0 },

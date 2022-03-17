@@ -1,7 +1,7 @@
 import * as React from 'react';
 import type { ListRenderItemInfo } from 'react-native';
 import { FlatList } from 'react-native';
-import { List, Paragraph } from 'react-native-paper';
+import { List, Paragraph, ProgressBar } from 'react-native-paper';
 import { AidRequestHistoryEventType } from 'src/../__generated__/globalTypes';
 import { broadcastUpdatedAidRequest } from 'src/client/aid_request/cache/broadcastAidRequestUpdates';
 import { GoToRequestDetailScreen } from 'src/client/aid_request/detail/AidRequestDetailScreen';
@@ -19,11 +19,10 @@ import {
   EditAidRequestMutation_payload_object,
 } from 'src/client/aid_request/edit/__generated__/editAidRequestMutation';
 import Icon from 'src/client/components/Icon';
-import useDialogContext from 'src/client/dialog/useDialogContext';
+import shouldDelete from 'src/client/dialog/shouldDelete';
 import useDrawerContext from 'src/client/drawer/useDrawerContext';
 import useMutateWithUndo from 'src/client/graphql/useMutateWithUndo';
 import ToastStore from 'src/client/toast/ToastStore';
-import DebouncedLoadingIndicator from 'src/client/utils/DebouncedLoadingIndicator';
 import filterNulls from 'src/shared/utils/filterNulls';
 
 type Props = {
@@ -42,7 +41,6 @@ export default function AidRequestEditDrawer({
 }: Props): JSX.Element {
   const [loadingPublish, setLoadingPublish] = React.useState<boolean>(false);
   const { closeDrawer } = useDrawerContext();
-  const { shouldDelete } = useDialogContext();
   const { actionsAvailable, _id: aidRequestID } = aidRequest;
   const actions = filterNulls(actionsAvailable ?? []);
   const { mutate, loading, error } = useMutateWithUndo<
@@ -66,7 +64,7 @@ export default function AidRequestEditDrawer({
   ];
 
   return loading || loadingPublish ? (
-    <DebouncedLoadingIndicator />
+    <ProgressBar indeterminate={true} />
   ) : (
     <>
       {error == null ? null : <Paragraph>{error.message}</Paragraph>}

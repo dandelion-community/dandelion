@@ -2,7 +2,9 @@ import * as React from 'react';
 import { StyleSheet, TextInput as NativeTextInput, View } from 'react-native';
 import { TextInput as PaperTextInput } from 'react-native-paper';
 
-export type TextInputHandles = Pick<NativeTextInput, 'focus'>;
+export type TextInputHandles = Pick<NativeTextInput, 'focus'> & {
+  setValue: (value: string) => void;
+};
 
 type Props = {
   autoComplete: 'email' | 'password' | 'off';
@@ -37,6 +39,9 @@ const TextInput = React.forwardRef<TextInputHandles, Props>(
     const textInputRef = React.useRef<NativeTextInput | undefined | null>();
     React.useImperativeHandle(ref, () => ({
       focus: () => textInputRef.current?.focus(),
+      setValue: (value: string): void => {
+        textInputRef.current?.setNativeProps({ value });
+      },
     }));
     return (
       <View>

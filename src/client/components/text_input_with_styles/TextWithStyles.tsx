@@ -1,12 +1,8 @@
 import React from 'react';
 import { StyleProp, Text, TextStyle } from 'react-native';
 import Autolink from 'react-native-autolink';
-import {
-  MentionData,
-  Part,
-  PartType,
-} from 'src/shared/utils/types';
 import { parseValue } from 'src/shared/utils/mention_utils';
+import { MentionData, Part, PartType } from 'src/shared/utils/types';
 
 type Props = {
   autolink?: boolean;

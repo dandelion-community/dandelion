@@ -10,7 +10,10 @@ export default function YourAccountMenuCard(): React.ReactElement {
     <StyledCard>
       <Card.Title title="Your Account" />
       <Card.Content>
-        <Paragraph>You are logged in as {viewer.username}.</Paragraph>
+        <Paragraph>
+          You are logged in as {viewer.displayName}. The email address for your
+          account is {viewer.username}.
+        </Paragraph>
       </Card.Content>
       <Card.Actions>
         <LogoutAction />
