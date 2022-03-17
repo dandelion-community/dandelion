@@ -18,13 +18,16 @@ export default function RequestExplorerScreen({
   }, []);
   const filter = useStore(RequestExplorerFiltersStore);
   React.useEffect(() => {
+    if (filter == null) {
+      return;
+    }
     const encoded = FilterEncoder.encode(filter);
     if (encoded !== route.params?.f) {
       navigation.replace('RequestExplorer', { f: encoded });
     }
   }, [filter]);
   const listOfAidRequests = useListOfAidRequestItems({
-    filter,
+    filter: filter ?? FilterEncoder.decode(route.params?.f),
     goToRequestDetailScreen,
   });
 

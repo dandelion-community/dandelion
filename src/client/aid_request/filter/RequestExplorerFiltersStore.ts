@@ -7,13 +7,17 @@ export type FilterType = NonNullable<ListOfAidRequestsQueryVariables['filter']>;
 
 export const DEFAULT_FILTER: FilterType = { completed: false };
 
-const RequestExplorerFiltersStore = createStore<FilterType>(DEFAULT_FILTER);
+const RequestExplorerFiltersStore = createStore<FilterType | undefined>(
+  undefined,
+);
 
 export function getArg(): Pick<
   RequestExplorerStackParamList['RequestExplorer'],
   'f'
 > {
-  const encoded = FilterEncoder.encode(RequestExplorerFiltersStore.getValue());
+  const encoded = FilterEncoder.encode(
+    RequestExplorerFiltersStore.getValue() ?? DEFAULT_FILTER,
+  );
   return encoded == null ? {} : { f: encoded };
 }
 
