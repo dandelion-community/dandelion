@@ -308,7 +308,6 @@ const generateValueWithAddedSuggestion = (
   selection: Position,
   suggestion: Suggestion,
 ): ReturnValue => {
-  console.log({ parts, selection });
   const currentPartIndex = parts.findIndex(
     (elem) =>
       selection.end >= elem.position.start &&

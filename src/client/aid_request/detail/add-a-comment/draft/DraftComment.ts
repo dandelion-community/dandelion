@@ -15,10 +15,8 @@ async function saveDraftCommentImpl(
   const { commentContents } = event;
   const key = getKey(event);
   if (commentContents) {
-    console.log(`Setting ${key} -- ${event.commentContents}`);
     await AsyncStorage.setItem(key, event.commentContents);
   } else {
-    console.log(`Removing ${key}`);
     await AsyncStorage.removeItem(key);
   }
 }

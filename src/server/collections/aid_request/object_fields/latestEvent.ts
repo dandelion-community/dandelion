@@ -1,7 +1,9 @@
 import type { ObjectTypeComposerFieldConfigAsObjectDefinition } from 'graphql-compose';
 import type { AidRequest } from 'src/server/collections/aid_request/AidRequestGraphQLTypes';
-import type { AidRequestHistoryEventType } from 'src/server/collections/aid_request/AidRequestModelTypes';
-import getHistoryWithoutRemovals from 'src/server/collections/aid_request/helpers/getHistoryWithoutRemovals';
+import type {
+  AidRequestActionType,
+  AidRequestHistoryEventType,
+} from 'src/server/collections/aid_request/AidRequestModelTypes';
 import getWhoRecordedRequest from 'src/server/collections/aid_request/helpers/getWhoRecordedRequest';
 import loadAidRequestForViewer from 'src/server/collections/aid_request/helpers/loadAidRequestForViewer';
 import { UserModel } from 'src/server/collections/user/UserModel';
@@ -20,7 +22,7 @@ const latestEvent: ObjectTypeComposerFieldConfigAsObjectDefinition<
   ): Promise<string> => {
     const viewer = assertLoggedIn(req, 'AidRequest.latestEvent');
     const aidRequest = await loadAidRequestForViewer(viewer, aidRequestID);
-    const history = getHistoryWithoutRemovals(aidRequest);
+    const { history } = aidRequest;
     if (history.length === 0) {
       const recorder = await getWhoRecordedRequest(aidRequest);
       return `${ago(aidRequest.createdAt)} - ${
@@ -39,26 +41,52 @@ const latestEvent: ObjectTypeComposerFieldConfigAsObjectDefinition<
     const actorIsViewer = actor._id.equals(viewer._id);
     return `${ago(event.timestamp)} - ${
       actorIsViewer ? 'You' : actor.displayName
-    } ${getActionText(event.event)}`;
+    } ${getActionText(event.event, event.action)}`;
   },
   type: 'String!',
 };
 
-function getActionText(event: AidRequestHistoryEventType): string {
-  switch (event) {
-    case 'WorkingOn':
-      return 'started working on it';
-    case 'Completed':
-      return 'completed this';
-    case 'Created':
-      return 'recorded this';
-    case 'Deleted':
-      return 'deleted this';
-    case 'Comment':
-      return 'commented';
-    case 'ChangedWhatIsNeeded':
-    case 'ChangedWhoIsItFor':
-      return 'edited';
+function getActionText(
+  event: AidRequestHistoryEventType,
+  action: AidRequestActionType,
+): string {
+  switch (action) {
+    case 'Add':
+      return (() => {
+        switch (event) {
+          case 'WorkingOn':
+            return 'started working on it';
+          case 'Completed':
+            return 'completed this';
+          case 'Created':
+            return 'recorded this';
+          case 'Deleted':
+            return 'deleted this';
+          case 'Comment':
+            return 'commented';
+          case 'ChangedWhatIsNeeded':
+          case 'ChangedWhoIsItFor':
+            return 'edited';
+        }
+      })();
+    case 'Remove':
+      return (() => {
+        switch (event) {
+          case 'WorkingOn':
+            return 'stopped working on it';
+          case 'Completed':
+            return 'marked as incomplete';
+          case 'Created':
+            return 'un-created this';
+          case 'Deleted':
+            return 'un-deleted this';
+          case 'Comment':
+            return 'un-commented';
+          case 'ChangedWhatIsNeeded':
+          case 'ChangedWhoIsItFor':
+            return 'un-edited';
+        }
+      })();
   }
 }
 
