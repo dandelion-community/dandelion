@@ -69,7 +69,10 @@ export default function AddAComment({ aidRequestID }: Props): JSX.Element {
   const { displayName } = useLoggedInViewer();
   const { mutate, loading } = useEditAidRequestWithUndo({
     aidRequestID,
-    clearInputs: () => setValue(''),
+    clearInputs: () => {
+      setValue('');
+      textInputRef.current?.setValue('');
+    },
     input: {
       action: AidRequestUpdateActionType.Add,
       event: AidRequestHistoryEventType.Comment,

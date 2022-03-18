@@ -16,6 +16,11 @@ type Config = Record<
       NotificationMethod,
       {
         defaultValue: SubscribeOrUnsubscribe;
+        // Whether the user should be subscribed to this event regardless
+        // of whether they would otherwise be subscribed to the aid request.
+        // E.g., for mentions, people should be notified even if they haven't
+        // interacted with the aid request.
+        isRegardlessOfSubscription: boolean;
       }
     >;
     // The header in AidRequestNotificationSettingsScreen for this event.
@@ -30,7 +35,7 @@ const CONFIG: Config = {
   Any: {
     description: "You're subscribed to this request",
     notificationMethods: {
-      Email: { defaultValue: 'Subscribe' },
+      Email: { defaultValue: 'Subscribe', isRegardlessOfSubscription: false },
     },
     settingsTitle: 'Updates',
     shortNoun: 'updates',
@@ -38,7 +43,7 @@ const CONFIG: Config = {
   NewComment: {
     description: "Someone commented on a request you're subscribed to",
     notificationMethods: {
-      Email: { defaultValue: 'Subscribe' },
+      Email: { defaultValue: 'Subscribe', isRegardlessOfSubscription: false },
     },
     settingsTitle: 'New Comments',
     shortNoun: 'new comments',
@@ -46,7 +51,7 @@ const CONFIG: Config = {
   YouWereMentionedInAComment: {
     description: 'You were mentioned in a comment',
     notificationMethods: {
-      Email: { defaultValue: 'Subscribe' },
+      Email: { defaultValue: 'Subscribe', isRegardlessOfSubscription: true },
     },
     settingsTitle: 'Comment Mentions',
     shortNoun: 'comment mentions',

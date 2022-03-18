@@ -8,11 +8,21 @@ type Args = {
   notificationMethod: NotificationMethod;
 };
 
+type ReturnValue = {
+  subscribeOrUnsubscribe: SubscribeOrUnsubscribe;
+  isRegardlessOfSubscription: boolean;
+};
+
 export default function getDefaultNotificationSetting({
   notifiableEvent,
   notificationMethod,
-}: Args): SubscribeOrUnsubscribe {
-  return AidRequestNotificationsConfig[notifiableEvent].notificationMethods[
-    notificationMethod
-  ].defaultValue;
+}: Args): ReturnValue {
+  const { defaultValue: subscribeOrUnsubscribe, isRegardlessOfSubscription } =
+    AidRequestNotificationsConfig[notifiableEvent].notificationMethods[
+      notificationMethod
+    ];
+  return {
+    isRegardlessOfSubscription,
+    subscribeOrUnsubscribe,
+  };
 }

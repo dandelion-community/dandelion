@@ -8,11 +8,16 @@ import uniques from 'src/shared/utils/uniques';
 export default async function getAllNotificationRecipients({
   actor,
   aidRequest,
+  extraRecipientIDs,
 }: {
   actor: Express.User;
   aidRequest: AidRequest;
+  extraRecipientIDs?: Array<string>;
 }): Promise<Array<Express.User>> {
-  const potentialRecipients = await getAllPotentialRecipients(aidRequest);
+  const potentialRecipients = await getAllPotentialRecipients(
+    aidRequest,
+    extraRecipientIDs,
+  );
   const recipients = potentialRecipients.filter((recipient) => {
     // Don't notify the actor about their own actions
     if (recipient._id.equals(actor._id)) {
@@ -28,9 +33,14 @@ export default async function getAllNotificationRecipients({
 
 async function getAllPotentialRecipients(
   aidRequest: AidRequest,
+  extraRecipientIDs: undefined | Array<string>,
 ): Promise<Array<Express.User>> {
   const history = getHistoryWithoutRemovals(aidRequest);
-  const userIDs = uniques(history.map(({ actor }) => actor.toString()));
+  const userIDs = uniques(
+    history
+      .map(({ actor }) => actor.toString())
+      .concat(extraRecipientIDs ?? []),
+  );
   const users = await Promise.all(
     userIDs.map((userID: string) => UserModel.findById(userID)),
   );

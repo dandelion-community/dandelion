@@ -24,6 +24,7 @@ export default async function checkNotificationSettingsAndMaybeNotify({
   );
   const { subscribeOrUnsubscribe, reason } =
     await getCurrentSettingForNotificationOnAidRequest({
+      extraRecipientIDs: args.extraRecipientIDs,
       notifiableEvent,
       notificationMethod,
       notificationSettings,

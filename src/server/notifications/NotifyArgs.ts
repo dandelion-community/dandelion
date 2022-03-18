@@ -10,5 +10,6 @@ export type NotifyArgs = {
 };
 
 export type NotifySpecificRecipientArgs = NotifyArgs & {
+  extraRecipientIDs?: Array<string>;
   recipient: Express.User;
 };

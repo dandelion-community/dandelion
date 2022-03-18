@@ -18,12 +18,14 @@ import { UserModel } from 'src/server/collections/user/UserModel';
 import ago from 'src/shared/utils/ago';
 
 type Args = {
+  extraRecipientIDs?: Array<string>;
   notifiableEvent: NotifiableEventOnAidRequest;
   notificationMethod: NotificationMethod;
   notificationSettings: AidRequestNotificationSettings;
 };
 
 export default async function getCurrentSettingForNotificationOnAidRequest({
+  extraRecipientIDs,
   notifiableEvent,
   notificationMethod,
   notificationSettings,
@@ -47,6 +49,7 @@ export default async function getCurrentSettingForNotificationOnAidRequest({
     notificationSettings,
     user,
     aidRequest,
+    extraRecipientIDs,
     title,
   );
 
@@ -78,9 +81,10 @@ async function getCurrentSettingForNotificationOnAidRequestImpl(
   notificationSettings: AidRequestNotificationSettings,
   user: Express.User,
   aidRequest: AidRequest,
+  extraRecipientIDs: undefined | Array<string>,
   title: string,
 ): Promise<AidRequestNotificationCurrentSettingForGraphQL> {
-  let requestStatus: Status = getInitialRequestStatus();
+  let requestStatus: Status = getInitialRequestStatus(extraRecipientIDs);
   let eventStatus: Status = getInitialEventStatus();
 
   const relevantHistoryEvents = notificationSettings.history
@@ -121,6 +125,7 @@ async function getCurrentSettingForNotificationOnAidRequestImpl(
             isSubscribed,
             `you changed this setting ${ago(timestamp)}`,
             { isDefault: false },
+            { isRegardlessOfSubscription: false },
           ),
         };
       }
@@ -133,10 +138,18 @@ async function getCurrentSettingForNotificationOnAidRequestImpl(
     return createResult(eventStatus.isSubscribed, eventStatus.reason);
   }
 
-  function getInitialRequestStatus(): {
+  function getInitialRequestStatus(
+    extraRecipientIDs: Array<string> | undefined,
+  ): {
     isSubscribed: boolean;
     reason: string;
   } {
+    if ((extraRecipientIDs ?? []).includes(user._id.toString())) {
+      return {
+        isSubscribed: true,
+        reason: getRequestStatusReason(true, 'you were tagged in a comment'),
+      };
+    }
     const history = getHistoryWithoutRemovals(aidRequest);
     const actions = history.filter(
       ({ actor }) => actor.toString() === user._id.toString(),
@@ -171,10 +184,11 @@ async function getCurrentSettingForNotificationOnAidRequestImpl(
     isSubscribed: boolean;
     reason: string;
   } {
-    const subscribeOrUnsubscribe = getDefaultNotificationSetting({
-      notifiableEvent,
-      notificationMethod,
-    });
+    const { isRegardlessOfSubscription, subscribeOrUnsubscribe } =
+      getDefaultNotificationSetting({
+        notifiableEvent,
+        notificationMethod,
+      });
     const isSubscribed = subscribeOrUnsubscribe === 'Subscribe';
     return {
       isSubscribed,
@@ -182,6 +196,7 @@ async function getCurrentSettingForNotificationOnAidRequestImpl(
         isSubscribed,
         'this is the default setting',
         { isDefault: true },
+        { isRegardlessOfSubscription },
       ),
     };
   }
@@ -196,11 +211,16 @@ async function getCurrentSettingForNotificationOnAidRequestImpl(
     isSubscribed: boolean,
     why: string,
     { isDefault }: { isDefault: boolean },
+    { isRegardlessOfSubscription }: { isRegardlessOfSubscription: boolean },
   ): string {
     return `You are ${isSubscribed ? '' : 'not '}subscribed to ${
       AidRequestNotificationsConfig[notifiableEvent].shortNoun
     } on ${
-      isDefault ? "requests you're subscribed to" : 'this request'
+      !isDefault
+        ? 'this request'
+        : isRegardlessOfSubscription
+        ? 'all requests'
+        : "requests you're subscribed to"
     } because ${why}`;
   }
 
