@@ -5,7 +5,7 @@ import {
 } from 'src/server/collections/aid_request/AidRequestModelTypes';
 import getHistoryWithoutRemovals from 'src/server/collections/aid_request/helpers/getHistoryWithoutRemovals';
 import { maybeLoadAidRequestForViewer } from 'src/server/collections/aid_request/helpers/loadAidRequestForViewer';
-import { AidRequestNotificationSettings } from 'src/server/collections/aid_request_notification_settings/AidRequestNotificationSettingsModel';
+import type { AidRequestNotificationSettingsType } from 'src/server/collections/aid_request_notification_settings/AidRequestNotificationSettingsModelTypes';
 import {
   AidRequestNotificationCurrentSettingForGraphQL,
   ChangeNotificationSettingEvent,
@@ -21,7 +21,7 @@ type Args = {
   extraRecipientIDs?: Array<string>;
   notifiableEvent: NotifiableEventOnAidRequest;
   notificationMethod: NotificationMethod;
-  notificationSettings: AidRequestNotificationSettings;
+  notificationSettings: AidRequestNotificationSettingsType;
 };
 
 export default async function getCurrentSettingForNotificationOnAidRequest({
@@ -33,6 +33,7 @@ export default async function getCurrentSettingForNotificationOnAidRequest({
   const title = AidRequestNotificationsConfig[notifiableEvent].settingsTitle;
   const user = await UserModel.findById(notificationSettings.userID);
   if (user == null) {
+    return doNotNotify('User is null');
     return error();
   }
   const aidRequest = await maybeLoadAidRequestForViewer(
@@ -40,6 +41,7 @@ export default async function getCurrentSettingForNotificationOnAidRequest({
     notificationSettings.aidRequestID.toString(),
   );
   if (aidRequest == null) {
+    return doNotNotify('Aid request is null');
     return error();
   }
 
@@ -78,7 +80,7 @@ type Status = {
 async function getCurrentSettingForNotificationOnAidRequestImpl(
   notifiableEvent: NotifiableEventOnAidRequest,
   notificationMethod: NotificationMethod,
-  notificationSettings: AidRequestNotificationSettings,
+  notificationSettings: AidRequestNotificationSettingsType,
   user: Express.User,
   aidRequest: AidRequest,
   extraRecipientIDs: undefined | Array<string>,
