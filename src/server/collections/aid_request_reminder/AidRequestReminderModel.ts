@@ -5,12 +5,17 @@ import { AidRequestReminderType } from './AidRequestReminderModelTypes';
 
 const AidRequestReminderSchema = new Schema<AidRequestReminderType>({
   aidRequestID: AidRequestReference,
+  howManyDays: Number,
   scheduledFor: Date,
-  sent: Boolean,
   userID: UserReference,
 });
 
 export const AidRequestReminderModel = model<AidRequestReminderType>(
   'AidRequestReminder',
+  AidRequestReminderSchema,
+);
+
+export const AidRequestReminderDeletedModel = model<AidRequestReminderType>(
+  'AidRequestReminderDeleted',
   AidRequestReminderSchema,
 );

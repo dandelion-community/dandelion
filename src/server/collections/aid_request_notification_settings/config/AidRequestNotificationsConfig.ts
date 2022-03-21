@@ -8,28 +8,29 @@ import {
 } from 'src/server/collections/aid_request_notification_settings/enums/NotificationMethod';
 import { SubscribeOrUnsubscribe } from 'src/server/collections/aid_request_notification_settings/enums/SubscribeOrUnsubscribe';
 
-type Config = Record<
-  NotifiableEventOnAidRequest,
-  {
-    description: string;
-    notificationMethods: Record<
-      NotificationMethod,
-      {
-        defaultValue: SubscribeOrUnsubscribe;
-        // Whether the user should be subscribed to this event regardless
-        // of whether they would otherwise be subscribed to the aid request.
-        // E.g., for mentions, people should be notified even if they haven't
-        // interacted with the aid request.
-        isRegardlessOfSubscription: boolean;
-      }
-    >;
-    // The header in AidRequestNotificationSettingsScreen for this event.
-    // This is not shown for the "Any" event.
-    settingsTitle: string;
-    // You are subscribed to ____ on this requests
-    shortNoun: string;
-  }
->;
+export type EventConfig = {
+  description: string;
+  notificationMethods: Record<
+    NotificationMethod,
+    {
+      defaultValue: SubscribeOrUnsubscribe;
+      // Whether the user should be subscribed to this event regardless
+      // of whether they would otherwise be subscribed to the aid request.
+      // E.g., for mentions, people should be notified even if they haven't
+      // interacted with the aid request.
+      isRegardlessOfSubscription: boolean;
+    }
+  >;
+  // The header in AidRequestNotificationSettingsScreen for this event.
+  // This is not shown for the "Any" event.
+  settingsTitle: string;
+  // You are subscribed to ____ on this requests
+  shortNoun: string;
+  // Omit the "on all requests" or "on requests you're subscribed to" part of the reason string
+  omitContextString?: boolean;
+};
+
+type Config = Record<NotifiableEventOnAidRequest, EventConfig>;
 
 const CONFIG: Config = {
   Any: {
@@ -47,6 +48,15 @@ const CONFIG: Config = {
     },
     settingsTitle: 'New Comments',
     shortNoun: 'new comments',
+  },
+  Reminder: {
+    description: 'Reminder',
+    notificationMethods: {
+      Email: { defaultValue: 'Subscribe', isRegardlessOfSubscription: true },
+    },
+    omitContextString: true,
+    settingsTitle: 'Reminders',
+    shortNoun: "reminders about requests you're working on",
   },
   YouWereMentionedInAComment: {
     description: 'You were mentioned in a comment',

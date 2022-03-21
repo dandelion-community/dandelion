@@ -1,5 +1,6 @@
 export const ALL_EMAIL_TEMPLATE_TYPES = {
   NEW_COMMENT_NOTIFICATION_TEMPLATE_ID: null,
+  REMINDER_NOTIFICATION_TEMPLATE_ID: null,
 };
 
 interface EmailTemplateTypeBase {
@@ -20,4 +21,15 @@ interface NewComment extends EmailTemplateTypeBase {
   };
 }
 
-export type EmailTemplateType = NewComment;
+interface AidRequestReminder extends EmailTemplateTypeBase {
+  templateID: 'REMINDER_NOTIFICATION_TEMPLATE_ID';
+  templateProps: {
+    aid_request_title: string;
+    reminder_reason: string;
+    request_url: string;
+    notification_reason: string;
+    notification_settings_url: string;
+  };
+}
+
+export type EmailTemplateType = NewComment | AidRequestReminder;

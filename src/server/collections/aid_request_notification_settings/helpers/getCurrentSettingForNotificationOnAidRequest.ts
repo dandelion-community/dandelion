@@ -10,7 +10,9 @@ import {
   AidRequestNotificationCurrentSettingForGraphQL,
   ChangeNotificationSettingEvent,
 } from 'src/server/collections/aid_request_notification_settings/AidRequestNotificationSettingsModelTypes';
-import AidRequestNotificationsConfig from 'src/server/collections/aid_request_notification_settings/config/AidRequestNotificationsConfig';
+import AidRequestNotificationsConfig, {
+  EventConfig,
+} from 'src/server/collections/aid_request_notification_settings/config/AidRequestNotificationsConfig';
 import { NotifiableEventOnAidRequest } from 'src/server/collections/aid_request_notification_settings/enums/NotifiableEventOnAidRequest';
 import { NotificationMethod } from 'src/server/collections/aid_request_notification_settings/enums/NotificationMethod';
 import getDefaultNotificationSetting from 'src/server/collections/aid_request_notification_settings/helpers/getDefaultNotificationSetting';
@@ -225,15 +227,15 @@ async function getCurrentSettingForNotificationOnAidRequestImpl(
     { isDefault }: { isDefault: boolean },
     { isRegardlessOfSubscription }: { isRegardlessOfSubscription: boolean },
   ): string {
+    const contextString = getContextString({
+      config: AidRequestNotificationsConfig[notifiableEvent],
+      isDefault,
+      isRegardlessOfSubscription,
+    });
+
     return `You are ${isSubscribed ? '' : 'not '}subscribed to ${
       AidRequestNotificationsConfig[notifiableEvent].shortNoun
-    } on ${
-      !isDefault
-        ? 'this request'
-        : isRegardlessOfSubscription
-        ? 'all requests'
-        : "requests you're subscribed to"
-    } because ${why}`;
+    }${contextString}because ${why}`;
   }
 
   function createResult(
@@ -268,4 +270,25 @@ function getStatusText(event: AidRequestHistoryEventType): string {
     case 'ChangedWhoIsItFor':
       return 'edited';
   }
+}
+
+function getContextString({
+  config,
+  isDefault,
+  isRegardlessOfSubscription,
+}: {
+  config: EventConfig;
+  isDefault: boolean;
+  isRegardlessOfSubscription: boolean;
+}): string {
+  if (config.omitContextString) {
+    return ' ';
+  }
+  return ` on ${
+    !isDefault
+      ? 'this request'
+      : isRegardlessOfSubscription
+      ? 'all requests'
+      : "requests you're subscribed to"
+  } `;
 }

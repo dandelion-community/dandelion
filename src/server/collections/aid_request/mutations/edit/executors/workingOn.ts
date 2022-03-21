@@ -8,6 +8,9 @@ import type {
   UpdateArgs,
   UpdateResult,
 } from 'src/server/collections/aid_request/mutations/edit/UpdateType';
+import { AidRequestReminderModel } from 'src/server/collections/aid_request_reminder/AidRequestReminderModel';
+import afterRequestIsComplete from 'src/server/utils/afterRequestIsComplete';
+import addDays from 'src/shared/utils/date/addDays';
 
 export default async function workingOn(
   args: UpdateArgs,
@@ -42,6 +45,14 @@ export default async function workingOn(
     ? "You're working on this"
     : "You're not working on this";
 
+  afterRequestIsComplete(args.req, () =>
+    updateReminder({
+      aidRequestID: new ObjectId(args.aidRequestID),
+      isWorkingOn,
+      userID,
+    }),
+  );
+
   return { aidRequest, historyEvent, postpublishSummary };
 }
 
@@ -64,4 +75,32 @@ async function updateUserInfoObject(
           },
         },
   );
+}
+
+type UpdateReminderArgs = {
+  isWorkingOn: boolean;
+  aidRequestID: ObjectId;
+  userID: ObjectId;
+};
+
+async function updateReminder({
+  aidRequestID,
+  isWorkingOn,
+  userID,
+}: UpdateReminderArgs): Promise<void> {
+  const existingReminder = await AidRequestReminderModel.findOne({
+    aidRequestID,
+    userID,
+  });
+  if (isWorkingOn && existingReminder == null) {
+    await new AidRequestReminderModel({
+      aidRequestID,
+      howManyDays: 7,
+      scheduledFor: addDays(new Date(), 7),
+      sent: false,
+      userID,
+    }).save();
+  } else if (!isWorkingOn && existingReminder != null) {
+    await AidRequestReminderModel.findByIdAndDelete(existingReminder._id);
+  }
 }

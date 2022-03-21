@@ -6,8 +6,11 @@ import getCurrentSettingForNotificationOnAidRequest from 'src/server/collections
 import { NotifySpecificRecipientArgs } from 'src/server/notifications/NotifyArgs';
 
 type Args = {
-  args: NotifySpecificRecipientArgs;
-  notify: () => Promise<void>;
+  args: Omit<
+    NotifySpecificRecipientArgs,
+    'req' | 'comment' | 'commenter' | 'type'
+  >;
+  notify: (reason: string) => Promise<void>;
   notifiableEvent: NotifiableEventOnAidRequest;
   notificationMethod: NotificationMethod;
 };
@@ -44,6 +47,6 @@ export default async function checkNotificationSettingsAndMaybeNotify({
   });
 
   if (shouldNotify) {
-    await notify();
+    await notify(reason);
   }
 }
