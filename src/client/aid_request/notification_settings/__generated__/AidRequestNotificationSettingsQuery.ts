@@ -49,6 +49,7 @@ export interface AidRequestNotificationSettingsQuery_aidRequestNotificationSetti
 
 export interface AidRequestNotificationSettingsQuery_aidRequestNotificationSettings_settings {
   __typename: "AidRequestNotificationCurrentSetting";
+  onlyIfSubscribedToRequest: boolean;
   notifiableEvent: NotifiableEventOnAidRequest;
   notificationMethod: NotificationMethod;
   subscribeOrUnsubscribe: SubscribeOrUnsubscribe;

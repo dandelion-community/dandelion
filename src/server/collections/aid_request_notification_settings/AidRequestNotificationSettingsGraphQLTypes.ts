@@ -47,6 +47,7 @@ export const AidRequestNotificationCurrentSettingGraphQLType =
     {
       fields: {
         ...NotificationSettingDescriptorFields,
+        onlyIfSubscribedToRequest: 'Boolean!',
         reason: 'String!',
         title: 'String!',
       },
