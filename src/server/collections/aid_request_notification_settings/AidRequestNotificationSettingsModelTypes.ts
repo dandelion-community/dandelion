@@ -30,6 +30,7 @@ export type AidRequestNotificationCurrentSettingForGraphQL =
   NotificationSettingDescriptor & {
     reason: string;
     title: string;
+    onlyIfSubscribedToRequest: boolean;
   };
 
 export type AidRequestNotificationSettingsTypeForGraphQL = {

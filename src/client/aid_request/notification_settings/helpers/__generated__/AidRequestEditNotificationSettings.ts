@@ -11,6 +11,7 @@ import { AidRequestEditNotificationSettingsInput, NotifiableEventOnAidRequest, N
 
 export interface AidRequestEditNotificationSettings_payload_settings_settings {
   __typename: "AidRequestNotificationCurrentSetting";
+  onlyIfSubscribedToRequest: boolean;
   notifiableEvent: NotifiableEventOnAidRequest;
   notificationMethod: NotificationMethod;
   subscribeOrUnsubscribe: SubscribeOrUnsubscribe;

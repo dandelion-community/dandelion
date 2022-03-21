@@ -31,6 +31,10 @@ export default async function getCurrentSettingForNotificationOnAidRequest({
   notificationSettings,
 }: Args): Promise<AidRequestNotificationCurrentSettingForGraphQL> {
   const title = AidRequestNotificationsConfig[notifiableEvent].settingsTitle;
+  const onlyIfSubscribedToRequest =
+    !AidRequestNotificationsConfig[notifiableEvent].notificationMethods[
+      notificationMethod
+    ].isRegardlessOfSubscription;
   const user = await UserModel.findById(notificationSettings.userID);
   if (user == null) {
     return doNotNotify('User is null');
@@ -52,6 +56,7 @@ export default async function getCurrentSettingForNotificationOnAidRequest({
     user,
     aidRequest,
     extraRecipientIDs,
+    onlyIfSubscribedToRequest,
     title,
   );
 
@@ -65,6 +70,7 @@ export default async function getCurrentSettingForNotificationOnAidRequest({
     return {
       notifiableEvent,
       notificationMethod,
+      onlyIfSubscribedToRequest,
       reason,
       subscribeOrUnsubscribe: 'Unsubscribe',
       title,
@@ -84,6 +90,7 @@ async function getCurrentSettingForNotificationOnAidRequestImpl(
   user: Express.User,
   aidRequest: AidRequest,
   extraRecipientIDs: undefined | Array<string>,
+  onlyIfSubscribedToRequest: boolean,
   title: string,
 ): Promise<AidRequestNotificationCurrentSettingForGraphQL> {
   let requestStatus: Status = getInitialRequestStatus(extraRecipientIDs);
@@ -134,7 +141,10 @@ async function getCurrentSettingForNotificationOnAidRequestImpl(
     },
   );
 
-  if (!requestStatus.isSubscribed || notifiableEvent === 'Any') {
+  if (
+    (!requestStatus.isSubscribed && onlyIfSubscribedToRequest) ||
+    notifiableEvent === 'Any'
+  ) {
     return createResult(requestStatus.isSubscribed, requestStatus.reason);
   } else {
     return createResult(eventStatus.isSubscribed, eventStatus.reason);
@@ -233,6 +243,7 @@ async function getCurrentSettingForNotificationOnAidRequestImpl(
     return {
       notifiableEvent,
       notificationMethod,
+      onlyIfSubscribedToRequest,
       reason,
       subscribeOrUnsubscribe: isSubscribed ? 'Subscribe' : 'Unsubscribe',
       title,

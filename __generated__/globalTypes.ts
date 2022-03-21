@@ -25,6 +25,7 @@ export enum AidRequestUpdateActionType {
 export enum NotifiableEventOnAidRequest {
   Any = "Any",
   NewComment = "NewComment",
+  YouWereMentionedInAComment = "YouWereMentionedInAComment",
 }
 
 export enum NotificationMethod {

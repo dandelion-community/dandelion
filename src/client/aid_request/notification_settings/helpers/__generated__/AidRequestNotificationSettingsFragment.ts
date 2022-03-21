@@ -11,6 +11,7 @@ import { NotifiableEventOnAidRequest, NotificationMethod, SubscribeOrUnsubscribe
 
 export interface AidRequestNotificationSettingsFragment_settings {
   __typename: "AidRequestNotificationCurrentSetting";
+  onlyIfSubscribedToRequest: boolean;
   notifiableEvent: NotifiableEventOnAidRequest;
   notificationMethod: NotificationMethod;
   subscribeOrUnsubscribe: SubscribeOrUnsubscribe;

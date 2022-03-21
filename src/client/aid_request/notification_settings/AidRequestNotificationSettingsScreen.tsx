@@ -1,7 +1,5 @@
 import { gql, useQuery } from '@apollo/client';
 import * as React from 'react';
-import Row from 'src/client/aid_request/detail/components/Row';
-import RowTitle from 'src/client/aid_request/detail/components/RowTitle';
 import { AidRequestCardFragments } from 'src/client/aid_request/fragments/AidRequestCardFragments';
 import {
   AidRequestNotificationSettingsQuery,
@@ -15,6 +13,7 @@ import { RequestExplorerStackScreenProps } from 'src/client/navigation/Navigatio
 import ScrollableScreen from 'src/client/scrollable_screen/ScrollableScreen';
 import singleElement from 'src/client/scrollable_screen/singleElement';
 import { AidRequestNotificationSettingsFragment } from './helpers/AidRequestNotificationSettingsFragment';
+import CurrentSettingToggle from './rows/CurrentSettingToggle';
 import Header from './rows/Header';
 import SubscribeToggle from './rows/SubscribeToggle';
 
@@ -88,7 +87,7 @@ function getListItems(
   )[0];
   const isSubscribed = anySetting.subscribeOrUnsubscribe === 'Subscribe';
   const otherSettings = settings.filter(
-    (s) => isSubscribed && s !== anySetting,
+    (s) => (isSubscribed || !s.onlyIfSubscribedToRequest) && s !== anySetting,
   );
   return [
     {
@@ -109,28 +108,32 @@ function getListItems(
         );
       },
     },
-    ...(otherSettings.length <= 1
-      ? []
-      : otherSettings.map(
-          (
-            currentSetting: AidRequestNotificationSettingsQuery_aidRequestNotificationSettings_settings,
-          ): Item => {
-            return {
-              key:
-                'current-setting-' +
-                currentSetting.notifiableEvent +
-                '.' +
-                currentSetting.notificationMethod,
-              render: () => {
-                return (
-                  <Row>
-                    <RowTitle>{currentSetting.reason}</RowTitle>
-                  </Row>
-                );
-              },
-            };
+    ...otherSettings.map(
+      (
+        currentSetting: AidRequestNotificationSettingsQuery_aidRequestNotificationSettings_settings,
+      ): Item => {
+        return {
+          key:
+            'current-setting-' +
+            currentSetting.notifiableEvent +
+            '.' +
+            currentSetting.notificationMethod,
+          render: () => {
+            return (
+              <CurrentSettingToggle
+                aidRequestID={aidRequestID}
+                isSubscribed={
+                  currentSetting.subscribeOrUnsubscribe === 'Subscribe'
+                }
+                notifiableEvent={currentSetting.notifiableEvent}
+                reason={currentSetting.reason}
+                title={currentSetting.title}
+              />
+            );
           },
-        )),
+        };
+      },
+    ),
     {
       key: 'bottom-spacer',
       render: () => {
