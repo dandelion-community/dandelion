@@ -64,9 +64,9 @@ function getErrorMessage(error: ApolloError): string {
   try {
     const { networkError, graphQLErrors } = error;
     if (networkError != null) {
-      return Object.values(networkError as ServerError)[0].errors.message;
+      return (networkError as ServerError).result.errors[0].message;
     }
-    if (graphQLErrors != null) {
+    if (graphQLErrors != null && graphQLErrors.length > 0) {
       return 'Server Error';
     }
     return error.message;

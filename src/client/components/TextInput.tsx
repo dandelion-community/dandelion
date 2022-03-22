@@ -9,6 +9,7 @@ export type TextInputHandles = Pick<NativeTextInput, 'focus'> & {
 type Props = {
   autoComplete: 'email' | 'password' | 'off';
   autoFocus: boolean;
+  disabled?: boolean;
   label: string;
   mode?: 'outlined' | 'flat';
   onSubmitEditing?: (() => void) | undefined;
@@ -23,6 +24,7 @@ const TextInput = React.forwardRef<TextInputHandles, Props>(
     {
       autoComplete,
       autoFocus,
+      disabled,
       label,
       mode,
       onSubmitEditing,
@@ -51,6 +53,7 @@ const TextInput = React.forwardRef<TextInputHandles, Props>(
           autoComplete={autoComplete}
           autoCorrect={!isExactInput}
           autoFocus={autoFocus}
+          disabled={disabled ?? false}
           keyboardType={autoComplete === 'email' ? 'email-address' : 'default'}
           label={label}
           maxLength={1024}

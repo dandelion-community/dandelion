@@ -8,7 +8,7 @@ export default function useCreateCrumbtrailsToLandingScreenIfNeeded<
   Screen extends keyof RootStackParamList,
 >(
   { navigation, route }: RootStackScreenProps<Screen>,
-  rePushParams?: RootStackParamList[Screen],
+  rePushParams: RootStackParamList[Screen],
 ): void {
   React.useEffect(() => {
     if (!navigation.canGoBack()) {
