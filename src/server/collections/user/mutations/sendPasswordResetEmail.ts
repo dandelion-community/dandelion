@@ -16,7 +16,6 @@ async function sendPasswordResetEmailResolver(
     const expireTime = Math.ceil(new Date().getTime() / 1000) + 3600;
     const userID = user._id.toString();
     const token = encrypt(`${expireTime}.${userID}`);
-    console.log(passwordResetUrl(token));
     await sendEmail({
       recipient: user,
       templateID: 'PASSWORD_RESET_EMAIL_TEMPLATE_ID',

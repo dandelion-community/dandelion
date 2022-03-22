@@ -5,7 +5,6 @@ import { Button, Paragraph } from 'react-native-paper';
 import ErrorNotice from 'src/client/components/ErrorNotice';
 import TextInput, { TextInputHandles } from 'src/client/components/TextInput';
 import View from 'src/client/components/ViewWithBackground';
-import useCreateCrumbtrailsToLandingScreenIfNeeded from 'src/client/navigation/helpers/useCreateCrumbtrailsToLandingScreenIfNeeded';
 import { RootStackScreenProps } from 'src/client/navigation/NavigationTypes';
 import ScrollableScreen from 'src/client/scrollable_screen/ScrollableScreen';
 import singleElement from 'src/client/scrollable_screen/singleElement';
@@ -25,7 +24,6 @@ export default function ResetPasswordScreen(
 ) {
   const { navigation } = props;
   const { token } = props.route.params;
-  useCreateCrumbtrailsToLandingScreenIfNeeded(props, props.route.params);
   const {
     data,
     loading: detailsLoading,
@@ -67,11 +65,13 @@ export default function ResetPasswordScreen(
         singleElement({
           key: 'link-details',
           render: () => (
-            <PasswordResetLinkDetails
-              details={data?.resetPasswordLinkDetails}
-              error={detailsError}
-              loading={detailsLoading}
-            />
+            <View style={styles.element}>
+              <PasswordResetLinkDetails
+                details={data?.resetPasswordLinkDetails}
+                error={detailsError}
+                loading={detailsLoading}
+              />
+            </View>
           ),
         }),
         singleElement({
