@@ -16,7 +16,17 @@ export type RootStackParamList = {
   Login: { message?: string; email?: string };
   Modal: NavigatorScreenParams<RootTabParamList> | undefined;
   NotFound: NavigatorScreenParams<RootTabParamList> | undefined;
+  CreationTypeSelection: Record<never, never>;
   ['Record Request']: NavigatorScreenParams<RootTabParamList> | undefined;
+  ['Record Multi Person Request']: Record<never, never>;
+  ['Record Multi Person Request Part 2']: {
+    crew: string;
+    whatIsNeeded: string;
+  };
+  ['Record Single Person Request Part 2']: {
+    crew: string;
+    whoIsItFor: string;
+  };
 };
 
 export type RootStackScreenProps<Screen extends keyof RootStackParamList> =

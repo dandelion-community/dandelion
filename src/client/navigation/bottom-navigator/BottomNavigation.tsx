@@ -1048,6 +1048,7 @@ const BottomNavigation = ({
           </View>
         </Animated.View>
       </Surface>
+
       {/* // {MODIFIED} */}
       {/* eslint-disable-next-line react/jsx-pascal-case */}
       <FAB

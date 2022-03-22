@@ -32,12 +32,14 @@ const CREATE_AID_REQUESTS_MUTATION = gql`
   mutation CreateAidRequestsMutation(
     $crew: String!
     $whatIsNeeded: [String!]!
-    $whoIsItFor: String!
+    $whoIsItFor: String
+    $whoIsItForMulti: [String!]
   ) {
     createAidRequests(
       crew: $crew
       whatIsNeeded: $whatIsNeeded
       whoIsItFor: $whoIsItFor
+      whoIsItForMulti: $whoIsItForMulti
     ) {
       postpublishSummary
       requests {

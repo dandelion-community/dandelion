@@ -4,28 +4,30 @@ import { Button } from 'react-native-paper';
 import CrewSelector from 'src/client/aid_request/create/CrewSelector';
 import FullScreenFormPageWithBigTitle from 'src/client/components/forms/FullScreenFormPageWithBigTitle';
 import TextInput from 'src/client/components/TextInput';
-import RootNavigationStore from 'src/client/navigation/root/RootNavigationStore';
 import RequireLoggedInScreen from 'src/client/viewer/RequireLoggedInScreen';
 import { useLoggedInViewer } from 'src/client/viewer/Viewer';
+import RootNavigationStore from '../../root/RootNavigationStore';
 
 export default function RecordAidRequestScreen(): React.ReactElement {
   return (
     <RequireLoggedInScreen>
-      <RecordAidRequestScreenImpl />
+      <RecordMultiPersonRequestScreenImpl />
     </RequireLoggedInScreen>
   );
 }
 
-function RecordAidRequestScreenImpl() {
+function RecordMultiPersonRequestScreenImpl() {
   const { crews } = useLoggedInViewer();
-  const [whoIsItFor, setWhoIsItFor] = React.useState<string>('');
+  const [whatIsNeeded, setWhatIsNeeded] = React.useState<string>('');
   const [crew, setCrew] = React.useState<string>(crews[0] ?? 'None');
-  const areInputsValid = !!whoIsItFor.length;
+  const areInputsValid = !!whatIsNeeded.length;
 
   return (
-    <FullScreenFormPageWithBigTitle title="Who is it for?">
-      <CrewSelector crew={crew} crews={crews} setCrew={setCrew} />
-      <View style={{ marginHorizontal: 16 }}>
+    <FullScreenFormPageWithBigTitle title="What is needed?">
+      <View style={styles.element}>
+        <CrewSelector crew={crew} crews={crews} setCrew={setCrew} />
+      </View>
+      <View style={styles.element}>
         <TextInput
           autoComplete="off"
           autoFocus={true}
@@ -33,9 +35,11 @@ function RecordAidRequestScreenImpl() {
           mode="flat"
           onSubmitEditing={submit}
           returnKeyType="go"
-          setValue={setWhoIsItFor}
-          value={whoIsItFor}
+          setValue={setWhatIsNeeded}
+          value={whatIsNeeded}
         />
+      </View>
+      <View style={styles.element}>
         <View style={styles.buttonRow}>
           <Button disabled={!areInputsValid} mode="contained" onPress={submit}>
             Next
@@ -46,19 +50,20 @@ function RecordAidRequestScreenImpl() {
   );
 
   async function submit(): Promise<void> {
-    RootNavigationStore.getValue()?.push(
-      'Record Single Person Request Part 2',
-      {
-        crew,
-        whoIsItFor,
-      },
-    );
+    RootNavigationStore.getValue()?.push('Record Multi Person Request Part 2', {
+      crew,
+      whatIsNeeded,
+    });
   }
 }
 
 const styles = StyleSheet.create({
+  bottomSpacer: { height: 8 },
   buttonRow: {
     flexDirection: 'row-reverse',
     marginTop: 15,
+  },
+  element: {
+    marginHorizontal: 8,
   },
 });
