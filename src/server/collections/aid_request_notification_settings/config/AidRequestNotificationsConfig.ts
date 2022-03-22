@@ -56,7 +56,7 @@ const CONFIG: Config = {
     },
     omitContextString: true,
     settingsTitle: 'Reminders',
-    shortNoun: "reminders about requests you're working on",
+    shortNoun: 'reminders',
   },
   YouWereMentionedInAComment: {
     description: 'You were mentioned in a comment',

@@ -1,3 +1,4 @@
+import { ObjectId } from 'mongodb';
 import type { AidRequest } from 'src/server/collections/aid_request/AidRequestGraphQLTypes';
 import getHistoryEventSummary from 'src/server/collections/aid_request/helpers/getHistoryEventSummary';
 import createHistoryEvent from 'src/server/collections/aid_request/mutations/edit/helpers/createHistoryEvent';
@@ -7,7 +8,9 @@ import type {
   UpdateArgs,
   UpdateResult,
 } from 'src/server/collections/aid_request/mutations/edit/UpdateType';
+import afterRequestIsComplete from 'src/server/utils/afterRequestIsComplete';
 import getIsUndo from '../helpers/getIsUndo';
+import updateReminderBecauseThereWasActivity from './updateReminderBecauseThereWasActivity';
 
 type StringFieldSpecs = {
   fieldName: keyof AidRequest;
@@ -59,6 +62,15 @@ export default async function changeStringField(
   });
 
   const postpublishSummary = getHistoryEventSummary(historyEvent);
+
+  if (!isUndo) {
+    afterRequestIsComplete(args.req, () =>
+      updateReminderBecauseThereWasActivity({
+        aidRequestID: new ObjectId(args.originalAidRequest._id),
+        userID: args.user._id,
+      }),
+    );
+  }
 
   return { aidRequest, historyEvent, postpublishSummary };
 }

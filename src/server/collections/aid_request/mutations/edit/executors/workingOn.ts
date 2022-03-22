@@ -9,6 +9,7 @@ import type {
   UpdateResult,
 } from 'src/server/collections/aid_request/mutations/edit/UpdateType';
 import { AidRequestReminderModel } from 'src/server/collections/aid_request_reminder/AidRequestReminderModel';
+import REMINDER_DAYS from 'src/server/collections/aid_request_reminder/REMINDER_DAYS';
 import afterRequestIsComplete from 'src/server/utils/afterRequestIsComplete';
 import addDays from 'src/shared/utils/date/addDays';
 
@@ -95,8 +96,8 @@ async function updateReminder({
   if (isWorkingOn && existingReminder == null) {
     await new AidRequestReminderModel({
       aidRequestID,
-      howManyDays: 7,
-      scheduledFor: addDays(new Date(), 7),
+      howManyDays: REMINDER_DAYS,
+      scheduledFor: addDays(new Date(), REMINDER_DAYS),
       sent: false,
       userID,
     }).save();

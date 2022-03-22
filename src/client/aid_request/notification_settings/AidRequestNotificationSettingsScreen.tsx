@@ -12,6 +12,7 @@ import View from 'src/client/components/ViewWithBackground';
 import { RequestExplorerStackScreenProps } from 'src/client/navigation/NavigationTypes';
 import ScrollableScreen from 'src/client/scrollable_screen/ScrollableScreen';
 import singleElement from 'src/client/scrollable_screen/singleElement';
+import AidRequestUpdatedIDsEventStream from '../cache/AidRequestUpdatedIDsEventStream';
 import { AidRequestNotificationSettingsFragment } from './helpers/AidRequestNotificationSettingsFragment';
 import CurrentSettingToggle from './rows/CurrentSettingToggle';
 import Header from './rows/Header';
@@ -42,6 +43,12 @@ export default function AidRequestNotificationSettingsScreen({
   >(AID_REQUEST_NOTIFICATION_SETTINGS_QUERY, {
     variables: { aidRequestID },
   });
+  React.useEffect(() => {
+    if (needsRefetch) {
+      refetch();
+      needsRefetch = false;
+    }
+  }, []);
   const items = getListItems(data);
 
   if (loading) {
@@ -155,3 +162,9 @@ const AID_REQUEST_NOTIFICATION_SETTINGS_QUERY = gql`
   ${AidRequestCardFragments.aidRequest}
   ${AidRequestNotificationSettingsFragment}
 `;
+
+let needsRefetch = false;
+
+AidRequestUpdatedIDsEventStream.subscribe((): void => {
+  needsRefetch = true;
+});

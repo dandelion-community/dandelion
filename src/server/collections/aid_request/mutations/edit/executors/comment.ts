@@ -1,3 +1,4 @@
+import { ObjectId } from 'mongodb';
 import createHistoryEvent from 'src/server/collections/aid_request/mutations/edit/helpers/createHistoryEvent';
 import getHistoryUpdate from 'src/server/collections/aid_request/mutations/edit/helpers/getHistoryUpdate';
 import getIsUndo from 'src/server/collections/aid_request/mutations/edit/helpers/getIsUndo';
@@ -7,6 +8,8 @@ import type {
   UpdateResult,
 } from 'src/server/collections/aid_request/mutations/edit/UpdateType';
 import notify from 'src/server/notifications/notify';
+import afterRequestIsComplete from 'src/server/utils/afterRequestIsComplete';
+import updateReminderBecauseThereWasActivity from './updateReminderBecauseThereWasActivity';
 
 export default async function comment(args: UpdateArgs): Promise<UpdateResult> {
   const isAdd = args.input.action === 'Add';
@@ -29,6 +32,15 @@ export default async function comment(args: UpdateArgs): Promise<UpdateResult> {
       req: args.req,
       type: 'NewComment',
     });
+  }
+
+  if (!isUndo) {
+    afterRequestIsComplete(args.req, () =>
+      updateReminderBecauseThereWasActivity({
+        aidRequestID: new ObjectId(args.aidRequestID),
+        userID: args.user._id,
+      }),
+    );
   }
 
   return { aidRequest, historyEvent, postpublishSummary };

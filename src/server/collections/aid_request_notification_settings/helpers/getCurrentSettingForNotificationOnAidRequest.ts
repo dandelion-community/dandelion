@@ -1,3 +1,4 @@
+import type { ObjectId } from 'mongodb';
 import type { AidRequest } from 'src/server/collections/aid_request/AidRequestGraphQLTypes';
 import {
   AidRequestHistoryEventType,
@@ -137,6 +138,7 @@ async function getCurrentSettingForNotificationOnAidRequestImpl(
             `you changed this setting ${ago(timestamp)}`,
             { isDefault: false },
             { isRegardlessOfSubscription: false },
+            { qualifier: undefined },
           ),
         };
       }
@@ -203,7 +205,24 @@ async function getCurrentSettingForNotificationOnAidRequestImpl(
         notifiableEvent,
         notificationMethod,
       });
-    const isSubscribed = subscribeOrUnsubscribe === 'Subscribe';
+    let isSubscribed = subscribeOrUnsubscribe === 'Subscribe';
+    // You're subscribed to reminders <about requests you're working on> because
+    // this is the default setting
+    let qualifier: string | undefined;
+    if (notifiableEvent === 'Reminder') {
+      qualifier = "about requests you're working on";
+      // Only remind people of aid requests that they're working on
+      // and that are open.
+      if (
+        !aidRequest.whoIsWorkingOnIt.some((idObj: ObjectId): boolean =>
+          user._id.equals(idObj),
+        ) ||
+        aidRequest.completed
+      ) {
+        qualifier = "about requests you're not working on";
+        isSubscribed = false;
+      }
+    }
     return {
       isSubscribed,
       reason: getEventStatusReason(
@@ -211,6 +230,7 @@ async function getCurrentSettingForNotificationOnAidRequestImpl(
         'this is the default setting',
         { isDefault: true },
         { isRegardlessOfSubscription },
+        { qualifier },
       ),
     };
   }
@@ -226,11 +246,13 @@ async function getCurrentSettingForNotificationOnAidRequestImpl(
     why: string,
     { isDefault }: { isDefault: boolean },
     { isRegardlessOfSubscription }: { isRegardlessOfSubscription: boolean },
+    { qualifier }: { qualifier: string | undefined },
   ): string {
     const contextString = getContextString({
       config: AidRequestNotificationsConfig[notifiableEvent],
       isDefault,
       isRegardlessOfSubscription,
+      qualifier,
     });
 
     return `You are ${isSubscribed ? '' : 'not '}subscribed to ${
@@ -276,11 +298,16 @@ function getContextString({
   config,
   isDefault,
   isRegardlessOfSubscription,
+  qualifier,
 }: {
   config: EventConfig;
   isDefault: boolean;
   isRegardlessOfSubscription: boolean;
+  qualifier: string | undefined;
 }): string {
+  if (qualifier) {
+    return ` ${qualifier} `;
+  }
   if (config.omitContextString) {
     return ' ';
   }
