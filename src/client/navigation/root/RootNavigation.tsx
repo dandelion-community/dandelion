@@ -24,7 +24,10 @@ import LoginScreen from 'src/client/navigation/screens/login/LoginScreen';
 import MainScreen from 'src/client/navigation/screens/main/MainScreen';
 import NotFoundScreen from 'src/client/navigation/screens/not_found/NotFoundScreen';
 import NotLoggedInScreen from 'src/client/navigation/screens/not_logged_in/NotLoggedInScreen';
-import RecordAidRequestScreen from 'src/client/navigation/screens/record_aid_request/RecordAidRequestScreen';
+import CreationTypeSelectionScreen from '../screens/creation_type_selection_screen/CreationTypeSelectionScreen';
+import RecordAidRequestScreen from '../screens/record_aid_request/RecordAidRequestScreen';
+import RecordMultiPersonRequestScreen from '../screens/record_multi_person_request/RecordMultiPersonRequestScreen';
+import RecordMultiPersonRequestScreenPart2 from '../screens/record_multi_person_request/RecordMultiPersonRequestScreenPart2';
 import ResetPasswordScreen from '../screens/reset_password/ResetPasswordScreen';
 import RootNavigationStore from './RootNavigationStore';
 
@@ -94,9 +97,24 @@ function RootNavigator() {
         options={optionsForHeaderWithBackToMainButton('Reset Password')}
       />
       <Stack.Screen
+        component={wrapComponent(CreationTypeSelectionScreen)}
+        name="CreationTypeSelection"
+        options={optionsForHeaderWithBackToMainButton('Creation Selection')}
+      />
+      <Stack.Screen
         component={wrapComponent(RecordAidRequestScreen)}
         name="Record Request"
         options={optionsForHeaderWithBackToMainButton('Record Request')}
+      />
+      <Stack.Screen
+        component={wrapComponent(RecordMultiPersonRequestScreen)}
+        name="Record Multi Person Request"
+        options={optionsForHeaderWithBackToMainButton('Multi Person')}
+      />
+      <Stack.Screen
+        component={wrapComponent(RecordMultiPersonRequestScreenPart2)}
+        name="Record Multi Person Request Part 2"
+        options={optionsForHeaderWithBackToMainButton('Multi Person')}
       />
     </Stack.Navigator>
   );

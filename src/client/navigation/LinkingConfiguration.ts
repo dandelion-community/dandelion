@@ -9,6 +9,7 @@ const linking: LinkingOptions<RootStackParamList> = {
   config: {
     screens: {
       ['Create Account']: 'create_account',
+      CreationTypeSelection: 'new',
       Login: 'login',
       Main: {
         screens: {
@@ -29,7 +30,9 @@ const linking: LinkingOptions<RootStackParamList> = {
       },
       NotFound: '*',
       NotLoggedIn: 'loggedout',
-      ['Record Request']: 'new',
+      ['Record Multi Person Request']: 'new/m',
+      ['Record Multi Person Request Part 2']: 'new/m/2',
+      ['Record Request']: 'new/i',
       ResetPassword: PASSWORD_RESET_PATH,
     },
   },

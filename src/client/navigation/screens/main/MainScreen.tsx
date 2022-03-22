@@ -25,7 +25,7 @@ export default function MainScreen({
       inactiveColor={Colors[colorScheme].tabIconDefault}
       initialRouteName="RequestExplorerTabStackContainer"
       onFABPress={() => {
-        navigation.push('Record Request');
+        navigation.push('CreationTypeSelection', {});
       }}
       shifting={true}
     >

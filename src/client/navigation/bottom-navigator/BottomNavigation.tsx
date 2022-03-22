@@ -424,9 +424,23 @@ const BottomNavigation = ({
   safeAreaInsets,
   onFABPress,
 }: Props) => {
+  onFABPress;
   const { scale } = theme.animation;
 
   const focusedKey = navigationState.routes[navigationState.index].key;
+
+  // const [isFabOpen, setIsFabOpen] = React.useState<boolean>(false);
+  // const [wasFabOpenRecently, setWasFabOpenRecently] =
+  //   React.useState<boolean>(false);
+  // const fabLabelColor = useColor('m3buttonBackground');
+  // function setIsFabOpenHandler(open: boolean) {
+  //   setIsFabOpen(open);
+  //   if (open) {
+  //     setWasFabOpenRecently(true);
+  //   } else {
+  //     setTimeout(() => setWasFabOpenRecently(false), 200);
+  //   }
+  // }
 
   /**
    * Visibility of the navigation bar, visible state is 1 and invisible is 0.
@@ -1048,6 +1062,7 @@ const BottomNavigation = ({
           </View>
         </Animated.View>
       </Surface>
+
       {/* // {MODIFIED} */}
       {/* eslint-disable-next-line react/jsx-pascal-case */}
       <FAB
@@ -1061,6 +1076,36 @@ const BottomNavigation = ({
           position: 'absolute',
         }}
       />
+      {/* <Portal>
+        {/* eslint-disable-next-line react/jsx-pascal-case * /}
+        <FAB.Group
+          actions={[
+            { icon: 'plus', onPress: () => console.log('Pressed add') },
+            {
+              icon: 'bell',
+              label: 'Remind',
+              labelStyle: { backgroundColor: fabLabelColor },
+              onPress: () => console.log('Pressed notifications'),
+              small: false,
+            },
+          ]}
+          fabStyle={
+            wasFabOpenRecently
+              ? {}
+              : {
+                  bottom: keyboardVisible ? -100 : 0,
+                  left: '50%',
+                  marginBottom: 25 + insets.bottom,
+                  marginLeft: -28,
+                  position: 'absolute',
+                }
+          }
+          icon={{ uri: getURL('icons/light/plus.png') }}
+          onStateChange={({ open }) => setIsFabOpenHandler(open)}
+          open={isFabOpen}
+          visible={true}
+        />
+      </Portal> */}
       {/* // {END MODIFIED} */}
     </View>
   );
