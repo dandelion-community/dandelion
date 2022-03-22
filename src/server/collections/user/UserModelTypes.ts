@@ -9,6 +9,10 @@ declare global {
       username: string;
       displayName: string;
       crews: Array<string>;
+      passwordReset?: {
+        token: string;
+        expiry: Date;
+      };
     }
   }
 }

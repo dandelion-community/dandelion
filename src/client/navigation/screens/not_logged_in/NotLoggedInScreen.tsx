@@ -52,7 +52,7 @@ export default function NotLoggedInScreen({
               buttons={[
                 {
                   onPress: () => {
-                    navigation.push('Login');
+                    navigation.push('Login', {});
                   },
                   text: 'Login to existing account',
                 },

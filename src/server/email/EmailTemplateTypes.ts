@@ -1,5 +1,6 @@
 export const ALL_EMAIL_TEMPLATE_TYPES = {
   NEW_COMMENT_NOTIFICATION_TEMPLATE_ID: null,
+  PASSWORD_RESET_EMAIL_TEMPLATE_ID: null,
   REMINDER_NOTIFICATION_TEMPLATE_ID: null,
 };
 
@@ -32,4 +33,14 @@ interface AidRequestReminder extends EmailTemplateTypeBase {
   };
 }
 
-export type EmailTemplateType = NewComment | AidRequestReminder;
+interface PasswordResetEmail extends EmailTemplateTypeBase {
+  templateID: 'PASSWORD_RESET_EMAIL_TEMPLATE_ID';
+  templateProps: {
+    password_reset_url: string;
+  };
+}
+
+export type EmailTemplateType =
+  | NewComment
+  | AidRequestReminder
+  | PasswordResetEmail;

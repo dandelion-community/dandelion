@@ -4,14 +4,16 @@ import {
   NavigatorScreenParams,
 } from '@react-navigation/native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import TOKEN_URL_PARAM from 'src/shared/urls/TOKEN_URL_PARAM';
 
 export type RootStackParamList = {
   Main: NavigatorScreenParams<RootTabParamList> | undefined;
   NotLoggedIn: NavigatorScreenParams<RootTabParamList> | undefined;
   ['Create Account']: NavigatorScreenParams<RootTabParamList> | undefined;
+  ResetPassword: { [TOKEN_URL_PARAM]: string };
   ['Unverified Account']: NavigatorScreenParams<RootTabParamList> | undefined;
   ['Setting Up Account']: NavigatorScreenParams<RootTabParamList> | undefined;
-  Login: NavigatorScreenParams<RootTabParamList> | undefined;
+  Login: { message?: string; email?: string };
   Modal: NavigatorScreenParams<RootTabParamList> | undefined;
   NotFound: NavigatorScreenParams<RootTabParamList> | undefined;
   ['Record Request']: NavigatorScreenParams<RootTabParamList> | undefined;

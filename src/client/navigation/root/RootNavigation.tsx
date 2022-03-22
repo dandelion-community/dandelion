@@ -25,6 +25,7 @@ import MainScreen from 'src/client/navigation/screens/main/MainScreen';
 import NotFoundScreen from 'src/client/navigation/screens/not_found/NotFoundScreen';
 import NotLoggedInScreen from 'src/client/navigation/screens/not_logged_in/NotLoggedInScreen';
 import RecordAidRequestScreen from 'src/client/navigation/screens/record_aid_request/RecordAidRequestScreen';
+import ResetPasswordScreen from '../screens/reset_password/ResetPasswordScreen';
 import RootNavigationStore from './RootNavigationStore';
 
 const LIGHT_THEME = {
@@ -86,6 +87,11 @@ function RootNavigator() {
         component={wrapComponent(LoginScreen)}
         name="Login"
         options={optionsForHeaderWithBackToMainButton('Log In')}
+      />
+      <Stack.Screen
+        component={wrapComponent(ResetPasswordScreen)}
+        name="ResetPassword"
+        options={optionsForHeaderWithBackToMainButton('Reset Password')}
       />
       <Stack.Screen
         component={wrapComponent(RecordAidRequestScreen)}

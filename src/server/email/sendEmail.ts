@@ -2,6 +2,7 @@ import sendgridMail from '@sendgrid/mail';
 import dotenv from 'dotenv';
 import { EmailTemplateType } from 'src/server/email/EmailTemplateTypes';
 import getEmailAddress from 'src/shared/urls/getEmailAddress';
+import analytics from '../analytics/index';
 
 dotenv.config();
 
@@ -28,6 +29,14 @@ export default async function sendEmail({
   if (templateId == null) {
     throw new Error('Template ID not defined in .env: ' + templateID);
   }
+  analytics.track({
+    event: 'Sending Email',
+    properties: {
+      ...templateProps,
+      templateID,
+    },
+    user: recipient,
+  });
   const msg = {
     dynamicTemplateData: templateProps,
     from: FROM_EMAIL,
