@@ -424,23 +424,9 @@ const BottomNavigation = ({
   safeAreaInsets,
   onFABPress,
 }: Props) => {
-  onFABPress;
   const { scale } = theme.animation;
 
   const focusedKey = navigationState.routes[navigationState.index].key;
-
-  // const [isFabOpen, setIsFabOpen] = React.useState<boolean>(false);
-  // const [wasFabOpenRecently, setWasFabOpenRecently] =
-  //   React.useState<boolean>(false);
-  // const fabLabelColor = useColor('m3buttonBackground');
-  // function setIsFabOpenHandler(open: boolean) {
-  //   setIsFabOpen(open);
-  //   if (open) {
-  //     setWasFabOpenRecently(true);
-  //   } else {
-  //     setTimeout(() => setWasFabOpenRecently(false), 200);
-  //   }
-  // }
 
   /**
    * Visibility of the navigation bar, visible state is 1 and invisible is 0.
