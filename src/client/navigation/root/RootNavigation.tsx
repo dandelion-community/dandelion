@@ -25,6 +25,7 @@ import MainScreen from 'src/client/navigation/screens/main/MainScreen';
 import NotFoundScreen from 'src/client/navigation/screens/not_found/NotFoundScreen';
 import NotLoggedInScreen from 'src/client/navigation/screens/not_logged_in/NotLoggedInScreen';
 import CreationTypeSelectionScreen from '../screens/creation_type_selection_screen/CreationTypeSelectionScreen';
+import RecordAidRequestPart2Screen from '../screens/record_aid_request/RecordAidRequestPart2Screen';
 import RecordAidRequestScreen from '../screens/record_aid_request/RecordAidRequestScreen';
 import RecordMultiPersonRequestScreen from '../screens/record_multi_person_request/RecordMultiPersonRequestScreen';
 import RecordMultiPersonRequestScreenPart2 from '../screens/record_multi_person_request/RecordMultiPersonRequestScreenPart2';
@@ -115,6 +116,11 @@ function RootNavigator() {
         component={wrapComponent(RecordMultiPersonRequestScreenPart2)}
         name="Record Multi Person Request Part 2"
         options={optionsForHeaderWithBackToMainButton('Multi Person')}
+      />
+      <Stack.Screen
+        component={wrapComponent(RecordAidRequestPart2Screen)}
+        name="Record Single Person Request Part 2"
+        options={optionsForHeaderWithBackToMainButton('Record Request')}
       />
     </Stack.Navigator>
   );

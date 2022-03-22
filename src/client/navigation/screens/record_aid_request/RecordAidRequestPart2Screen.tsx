@@ -15,7 +15,7 @@ import { RootStackScreenProps } from '../../NavigationTypes';
 import RootNavigationStore from '../../root/RootNavigationStore';
 
 export default function RecordMultiPersonRequestScreenPart2(
-  props: RootStackScreenProps<'Record Multi Person Request Part 2'>,
+  props: RootStackScreenProps<'Record Single Person Request Part 2'>,
 ): React.ReactElement {
   return (
     <RequireLoggedInScreen>
@@ -25,24 +25,22 @@ export default function RecordMultiPersonRequestScreenPart2(
 }
 
 function RecordMultiPersonRequestScreenPart2Impl(
-  props: RootStackScreenProps<'Record Multi Person Request Part 2'>,
+  props: RootStackScreenProps<'Record Single Person Request Part 2'>,
 ) {
-  const { crew, whatIsNeeded } = props.route.params;
-  crew;
-  whatIsNeeded;
+  const { crew, whoIsItFor } = props.route.params;
 
   const [errorMessage, setErrorMessage] = React.useState<string>('');
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
-  const [whoIsItFor, setWhoIsItFor] = React.useState<string[]>([]);
-  const areInputsValid = whoIsItFor.some(Boolean);
+  const [whatIsNeeded, setWhatIsNeeded] = React.useState<string[]>([]);
+  const areInputsValid = whatIsNeeded.some(Boolean);
 
   return (
     <FullScreenFormPageWithBigTitle
       errorMessage={errorMessage}
-      title={`Who needs ${whatIsNeeded}?`}
+      title={`What does ${whoIsItFor} need?`}
     >
       <View style={styles.element}>
-        <MultiTextInput setValue={setWhoIsItFor} value={whoIsItFor} />
+        <MultiTextInput setValue={setWhatIsNeeded} value={whatIsNeeded} />
       </View>
       <View style={styles.element}>
         <View style={styles.buttonRow}>
@@ -64,8 +62,8 @@ function RecordMultiPersonRequestScreenPart2Impl(
     setErrorMessage('');
     const variables = {
       crew,
-      whatIsNeeded: [whatIsNeeded],
-      whoIsItForMulti: whoIsItFor,
+      whatIsNeeded,
+      whoIsItFor,
     };
     setIsLoading(true);
     let data: null | SuccessfulSaveData = await createAidRequestSaveToServer(

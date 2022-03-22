@@ -7,11 +7,12 @@ import View from 'src/client/components/ViewWithBackground';
 
 type Props = {
   loading?: boolean;
+  subtext: string;
   text: string;
   onPress: () => void;
 };
 
-export default function Button({ text, onPress }: Props) {
+export default function Button({ subtext, text, onPress }: Props) {
   const textColor = useColor('text');
   return (
     <View style={styles.container}>
@@ -21,6 +22,7 @@ export default function Button({ text, onPress }: Props) {
       >
         <View style={{ paddingVertical: 30 }}>
           <Text style={styles.text}>{text}</Text>
+          <Text style={styles.subtext}>{subtext}</Text>
         </View>
       </TouchableRipple>
     </View>
@@ -37,6 +39,10 @@ const styles = StyleSheet.create({
   container: {
     marginBottom: 40,
     marginHorizontal: 32,
+  },
+  subtext: {
+    fontSize: 12,
+    marginTop: 24,
   },
   text: {
     fontSize: 24,

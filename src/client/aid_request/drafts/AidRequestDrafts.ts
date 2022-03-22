@@ -14,6 +14,8 @@ import {
   getSavedValuesFromStorage,
   StorageEntry,
 } from 'src/client/aid_request/drafts/AidRequestDraftsPersistentStorage';
+import flatten from 'src/shared/utils/flatten';
+import resolveWhoIsItFor from 'src/shared/utils/resolveWhoIsItFor';
 
 export type SuccessfulSaveData = {
   postpublishSummary: string;
@@ -51,15 +53,24 @@ export function deleteAidRequestDraft(aidRequestID: string): void {
 function createNewStorageValues({
   crew,
   whatIsNeeded: whatAllIsNeeded,
-  whoIsItFor,
+  whoIsItFor: whoIsItForSingle,
+  whoIsItForMulti,
 }: CreateAidRequestsMutationVariables): Array<StorageEntry> {
-  return whatAllIsNeeded.map(
-    (whatIsNeeded: string): StorageEntry => ({
-      crew,
-      tempID: createDraftID(),
-      whatIsNeeded,
-      whoIsItFor,
-    }),
+  const whoAllIsItFor = resolveWhoIsItFor({
+    whoIsItForMulti,
+    whoIsItForSingle,
+  });
+  return flatten(
+    whoAllIsItFor.map((whoIsItFor: string) =>
+      whatAllIsNeeded.map(
+        (whatIsNeeded: string): StorageEntry => ({
+          crew,
+          tempID: createDraftID(),
+          whatIsNeeded,
+          whoIsItFor,
+        }),
+      ),
+    ),
   );
 }
 

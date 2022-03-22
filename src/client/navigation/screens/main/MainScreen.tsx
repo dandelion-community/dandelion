@@ -11,6 +11,7 @@ import {
   RootTabParamList,
   RootTabScreenProps,
 } from 'src/client/navigation/NavigationTypes';
+import ToastStore from 'src/client/toast/ToastStore';
 
 const BottomTab = createMaterialBottomTabNavigator<RootTabParamList>();
 
@@ -25,6 +26,7 @@ export default function MainScreen({
       inactiveColor={Colors[colorScheme].tabIconDefault}
       initialRouteName="RequestExplorerTabStackContainer"
       onFABPress={() => {
+        ToastStore.update(undefined);
         navigation.push('CreationTypeSelection', {});
       }}
       shifting={true}

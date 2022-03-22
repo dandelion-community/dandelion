@@ -60,5 +60,6 @@ export interface CreateAidRequestsMutation {
 export interface CreateAidRequestsMutationVariables {
   crew: string;
   whatIsNeeded: string[];
-  whoIsItFor: string;
+  whoIsItFor?: string | null;
+  whoIsItForMulti?: string[] | null;
 }

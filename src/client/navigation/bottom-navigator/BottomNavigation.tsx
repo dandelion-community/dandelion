@@ -1076,36 +1076,6 @@ const BottomNavigation = ({
           position: 'absolute',
         }}
       />
-      {/* <Portal>
-        {/* eslint-disable-next-line react/jsx-pascal-case * /}
-        <FAB.Group
-          actions={[
-            { icon: 'plus', onPress: () => console.log('Pressed add') },
-            {
-              icon: 'bell',
-              label: 'Remind',
-              labelStyle: { backgroundColor: fabLabelColor },
-              onPress: () => console.log('Pressed notifications'),
-              small: false,
-            },
-          ]}
-          fabStyle={
-            wasFabOpenRecently
-              ? {}
-              : {
-                  bottom: keyboardVisible ? -100 : 0,
-                  left: '50%',
-                  marginBottom: 25 + insets.bottom,
-                  marginLeft: -28,
-                  position: 'absolute',
-                }
-          }
-          icon={{ uri: getURL('icons/light/plus.png') }}
-          onStateChange={({ open }) => setIsFabOpenHandler(open)}
-          open={isFabOpen}
-          visible={true}
-        />
-      </Portal> */}
       {/* // {END MODIFIED} */}
     </View>
   );

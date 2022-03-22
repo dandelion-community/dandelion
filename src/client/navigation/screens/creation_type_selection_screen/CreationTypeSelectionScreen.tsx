@@ -12,7 +12,8 @@ export default function CreationTypeSelectionScreen(): React.ReactElement {
           onPress={() => {
             RootNavigationStore.getValue()?.push('Record Request');
           }}
-          text="Individual Request"
+          subtext="has one or more needs"
+          text="One person"
         />
         <CreationTypeSelectionButton
           onPress={() => {
@@ -21,7 +22,8 @@ export default function CreationTypeSelectionScreen(): React.ReactElement {
               {},
             );
           }}
-          text="Multi-Person Request"
+          subtext="have the same need (e.g., propane)"
+          text="Multiple People"
         />
       </View>
     </RequireLoggedInScreen>

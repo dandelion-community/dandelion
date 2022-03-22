@@ -23,6 +23,10 @@ export type RootStackParamList = {
     crew: string;
     whatIsNeeded: string;
   };
+  ['Record Single Person Request Part 2']: {
+    crew: string;
+    whoIsItFor: string;
+  };
 };
 
 export type RootStackScreenProps<Screen extends keyof RootStackParamList> =

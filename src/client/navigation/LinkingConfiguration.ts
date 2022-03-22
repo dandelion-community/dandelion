@@ -33,6 +33,7 @@ const linking: LinkingOptions<RootStackParamList> = {
       ['Record Multi Person Request']: 'new/m',
       ['Record Multi Person Request Part 2']: 'new/m/2',
       ['Record Request']: 'new/i',
+      ['Record Single Person Request Part 2']: 'new/i/2',
       ResetPassword: PASSWORD_RESET_PATH,
     },
   },

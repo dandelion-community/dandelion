@@ -6,9 +6,10 @@ import Icon from 'src/client/components/Icon';
 
 type Props = {
   isFirst: boolean;
+  isLast: boolean;
   next: () => void;
   removeRow: undefined | (() => void);
-  request: string | undefined;
+  value: string | undefined;
   setInputValue: (val: string) => void;
   setIsFocused: (val: boolean) => void;
 };
@@ -17,13 +18,14 @@ export type TextInputHandles = Pick<TextInput, 'focus'>;
 
 const ICON_SIZE = 24;
 
-const WhoIsItForRow = React.forwardRef<TextInputHandles, Props>(
+const MultiTextInputRow = React.forwardRef<TextInputHandles, Props>(
   (
     {
       isFirst,
+      isLast,
       next,
       removeRow,
-      request,
+      value,
       setInputValue,
       setIsFocused: setIsFocusedParent,
     }: Props,
@@ -35,7 +37,7 @@ const WhoIsItForRow = React.forwardRef<TextInputHandles, Props>(
     const [isFocused, setIsFocusedInternal] = React.useState<boolean>(false);
     const textInputRef = React.useRef<TextInput | undefined | null>();
     React.useImperativeHandle(ref, () => ({
-      focus: () => setTimeout(() => textInputRef.current?.focus(), 400),
+      focus: () => textInputRef.current?.focus(),
     }));
     const canSeeX = removeRow != null && isFocused;
 
@@ -46,11 +48,11 @@ const WhoIsItForRow = React.forwardRef<TextInputHandles, Props>(
             <View style={styles.icon}>
               <View
                 style={{
-                  opacity: request === undefined ? 0.9 : 0.6,
+                  opacity: value === undefined ? 0.9 : 0.6,
                 }}
               >
                 <Icon
-                  path={request === undefined ? 'plus' : 'flower'}
+                  path={value === undefined ? 'plus' : 'flower'}
                   size={ICON_SIZE}
                 />
               </View>
@@ -63,15 +65,12 @@ const WhoIsItForRow = React.forwardRef<TextInputHandles, Props>(
               onChangeText={setInputValue}
               onFocus={() => setIsFocused(true)}
               onSubmitEditing={next}
-              placeholder={
-                request === undefined && !isFirst
-                  ? 'Add another person'
-                  : 'Add a person'
-              }
+              placeholder={value === undefined && !isFirst ? 'Add another' : ''}
               placeholderTextColor={placeholderTextColor}
               ref={(ref) => {
                 textInputRef.current = ref;
               }}
+              returnKeyType="next"
               style={[
                 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                 // @ts-ignore ts thinks outline: 'none'  is invalid but it's not
@@ -81,9 +80,16 @@ const WhoIsItForRow = React.forwardRef<TextInputHandles, Props>(
                 },
               ]}
               underlineColorAndroid="transparent"
-              value={request ?? ''}
+              value={value ?? ''}
             />
           </View>
+          {isLast ? (
+            <TextInput
+              key="spacer"
+              style={{ height: 1, opacity: 0 }}
+              value=""
+            />
+          ) : null}
           <Pressable onPress={canSeeX ? removeRow : focus}>
             <View style={styles.icon}>
               {!canSeeX ? null : (
@@ -121,7 +127,7 @@ const WhoIsItForRow = React.forwardRef<TextInputHandles, Props>(
   },
 );
 
-export default WhoIsItForRow;
+export default MultiTextInputRow;
 
 const styles = StyleSheet.create({
   icon: {
