@@ -36,3 +36,14 @@ export function useIsLoggedOut(): boolean {
   const viewer = useViewer();
   return viewer === undefined;
 }
+
+export function useEncodedViewerForErrorReporting(): string {
+  const viewer = useViewer();
+  if (viewer === undefined) {
+    return 'undefined';
+  } else if (viewer === Loading) {
+    return 'loading';
+  } else {
+    return viewer.id;
+  }
+}

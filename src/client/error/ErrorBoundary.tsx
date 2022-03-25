@@ -1,6 +1,8 @@
+import { ApolloError } from '@apollo/client';
 import Bugsnag from '@bugsnag/expo';
 import React from 'react';
 import initErrorLogging from 'src/client/error/initErrorLogging';
+import ErrorNotice from '../components/ErrorNotice';
 
 initErrorLogging();
 
@@ -15,6 +17,17 @@ export default function ErrorBoundary({
   return BugsnagErrorBoundary == null ? (
     children
   ) : (
-    <BugsnagErrorBoundary>{children}</BugsnagErrorBoundary>
+    <BugsnagErrorBoundary
+      FallbackComponent={({ error, info }) => {
+        return (
+          <ErrorNotice
+            error={new ApolloError({ clientErrors: [error], extraInfo: info })}
+            whenTryingToDoWhat="load this module"
+          />
+        );
+      }}
+    >
+      {children}
+    </BugsnagErrorBoundary>
   );
 }

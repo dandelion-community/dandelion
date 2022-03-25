@@ -62,13 +62,15 @@ export default function createClient(
     },
   });
 
+  const queryOptions: { errorPolicy: 'all' } = { errorPolicy: 'all' };
+
   const client = new ApolloClient({
     cache,
     credentials: 'include',
     defaultOptions: {
-      query: {
-        errorPolicy: 'all',
-      },
+      mutate: queryOptions,
+      query: queryOptions,
+      watchQuery: queryOptions,
     },
     link,
   });

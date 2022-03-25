@@ -26,7 +26,6 @@ export default function useListOfAidRequests(
     notifyOnNetworkStatusChange: true,
     variables: { after: null, filter, pageSize: PAGE_SIZE },
   });
-  console.log('apolloResult', apolloResult);
   const drafts = useStore(graphqlEdgeDraftStore);
   const { data, ...rest } = apolloResult;
   React.useEffect(() => {

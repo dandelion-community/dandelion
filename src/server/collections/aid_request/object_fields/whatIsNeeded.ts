@@ -16,9 +16,7 @@ const whatIsNeeded: ObjectTypeComposerFieldConfigAsObjectDefinition<
     _args: Record<string, never>,
     req: Express.Request,
   ): Promise<ReturnType> => {
-    const user = assertLoggedIn(req, 'AidRequest.whatIsNeeded', {
-      assertUIIsHandlingErrors: true,
-    });
+    const user = assertLoggedIn(req, 'AidRequest.whatIsNeeded');
     const aidRequest = await loadAidRequestForViewer(user, aidRequestID);
     return aidRequest.whatIsNeeded;
   },

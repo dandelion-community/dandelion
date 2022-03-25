@@ -6,7 +6,7 @@ import {
   AidRequestNotificationSettingsQueryVariables,
   AidRequestNotificationSettingsQuery_aidRequestNotificationSettings_settings,
 } from 'src/client/aid_request/notification_settings/__generated__/AidRequestNotificationSettingsQuery';
-import ErrorScreen from 'src/client/components/ErrorScreen';
+import ErrorNotice from 'src/client/components/ErrorNotice';
 import LoadingScreen from 'src/client/components/LoadingScreen';
 import View from 'src/client/components/ViewWithBackground';
 import { RequestExplorerStackScreenProps } from 'src/client/navigation/NavigationTypes';
@@ -62,7 +62,13 @@ export default function AidRequestNotificationSettingsScreen({
           ? [
               singleElement({
                 key: 'error',
-                render: () => <ErrorScreen error={error} />,
+                render: () => (
+                  <ErrorNotice
+                    error={error}
+                    manualChange={`Manage notification settings for ${aidRequestID}`}
+                    whenTryingToDoWhat="Load notification settings"
+                  />
+                ),
               }),
             ]
           : [

@@ -39,9 +39,7 @@ const aidRequests = AidRequestGraphQLType.schemaComposer.createResolver<
     args,
     context: request,
   }): Promise<AidRequestConnectionType> => {
-    const user = assertLoggedIn(request, 'aidRequests', {
-      assertUIIsHandlingErrors: true,
-    });
+    const user = assertLoggedIn(request, 'aidRequests');
     const { after, first, filter } = args;
     const $skip = Math.max(0, parseInt(after || '0'));
     const $limit = first;

@@ -1,5 +1,6 @@
 import { ApolloError } from '@apollo/client';
 import * as React from 'react';
+import { View } from 'react-native';
 import { ProgressBar } from 'react-native-paper';
 import AidRequestCard from 'src/client/aid_request/card/AidRequestCard';
 import { GoToRequestDetailScreen } from 'src/client/aid_request/detail/AidRequestDetailScreen';
@@ -12,6 +13,8 @@ import {
 } from 'src/client/aid_request/list/__generated__/ListOfAidRequestsQuery';
 import EndOfListSpacer from 'src/client/components/EndOfListSpacer';
 import ErrorNotice from 'src/client/components/ErrorNotice';
+import FullWidthButton from 'src/client/components/m3/FullWidthButton';
+import reportError from 'src/client/error/reportError';
 import {
   ScrollableScreenItem,
   SectionRendererData,
@@ -27,6 +30,7 @@ type Node =
   | ListOfAidRequestsQuery_allAidRequests_edges_node
   | 'spacer'
   | 'loading'
+  | 'retryButton'
   | ApolloError;
 
 export default function useListOfAidRequestItems({
@@ -37,13 +41,10 @@ export default function useListOfAidRequestItems({
     useListOfAidRequests(filter);
   const edges = data == null ? null : data.allAidRequests?.edges;
 
-  console.log('error', error);
-  console.log('data', data);
-
   const nodes: Array<Node> = React.useMemo(() => {
     const isLoadingEntireScreen = loading && !edges?.length;
     const isLoadingIncremental = loading && !isLoadingEntireScreen;
-    const errorNodes: Array<Node> = error == null ? [] : [error];
+    const errorNodes: Array<Node> = error == null ? [] : [error, 'retryButton'];
     const loadingHeaderNodes: Array<Node> = isLoadingEntireScreen
       ? ['loading']
       : [];
@@ -60,7 +61,6 @@ export default function useListOfAidRequestItems({
       ...loadingFooterNodes,
       'spacer',
     ];
-    console.log('nodes', nodes);
     return nodes;
   }, [loading, error, edges]);
 
@@ -82,12 +82,19 @@ export default function useListOfAidRequestItems({
     },
   };
 
-  function renderItem(item: Node): React.ReactElement | null {
+  function renderItem(item: Node): JSX.Element {
     if (item === 'spacer') {
       return <EndOfListSpacer />;
     }
     if (item === 'loading') {
       return <ProgressBar indeterminate={true} />;
+    }
+    if (item === 'retryButton') {
+      return (
+        <View style={{ marginHorizontal: 15 }}>
+          <FullWidthButton onPress={() => refetch()} text="Retry" />
+        </View>
+      );
     }
     if (item instanceof ApolloError) {
       return (
@@ -106,7 +113,7 @@ export default function useListOfAidRequestItems({
   }
 
   function getKey(item: Node): string {
-    if (item === 'spacer' || item === 'loading') {
+    if (item === 'spacer' || item === 'loading' || item === 'retryButton') {
       return item;
     }
     if (item instanceof ApolloError) {
@@ -115,15 +122,19 @@ export default function useListOfAidRequestItems({
     return item._id;
   }
 
-  function onEndReached(data: ListOfAidRequestsQuery): void {
+  async function onEndReached(data: ListOfAidRequestsQuery): Promise<void> {
     if (!data.allAidRequests?.pageInfo.hasNextPage || loading) {
       return;
     }
-    fetchMore({
-      variables: {
-        after: data.allAidRequests.pageInfo.endCursor,
-        first: PAGE_SIZE,
-      },
-    });
+    try {
+      await fetchMore({
+        variables: {
+          after: data.allAidRequests.pageInfo.endCursor,
+          first: PAGE_SIZE,
+        },
+      });
+    } catch (e) {
+      reportError(e);
+    }
   }
 }

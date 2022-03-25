@@ -3,29 +3,31 @@ import { Buffer } from 'buffer';
 import * as React from 'react';
 import GlobalSearchStringStore from 'src/client/global_search_string/GlobalSearchStringStore';
 import client from 'src/client/graphql/client';
-import RootNavigationStore from 'src/client/navigation/root/RootNavigationStore';
+import { useEncodedRootNavigationStoreForErrorReporting } from 'src/client/navigation/root/RootNavigationStore';
 import useStore from 'src/client/store/useStore';
 import type {
   CreateErrorReportMutation,
   CreateErrorReportMutationVariables,
 } from 'src/client/utils/__generated__/CreateErrorReportMutation';
-import { useViewer } from 'src/client/viewer/Viewer';
+import { useEncodedViewerForErrorReporting } from 'src/client/viewer/Viewer';
 
 export default function useDebugInfo(error: ApolloError): {
   errorMessage: string;
   debugInfo: string;
 } {
-  const errorMessage = getErrorMessage(error);
-  const navState = useStore(RootNavigationStore)?.getState() ?? {};
-  const viewer = useViewer();
+  const { errorMessage, properties, file } = getErrorMessage(error);
+  const navState = useEncodedRootNavigationStoreForErrorReporting();
+  const viewer = useEncodedViewerForErrorReporting();
   const search = useStore(GlobalSearchStringStore);
   const url = window?.location?.toString();
   const value = {
     errorMessage,
+    file,
     navState,
     search,
     url,
     viewer,
+    ...properties,
   };
 
   const rawValue = Buffer.from(JSON.stringify(value), 'utf-8').toString(
@@ -60,17 +62,38 @@ const CREATE_ERROR_REPORT_MUTATION = gql`
   }
 `;
 
-function getErrorMessage(error: ApolloError): string {
+type ParsedErrorData = {
+  errorMessage: string;
+  properties?: Record<string, string> | undefined;
+  file?: string | undefined;
+};
+
+function getErrorMessage(error: ApolloError): ParsedErrorData {
   try {
     const { networkError, graphQLErrors } = error;
     if (networkError != null) {
-      return (networkError as ServerError).result.errors[0].message;
+      return maybeParse(
+        (networkError as ServerError).result.errors[0].message,
+        'Network error',
+      );
     }
     if (graphQLErrors != null && graphQLErrors.length > 0) {
-      return 'Server Error';
+      return maybeParse(graphQLErrors[0].message, 'Server Error');
     }
-    return error.message;
-  } catch (e) {
-    return JSON.stringify(error);
+  } catch {
+    return maybeParse(error.message, 'Unexpected error');
+  }
+  return maybeParse(error.message, 'Unexpected error');
+
+  function maybeParse(msg: string, fallback: string): ParsedErrorData {
+    try {
+      const { displayText: errorMessage, properties, file } = JSON.parse(msg);
+      return { errorMessage, file, properties };
+    } catch {
+      return {
+        errorMessage: fallback,
+        properties: { dump: JSON.stringify(error) },
+      };
+    }
   }
 }

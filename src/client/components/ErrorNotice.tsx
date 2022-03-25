@@ -1,6 +1,7 @@
 import { ApolloError } from '@apollo/client';
 import * as React from 'react';
-import { Linking, Pressable, StyleSheet } from 'react-native';
+import { Linking, StyleSheet } from 'react-native';
+import { TouchableRipple } from 'react-native-paper';
 import Text from 'src/client/components/Text';
 import View from 'src/client/components/ViewWithBackground';
 import createEmailLink from '../email_link/createEmailLink';
@@ -21,17 +22,31 @@ export default function ErrorNotice({
   if (error == null) {
     return null;
   }
-  const buttonBackgroundColor = useColor('errorButtonBackground');
+  const buttonBackgroundColor = useColor('m3buttonBackground');
+  const containerBorderColor = useColor({
+    dark: '#542820',
+    light: '#ffb5b5',
+  });
+  const containerBackgroundColor = useColor({
+    dark: 'rgba(100, 50, 50, 0.3)',
+    light: 'rgba(255, 200, 200, 0.3',
+  });
   const { errorMessage, debugInfo } = useDebugInfo(error);
   return (
-    <View style={styles.container}>
-      <Text>
-        Whoops! There was an error when trying to {whenTryingToDoWhat}.
-      </Text>
+    <View
+      style={[
+        styles.container,
+        {
+          backgroundColor: containerBackgroundColor,
+          borderColor: containerBorderColor,
+        },
+      ]}
+    >
+      <Text>Something went wrong when trying to {whenTryingToDoWhat}.</Text>
       <Text style={{ marginTop: 10 }}>
         The error message is: {errorMessage}
       </Text>
-      <Pressable
+      <TouchableRipple
         onPress={() => {
           Linking.openURL(
             createEmailLink({
@@ -51,17 +66,14 @@ export default function ErrorNotice({
             }),
           );
         }}
+        style={[styles.button, { backgroundColor: buttonBackgroundColor }]}
       >
-        <View
-          style={[styles.button, { backgroundColor: buttonBackgroundColor }]}
-        >
-          <Text>
-            {`Please tap here to send a pre-written email so we can fix this ${
-              manualChange ? 'and also make this change for you manually' : ''
-            }`}
-          </Text>
-        </View>
-      </Pressable>
+        <Text>
+          {`Please press here to send us a pre-written email so we can look into it${
+            manualChange ? ' and also make this change for you manually' : ''
+          }.`}
+        </Text>
+      </TouchableRipple>
     </View>
   );
 }
@@ -69,14 +81,21 @@ export default function ErrorNotice({
 const styles = StyleSheet.create({
   button: {
     alignSelf: 'stretch',
-    borderRadius: 10,
-    marginTop: 20,
-    padding: 10,
+    borderRadius: 30,
+    marginTop: 12,
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+  },
+  buttonWrapper: {
+    marginTop: 10,
   },
   container: {
     alignItems: 'flex-start',
+    borderRadius: 20,
+    borderWidth: 4,
     flex: 1,
     justifyContent: 'flex-start',
-    margin: 20,
+    margin: 10,
+    padding: 10,
   },
 });

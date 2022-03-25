@@ -16,9 +16,7 @@ const whoIsItFor: ObjectTypeComposerFieldConfigAsObjectDefinition<
     _args: Record<string, never>,
     req: Express.Request,
   ): Promise<ReturnType> => {
-    const user = assertLoggedIn(req, 'AidRequest.whoIsItFor', {
-      assertUIIsHandlingErrors: true,
-    });
+    const user = assertLoggedIn(req, 'AidRequest.whoIsItFor');
     const aidRequest = await loadAidRequestForViewer(user, aidRequestID);
     return aidRequest.whoIsItFor;
   },
