@@ -16,7 +16,9 @@ const crew: ObjectTypeComposerFieldConfigAsObjectDefinition<
     _args: Record<string, never>,
     req: Express.Request,
   ): Promise<ReturnType> => {
-    const user = assertLoggedIn(req, 'AidRequest.crew');
+    const user = assertLoggedIn(req, 'AidRequest.crew', {
+      assertUIIsHandlingErrors: true,
+    });
     const aidRequest = await loadAidRequestForViewer(user, aidRequestID);
     return aidRequest.crew;
   },

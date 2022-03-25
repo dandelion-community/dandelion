@@ -65,6 +65,11 @@ export default function createClient(
   const client = new ApolloClient({
     cache,
     credentials: 'include',
+    defaultOptions: {
+      query: {
+        errorPolicy: 'all',
+      },
+    },
     link,
   });
 

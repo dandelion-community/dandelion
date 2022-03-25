@@ -20,7 +20,9 @@ const latestEvent: ObjectTypeComposerFieldConfigAsObjectDefinition<
     _args: Record<string, never>,
     req: Express.Request,
   ): Promise<string> => {
-    const viewer = assertLoggedIn(req, 'AidRequest.latestEvent');
+    const viewer = assertLoggedIn(req, 'AidRequest.latestEvent', {
+      assertUIIsHandlingErrors: true,
+    });
     const aidRequest = await loadAidRequestForViewer(viewer, aidRequestID);
     const { history } = aidRequest;
     if (history.length === 0) {

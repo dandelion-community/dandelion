@@ -22,9 +22,11 @@ export default function useListOfAidRequests(
     ListOfAidRequestsQuery,
     ListOfAidRequestsQueryVariables
   >(LIST_OF_AID_REQUESTS_QUERY, {
+    errorPolicy: 'all',
     notifyOnNetworkStatusChange: true,
     variables: { after: null, filter, pageSize: PAGE_SIZE },
   });
+  console.log('apolloResult', apolloResult);
   const drafts = useStore(graphqlEdgeDraftStore);
   const { data, ...rest } = apolloResult;
   React.useEffect(() => {

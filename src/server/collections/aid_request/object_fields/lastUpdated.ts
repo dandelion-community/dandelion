@@ -16,7 +16,9 @@ const lastUpdated: ObjectTypeComposerFieldConfigAsObjectDefinition<
     _args: Record<string, never>,
     req: Express.Request,
   ): Promise<ReturnType> => {
-    const user = assertLoggedIn(req, 'AidRequest.lastUpdated');
+    const user = assertLoggedIn(req, 'AidRequest.lastUpdated', {
+      assertUIIsHandlingErrors: true,
+    });
     const aidRequest = await loadAidRequestForViewer(user, aidRequestID);
     return aidRequest.lastUpdated;
   },
