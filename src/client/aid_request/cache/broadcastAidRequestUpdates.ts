@@ -14,26 +14,24 @@ import {
 import {
   ListOfAidRequestsQuery,
   ListOfAidRequestsQueryVariables,
-  ListOfAidRequestsQuery_allAidRequests_edges,
-  ListOfAidRequestsQuery_allAidRequests_edges_node,
 } from 'src/client/aid_request/list/__generated__/ListOfAidRequestsQuery';
 import client from 'src/client/graphql/client';
 import filterNulls from 'src/shared/utils/filterNulls';
+import {
+  AidRequestGraphQLEdgeType,
+  AidRequestGraphQLType,
+  validateEdge,
+} from '../fragments/AidRequestGraphQLType';
 
 export function broadcastUpdatedAidRequest(
   aidRequestID: string,
-  aidRequest:
-    | ListOfAidRequestsQuery_allAidRequests_edges_node
-    | undefined
-    | null,
+  aidRequest: AidRequestGraphQLType | undefined | null,
 ): void {
   broadcastAidRequestUpdates([{ id: aidRequestID, value: aidRequest }]);
 }
 
 export function broadcastManyNewAidRequests(
-  aidRequests: Array<
-    ListOfAidRequestsQuery_allAidRequests_edges_node | undefined | null
-  >,
+  aidRequests: Array<AidRequestGraphQLType | undefined | null>,
 ): void {
   broadcastAidRequestUpdates(
     filterNulls(aidRequests).map((value) => ({ id: value._id, value })),
@@ -46,7 +44,7 @@ export function broadcastDeletedAidRequest(aidRequestID: string): void {
 
 type Update = {
   id: string;
-  value: ListOfAidRequestsQuery_allAidRequests_edges_node | undefined | null;
+  value: AidRequestGraphQLType | undefined | null;
 };
 
 function broadcastAidRequestUpdates(updates: Update[]): void {
@@ -61,7 +59,7 @@ function processAidRequestUpdatesForSubscriber(
   updates: Update[],
 ): void {
   const { filter, filterContext } = subscriber;
-  const toAdd: ListOfAidRequestsQuery_allAidRequests_edges_node[] = [];
+  const toAdd: AidRequestGraphQLType[] = [];
   const toRemove: string[] = [];
   updates.forEach((update: Update): void => {
     if (passesFilter(subscriber, update)) {
@@ -76,15 +74,16 @@ function processAidRequestUpdatesForSubscriber(
     }
   });
   const oldEdges = filterNulls(subscriber.data.allAidRequests?.edges ?? []);
-  const filteredEdges: ListOfAidRequestsQuery_allAidRequests_edges[] =
-    oldEdges.filter((edge) => !toRemove.includes(edge.node._id));
-  const withAdditions: ListOfAidRequestsQuery_allAidRequests_edges[] = [
+  const filteredEdges: AidRequestGraphQLEdgeType[] = filterNulls(
+    oldEdges.map(validateEdge),
+  ).filter((edge) => !toRemove.includes(edge.node._id));
+  const withAdditions: AidRequestGraphQLEdgeType[] = [
     ...toAdd.map(
       (node) =>
         ({
           __typename: 'AidRequestEdge',
           node,
-        } as ListOfAidRequestsQuery_allAidRequests_edges),
+        } as AidRequestGraphQLEdgeType),
     ),
     ...filteredEdges,
   ];
@@ -112,7 +111,7 @@ function idIsPresent(subscriber: SubscriberValue, update: Update): boolean {
 
 function publishNewEdges(
   filter: FilterType,
-  edges_: ListOfAidRequestsQuery_allAidRequests_edges[],
+  edges_: AidRequestGraphQLEdgeType[],
   list: ListOfAidRequestsQuery,
   filterContext: FilterContext,
 ): void {
@@ -146,9 +145,7 @@ function publishNewEdges(
   LocalUpdateSubscriberStore.add({ data, filter, filterContext });
 }
 
-function isNotStaleDraft(
-  value: ListOfAidRequestsQuery_allAidRequests_edges,
-): boolean {
+function isNotStaleDraft(value: AidRequestGraphQLEdgeType): boolean {
   const id = value.node._id;
   if (!isDraftID(id)) {
     return true;

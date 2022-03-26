@@ -24,6 +24,7 @@ export default function throwError({
 
 type FakeArgs = Args & {
   suppression?: { suppressFakeErrors: boolean };
+  probability?: number;
 };
 
 export function throwFakeErrorSometimes({
@@ -31,10 +32,11 @@ export function throwFakeErrorSometimes({
   file,
   properties,
   suppression,
+  probability,
 }: FakeArgs): void {
   if (
     process.env.MONGODB_DB_NAME === 'AidApp-Test' &&
-    Math.random() < 0.1 &&
+    Math.random() < (probability ?? 0.1) &&
     !suppression?.suppressFakeErrors
   ) {
     throwError({

@@ -2,6 +2,7 @@ import { gql, useQuery } from '@apollo/client';
 import * as React from 'react';
 import AidRequestUpdatedIDsEventStream from 'src/client/aid_request/cache/AidRequestUpdatedIDsEventStream';
 import AddAComment from 'src/client/aid_request/detail/add-a-comment/AddAComment';
+import { validate } from 'src/client/aid_request/detail/AidRequestDetailsGraphQLType';
 import ActivityHeader from 'src/client/aid_request/detail/rows/ActivityHeader';
 import ActivityItem, {
   ActivityItemFragments,
@@ -61,8 +62,8 @@ export default function AidRequestDetailScreen({
 
   return (
     <ScrollableScreen
-      configs={
-        error
+      configs={[
+        ...(error
           ? [
               singleElement({
                 key: 'error',
@@ -81,23 +82,22 @@ export default function AidRequestDetailScreen({
                 },
               }),
             ]
-          : [
-              {
-                onRefresh: refetch,
-                refreshing: loading,
-                section: {
-                  data: items,
-                  key: 'list-items',
-                },
-              },
-            ]
-      }
+          : []),
+        {
+          onRefresh: refetch,
+          refreshing: loading,
+          section: {
+            data: items,
+            key: 'list-items',
+          },
+        },
+      ]}
     />
   );
 }
 
 function getListItems(data: AidRequestDetailsQuery | undefined): Array<Item> {
-  const aidRequest = data?.aidRequest;
+  const aidRequest = validate(data?.aidRequest);
   if (aidRequest == null) {
     return [];
   }

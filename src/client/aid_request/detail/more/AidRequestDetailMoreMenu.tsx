@@ -2,14 +2,14 @@ import * as React from 'react';
 import type { ListRenderItemInfo } from 'react-native';
 import { FlatList } from 'react-native';
 import { List } from 'react-native-paper';
-import { AidRequestDetailsQuery_aidRequest } from 'src/client/aid_request/detail/__generated__/AidRequestDetailsQuery';
 import Icon from 'src/client/components/Icon';
 import useDrawerContext from 'src/client/drawer/useDrawerContext';
 import AID_REQUEST_DETAIL_ID_URL_PARAM from 'src/shared/urls/AID_REQUEST_DETAIL_ID_URL_PARAM';
 import RequestExplorerNavigationStore from '../../explorer/navigation/RequestExplorerNavigationStore';
+import { AidRequestDetailsGraphQLType } from '../AidRequestDetailsGraphQLType';
 
 type Props = {
-  aidRequest: AidRequestDetailsQuery_aidRequest;
+  aidRequest: AidRequestDetailsGraphQLType;
 };
 
 type Item = 'Notification Settings';

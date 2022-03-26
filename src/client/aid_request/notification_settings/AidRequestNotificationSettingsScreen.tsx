@@ -13,6 +13,7 @@ import { RequestExplorerStackScreenProps } from 'src/client/navigation/Navigatio
 import ScrollableScreen from 'src/client/scrollable_screen/ScrollableScreen';
 import singleElement from 'src/client/scrollable_screen/singleElement';
 import AidRequestUpdatedIDsEventStream from '../cache/AidRequestUpdatedIDsEventStream';
+import { validate } from '../fragments/AidRequestGraphQLType';
 import { AidRequestNotificationSettingsFragment } from './helpers/AidRequestNotificationSettingsFragment';
 import CurrentSettingToggle from './rows/CurrentSettingToggle';
 import Header from './rows/Header';
@@ -93,7 +94,11 @@ function getListItems(
   if (notificationSettings == null) {
     return [];
   }
-  const { aidRequest, settings } = notificationSettings;
+  const { aidRequest: aidRequest_, settings } = notificationSettings;
+  const aidRequest = validate(aidRequest_);
+  if (aidRequest == null) {
+    return [];
+  }
   const aidRequestID = aidRequest._id;
   const anySetting = settings.filter(
     (setting) => setting.notifiableEvent === 'Any',

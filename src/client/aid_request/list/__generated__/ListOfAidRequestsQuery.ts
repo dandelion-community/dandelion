@@ -40,7 +40,7 @@ export interface ListOfAidRequestsQuery_allAidRequests_edges_node_actionsAvailab
 
 export interface ListOfAidRequestsQuery_allAidRequests_edges_node {
   __typename: "AidRequest";
-  _id: string;
+  _id: string | null;
   createdAt: any;
   crew: string;
   completed: boolean;

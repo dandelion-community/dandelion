@@ -1,9 +1,7 @@
+import { ExecutionResult } from 'graphql';
 import { broadcastManyNewAidRequests } from 'src/client/aid_request/cache/broadcastAidRequestUpdates';
 import createAidRequestSaveToServer from 'src/client/aid_request/create/createAidRequestSaveToServer';
-import {
-  CreateAidRequestsMutationVariables,
-  CreateAidRequestsMutation_createAidRequests_requests,
-} from 'src/client/aid_request/create/__generated__/CreateAidRequestsMutation';
+import { CreateAidRequestsMutationVariables } from 'src/client/aid_request/create/__generated__/CreateAidRequestsMutation';
 import { createDraftID } from 'src/client/aid_request/drafts/AidRequestDraftIDs';
 import {
   graphqlNodeDraftStore,
@@ -16,10 +14,12 @@ import {
 } from 'src/client/aid_request/drafts/AidRequestDraftsPersistentStorage';
 import flatten from 'src/shared/utils/flatten';
 import resolveWhoIsItFor from 'src/shared/utils/resolveWhoIsItFor';
+import { AidRequestGraphQLType } from '../fragments/AidRequestGraphQLType';
 
 export type SuccessfulSaveData = {
   postpublishSummary: string;
-  aidRequests: CreateAidRequestsMutation_createAidRequests_requests[];
+  aidRequests: AidRequestGraphQLType[];
+  errors: ExecutionResult['errors'];
 };
 
 export function createNewAidRequestDraft(
@@ -31,6 +31,7 @@ export function createNewAidRequestDraft(
     setDrafts(oldValues.concat(newValues));
     return {
       aidRequests: graphqlNodeDraftStore.getValue(),
+      errors: undefined,
       postpublishSummary: `Network unavailable. Saved draft${
         newValues.length === 1 ? '' : 's'
       } to device`,

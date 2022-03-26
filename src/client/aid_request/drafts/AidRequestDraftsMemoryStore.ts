@@ -11,8 +11,9 @@ import {
 import { ListOfAidRequestsQuery_allAidRequests_edges } from 'src/client/aid_request/list/__generated__/ListOfAidRequestsQuery';
 import createStore from 'src/client/store/createStore';
 import type { Store } from 'src/client/store/StoreType';
+import { AidRequestGraphQLType } from '../fragments/AidRequestGraphQLType';
 
-type GraphqlNodeData = CreateAidRequestsMutation_createAidRequests_requests[];
+type GraphqlNodeData = AidRequestGraphQLType[];
 type GraphqlEdgeData = ListOfAidRequestsQuery_allAidRequests_edges[];
 
 export const graphqlNodeDraftStore: Store<GraphqlNodeData> =
@@ -46,7 +47,7 @@ function fakeGraphQLResponse({
   crew,
   whatIsNeeded,
   whoIsItFor,
-}: StorageEntry): CreateAidRequestsMutation_createAidRequests_requests {
+}: StorageEntry): AidRequestGraphQLType {
   return {
     __typename: 'AidRequest',
     _id: tempID,

@@ -7,10 +7,7 @@ import { GoToRequestDetailScreen } from 'src/client/aid_request/detail/AidReques
 import { FilterType } from 'src/client/aid_request/filter/RequestExplorerFiltersStore';
 import { PAGE_SIZE } from 'src/client/aid_request/list/ListOfAidRequestsQuery';
 import useListOfAidRequests from 'src/client/aid_request/list/useListOfAidRequests';
-import {
-  ListOfAidRequestsQuery,
-  ListOfAidRequestsQuery_allAidRequests_edges_node,
-} from 'src/client/aid_request/list/__generated__/ListOfAidRequestsQuery';
+import { ListOfAidRequestsQuery } from 'src/client/aid_request/list/__generated__/ListOfAidRequestsQuery';
 import EndOfListSpacer from 'src/client/components/EndOfListSpacer';
 import ErrorNotice from 'src/client/components/ErrorNotice';
 import FullWidthButton from 'src/client/components/m3/FullWidthButton';
@@ -19,7 +16,13 @@ import {
   ScrollableScreenItem,
   SectionRendererData,
 } from 'src/client/scrollable_screen/ScrollableScreen';
+import ErrorToastEventStream from 'src/client/toast/ErrorToastEventStream';
 import filterNulls from 'src/shared/utils/filterNulls';
+import {
+  AidRequestGraphQLType,
+  invalid_counter,
+  validate,
+} from '../fragments/AidRequestGraphQLType';
 
 type Props = {
   goToRequestDetailScreen: GoToRequestDetailScreen;
@@ -27,7 +30,7 @@ type Props = {
 };
 
 type Node =
-  | ListOfAidRequestsQuery_allAidRequests_edges_node
+  | AidRequestGraphQLType
   | 'spacer'
   | 'loading'
   | 'retryButton'
@@ -40,11 +43,13 @@ export default function useListOfAidRequestItems({
   const { data, error, loading, fetchMore, refetch } =
     useListOfAidRequests(filter);
   const edges = data == null ? null : data.allAidRequests?.edges;
+  const prevErrorRef = React.useRef<ApolloError | undefined>();
 
   const nodes: Array<Node> = React.useMemo(() => {
     const isLoadingEntireScreen = loading && !edges?.length;
     const isLoadingIncremental = loading && !isLoadingEntireScreen;
-    const errorNodes: Array<Node> = error == null ? [] : [error, 'retryButton'];
+    const errorNodes: Array<Node> =
+      error == null || edges?.length ? [] : [error, 'retryButton'];
     const loadingHeaderNodes: Array<Node> = isLoadingEntireScreen
       ? ['loading']
       : [];
@@ -54,15 +59,27 @@ export default function useListOfAidRequestItems({
     if (edges == null && loading) {
       return loadingHeaderNodes;
     }
+    invalid_counter.current = 0;
     const nodes: Array<Node> = [
       ...loadingHeaderNodes,
       ...errorNodes,
-      ...filterNulls((edges ?? []).map((edge) => edge?.node)),
+      ...filterNulls((edges ?? []).map((edge) => validate(edge?.node))),
       ...loadingFooterNodes,
       'spacer',
     ];
     return nodes;
   }, [loading, error, edges]);
+
+  React.useEffect(() => {
+    if (error != null && edges?.length && prevErrorRef.current !== error) {
+      console.log('Publishing', error);
+      ErrorToastEventStream.publish({
+        error,
+        message: 'Some aid requests were unable to be loaded.',
+      });
+      prevErrorRef.current = error;
+    }
+  }, [error, edges]);
 
   const listItems = (nodes ?? []).map((node: Node): ScrollableScreenItem => {
     return {

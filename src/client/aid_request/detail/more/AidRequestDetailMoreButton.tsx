@@ -1,10 +1,10 @@
 import * as React from 'react';
 import AidRequestDetailMoreMenu from 'src/client/aid_request/detail/more/AidRequestDetailMoreMenu';
-import { AidRequestDetailsQuery_aidRequest } from 'src/client/aid_request/detail/__generated__/AidRequestDetailsQuery';
 import DrawerButton from 'src/client/components/DrawerButton';
+import { AidRequestDetailsGraphQLType } from '../AidRequestDetailsGraphQLType';
 
 type Props = {
-  aidRequest: AidRequestDetailsQuery_aidRequest;
+  aidRequest: AidRequestDetailsGraphQLType;
 };
 
 export default function ShareAidRequestButton({

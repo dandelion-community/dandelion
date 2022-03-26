@@ -24,6 +24,7 @@ import useDrawerContext from 'src/client/drawer/useDrawerContext';
 import useMutateWithUndo from 'src/client/graphql/useMutateWithUndo';
 import ToastStore from 'src/client/toast/ToastStore';
 import filterNulls from 'src/shared/utils/filterNulls';
+import { validate } from '../fragments/AidRequestGraphQLType';
 
 type Props = {
   aidRequest: AidRequestEditDrawerFragment;
@@ -51,7 +52,8 @@ export default function AidRequestEditDrawer({
     broadcastResponse: (
       object: EditAidRequestMutation_payload_object | null,
     ) => {
-      broadcastUpdatedAidRequest(aidRequestID, object);
+      const validated = validate(object);
+      validated && broadcastUpdatedAidRequest(aidRequestID, validated);
     },
     clearInputs: closeDrawer,
     mutation: EDIT_AID_REQUEST_MUTATION,

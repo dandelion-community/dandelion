@@ -34,7 +34,7 @@ export interface EditAidRequestMutation_payload_object_actionsAvailable {
 
 export interface EditAidRequestMutation_payload_object {
   __typename: "AidRequest";
-  _id: string;
+  _id: string | null;
   createdAt: any;
   crew: string;
   completed: boolean;

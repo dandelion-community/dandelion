@@ -12,11 +12,15 @@ export default function assertLoggedIn(
   throwFakeErrorSometimes({
     displayText: 'Authentication failed',
     file: 'src/server/graphql/assertLoggedIn.ts',
+    probability: 0.1,
     properties: {
       userID: user._id.toString(),
     },
     suppression: {
-      suppressFakeErrors: action !== 'AidRequest.actionsAvailable',
+      suppressFakeErrors: ![
+        'AidRequest.actionsAvailable',
+        'AidRequest._id',
+      ].includes(action),
     },
   });
   return user;

@@ -7,14 +7,14 @@ import RetryPublishing, {
   PublishCallback,
 } from 'src/client/aid_request/drafts/RetryPublishing';
 import AidRequestEditDrawer from 'src/client/aid_request/edit/AidRequestEditDrawer';
-import type { AidRequestCardFragment } from 'src/client/aid_request/fragments/__generated__/AidRequestCardFragment';
 import DrawerButton from 'src/client/components/DrawerButton';
 import PressableText from 'src/client/components/PressableText';
 import Text from 'src/client/components/Text';
 import { useLoggedInViewer } from 'src/client/viewer/Viewer';
+import { AidRequestGraphQLType } from '../fragments/AidRequestGraphQLType';
 
 type Props = {
-  aidRequest: AidRequestCardFragment;
+  aidRequest: AidRequestGraphQLType;
   goToRequestDetailScreen?: GoToRequestDetailScreen;
 };
 
