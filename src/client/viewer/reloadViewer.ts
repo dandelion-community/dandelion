@@ -1,5 +1,5 @@
 import client from 'src/client/graphql/client';
 
-export default function reloadViewer(): void {
-  client.refetchQueries({ include: ['ViewerQuery'] });
+export default async function reloadViewer(): Promise<void> {
+  await client.refetchQueries({ include: ['ViewerQuery'] });
 }

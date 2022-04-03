@@ -27,7 +27,7 @@ export default function Row({
       >
         {header == null ? null : (
           <View style={styles.header}>
-            <Text style={[{ color }, styles.headline]}>{header} </Text>
+            <Text style={[{ color }, styles.headline]}>{header}</Text>
             {(headerMonograms ?? []).map((name: string): React.ReactElement => {
               return <Monogram key={name} name={name} />;
             })}

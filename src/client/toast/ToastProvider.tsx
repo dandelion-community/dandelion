@@ -43,12 +43,17 @@ export default function ToastProvider({ children }: Props): React.ReactElement {
         <View style={styles.snackbar}>
           <Snackbar
             action={
-              toastContext?.undo == null
-                ? undefined
-                : {
+              toastContext?.undo != null
+                ? {
                     label: 'Undo',
                     onPress: toastContext?.undo,
                   }
+                : toastContext?.retry != null
+                ? {
+                    label: 'Retry',
+                    onPress: toastContext?.retry,
+                  }
+                : undefined
             }
             onDismiss={() => {
               ToastStore.update(undefined);

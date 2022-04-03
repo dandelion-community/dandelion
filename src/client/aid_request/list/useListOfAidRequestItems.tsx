@@ -8,9 +8,9 @@ import { FilterType } from 'src/client/aid_request/filter/RequestExplorerFilters
 import { PAGE_SIZE } from 'src/client/aid_request/list/ListOfAidRequestsQuery';
 import useListOfAidRequests from 'src/client/aid_request/list/useListOfAidRequests';
 import { ListOfAidRequestsQuery } from 'src/client/aid_request/list/__generated__/ListOfAidRequestsQuery';
+import Button from 'src/client/components/Button';
 import EndOfListSpacer from 'src/client/components/EndOfListSpacer';
 import ErrorNotice from 'src/client/components/ErrorNotice';
-import FullWidthButton from 'src/client/components/m3/FullWidthButton';
 import reportError from 'src/client/error/reportError';
 import {
   ScrollableScreenItem,
@@ -109,7 +109,7 @@ export default function useListOfAidRequestItems({
     if (item === 'retryButton') {
       return (
         <View style={{ marginHorizontal: 15 }}>
-          <FullWidthButton onPress={() => refetch()} text="Retry" />
+          <Button onPress={() => refetch()} text="Retry" />
         </View>
       );
     }

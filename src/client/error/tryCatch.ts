@@ -1,5 +1,5 @@
-import getTypedError from 'src/shared/utils/error/getTypedError';
 import reportError from 'src/client/error/reportError';
+import getTypedError from 'src/shared/utils/error/getTypedError';
 
 type Args<T> =
   | {
@@ -21,6 +21,24 @@ export default function tryCatch<T>(args: Args<T>): T {
       return args.valueOnError;
     } else {
       return args.valueOnErrorFn(error);
+    }
+  }
+}
+
+export async function tryCatchAsync<T extends Promise<unknown>>(
+  args: Args<T>,
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
+): T {
+  try {
+    return await args.run();
+  } catch (e: unknown) {
+    const error = getTypedError(e);
+    reportError(error);
+    if ('valueOnError' in args) {
+      return args.valueOnError;
+    } else {
+      return await args.valueOnErrorFn(error);
     }
   }
 }
