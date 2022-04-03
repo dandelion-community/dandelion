@@ -61,7 +61,10 @@ export default async function changeStringField(
     ...fieldUpdate,
   });
 
-  const postpublishSummary = getHistoryEventSummary(historyEvent);
+  const postpublishSummary = await getHistoryEventSummary(
+    args.user,
+    historyEvent,
+  );
 
   if (!isUndo) {
     afterRequestIsComplete(args.req, () =>

@@ -98,7 +98,7 @@ export type AidRequestActivityItem = {
   _id: string;
   actor: () => Promise<Person | null>;
   isComment: boolean;
-  message: string;
+  message: () => Promise<string>;
   when: string;
 };
 

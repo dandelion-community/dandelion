@@ -146,7 +146,7 @@ export default function useListOfAidRequestItems({
     try {
       await fetchMore({
         variables: {
-          after: data.allAidRequests.pageInfo.endCursor,
+          after: data.allAidRequests.edges.length.toString(),
           first: PAGE_SIZE,
         },
       });

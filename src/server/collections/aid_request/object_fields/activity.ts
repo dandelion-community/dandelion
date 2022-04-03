@@ -34,7 +34,8 @@ const history: ObjectTypeComposerFieldConfigAsObjectDefinition<
             return await loadUserForViewer(viewer, event.actor.toString());
           },
           isComment: event.event === 'Comment',
-          message: getHistoryEventSummary(event),
+          message: async (): Promise<string> =>
+            await getHistoryEventSummary(viewer, event),
           when: ago(event.timestamp),
         }),
       );
