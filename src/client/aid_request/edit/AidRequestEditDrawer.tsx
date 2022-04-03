@@ -53,7 +53,7 @@ export default function AidRequestEditDrawer({
       object: EditAidRequestMutation_payload_object | null,
     ) => {
       const validated = validate(object);
-      validated && broadcastUpdatedAidRequest(aidRequestID, validated);
+      broadcastUpdatedAidRequest(aidRequestID, validated);
     },
     clearInputs: closeDrawer,
     mutation: EDIT_AID_REQUEST_MUTATION,

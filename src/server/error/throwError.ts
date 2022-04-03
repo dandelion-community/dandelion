@@ -37,7 +37,8 @@ export function throwFakeErrorSometimes({
   if (
     process.env.MONGODB_DB_NAME === 'AidApp-Test' &&
     Math.random() < (probability ?? 0.1) &&
-    !suppression?.suppressFakeErrors
+    !suppression?.suppressFakeErrors &&
+    [2].includes(1)
   ) {
     throwError({
       displayText,

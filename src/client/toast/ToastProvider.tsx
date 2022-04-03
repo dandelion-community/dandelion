@@ -50,7 +50,6 @@ export default function ToastProvider({ children }: Props): React.ReactElement {
                     onPress: toastContext?.undo,
                   }
             }
-            duration={Infinity}
             onDismiss={() => {
               ToastStore.update(undefined);
             }}
