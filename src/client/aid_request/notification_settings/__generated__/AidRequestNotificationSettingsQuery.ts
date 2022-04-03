@@ -34,7 +34,7 @@ export interface AidRequestNotificationSettingsQuery_aidRequestNotificationSetti
 
 export interface AidRequestNotificationSettingsQuery_aidRequestNotificationSettings_aidRequest {
   __typename: "AidRequest";
-  _id: string;
+  _id: string | null;
   createdAt: any;
   crew: string;
   completed: boolean;

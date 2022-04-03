@@ -59,7 +59,7 @@ export interface AidRequestDetailsQuery_aidRequest_activity {
 
 export interface AidRequestDetailsQuery_aidRequest {
   __typename: "AidRequest";
-  _id: string;
+  _id: string | null;
   createdAt: any;
   crew: string;
   completed: boolean;

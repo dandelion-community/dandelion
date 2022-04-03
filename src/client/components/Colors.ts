@@ -8,6 +8,7 @@ const Colors = {
     divider: 'rgba(255,255,255,0.15)',
     draftCardColor: '#46461c',
     errorButtonBackground: '#542828',
+    errorNoticeBorder: '#542820',
     m3buttonBackground: '#4A4458', // M3/sys/dark/secondary-container
     m3buttonText: '#E8DEF8', // M3/sys/dark/on-secondary-container
     placeholderText: 'rgba(255,255,255,0.6)',
@@ -25,6 +26,7 @@ const Colors = {
     divider: 'rgba(0,0,0,0.15)',
     draftCardColor: '#ffffd0',
     errorButtonBackground: '#ffb5b5',
+    errorNoticeBorder: '#ffb5b5',
     m3buttonBackground: '#E8DEF8', // M3/sys/dark/secondary-container
     m3buttonText: '#1D192B', // M3/sys/light/on-secondary-container
     placeholderText: 'rgba(0,0,0,0.6)',
@@ -40,8 +42,14 @@ const Colors = {
 export default Colors;
 
 export function useColor(
-  colorName: keyof typeof Colors.light & keyof typeof Colors.dark,
+  arg:
+    | (keyof typeof Colors.light & keyof typeof Colors.dark)
+    | { light: string; dark: string },
 ): string {
   const theme = useColorScheme();
-  return Colors[theme][colorName];
+  if (typeof arg === 'string') {
+    return Colors[theme][arg];
+  } else {
+    return arg[theme];
+  }
 }

@@ -34,7 +34,7 @@ export interface AidRequestCardFragment_actionsAvailable {
 
 export interface AidRequestCardFragment {
   __typename: "AidRequest";
-  _id: string;
+  _id: string | null;
   createdAt: any;
   crew: string;
   completed: boolean;

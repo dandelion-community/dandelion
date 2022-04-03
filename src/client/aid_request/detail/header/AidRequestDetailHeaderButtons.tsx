@@ -3,14 +3,16 @@ import { StyleSheet, View } from 'react-native';
 import AidRequestDetailMoreButton from 'src/client/aid_request/detail/more/AidRequestDetailMoreButton';
 import { AidRequestDetailsQuery_aidRequest } from 'src/client/aid_request/detail/__generated__/AidRequestDetailsQuery';
 import ShareAidRequestButton from 'src/client/aid_request/share/ShareAidRequestButton';
+import { validate } from '../AidRequestDetailsGraphQLType';
 
 type Props = {
   aidRequest: AidRequestDetailsQuery_aidRequest | undefined;
 };
 
 export default function AidRequestDetailHeaderButtons({
-  aidRequest,
+  aidRequest: aidRequest_,
 }: Props): JSX.Element | null {
+  const aidRequest = validate(aidRequest_);
   if (aidRequest == null) {
     return null;
   }

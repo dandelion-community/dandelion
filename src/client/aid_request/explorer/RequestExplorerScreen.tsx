@@ -5,9 +5,9 @@ import useListOfAidRequestItems from 'src/client/aid_request/list/useListOfAidRe
 import { RequestExplorerStackScreenProps } from 'src/client/navigation/NavigationTypes';
 import ScrollableScreen from 'src/client/scrollable_screen/ScrollableScreen';
 import singleElement from 'src/client/scrollable_screen/singleElement';
-import useStore from 'src/client/store/useStore';
 import AID_REQUEST_DETAIL_ID_URL_PARAM from 'src/shared/urls/AID_REQUEST_DETAIL_ID_URL_PARAM';
 import RequestExplorerFiltersStore from '../filter/RequestExplorerFiltersStore';
+import { useRequestExplorerFilters } from '../filter/useRequestExplorerFilters';
 
 export default function RequestExplorerScreen({
   navigation,
@@ -16,7 +16,7 @@ export default function RequestExplorerScreen({
   React.useEffect(() => {
     RequestExplorerFiltersStore.update(FilterEncoder.decode(route.params?.f));
   }, []);
-  const filter = useStore(RequestExplorerFiltersStore);
+  const filter = useRequestExplorerFilters();
   React.useEffect(() => {
     if (filter == null) {
       return;

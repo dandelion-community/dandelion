@@ -5,7 +5,7 @@ import { Button } from 'react-native-paper';
 import Text from 'src/client/components/Text';
 import View from 'src/client/components/ViewWithBackground';
 import createEmailLink from '../email_link/createEmailLink';
-import useDebugInfo from '../utils/useDebugInfo';
+import useDebugInfo from '../utils/errors/useMaybeMinifiedErrorReport';
 
 type Props = {
   error: ApolloError;

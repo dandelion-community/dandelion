@@ -6,13 +6,14 @@ import {
   AidRequestNotificationSettingsQueryVariables,
   AidRequestNotificationSettingsQuery_aidRequestNotificationSettings_settings,
 } from 'src/client/aid_request/notification_settings/__generated__/AidRequestNotificationSettingsQuery';
-import ErrorScreen from 'src/client/components/ErrorScreen';
+import ErrorNotice from 'src/client/components/ErrorNotice';
 import LoadingScreen from 'src/client/components/LoadingScreen';
 import View from 'src/client/components/ViewWithBackground';
 import { RequestExplorerStackScreenProps } from 'src/client/navigation/NavigationTypes';
 import ScrollableScreen from 'src/client/scrollable_screen/ScrollableScreen';
 import singleElement from 'src/client/scrollable_screen/singleElement';
 import AidRequestUpdatedIDsEventStream from '../cache/AidRequestUpdatedIDsEventStream';
+import { validate } from '../fragments/AidRequestGraphQLType';
 import { AidRequestNotificationSettingsFragment } from './helpers/AidRequestNotificationSettingsFragment';
 import CurrentSettingToggle from './rows/CurrentSettingToggle';
 import Header from './rows/Header';
@@ -62,7 +63,13 @@ export default function AidRequestNotificationSettingsScreen({
           ? [
               singleElement({
                 key: 'error',
-                render: () => <ErrorScreen error={error} />,
+                render: () => (
+                  <ErrorNotice
+                    error={error}
+                    manualChange={`Manage notification settings for ${aidRequestID}`}
+                    whenTryingToDoWhat="Load notification settings"
+                  />
+                ),
               }),
             ]
           : [
@@ -87,7 +94,11 @@ function getListItems(
   if (notificationSettings == null) {
     return [];
   }
-  const { aidRequest, settings } = notificationSettings;
+  const { aidRequest: aidRequest_, settings } = notificationSettings;
+  const aidRequest = validate(aidRequest_);
+  if (aidRequest == null) {
+    return [];
+  }
   const aidRequestID = aidRequest._id;
   const anySetting = settings.filter(
     (setting) => setting.notifiableEvent === 'Any',

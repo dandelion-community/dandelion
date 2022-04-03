@@ -4,7 +4,7 @@ import loadAidRequestForViewer from 'src/server/collections/aid_request/helpers/
 import assertLoggedIn from 'src/server/graphql/assertLoggedIn';
 
 type ReturnType = string;
-const GraphQLType = 'String!';
+const GraphQLType = 'String';
 
 const _id: ObjectTypeComposerFieldConfigAsObjectDefinition<
   AidRequest,

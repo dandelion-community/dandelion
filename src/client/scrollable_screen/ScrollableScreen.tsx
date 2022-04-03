@@ -1,11 +1,12 @@
 import * as React from 'react';
 import { ListRenderItemInfo, SectionList, SectionListData } from 'react-native';
 import useViewWidth from 'src/client/components/useViewWidth';
+import ErrorBoundary from '../error/ErrorBoundary';
 import CenteredOnScreen from '../screen_size/CenteredOnScreen';
 
 export type ScrollableScreenItem = {
   key: string;
-  render: () => React.ReactElement | null;
+  render: () => JSX.Element;
 };
 
 export type ScrollableScreenSectionProps =
@@ -55,7 +56,11 @@ export default function ScrollableScreen({ configs }: Props): JSX.Element {
     item,
   }: ListRenderItemInfo<ScrollableScreenItem>): React.ReactElement {
     const { render } = item;
-    return <CenteredOnScreen>{render()}</CenteredOnScreen>;
+    return (
+      <CenteredOnScreen>
+        <ErrorBoundary>{render()}</ErrorBoundary>
+      </CenteredOnScreen>
+    );
   }
 }
 

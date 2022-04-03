@@ -20,11 +20,11 @@ import type {
   RootStackScreenProps,
 } from 'src/client/navigation/NavigationTypes';
 import CreateAccountScreen from 'src/client/navigation/screens/create_account/CreateAccountScreen';
+import CreationTypeSelectionScreen from 'src/client/navigation/screens/creation_type_selection_screen/CreationTypeSelectionScreen';
 import LoginScreen from 'src/client/navigation/screens/login/LoginScreen';
 import MainScreen from 'src/client/navigation/screens/main/MainScreen';
 import NotFoundScreen from 'src/client/navigation/screens/not_found/NotFoundScreen';
 import NotLoggedInScreen from 'src/client/navigation/screens/not_logged_in/NotLoggedInScreen';
-import CreationTypeSelectionScreen from '../screens/creation_type_selection_screen/CreationTypeSelectionScreen';
 import RecordAidRequestPart2Screen from '../screens/record_aid_request/RecordAidRequestPart2Screen';
 import RecordAidRequestScreen from '../screens/record_aid_request/RecordAidRequestScreen';
 import RecordMultiPersonRequestScreen from '../screens/record_multi_person_request/RecordMultiPersonRequestScreen';

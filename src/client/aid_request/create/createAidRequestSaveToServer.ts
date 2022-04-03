@@ -1,17 +1,24 @@
 import { gql } from '@apollo/client';
-import type { CreateAidRequestsMutationVariables } from 'src/client/aid_request/create/__generated__/CreateAidRequestsMutation';
+import type {
+  CreateAidRequestsMutation,
+  CreateAidRequestsMutationVariables,
+} from 'src/client/aid_request/create/__generated__/CreateAidRequestsMutation';
 import { SuccessfulSaveData } from 'src/client/aid_request/drafts/AidRequestDrafts';
 import { AidRequestCardFragments } from 'src/client/aid_request/fragments/AidRequestCardFragments';
 import { tryOrYieldNullOnError } from 'src/client/error/tryCatch';
 import client from 'src/client/graphql/client';
 import filterNulls from 'src/shared/utils/filterNulls';
+import { validate } from '../fragments/AidRequestGraphQLType';
 
 export default async function createAidRequestSaveToServer(
   variables: CreateAidRequestsMutationVariables,
 ): Promise<null | SuccessfulSaveData> {
   return tryOrYieldNullOnError<null | SuccessfulSaveData>(
     async (): Promise<null | SuccessfulSaveData> => {
-      const { data } = await client.mutate({
+      const { data, errors } = await client.mutate<
+        CreateAidRequestsMutation,
+        CreateAidRequestsMutationVariables
+      >({
         mutation: CREATE_AID_REQUESTS_MUTATION,
         variables,
       });
@@ -21,7 +28,8 @@ export default async function createAidRequestSaveToServer(
         return null;
       }
       return {
-        aidRequests: filterNulls(aidRequests),
+        aidRequests: filterNulls(aidRequests.map(validate)),
+        errors,
         postpublishSummary,
       };
     },

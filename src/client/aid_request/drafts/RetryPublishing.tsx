@@ -1,12 +1,12 @@
 import * as React from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { publishDraft } from 'src/client/aid_request/drafts/AidRequestDrafts';
-import type { AidRequestCardFragment } from 'src/client/aid_request/fragments/__generated__/AidRequestCardFragment';
 import { useColor } from 'src/client/components/Colors';
 import ToastStore from 'src/client/toast/ToastStore';
+import { AidRequestGraphQLType } from '../fragments/AidRequestGraphQLType';
 
 type Props = {
-  aidRequest: AidRequestCardFragment;
+  aidRequest: AidRequestGraphQLType;
 };
 
 export type PublishCallback = {

@@ -8,6 +8,7 @@ import {
 } from 'src/client/aid_request/edit/__generated__/editAidRequestMutation';
 import type { ReturnValues } from 'src/client/graphql/useMutateWithUndo';
 import useMutateWithUndo from 'src/client/graphql/useMutateWithUndo';
+import { validate } from '../fragments/AidRequestGraphQLType';
 
 type Args = {
   aidRequestID: string;
@@ -28,7 +29,8 @@ export default function useEditAidRequestWithUndo({
     broadcastResponse: (
       object: EditAidRequestMutation_payload_object | null,
     ) => {
-      broadcastUpdatedAidRequest(aidRequestID, object);
+      const validated = validate(object);
+      validated && broadcastUpdatedAidRequest(aidRequestID, validated);
     },
     clearInputs,
     mutation: EDIT_AID_REQUEST_MUTATION,
