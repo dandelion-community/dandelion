@@ -25,11 +25,7 @@ export default function tryCatch<T>(args: Args<T>): T {
   }
 }
 
-export async function tryCatchAsync<T extends Promise<unknown>>(
-  args: Args<T>,
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
-): T {
+export async function tryCatchAsync<T>(args: Args<Promise<T>>): Promise<T> {
   try {
     return await args.run();
   } catch (e: unknown) {

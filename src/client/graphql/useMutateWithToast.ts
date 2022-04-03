@@ -36,7 +36,7 @@ export default function useMutateWithToast<TData, TVariables>({
     argVariables: undefined | TVariables = undefined,
   ): Promise<void> {
     const variables = argVariables ?? hookVaribles;
-    tryCatchAsync<Promise<void>>({
+    tryCatchAsync({
       run: async (): Promise<void> => {
         ToastStore.update(undefined);
         await runMutation({ variables });
