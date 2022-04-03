@@ -3,8 +3,7 @@ import * as React from 'react';
 import { ProgressBar } from 'react-native-paper';
 import CardButtonRow from 'src/client/components/CardButtonRow';
 import Text from 'src/client/components/Text';
-import client from 'src/client/graphql/client';
-import reloadViewer from 'src/client/viewer/reloadViewer';
+import resetCache from '../graphql/resetCache';
 import type { LogoutActionMutation } from './__generated__/LogoutActionMutation';
 
 export default function LogoutOrRegisterActionsRow(): JSX.Element {
@@ -34,9 +33,7 @@ export default function LogoutOrRegisterActionsRow(): JSX.Element {
   );
   async function logout(): Promise<void> {
     await runLogoutMutation({ variables: {} });
-    await client.cache.reset();
-    await client.resetStore();
-    reloadViewer();
+    await resetCache();
   }
 }
 

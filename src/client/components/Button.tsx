@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { StyleSheet } from 'react-native';
-import { Button as PaperButton } from 'react-native-paper';
-import View from 'src/client/components/ViewWithBackground';
+import { StyleSheet, Text } from 'react-native';
+import { TouchableRipple } from 'react-native-paper';
+import { useColor } from 'src/client/components/Colors';
 
 type Props = {
   loading?: boolean;
@@ -9,23 +9,28 @@ type Props = {
   onPress: () => void;
 };
 
-export default function Button({ loading, text, onPress }: Props) {
+export default function FullWidthButton({ text, onPress }: Props): JSX.Element {
+  const backgroundColor = useColor('m3buttonBackground');
+  const color = useColor('m3buttonText');
   return (
-    <View style={styles.container}>
-      <PaperButton
-        compact={true}
-        loading={loading ?? false}
-        mode="contained"
-        onPress={onPress}
-      >
-        {text}
-      </PaperButton>
-    </View>
+    <TouchableRipple
+      onPress={onPress}
+      style={[styles.container, { backgroundColor }]}
+    >
+      <Text style={[styles.text, { color }]}>{text}</Text>
+    </TouchableRipple>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    marginVertical: 10,
+    borderRadius: 100,
+    marginVertical: 0,
+    padding: 10,
+  },
+  text: {
+    fontWeight: '500',
+    textAlign: 'center',
+    textAlignVertical: 'center',
   },
 });
