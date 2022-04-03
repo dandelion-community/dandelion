@@ -1,11 +1,13 @@
 import { AidRequestHistoryEvent } from 'src/server/collections/aid_request/AidRequestModelTypes';
+import updateMentions from './updateMentions';
 
-export default function getHistoryEventSummary(
+export default async function getHistoryEventSummary(
+  viewer: Express.User,
   event: AidRequestHistoryEvent,
-): string {
+): Promise<string> {
   switch (event.event) {
     case 'Comment':
-      return event.eventSpecificData ?? '';
+      return await updateMentions(viewer, event.eventSpecificData ?? '');
     case 'Completed':
       return (() => {
         switch (event.action) {
