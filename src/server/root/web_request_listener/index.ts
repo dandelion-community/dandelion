@@ -11,7 +11,7 @@ import { createExpressApp } from './express_app';
 export function init(): void {
   dotenv.config();
   const debug = debugModule('server');
-  const port = normalizePort(process.env.PORT || '3000');
+  const port = normalizePort(process.env.PORT || '3333');
 
   const express_app = createExpressApp();
   express_app.set('port', port);

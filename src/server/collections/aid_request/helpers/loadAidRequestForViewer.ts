@@ -41,6 +41,10 @@ async function loadAidRequestForViewerImpl(
 ): Promise<AidRequest | Error> {
   const aidRequest = await AidRequestModel.findById(aidRequestID);
   if (aidRequest == null) {
+    console.error(
+      'Error in loadAidRequestForViewerImpl ' +
+        JSON.stringify({ aidRequestID, userID: user._id.toString() }),
+    );
     return new Error(NON_PERMISSION_ERROR_MESSAGE);
   }
   if (!user.crews.includes(aidRequest.crew)) {

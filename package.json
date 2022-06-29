@@ -14,7 +14,7 @@
     "prettier": "prettier",
     "eslint": "eslint",
     "build:client": "expo build:web",
-    "build:graphql": "apollo client:codegen --endpoint=http://localhost:3000/graphql --target=typescript",
+    "build:graphql": "apollo client:codegen --endpoint=http://localhost:3333/graphql --target=typescript",
     "build:server": "./build_server.sh",
     "deploy:local:all": "npm run deploy:local:ios:all; npm run deploy:local:android:all",
     "deploy:local:ios:all": "npm run deploy:local:ios:preview; npm run deploy:local:ios:development; npm run deploy:local:ios:production",

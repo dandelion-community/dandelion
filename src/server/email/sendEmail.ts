@@ -43,5 +43,21 @@ export default async function sendEmail({
     templateId,
     to: recipient.username,
   };
-  await sendgridMail.send(msg);
+  try {
+    await sendgridMail.send(msg);
+  } catch (e) {
+    analytics.track({
+      event: 'Send Email Failed',
+      properties: {
+        errors: tryToGetErrorsFromSendgridResponse(e),
+      },
+      user: recipient,
+    });
+  }
+}
+
+function tryToGetErrorsFromSendgridResponse(e: unknown): string {
+  return JSON.stringify(
+    (e as { response: { body: { errors: unknown } } }).response.body.errors,
+  );
 }
