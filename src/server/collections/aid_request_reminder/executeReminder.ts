@@ -1,3 +1,4 @@
+import aidRequestHasBeenDeleted from 'src/server/collections/aid_request/helpers/aidRequestHasBeenDeleted';
 import loadAidRequestForViewer from 'src/server/collections/aid_request/helpers/loadAidRequestForViewer';
 import sendEmail from 'src/server/email/sendEmail';
 import checkNotificationSettingsAndMaybeNotify from 'src/server/notifications/helpers/checkNotificationSettingsAndMaybeNotify';
@@ -19,6 +20,16 @@ export default async function executeReminder(
     throw new Error('No user found for reminder ' + reminder._id.toString());
   }
   const aidRequestID = reminder.aidRequestID.toString();
+  const hasBeenDeleted = await aidRequestHasBeenDeleted(aidRequestID);
+  if (hasBeenDeleted) {
+    console.log(
+      `Found orphaned AidRequestReminder -- deleting ${
+        reminder._id
+      } (for user ${reminder.userID.toString()} and aidRequestID ${aidRequestID})`,
+    );
+    await AidRequestReminderModel.findByIdAndDelete(reminder._id);
+    return;
+  }
   const aidRequest = await loadAidRequestForViewer(user, aidRequestID);
   await checkNotificationSettingsAndMaybeNotify({
     args: {

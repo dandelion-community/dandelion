@@ -1,6 +1,10 @@
 import getDomain from 'src/shared/urls/getDomain';
 
-const DOMAIN = getDomain();
+/**
+ * SendGrid will complain if we use foo@localhost:3333 as
+ * our "from" email address
+ */
+const DOMAIN = getDomain({ neverUseLocalhost: true });
 
 export default function getEmailAddress({
   emailUser,
