@@ -1,12 +1,9 @@
-import dotenv from 'dotenv';
 import { schemaComposer } from 'graphql-compose';
 import analytics from 'src/server/analytics';
 import { AidRequestNotificationSettingsTypeForGraphQL } from 'src/server/collections/aid_request_notification_settings/AidRequestNotificationSettingsModelTypes';
 import getAidRequestNotificationSettings from 'src/server/collections/aid_request_notification_settings/helpers/getAidRequestNotificationSettings';
 import assertLoggedIn from 'src/server/graphql/assertLoggedIn';
 import graphqlifyAidRequestNotificationSettings from '../helpers/graphqlifyAidRequestNotificationSettings';
-
-dotenv.config();
 
 type Args = {
   aidRequestID: string;

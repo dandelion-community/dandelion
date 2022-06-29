@@ -1,6 +1,4 @@
-import dotenv from 'dotenv';
-
-dotenv.config();
+import environmentIsUsingTestDatabase from '../../shared/env/environmentIsUsingTestDatabase';
 
 type Args = {
   displayText: string;
@@ -35,7 +33,7 @@ export function throwFakeErrorSometimes({
   probability,
 }: FakeArgs): void {
   if (
-    process.env.MONGODB_DB_NAME === 'AidApp-Test' &&
+    environmentIsUsingTestDatabase() &&
     Math.random() < (probability ?? 0.1) &&
     !suppression?.suppressFakeErrors &&
     [2].includes(1)

@@ -1,22 +1,19 @@
-import dotenv from 'dotenv';
 import { PipelineStage } from 'mongoose';
 import analytics from 'src/server/analytics';
 import type { AidRequestConnectionType } from 'src/server/collections/aid_request/AidRequestGraphQLTypes';
-import { AidRequestModel } from 'src/server/collections/aid_request/AidRequestModel';
-import type { Filter } from 'src/server/collections/aid_request/query_fields/allAidRequests/helpers/types';
-import assertLoggedIn from 'src/server/graphql/assertLoggedIn';
-import filterNulls from 'src/shared/utils/filterNulls';
 import {
   AidRequest,
   AidRequestFilterInputType,
   AidRequestGraphQLType,
-} from '../../AidRequestGraphQLTypes';
+} from 'src/server/collections/aid_request/AidRequestGraphQLTypes';
+import { AidRequestModel } from 'src/server/collections/aid_request/AidRequestModel';
+import type { Filter } from 'src/server/collections/aid_request/query_fields/allAidRequests/helpers/types';
+import assertLoggedIn from 'src/server/graphql/assertLoggedIn';
+import filterNulls from 'src/shared/utils/filterNulls';
 import getCompletedFilter from './helpers/getCompletedFilter';
 import getCrewFilter from './helpers/getCrewFilter';
 import getIAmWorkingOnItFilter from './helpers/getIAmWorkingOnItFilter';
 import getSearchFilter from './helpers/getSearchFilter';
-
-dotenv.config();
 
 type Args = {
   filter: Filter;

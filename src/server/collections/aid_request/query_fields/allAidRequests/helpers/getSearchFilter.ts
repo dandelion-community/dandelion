@@ -1,8 +1,6 @@
-import dotenv from 'dotenv';
 import { PipelineStage } from 'mongoose';
+import env from 'src/shared/env/env';
 import type { Filter } from './types';
-
-dotenv.config();
 
 export default function getSearchFilter(
   filter: Filter,
@@ -13,7 +11,7 @@ export default function getSearchFilter(
   }
   return {
     $search: {
-      index: process.env.MONGO_AID_REQUEST_INDEX_NAME,
+      index: env.MONGO_AID_REQUEST_INDEX_NAME,
       text: {
         path: {
           wildcard: '*',

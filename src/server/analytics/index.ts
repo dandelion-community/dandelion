@@ -1,11 +1,16 @@
 import Analytics from 'analytics-node';
-import dotenv from 'dotenv';
 import mongoose from 'mongoose';
+import env from 'src/shared/env/env';
+import environmentIsUsingTestDatabase from 'src/shared/env/environmentIsUsingTestDatabase';
 
-dotenv.config();
-const segmentAnalytics = new Analytics(
-  process.env.SEGMENT_ANALYTICS_WRITE_KEY as string,
-);
+const SEGMENT_ANALYTICS_WRITE_KEY = env.SEGMENT_ANALYTICS_WRITE_KEY;
+if (!SEGMENT_ANALYTICS_WRITE_KEY) {
+  throw new Error(
+    'SEGMENT_ANALYTICS_WRITE_KEY environment variable must be provided',
+  );
+}
+
+const segmentAnalytics = new Analytics(SEGMENT_ANALYTICS_WRITE_KEY);
 
 const mongoAnalytics = {
   track: ({ user, event, properties }: Message): void => {
@@ -42,6 +47,9 @@ const analytics = {
       userId: user == null ? 'none' : user._id.toString(),
     });
     mongoAnalytics.track(message);
+    if (environmentIsUsingTestDatabase()) {
+      console.log('[Event] ' + event);
+    }
   },
 };
 

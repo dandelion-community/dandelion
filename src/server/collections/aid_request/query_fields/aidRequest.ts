@@ -1,10 +1,7 @@
-import dotenv from 'dotenv';
 import analytics from 'src/server/analytics';
 import loadAidRequestForViewer from 'src/server/collections/aid_request/helpers/loadAidRequestForViewer';
 import assertLoggedIn from 'src/server/graphql/assertLoggedIn';
 import { AidRequest, AidRequestGraphQLType } from '../AidRequestGraphQLTypes';
-
-dotenv.config();
 
 type Args = {
   aidRequestID: string;

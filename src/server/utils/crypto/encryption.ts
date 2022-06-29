@@ -1,9 +1,7 @@
 import crypto from 'crypto';
-import dotenv from 'dotenv';
+import env from 'src/shared/env/env';
 
-dotenv.config();
-
-const SECRET = (process.env.SESSION_SECRET as string).slice(0, 32);
+const SECRET = (env.SESSION_SECRET as string).slice(0, 32);
 const ALGORITHM = 'aes-256-ctr';
 
 export function encrypt(message: string): string {

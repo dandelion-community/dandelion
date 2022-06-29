@@ -1,11 +1,9 @@
-import dotenv from 'dotenv';
 import mongoose from 'mongoose';
+import env from 'src/shared/env/env';
 
-dotenv.config();
-
-const PASSWORD = process.env.MONGODB_USER_0_PASSWORD;
+const PASSWORD = env.MONGODB_USER_0_PASSWORD;
 const CLUSTER = 'aid-app-cluster-0';
-const DEFAULT_DB_NAME = process.env.MONGODB_DB_NAME;
+const DEFAULT_DB_NAME = env.MONGODB_DB_NAME;
 const DB_USER_NAME = 'aid-app-user-0';
 
 export const MONGO_DB_URI =

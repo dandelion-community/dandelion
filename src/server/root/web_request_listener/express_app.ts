@@ -1,17 +1,16 @@
 import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
-import dotenv from 'dotenv';
 import express from 'express';
 import proxy from 'express-http-proxy';
 import logger from 'morgan';
 import path from 'path';
 import { initUserModels } from 'src/server/collections/user/UserModel';
+import environmentIsUsingHotReloading from 'src/shared/env/environmentIsUsingHotReloading';
 import { initGraphQL } from 'src/server/graphql/GraphQLSchema';
 import { initMongoClient } from 'src/server/mongo/client';
 
 export function createExpressApp(): ReturnType<typeof express> {
-  dotenv.config();
   const rootDirectory = path.normalize(path.join(__dirname, '../../../..'));
 
   const app = express();
@@ -31,7 +30,7 @@ export function createExpressApp(): ReturnType<typeof express> {
 
   app.use(express.static(path.join(rootDirectory, 'assets')));
 
-  if (process.env.HOT_RELOAD === 'True') {
+  if (environmentIsUsingHotReloading()) {
     app.use(proxy('localhost:19006'));
   } else {
     app.use(express.static(path.join(rootDirectory, 'web-build')));

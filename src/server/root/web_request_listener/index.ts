@@ -3,22 +3,22 @@
 Error.stackTraceLimit = Infinity;
 
 import debugModule from 'debug';
-import dotenv from 'dotenv';
 import http from 'http';
 import httpProxy from 'http-proxy';
+import env from 'src/shared/env/env';
+import environmentIsUsingHotReloading from 'src/shared/env/environmentIsUsingHotReloading';
 import { createExpressApp } from './express_app';
 
 export function init(): void {
-  dotenv.config();
   const debug = debugModule('server');
-  const port = normalizePort(process.env.PORT || '3333');
+  const port = normalizePort(env.PORT || '3333');
 
   const express_app = createExpressApp();
   express_app.set('port', port);
 
   const server = http.createServer(express_app);
 
-  if (process.env.HOT_RELOAD === 'True') {
+  if (environmentIsUsingHotReloading()) {
     const nodeProxy = new httpProxy({
       target: 'ws://localhost:19006',
       ws: true,

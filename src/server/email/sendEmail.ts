@@ -1,18 +1,16 @@
 import sendgridMail from '@sendgrid/mail';
-import dotenv from 'dotenv';
 import { EmailTemplateType } from 'src/server/email/EmailTemplateTypes';
+import env from 'src/shared/env/env';
 import getEmailAddress from 'src/shared/urls/getEmailAddress';
 import analytics from '../analytics/index';
 
-dotenv.config();
+const SENDGRID_API_KEY = env.SENDGRID_API_KEY;
 
-const sendgridApiKey = process.env.SENDGRID_API_KEY;
-
-if (!sendgridApiKey) {
+if (!SENDGRID_API_KEY) {
   throw new Error('env Must provide SENDGRID_API_KEY');
 }
 
-sendgridMail.setApiKey(sendgridApiKey);
+sendgridMail.setApiKey(SENDGRID_API_KEY);
 
 type Args = EmailTemplateType & {
   recipient: Express.User;

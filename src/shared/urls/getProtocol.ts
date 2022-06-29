@@ -1,9 +1,7 @@
-import dotenv from 'dotenv';
-
-dotenv.config();
+import environmentIsUsingTestDatabase from 'src/shared/env/environmentIsUsingTestDatabase';
 
 export default function getDomain(): string {
-  if (process.env.MONGODB_DB_NAME === 'AidApp-Test') {
+  if (environmentIsUsingTestDatabase()) {
     return 'http://';
   } else {
     return 'https://';
