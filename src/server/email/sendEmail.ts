@@ -53,6 +53,7 @@ export default async function sendEmail({
       },
       user: recipient,
     });
+    throw e;
   }
 }
 
