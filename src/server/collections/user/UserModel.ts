@@ -14,12 +14,15 @@ import passport from 'passport';
 import passportLocalMongoose from 'passport-local-mongoose';
 import { AidRequestReference } from 'src/server/collections/aid_request/AidRequestModelTypes';
 import type { UserDocType } from 'src/server/collections/user/UserModelTypes';
-import env from 'src/shared/env/env';
 import { MONGO_DB_URI } from 'src/server/mongo/client';
+import env from 'src/shared/env/env';
 
 export type UserType = Document<string, unknown, UserDocType> &
   UserDocType & { _id: ObjectId };
 
+// Idk what's wrong here
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
 const UserSchema: PassportLocalSchema = new Schema<UserDocType>({
   aidRequestsIAmWorkingOn: [AidRequestReference],
   crews: [String],

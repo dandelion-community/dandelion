@@ -35,12 +35,15 @@ export default async function comment(args: UpdateArgs): Promise<UpdateResult> {
   }
 
   if (!isUndo) {
-    afterRequestIsComplete(args.req, () =>
-      updateReminderBecauseThereWasActivity({
-        aidRequestID: new ObjectId(args.aidRequestID),
-        userID: args.user._id,
-      }),
-    );
+    afterRequestIsComplete({
+      callback: () =>
+        updateReminderBecauseThereWasActivity({
+          aidRequestID: new ObjectId(args.aidRequestID),
+          userID: args.user._id,
+        }),
+      loggingTag: 'comment:updateReminderBecauseThereWasActivity',
+      req: args.req,
+    });
   }
 
   return { aidRequest, historyEvent, postpublishSummary };

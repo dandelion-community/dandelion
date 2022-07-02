@@ -1430,6 +1430,11 @@
     deepmerge "^3.2.0"
     hoist-non-react-statics "^3.3.0"
 
+"@chloe-47/eslint-plugin-no-set-timeout@^1.0.2":
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/@chloe-47/eslint-plugin-no-set-timeout/-/eslint-plugin-no-set-timeout-1.0.2.tgz#0799ed106414aca1da1feb7a7ec7f7094fe0c70b"
+  integrity sha512-CbKJkZ+JWDyJOtWpAejFmN40tdk9IqhJM1CGczx7LNBnDrAYxx7YuwYug07FjOvD9u0EFd8qpsYx0uSjzP3lhQ==
+
 "@cnakazawa/watch@^1.0.3":
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/@cnakazawa/watch/-/watch-1.0.4.tgz#f864ae85004d0fcab6f50be9141c4da368d1656a"

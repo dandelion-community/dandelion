@@ -67,12 +67,15 @@ export default async function changeStringField(
   );
 
   if (!isUndo) {
-    afterRequestIsComplete(args.req, () =>
-      updateReminderBecauseThereWasActivity({
-        aidRequestID: new ObjectId(args.originalAidRequest._id),
-        userID: args.user._id,
-      }),
-    );
+    afterRequestIsComplete({
+      callback: () =>
+        updateReminderBecauseThereWasActivity({
+          aidRequestID: new ObjectId(args.originalAidRequest._id),
+          userID: args.user._id,
+        }),
+      loggingTag: 'changeStringField:updateReminderBecauseThereWasActivity',
+      req: args.req,
+    });
   }
 
   return { aidRequest, historyEvent, postpublishSummary };

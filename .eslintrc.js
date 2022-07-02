@@ -9,9 +9,16 @@ module.exports = {
     'prettier',
   ],
   parser: '@typescript-eslint/parser',
-  plugins: ['@typescript-eslint', 'prettier', 'sort-keys-fix', 'react'],
+  plugins: [
+    '@chloe-47/eslint-plugin-no-set-timeout',
+    '@typescript-eslint',
+    'prettier',
+    'react',
+    'sort-keys-fix',
+  ],
   root: true,
   rules: {
+    '@chloe-47/no-set-timeout/no-set-timeout': ['warn'],
     '@typescript-eslint/no-namespace': ['off'],
     '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
     'prettier/prettier': ['error'],

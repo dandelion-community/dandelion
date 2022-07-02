@@ -46,13 +46,16 @@ export default async function workingOn(
     ? "You're working on this"
     : "You're not working on this";
 
-  afterRequestIsComplete(args.req, () =>
-    updateReminder({
-      aidRequestID: new ObjectId(args.aidRequestID),
-      isWorkingOn,
-      userID,
-    }),
-  );
+  afterRequestIsComplete({
+    callback: () =>
+      updateReminder({
+        aidRequestID: new ObjectId(args.aidRequestID),
+        isWorkingOn,
+        userID,
+      }),
+    loggingTag: 'workingOn:updateReminder',
+    req: args.req,
+  });
 
   return { aidRequest, historyEvent, postpublishSummary };
 }
