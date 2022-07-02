@@ -1,6 +1,10 @@
 import { PipelineStage } from 'mongoose';
-import env from 'src/shared/env/env';
+import getEnvironmentVariableAndThrowIfNotFound from 'src/shared/env/getEnvironmentVariableAndThrowIfNotFound';
 import type { Filter } from './types';
+
+const index = getEnvironmentVariableAndThrowIfNotFound(
+  'MONGO_AID_REQUEST_INDEX_NAME',
+);
 
 export default function getSearchFilter(
   filter: Filter,
@@ -11,7 +15,7 @@ export default function getSearchFilter(
   }
   return {
     $search: {
-      index: env.MONGO_AID_REQUEST_INDEX_NAME,
+      index,
       text: {
         path: {
           wildcard: '*',

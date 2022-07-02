@@ -1,5 +1,7 @@
-import env from 'src/shared/env/env';
+import getEnvironmentVariableAndReturnUndefinedIfNotFound from './getEnvironmentVariableAndReturnUndefinedIfNotFound';
 
 export default function environmentIsUsingHotReloading(): boolean {
-  return env.HOT_RELOAD === 'True';
+  return (
+    getEnvironmentVariableAndReturnUndefinedIfNotFound('HOT_RELOAD') === 'True'
+  );
 }

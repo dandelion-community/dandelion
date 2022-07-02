@@ -1,14 +1,11 @@
 import Analytics from 'analytics-node';
 import mongoose from 'mongoose';
-import env from 'src/shared/env/env';
-import environmentIsUsingTestDatabase from 'src/shared/env/environmentIsUsingTestDatabase';
+import ENVIRONMENT_IS_USING_TEST_DATABASE from 'src/shared/env/ENVIRONMENT_IS_USING_TEST_DATABASE';
+import getEnvironmentVariableAndThrowIfNotFound from 'src/shared/env/getEnvironmentVariableAndThrowIfNotFound';
 
-const SEGMENT_ANALYTICS_WRITE_KEY = env.SEGMENT_ANALYTICS_WRITE_KEY;
-if (!SEGMENT_ANALYTICS_WRITE_KEY) {
-  throw new Error(
-    'SEGMENT_ANALYTICS_WRITE_KEY environment variable must be provided',
-  );
-}
+const SEGMENT_ANALYTICS_WRITE_KEY = getEnvironmentVariableAndThrowIfNotFound(
+  'SEGMENT_ANALYTICS_WRITE_KEY',
+);
 
 const segmentAnalytics = new Analytics(SEGMENT_ANALYTICS_WRITE_KEY);
 
@@ -47,7 +44,7 @@ const analytics = {
       userId: user == null ? 'none' : user._id.toString(),
     });
     mongoAnalytics.track(message);
-    if (environmentIsUsingTestDatabase()) {
+    if (ENVIRONMENT_IS_USING_TEST_DATABASE) {
       console.log('[Event] ' + event);
     }
   },

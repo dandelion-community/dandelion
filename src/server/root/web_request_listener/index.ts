@@ -5,13 +5,16 @@ Error.stackTraceLimit = Infinity;
 import debugModule from 'debug';
 import http from 'http';
 import httpProxy from 'http-proxy';
-import env from 'src/shared/env/env';
 import environmentIsUsingHotReloading from 'src/shared/env/environmentIsUsingHotReloading';
+import getEnvironmentVariableAndReturnUndefinedIfNotFound from 'src/shared/env/getEnvironmentVariableAndReturnUndefinedIfNotFound';
 import { createExpressApp } from './express_app';
+
+const ENVIRONMENT_PORT =
+  getEnvironmentVariableAndReturnUndefinedIfNotFound('PORT');
 
 export function init(): void {
   const debug = debugModule('server');
-  const port = normalizePort(env.PORT || '3333');
+  const port = normalizePort(ENVIRONMENT_PORT || '3333');
 
   const express_app = createExpressApp();
   express_app.set('port', port);

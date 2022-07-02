@@ -1,4 +1,4 @@
-import environmentIsUsingTestDatabase from '../../shared/env/environmentIsUsingTestDatabase';
+import ENVIRONMENT_IS_USING_TEST_DATABASE from '../../shared/env/ENVIRONMENT_IS_USING_TEST_DATABASE';
 
 type Args = {
   displayText: string;
@@ -33,7 +33,7 @@ export function throwFakeErrorSometimes({
   probability,
 }: FakeArgs): void {
   if (
-    environmentIsUsingTestDatabase() &&
+    ENVIRONMENT_IS_USING_TEST_DATABASE &&
     Math.random() < (probability ?? 0.1) &&
     !suppression?.suppressFakeErrors &&
     [2].includes(1)

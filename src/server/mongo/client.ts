@@ -1,9 +1,12 @@
 import mongoose from 'mongoose';
-import env from 'src/shared/env/env';
+import getEnvironmentVariableAndThrowIfNotFound from 'src/shared/env/getEnvironmentVariableAndThrowIfNotFound';
 
-const PASSWORD = env.MONGODB_USER_0_PASSWORD;
+const PASSWORD = getEnvironmentVariableAndThrowIfNotFound(
+  'MONGODB_USER_0_PASSWORD',
+);
 const CLUSTER = 'aid-app-cluster-0';
-const DEFAULT_DB_NAME = env.MONGODB_DB_NAME;
+const DEFAULT_DB_NAME =
+  getEnvironmentVariableAndThrowIfNotFound('MONGODB_DB_NAME');
 const DB_USER_NAME = 'aid-app-user-0';
 
 export const MONGO_DB_URI =

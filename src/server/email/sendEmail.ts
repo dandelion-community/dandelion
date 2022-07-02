@@ -1,14 +1,11 @@
 import sendgridMail from '@sendgrid/mail';
 import { EmailTemplateType } from 'src/server/email/EmailTemplateTypes';
-import env from 'src/shared/env/env';
+import getEnvironmentVariableAndThrowIfNotFound from 'src/shared/env/getEnvironmentVariableAndThrowIfNotFound';
 import getEmailAddress from 'src/shared/urls/getEmailAddress';
 import analytics from '../analytics/index';
 
-const SENDGRID_API_KEY = env.SENDGRID_API_KEY;
-
-if (!SENDGRID_API_KEY) {
-  throw new Error('env Must provide SENDGRID_API_KEY');
-}
+const SENDGRID_API_KEY =
+  getEnvironmentVariableAndThrowIfNotFound('SENDGRID_API_KEY');
 
 sendgridMail.setApiKey(SENDGRID_API_KEY);
 
