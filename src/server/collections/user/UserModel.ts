@@ -15,7 +15,7 @@ import passportLocalMongoose from 'passport-local-mongoose';
 import { AidRequestReference } from 'src/server/collections/aid_request/AidRequestModelTypes';
 import type { UserDocType } from 'src/server/collections/user/UserModelTypes';
 import { MONGO_DB_URI } from 'src/server/mongo/client';
-import env from 'src/shared/env/env';
+import getEnvironmentVariableAndThrowIfNotFound from 'src/shared/env/getEnvironmentVariableAndThrowIfNotFound';
 
 export type UserType = Document<string, unknown, UserDocType> &
   UserDocType & { _id: ObjectId };
@@ -42,12 +42,8 @@ passport.use(UserModel.createStrategy());
 passport.serializeUser(UserModel.serializeUser() as any);
 passport.deserializeUser(UserModel.deserializeUser());
 
-const SESSION_SECRET = env.SESSION_SECRET;
-if (SESSION_SECRET == null) {
-  throw new Error(
-    'The SESSION_SECRET environment variable must be set to support authentication',
-  );
-}
+const SESSION_SECRET =
+  getEnvironmentVariableAndThrowIfNotFound('SESSION_SECRET');
 
 export function initUserModels(app: Express): void {
   const store = MongoStore.create({

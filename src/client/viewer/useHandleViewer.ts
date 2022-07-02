@@ -46,7 +46,7 @@ export default function useHandleViewer<
         if (viewer !== undefined) {
           handlers.loggedIn?.(viewer, goToMain);
         } else {
-          handlers.loggedOut?.(viewer, goToMain);
+          handlers.loggedOut?.(viewer as undefined, goToMain);
         }
       }, 250);
     }

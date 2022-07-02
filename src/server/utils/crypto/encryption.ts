@@ -1,7 +1,10 @@
 import crypto from 'crypto';
-import env from 'src/shared/env/env';
+import getEnvironmentVariableAndThrowIfNotFound from 'src/shared/env/getEnvironmentVariableAndThrowIfNotFound';
 
-const SECRET = (env.SESSION_SECRET as string).slice(0, 32);
+const SESSION_SECRET =
+  getEnvironmentVariableAndThrowIfNotFound('SESSION_SECRET');
+
+const SECRET = SESSION_SECRET.slice(0, 32);
 const ALGORITHM = 'aes-256-ctr';
 
 export function encrypt(message: string): string {
