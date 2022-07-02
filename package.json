@@ -116,6 +116,7 @@
   "devDependencies": {
     "@babel/core": ">=7.12.9",
     "@babel/preset-typescript": ">=7.16.7",
+    "@chloe-47/eslint-plugin-no-set-timeout": "^1.0.2",
     "@types/analytics-node": ">=3.1.7",
     "@types/connect-ensure-login": ">=0.1.7",
     "@types/cookie-parser": ">=1.4.2",

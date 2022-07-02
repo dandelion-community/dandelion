@@ -18,8 +18,5 @@ export const MONGO_DB_URI =
   '?retryWrites=true&w=majority';
 
 export function initMongoClient(): void {
-  mongoose.connect(MONGO_DB_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  });
+  mongoose.connect(MONGO_DB_URI);
 }

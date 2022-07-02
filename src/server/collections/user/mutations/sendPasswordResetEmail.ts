@@ -1,6 +1,7 @@
 import { UserModel } from 'src/server/collections/user/UserModel';
 import sendEmail from 'src/server/email/sendEmail';
 import { encrypt } from 'src/server/utils/crypto/encryption';
+import sleep from 'src/server/utils/sleep';
 import passwordResetUrl from 'src/shared/urls/passwordResetUrl';
 
 async function sendPasswordResetEmailResolver(
@@ -25,7 +26,8 @@ async function sendPasswordResetEmailResolver(
     });
   }
 
-  await new Promise((resolve) => setTimeout(resolve, 2500));
+  // Wait a couple seconds for the email to send
+  await sleep({ ms: 2500 });
 
   return `If ${username} is a valid email address and is associated with an account, we emailed a password reset link to that address. Please check your email to continue.`;
 }
