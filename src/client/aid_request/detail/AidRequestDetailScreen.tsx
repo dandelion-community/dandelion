@@ -26,6 +26,7 @@ import client from 'src/client/graphql/client';
 import { RequestExplorerStackScreenProps } from 'src/client/navigation/NavigationTypes';
 import ScrollableScreen from 'src/client/scrollable_screen/ScrollableScreen';
 import singleElement from 'src/client/scrollable_screen/singleElement';
+import CrewInfo from './rows/CrewInfo';
 
 export type GoToRequestDetailScreen = (aidRequestID: string) => void;
 
@@ -122,6 +123,12 @@ function getListItems(data: AidRequestDetailsQuery | undefined): Array<Item> {
             whoIsItFor={aidRequest.whoIsItFor}
           />
         );
+      },
+    },
+    {
+      key: `${aidRequest._id}:crewInfo`,
+      render: () => {
+        return <CrewInfo crew={aidRequest.crew} />;
       },
     },
     {

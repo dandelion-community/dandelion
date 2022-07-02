@@ -46,6 +46,7 @@ const styles = StyleSheet.create({
   },
   headline: {
     fontSize: 12,
+    marginRight: 4,
     opacity: 0.6,
   },
   paddedContents: {
